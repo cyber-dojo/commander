@@ -1,17 +1,8 @@
-FROM cyberdojo/user-base
+FROM alpine:3.4
 MAINTAINER Jon Jagger <jon@jaggersoft.com>
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 1. install tini (for pid 1 zombie reaping)
-# https://github.com/krallin/tini
-# https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
-
-USER root
-RUN apk add --update --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ tini
-ENTRYPOINT ["/sbin/tini", "--"]
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 2. install docker-client
+# 1. install docker-client
 # Launching a docker app (that itself uses docker) is
 # different on different host OS's... eg
 #
@@ -45,9 +36,6 @@ ENTRYPOINT ["/sbin/tini", "--"]
 # docker 1.11.0+ now relies on four binaries
 # See https://github.com/docker/docker/wiki/Engine-1.11.0
 # See https://docs.docker.com/engine/installation/binaries/
-#
-# After this, the cyber-dojo user can do
-# $ sudo -u docker-runner sudo docker ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ARG  DOCKER_VERSION
@@ -61,35 +49,12 @@ RUN  apk update \
   && rm /docker-${DOCKER_VERSION}.tgz \
   && apk del curl
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# 3. ensure cyber-dojo user can sudo to docker-runner user
-# which can run docker and docker-compose
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-ARG  DOCKER_BINARY=/usr/bin/docker
-ARG  DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
-ARG  NEEDS_DOCKER_SUDO=cyber-dojo
-ARG  GETS_DOCKER_SUDO=docker-runner
-ARG  SUDO_FILE=/etc/sudoers.d/${GETS_DOCKER_SUDO}
-USER root
-# -D=no password, -H=no home directory
-RUN  adduser -D -H ${GETS_DOCKER_SUDO}
-# there is no sudo command in Alpine
-RUN  apk --update add sudo
-# cyber-dojo, on all hosts, can sudo -u docker-runner, without a password
-RUN  echo "${NEEDS_DOCKER_SUDO} ALL=(${GETS_DOCKER_SUDO}) NOPASSWD: ALL"   >  ${SUDO_FILE}
-# docker-runner, on all hosts, without a password, can sudo /usr/bin/docker
-RUN  echo "${GETS_DOCKER_SUDO} ALL=NOPASSWD: ${DOCKER_BINARY} *"         >>  ${SUDO_FILE}
-# docker-runner, on all hosts, without a password, can sudo /usr/bin/docker-compose
-RUN  echo "${GETS_DOCKER_SUDO} ALL=NOPASSWD: ${DOCKER_COMPOSE_BINARY} *" >>  ${SUDO_FILE}
-
 # - - - - - - - - - - - - - - - - - - - - - -
-# 4. install docker-compose
+# 2. install docker-compose
 # https://github.com/marcosnils/compose/blob/master/Dockerfile.run
-# After this, the cyber-dojo user can do
-# $ sudo -u docker-runner sudo docker-compose ...
 
 ARG  DOCKER_COMPOSE_VERSION
+ARG  DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
 USER root
 RUN  apk update \
   && apk add --no-cache curl openssl ca-certificates \
@@ -103,14 +68,14 @@ RUN  apk update \
   && apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 5. install ruby and json gem
+# 3. install ruby and json gem
 
 USER root
 RUN  apk update && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash
 RUN  gem install json_pure --no-ri --no-rdoc
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 6. install commander
+# 4. install commander
 
 RUN  mkdir /app
 COPY cyber-dojo.sh          /app
@@ -119,7 +84,6 @@ COPY docker-compose.yml     /app
 COPY start_point_check.rb   /app
 COPY start_point_inspect.rb /app
 COPY start_point_pull.rb    /app
-RUN  chown -R cyber-dojo:cyber-dojo /app
 WORKDIR /app
 
 
