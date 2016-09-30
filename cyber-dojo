@@ -1,0 +1,98 @@
+#!/bin/sh
+
+# Minimal script file (without a .sh extension) to control a cyber-dojo web server.
+# The aim is for most commands to simply to be forwarded to the cyber-dojo commander.
+# The commands this script has to handle are
+#
+# 1. update
+# 2. sh
+# 3. start-point create --dir=DIR
+
+os="$(uname -s)"
+
+if [ "$(whoami)" != 'root' ] && [ "${os}" != 'Darwin' ]; then
+  echo 'On Linux this must be run as root'
+  exit
+fi
+
+exit_if_not_installed() {
+  hash ${1} 2> /dev/null
+  if [ $? != 0 ]; then
+    echo
+    echo "${1} is not installed"
+    echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
+    exit 1
+  fi
+}
+
+exit_if_not_installed 'docker'
+#exit_if_not_installed 'docker-compose'
+if [ "${os}" = 'Darwin' ]; then
+  exit_if_not_installed 'docker-machine'
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - -
+# cyber-dojo images are docker version sensitive.
+#    docker --version  -->  Docker version 1.11.2, build 5604cbe
+#    awk '{print $3}'  -->  1.11.2,           (third field)
+#    sed '$s/.$//'     -->  1.11.2            (lose last comma)
+
+#my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+cyber_dojo_hub=cyberdojo
+docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
+cyber_dojo_commander_server=${cyber_dojo_hub}/commander:${docker_version}
+cyber_dojo_web_container=cyber-dojo-web
+
+if [ "$*" = "sh" ]; then
+  docker exec --interactive --tty ${cyber_dojo_web_container} sh
+  exit
+fi
+
+if [ "$*" = "update" ]; then
+  # update commander image
+  docker pull ${cyber_dojo_commander_server}
+fi
+
+# if start-point create --dir=DIR NAME
+# check volume named NAME does not already exist
+# create a volume NAME from DIR
+
+docker run \
+  --rm \
+  --user=root \
+  --volume=/var/run/docker.sock:/var/run/docker.sock \
+  cyberdojo/commander:${docker_version} \
+  /app/cyber-dojo.sh $1
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - -
+
+#get_file_from_web_image() {
+#  echo "Extracting ${1} from ${cyber_dojo_web_server}"
+#  local cid=$(docker create ${cyber_dojo_web_server})
+#  docker cp ${cid}:/usr/src/cyber-dojo/cli/${1} ${my_dir}/${1}
+#  docker rm ${cid} > /dev/null
+#}
+
+# - - - - - - - - - - - - - - - - - - - - - - -
+
+#docker_compose_yml=docker-compose.yml
+#
+#if [ ! -f ${my_dir}/${cyber_dojo_sh} ]; then
+#  get_file_from_web_image ${cyber_dojo_sh}
+#fi
+#
+#if [ ! -f ${my_dir}/${docker_compose_yml} ]; then
+#  get_file_from_web_image ${docker_compose_yml}
+#fi
+
+
+#
+
+
+#export CYBER_DOJO_SCRIPT_WRAPPER=inprogress
+#cyber_dojo_sh=cyber-dojo.sh
+#
+#${my_dir}/${cyber_dojo_sh} $@
