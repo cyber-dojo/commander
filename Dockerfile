@@ -1,5 +1,6 @@
 FROM alpine:3.4
 MAINTAINER Jon Jagger <jon@jaggersoft.com>
+USER root
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # 1. install docker-client
@@ -39,7 +40,6 @@ MAINTAINER Jon Jagger <jon@jaggersoft.com>
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 ARG  DOCKER_VERSION
-USER root
 RUN  apk update \
   && apk add --no-cache curl \
   && curl -OL https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz \
@@ -55,7 +55,6 @@ RUN  apk update \
 
 ARG  DOCKER_COMPOSE_VERSION
 ARG  DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
-USER root
 RUN  apk update \
   && apk add --no-cache curl openssl ca-certificates \
   && curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > ${DOCKER_COMPOSE_BINARY} \
@@ -70,7 +69,6 @@ RUN  apk update \
 # - - - - - - - - - - - - - - - - - - - - - -
 # 3. install ruby and json gem
 
-USER root
 RUN  apk update \
   && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash \
   && gem install json_pure --no-ri --no-rdoc
@@ -79,7 +77,7 @@ RUN  apk update \
 # 4. install commander
 
 ARG HOME_DIR=/app
-RUN  mkdir ${HOME_DIR}
+RUN mkdir ${HOME_DIR}
 COPY . ${HOME_DIR}
 WORKDIR ${HOME_DIR}
 
