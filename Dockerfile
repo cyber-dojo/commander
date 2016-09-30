@@ -113,18 +113,10 @@ RUN  apk update && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata 
 
 RUN  mkdir /app
 COPY Gemfile /app
-RUN  apk --update \
-        add --virtual build-dependencies \
-          build-base \
-          ruby-dev \
-          openssl-dev \
-          postgresql-dev \
-          libc-dev \
-          linux-headers \
+RUN  apk update \
         && gem install bundler --no-ri --no-rdoc \
         && cd /app \
-        && bundle install \
-        && apk del build-dependencies
+        && bundle install
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 5. install commander
