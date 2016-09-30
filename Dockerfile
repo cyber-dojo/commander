@@ -71,19 +71,16 @@ RUN  apk update \
 # 3. install ruby and json gem
 
 USER root
-RUN  apk update && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash
-RUN  gem install json_pure --no-ri --no-rdoc
+RUN  apk update \
+  && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash \
+  && gem install json_pure --no-ri --no-rdoc
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 4. install commander
 
-RUN  mkdir /app
-COPY cyber-dojo.sh          /app
-COPY cyber-dojo.rb          /app
-COPY docker-compose.yml     /app
-COPY start_point_check.rb   /app
-COPY start_point_inspect.rb /app
-COPY start_point_pull.rb    /app
-WORKDIR /app
+ARG HOME_DIR=/app
+RUN  mkdir ${HOME_DIR}
+COPY . ${HOME_DIR}
+WORKDIR ${HOME_DIR}
 
 
