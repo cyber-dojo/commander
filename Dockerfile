@@ -103,24 +103,16 @@ RUN  apk update \
   && apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 5. install ruby
+# 5. install ruby and json gem
 
 USER root
 RUN  apk update && apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash
+RUN  gem install json_pure --no-ri --no-rdoc
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 6. install json gem
+# 6. install commander
 
 RUN  mkdir /app
-COPY Gemfile /app
-RUN  apk update \
-        && gem install bundler --no-ri --no-rdoc \
-        && cd /app \
-        && bundle install
-
-# - - - - - - - - - - - - - - - - - - - - - -
-# 5. install commander
-
 COPY cyber-dojo.sh          /app
 COPY cyber-dojo.rb          /app
 COPY docker-compose.yml     /app
