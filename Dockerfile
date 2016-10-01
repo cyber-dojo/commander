@@ -13,6 +13,3 @@ ARG HOME_DIR=/app
 RUN mkdir ${HOME_DIR}
 COPY . ${HOME_DIR}
 WORKDIR ${HOME_DIR}
-
-
-

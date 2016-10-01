@@ -68,6 +68,6 @@ apk del curl
 # 3. install ruby and json gem
 
 apk update
-apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata bash
+apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata
 gem install json_pure --no-ri --no-rdoc
 
