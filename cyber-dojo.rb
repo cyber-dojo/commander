@@ -346,10 +346,10 @@ def start_point_create
   help = [
     '',
     "Use: #{me} start-point create NAME --git=URL",
-    "Use: #{me} start-point create NAME --dir=PATH",
-    '',
     'Creates a start-point named NAME from a git clone of URL',
-    'Creates a start-point named NAME from a copy of PATH',
+    '',
+    "Use: #{me} start-point create NAME --dir=DIR",
+    'Creates a start-point named NAME from a copy of DIR',
     '',
     "NAME's first letter must be [a-zA-Z0-9]",
     "NAME's remaining letters must be [a-zA-Z0-9_.-]",
