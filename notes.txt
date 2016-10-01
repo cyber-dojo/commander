@@ -1,0 +1,20 @@
+
+I would like to make a git repo for each language+testFramework combination.
+This would include the visible-files at startup and the Dockerfile +context files
+(eg .jar files).
+A problem with this is that start-point create has to clone from a git repo
+and I don't want to clone the Dockerfile stuff I only want the visible-files stuff.
+This is possible!
+For example, suppose I wanted to only git clone the app/ dir of
+https://github.com/cyber-dojo/web.git
+here's what I'd need to do
+
+mkdir partial
+cd partial
+git init
+git remote add origin https://github.com/cyber-dojo/web.git
+git config core.sparseCheckout true
+echo "app/" >> .git/info/sparse-checkout
+git pull --depth=1 origin master
+rm -rf .git
+
