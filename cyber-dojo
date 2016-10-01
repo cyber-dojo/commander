@@ -1,15 +1,8 @@
 #!/bin/sh
 
-# Minimal script file (without a .sh extension) to control a cyber-dojo web server.
+# Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
-# But a few have to be handled locally.
-
-
-# - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo images are docker version sensitive.
-#    docker --version  -->  Docker version 1.12.1, build 5604cbe
-#    awk '{print $3}'  -->  1.12.1,           (third field)
-#    sed '$s/.$//'     -->  1.12.1            (lose last comma)
+# A few have to be handled locally.
 
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 cyber_dojo_commander=cyberdojo/commander:${docker_version}
@@ -44,33 +37,14 @@ if_sh_handle_locally_and_exit() {
 
 if_update_handle_locally_and_exit() {
   if [ "$*" = "update" ]; then
-    # update commander image
-    docker pull ${cyber_dojo_commander}
-    delegate_to_commander $*   # this will update all other images
-    # TODO: [docker cp] extract new cyber-dojo script from image
+    docker pull ${cyber_dojo_commander} # update commander image
+    delegate_to_commander $*            # update other images
+    local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+    local cid=$(docker create ${cyber_dojo_commander})
+    # TODO: could this fail? rights? mv it first?
+    docker cp ${cid}:/cyber-dojo ${my_dir}/cyber-dojo # replace myself
+    docker rm ${cid} > /dev/null
     exit
-  fi
-}
-
-# Should I abandon this and if you are running on Docker-Toolbox
-# only support dirs on the default VM ?
-# Consider future architecture where each Language+TestFramework is in its
-# own repo. Then catalog-manifest becomes json hash of your selection and
-# creation of a catalog involves doing (sparse) git clone of each repo.
-
-if_start_point_create_dir_handle_locally() {
-  # TODO: (in cyber-dojo.rb) check volume is deleted if command fails, eg bad extra argument
-  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-    local name=$3
-    # TODO: if name == "" return
-    local lhs=$(echo $4 | cut -f1 -s -d=)
-    local rhs=$(echo $4 | cut -f2 -s -d=)
-    if [ "${lhs}" = '--dir' ]; then
-      local dir=${rhs}
-      # check if volume named ${name} already exists, if so exit
-      # check if dir ${dir} exists, if not exit
-      # create a volume named ${name} from ${dir}, if failed exit
-    fi
   fi
 }
 
@@ -78,5 +52,4 @@ exit_if_docker_not_installed
 
 if_sh_handle_locally_and_exit $*
 if_update_handle_locally_and_exit $*
-if_start_point_create_dir_handle_locally $*
 delegate_to_commander $*
