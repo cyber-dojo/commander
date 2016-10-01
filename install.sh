@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+DOCKER_VERSION=$1
+DOCKER_COMPOSE_VERSION=$2
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # 1. install docker-client
 # Launching a docker app (that itself uses docker) is
@@ -38,8 +41,6 @@ set -e
 # See https://docs.docker.com/engine/installation/binaries/
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-DOCKER_VERSION=$1
-
 apk update
 apk add --no-cache curl
 curl -OL https://get.docker.com/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz
@@ -51,8 +52,6 @@ rm /docker-${DOCKER_VERSION}.tgz
 # - - - - - - - - - - - - - - - - - - - - - -
 # 2. install docker-compose
 # https://github.com/marcosnils/compose/blob/master/Dockerfile.run
-
-DOCKER_COMPOSE_VERSION=$2
 
 DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
 apk add --no-cache curl openssl ca-certificates
