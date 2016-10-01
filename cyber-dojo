@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 # Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
@@ -39,11 +40,15 @@ if_update_handle_locally_and_exit() {
   if [ "$*" = "update" ]; then
     docker pull ${cyber_dojo_commander} # update commander image
     delegate_to_commander $*            # update other images
-    local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+    # replace myself
+    # https://bani.com.br/2013/04/shell-script-that-updates-itself/
     local cid=$(docker create ${cyber_dojo_commander})
-    # TODO: could this fail? rights? mv it first?
-    docker cp ${cid}:/cyber-dojo ${my_dir}/cyber-dojo # replace myself
+    local new_me=/tmp/cyber-dojo.new
+    docker cp ${cid}:/cyber-dojo ${new_me}
     docker rm ${cid} > /dev/null
+    chmod +x ${new_me}
+    cp ${new_me} $0
+    rm ${new_me}
     exit
   fi
 }
