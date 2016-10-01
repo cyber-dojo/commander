@@ -4,7 +4,7 @@ This would include the visible-files at startup and the Dockerfile +context file
 (eg .jar files).
 A problem with this is that start-point create has to clone from a git repo
 and I don't want to clone the Dockerfile stuff I only want the visible-files stuff.
-This is possible!
+I think this is possible.
 For example, suppose I wanted to only git clone the app/ dir of
 https://github.com/cyber-dojo/web.git
 here's what I'd need to do
@@ -17,4 +17,3 @@ git config core.sparseCheckout true
 echo "app/" >> .git/info/sparse-checkout
 git pull --depth=1 origin master
 rm -rf .git
-
