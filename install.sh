@@ -65,9 +65,11 @@ ln -s /lib/libc.musl-x86_64.so.1 /usr/glibc-compat/lib
 apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 3. install ruby and json gem
+# 3. install ruby, git (for git clone) and json gem
 
-apk update
 apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata
 gem install json_pure --no-ri --no-rdoc
 
+# - - - - - - - - - - - - - - - - - - - - - -
+# 4. install git (for git clone)
+apk add git
