@@ -8,8 +8,10 @@ ARG  DOCKER_COMPOSE_VERSION
 ARG  SCRIPT=install.sh
 COPY ${SCRIPT} .
 RUN  chmod +x ./${SCRIPT} \
-  && ./${SCRIPT} ${DOCKER_VERSION} ${DOCKER_COMPOSE_VERSION} \
-  && rm ./${SCRIPT}
+   ; sync \
+   ; ./${SCRIPT} ${DOCKER_VERSION} ${DOCKER_COMPOSE_VERSION} \
+   ; sync \
+   ; rm ./${SCRIPT}
 
 ARG HOME_DIR=/app
 RUN mkdir ${HOME_DIR}
