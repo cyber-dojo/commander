@@ -8,15 +8,24 @@ set -e
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 cyber_dojo_commander=cyberdojo/commander:${docker_version}
 
+g_tmp_dir=''  # if this is not '' then clean_up [rm -rf]'s it
+g_cidfile=''  # if this is not '' then clean_up [rm]'s it
+g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
+g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 exit_if_docker_not_installed() {
   hash docker 2> /dev/null
   if [ $? != 0 ]; then
     echo
     echo 'docker is not installed'
     echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
-    exit 1
+    exit_success
   fi
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander() {
   docker run \
@@ -27,14 +36,18 @@ delegate_to_commander() {
     /app/cyber-dojo.sh $*
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 if_sh_handle_locally_and_exit() {
   # TODO: if cyber-dojo-web is not running echo diagnostic
   if [ "$*" = "sh" ]; then
     # TODO: allow shelling into any container web/commander/differ/storer/runner?
     docker exec --interactive --tty cyber-dojo-web sh
-    exit
+    exit_success
   fi
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if_update_handle_locally_and_exit() {
   if [ "$*" = "update" ]; then
@@ -49,12 +62,181 @@ if_update_handle_locally_and_exit() {
     chmod +x ${new_me}
     cp ${new_me} $0
     rm ${new_me}
-    exit
+    exit_success
   fi
 }
 
-exit_if_docker_not_installed
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+if_start_point_create_dir_handle_locally_and_exit() {
+
+  # TODO: if $5 != '' need to show start-point create HELP
+
+  # This has to happen locally. Doing this inside cyber-dojo.sh
+  # from the delegation method won't work because you'll already
+  # be inside the commander container.
+  local name=$3
+  local lhs=$(echo $4 | cut -f1 -s -d=)
+  local dir=$(echo $4 | cut -f2 -s -d=)
+  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ] && [ "${lhs}" = '--dir' ]; then
+
+    # TODO: check if volume called ${name} already exists
+    # TODO: check if dir ${dir} exists
+
+    g_cidfile=`mktemp -t cyber-dojo.cid.XXXXXX`
+    if [ $? != 0 ]; then
+      echo "FAILED: Could not create temporary file!"
+      exit_fail
+    fi
+    # docker run --cid=cidfile requires that the cidfile does not already exist
+    command="rm ${g_cidfile}"
+    run "${command}" || clean_up_and_exit_fail
+    # 1. make an empty docker volume
+    command="docker volume create --name=${name} --label=cyber-dojo-start-point=${src}"
+    run "${command}" || clean_up_and_exit_fail 'docker volume create failed!?'
+    g_vol=${start_point}
+    # 2. mount empty volume inside docker container
+    command="docker run
+                 --detach
+                 --cidfile=${g_cidfile}
+                 --interactive
+                 --net=none
+                 --user=root
+                 --volume=${name}:/data
+                 ${cyber_dojo_commander} sh"
+    run "${command}" || clean_up_and_exit_fail 'docker run failed!?'
+
+    # XXXX
+    # TODO: has to be better way to get the cid. ?latest? option
+    # XXXX
+    g_cid=`cat ${g_cidfile}`
+
+
+    # 3. fill empty volume from local dir
+    # NB: [cp DIR/.] != [cp DIR];  DIR/. means copy the contents
+    command="docker cp ${dir}/. ${g_cid}:/data"
+    run "${command}" || clean_up_and_exit_fail 'docker cp failed!?'
+    # 4. ensure cyber-dojo user owns everything in the volume
+
+    # XXXX
+    # TODO: cyber-dojo user has to be known inside commander image
+    # XXXX
+    command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
+    run "${command}" || clean_up_and_exit_fail 'docker exec chown failed!?'
+
+    # 5. check the volume is a good start-point
+    command="docker exec ${g_cid} sh -c './start_point_check.rb /data'"
+    run_loud "${command}" || clean_up_and_exit_fail
+    # clean up everything used to create the volume, but not the volume itself
+    g_vol=''
+    clean_up
+    exit_success
+  fi
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+run() {
+  local me='run'
+  local command="$1"
+  debug "${me}: command=${command}"
+  eval ${command} > /dev/null 2>&1
+  local exit_status=$?
+  debug "${me}: exit_status=${exit_status}"
+  if [ "${exit_status}" = 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+run_loud() {
+  local me='run_loud'
+  local command="$1"
+  debug "${me}: command=${command}"
+  eval ${command} > /dev/null
+  local exit_status=$?
+  debug "${me}: exit_status=${exit_status}"
+  if [ "${exit_status}" = 0 ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+clean_up_and_exit_fail() {
+  echo $1
+  clean_up
+  exit_fail
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+clean_up() {
+  local me='clean_up'
+  # remove tmp_dir?
+  if [ "${g_tmp_dir}" != '' ]; then
+    debug "${me}: doing [rm -rf ${g_tmp_dir}]"
+    rm -rf ${g_tmp_dir} > /dev/null 2>&1
+  else
+    debug "{me}: g_tmp_dir='' -> NOT doing [rm]"
+  fi
+  # remove cidfile?
+  if [ "${g_cidfile}" != '' ]; then
+    debug "${me}: doing [rm ${g_cidfile}]"
+    rm -f ${g_cidfile} > /dev/null 2>&1
+  else
+    debug "${me}: g_cidfile='' -> NOT doing [rm]"
+  fi
+  # remove docker container?
+  if [ "${g_cid}" != '' ]; then
+    debug "${me}: doing [docker rm -f ${g_cid}]"
+    docker rm -f ${g_cid} > /dev/null 2>&1
+  else
+    debug "${me}: g_cid='' -> NOT doing [docker rm]"
+  fi
+  # remove docker volume?
+  if [ "${g_vol}" != '' ]; then
+    debug "${me}: doing [docker volume rm ${g_vol}]"
+    # previous [docker rm] command seems to sometimes complete
+    # before it is safe to remove its volume?!
+    sleep 1
+    docker volume rm ${g_vol} > /dev/null 2>&1
+  else
+    debug "${me}: g_vol='' -> NOT doing [docker volume rm]"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+exit_success() {
+  exit 0
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+exit_fail() {
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+debug() {
+  # Use 'echo $1' to debug. Use ':' to not debug
+  #echo $1
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+exit_if_docker_not_installed
 if_sh_handle_locally_and_exit $*
 if_update_handle_locally_and_exit $*
+if_start_point_create_dir_handle_locally_and_exit $*
 delegate_to_commander $*
