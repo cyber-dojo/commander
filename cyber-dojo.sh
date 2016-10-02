@@ -1,19 +1,5 @@
 #!/bin/sh
 
-# This script delegate as much as possible to cyber-dojo.rb
-# inside a web container. However, there are some commands it
-# has to handle itself...
-#
-# 1. cyber-dojo start-point create
-#       as the --git/--dir options can specify *local* paths
-#
-# 2. cyber-dojo up
-#      relies on a *local* docker-compose.yml file
-#
-# 3. cyber-down down
-#      relies on a *local* docker-compose.yml file
-#
-
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
@@ -54,17 +40,6 @@ one_time_creation_of_katas_data_volume() {
       cyberdojo/user-base \
       /bin/true
   fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-cyber_dojo_rb() {
-  docker run \
-    --rm \
-    --user=root \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    ${CYBER_DOJO_WEB_SERVER} \
-    ${cyber_dojo_root}/cli/cyber-dojo.rb $1
 }
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -353,7 +328,7 @@ cyber_dojo_down() {
 
 one_time_creation_of_katas_data_volume
 
-cyber_dojo_rb "$*"
+./cyber-dojo.rb "$@"
 
 if [ $? != 0  ]; then
   exit_fail
