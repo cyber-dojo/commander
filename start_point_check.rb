@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require_relative './../app/lib/start_point_checker'
+require_relative './start_point_checker'
 
 def failed; 1; end
 

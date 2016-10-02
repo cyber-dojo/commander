@@ -61,7 +61,7 @@ def update
     '',
     "Use: #{me} update",
     '',
-    'Installs latest web server docker images and associated script files'
+    'Updates all cyber-dojo docker images and the cyber-dojo script file'
   ]
 
   if ['help','--help'].include? ARGV[1]

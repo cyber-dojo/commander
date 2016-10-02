@@ -345,14 +345,6 @@ cyber_dojo_down() {
   ${docker_compose_cmd} down
 }
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-# $ ./cyber-dojo sh
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-cyber_dojo_sh() {
-  docker exec --interactive --tty ${CYBER_DOJO_WEB_CONTAINER} sh
-}
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -376,10 +368,6 @@ fi
 if [ "$1" = 'up' ]; then
   shift # up
   cyber_dojo_up "$@"
-fi
-
-if [ "$1" = 'sh' ]; then
-  cyber_dojo_sh
 fi
 
 if [ "$1" = 'down' ]; then
