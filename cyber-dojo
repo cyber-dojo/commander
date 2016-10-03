@@ -70,7 +70,7 @@ if_update_handle_locally_and_exit() {
 
 if_start_point_create_dir_handle_locally_and_exit() {
 
-  # TODO: if $5 != '' need to show start-point create HELP
+  # TODO: if $5 != '' OR other-error ... need to show start-point create HELP
 
   # This has to happen locally. Doing this inside cyber-dojo.sh
   # from the delegation method won't work because you'll already
@@ -80,8 +80,8 @@ if_start_point_create_dir_handle_locally_and_exit() {
   local dir=$(echo $4 | cut -f2 -s -d=)
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ] && [ "${lhs}" = '--dir' ]; then
 
-    # TODO: check if volume called ${name} already exists
-    # TODO: check if dir ${dir} exists
+    # TODO: fail if volume called ${name} already exists
+    # TODO: fail unless dir ${dir} exists
 
     g_cidfile=`mktemp -t cyber-dojo.cid.XXXXXX`
     if [ $? != 0 ]; then
@@ -93,7 +93,7 @@ if_start_point_create_dir_handle_locally_and_exit() {
     run "${command}" || clean_up_and_exit_fail
     # 1. make an empty docker volume
     command="docker volume create --name=${name} --label=cyber-dojo-start-point=${src}"
-    run "${command}" || clean_up_and_exit_fail 'docker volume create failed!?'
+    run "${command}" || clean_up_and_exit_fail '[docker volume create] failed!?'
     g_vol=${start_point}
     # 2. mount empty volume inside docker container
     command="docker run
@@ -104,7 +104,7 @@ if_start_point_create_dir_handle_locally_and_exit() {
                  --user=root
                  --volume=${name}:/data
                  ${cyber_dojo_commander} sh"
-    run "${command}" || clean_up_and_exit_fail 'docker run failed!?'
+    run "${command}" || clean_up_and_exit_fail '[docker run] failed!?'
 
     # XXXX
     # TODO: has to be better way to get the cid. ?latest? option
@@ -115,14 +115,14 @@ if_start_point_create_dir_handle_locally_and_exit() {
     # 3. fill empty volume from local dir
     # NB: [cp DIR/.] != [cp DIR];  DIR/. means copy the contents
     command="docker cp ${dir}/. ${g_cid}:/data"
-    run "${command}" || clean_up_and_exit_fail 'docker cp failed!?'
+    run "${command}" || clean_up_and_exit_fail '[docker cp] failed!?'
     # 4. ensure cyber-dojo user owns everything in the volume
 
     # XXXX
     # TODO: cyber-dojo user has to be known inside commander image
     # XXXX
     command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
-    run "${command}" || clean_up_and_exit_fail 'docker exec chown failed!?'
+    run "${command}" || clean_up_and_exit_fail '[docker exec chown] failed!?'
 
     # 5. check the volume is a good start-point
     command="docker exec ${g_cid} sh -c './start_point_check.rb /data'"
@@ -227,8 +227,9 @@ exit_fail() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 debug() {
-  # Use 'echo $1' to debug. Use ':' to not debug
+  # Use 'echo $1' to debug.
   #echo $1
+  # Use ':' to not debug
   :
 }
 

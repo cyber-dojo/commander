@@ -14,3 +14,7 @@ On Linux/Mac that is locally.
 On Windows you'll do...
 docker-machine ssh default -- ./cyber-dojo ...
 And DIR has to exist on default.
+
+
+Alternative is that known folder is always mounted
+and DIR has to be relative to that...?
