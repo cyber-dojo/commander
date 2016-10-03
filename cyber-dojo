@@ -105,13 +105,7 @@ if_start_point_create_dir_handle_locally_and_exit() {
                  --volume=${name}:/data
                  ${cyber_dojo_commander} sh"
     run "${command}" || clean_up_and_exit_fail '[docker run] failed!?'
-
-    # XXXX
-    # TODO: has to be better way to get the cid. ?latest? option
-    # XXXX
     g_cid=`cat ${g_cidfile}`
-
-
     # 3. fill empty volume from local dir
     # NB: [cp DIR/.] != [cp DIR];  DIR/. means copy the contents
     command="docker cp ${dir}/. ${g_cid}:/data"
