@@ -236,10 +236,7 @@ def up
     minitab + '                         https://github.com/cyber-dojo/start-points-exercises.git',
     minitab + '--custom=START-POINT     Specify the custom start-point.',
     minitab + "                         Defaults to a start-point named 'custom' created from",
-    minitab + '                         https://github.com/cyber-dojo/start-points-custom.git',
-    minitab + '--env=development        Brings up the web server in development environment',
-    minitab + '--env=test               Brings up the web server in test environment',
-    minitab + '--env=production         Brings up the web server in production environment (default)',
+    minitab + '                         https://github.com/cyber-dojo/start-points-custom.git'
   ]
 
   if ['help','--help'].include? ARGV[1]

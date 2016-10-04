@@ -1,7 +1,7 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # I'd like to set cpu/memory/swap limits on the test-run containers
-# and the web server container independently.
+# and the web server containers independently.
 # This appears to be impossible so I have to try to get some kind
 # of compromise; I don't want to limit the web-server but I do want
 # to limit the test-containers. However if the limits are too low
@@ -30,7 +30,7 @@ web:
   mem_limit: 2G
   memswap_limit: 2G
   restart: on-failure
-  command: rails server --environment=${CYBER_DOJO_RAILS_ENVIRONMENT}
+  command: rails server --environment=production
   links: [ differ ]
   ports: [ "3000:3000" ]
   volumes:
