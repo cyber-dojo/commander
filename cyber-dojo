@@ -8,8 +8,6 @@ set -e
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 cyber_dojo_commander=cyberdojo/commander:${docker_version}
 
-g_tmp_dir=''  # if this is not '' then clean_up [rm -rf]'s it
-g_cidfile=''  # if this is not '' then clean_up [rm]'s it
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
@@ -72,46 +70,40 @@ if_start_point_create_dir_handle_locally_and_exit() {
 
   # TODO: if $5 != '' OR other-error ... need to show start-point create HELP
 
-  # This has to happen locally. Doing this inside cyber-dojo.sh
-  # from the delegation method won't work because you'll already
-  # be inside the commander container.
   local name=$3
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local dir=$(echo $4 | cut -f2 -s -d=)
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ] && [ "${lhs}" = '--dir' ]; then
 
-    # TODO: fail if volume called ${name} already exists
-    # TODO: fail unless dir ${dir} exists
-
-    g_cidfile=`mktemp -t cyber-dojo.cid.XXXXXX`
-    if [ $? != 0 ]; then
-      echo "FAILED: Could not create temporary file!"
-      exit_fail
+    if start_point_exists ${name}; then
+      exit_fail "A start-point called ${name} already exists"
     fi
-    # docker run --cid=cidfile requires that the cidfile does not already exist
-    command="rm ${g_cidfile}"
-    run "${command}" || clean_up_and_exit_fail
-    # 1. make an empty docker volume
+    if [ ! -d ${dir} ]; then
+      exit_fail "Dir ${dir} does not exist"
+    fi
+
+    # 1. make an empty docker volume with the given name
     command="docker volume create --name=${name} --label=cyber-dojo-start-point=${src}"
     run "${command}" || clean_up_and_exit_fail '[docker volume create] failed!?'
-    g_vol=${start_point}
+    g_vol=${name}
+
     # 2. mount empty volume inside docker container
     command="docker run
                  --detach
-                 --cidfile=${g_cidfile}
                  --interactive
                  --net=none
                  --user=root
                  --volume=${name}:/data
                  ${cyber_dojo_commander} sh"
     run "${command}" || clean_up_and_exit_fail '[docker run] failed!?'
-    g_cid=`cat ${g_cidfile}`
+    g_cid=`docker ps --quiet --latest`
+
     # 3. fill empty volume from local dir
     # NB: [cp DIR/.] != [cp DIR];  DIR/. means copy the contents
     command="docker cp ${dir}/. ${g_cid}:/data"
     run "${command}" || clean_up_and_exit_fail '[docker cp] failed!?'
-    # 4. ensure cyber-dojo user owns everything in the volume
 
+    # 4. ensure cyber-dojo user owns everything in the volume
     # XXXX
     # TODO: cyber-dojo user has to be known inside commander image
     # XXXX
@@ -126,7 +118,16 @@ if_start_point_create_dir_handle_locally_and_exit() {
     clean_up
     exit_success
   fi
+}
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+start_point_exists() {
+  # don't match a substring
+  local start_of_line='^'
+  local start_point=$1
+  local end_of_line='$'
+  docker volume ls --quiet | grep -s "${start_of_line}${start_point}${end_of_line}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -173,20 +174,6 @@ clean_up_and_exit_fail() {
 
 clean_up() {
   local me='clean_up'
-  # remove tmp_dir?
-  if [ "${g_tmp_dir}" != '' ]; then
-    debug "${me}: doing [rm -rf ${g_tmp_dir}]"
-    rm -rf ${g_tmp_dir} > /dev/null 2>&1
-  else
-    debug "{me}: g_tmp_dir='' -> NOT doing [rm]"
-  fi
-  # remove cidfile?
-  if [ "${g_cidfile}" != '' ]; then
-    debug "${me}: doing [rm ${g_cidfile}]"
-    rm -f ${g_cidfile} > /dev/null 2>&1
-  else
-    debug "${me}: g_cidfile='' -> NOT doing [rm]"
-  fi
   # remove docker container?
   if [ "${g_cid}" != '' ]; then
     debug "${me}: doing [docker rm -f ${g_cid}]"

@@ -2,7 +2,7 @@
 ...start-point create --dir=DIR...
 
 suppose cyber-dojo script runs locally and delegates to cyber-dojo.sh
-inside a commaner container. The commander contains will NOT be
+inside a commaner container. The commander container will NOT be
 able to see the default's file-system. You will be inside a container
 running on default.
 So I *still* have to handle start-point-create locally!
@@ -14,7 +14,6 @@ On Linux/Mac that is locally.
 On Windows you'll do...
 docker-machine ssh default -- ./cyber-dojo ...
 And DIR has to exist on default.
-
 
 Alternative is that known folder is always mounted
 and DIR has to be relative to that...?
