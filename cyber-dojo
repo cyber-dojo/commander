@@ -98,7 +98,6 @@ if_start_point_create_dir_handle_locally_and_exit() {
     run_quiet "${command}" || clean_up_and_exit_fail '[docker start CID] failed!?'
 
     # 3. fill empty volume from local dir
-    # NB: [cp DIR/.] != [cp DIR];  DIR/. means copy the contents
     command="docker cp ${dir}/. ${g_cid}:/data"
     run_quiet "${command}" || clean_up_and_exit_fail '[docker cp] failed!?'
 
