@@ -95,7 +95,7 @@ if_start_point_create_dir_handle_locally_and_exit() {
                  ${cyber_dojo_commander} sh"
     g_cid=`${command}`
     command="docker start ${g_cid}"
-    run_quiet "${command}" || clean_up_and_exit_fail '[docker start CID] failed!?'
+    run_quiet "${command}" || clean_up_and_exit_fail '[docker start] failed!?'
 
     # 3. fill empty volume from local dir
     command="docker cp ${dir}/. ${g_cid}:/data"

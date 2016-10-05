@@ -15,5 +15,15 @@ On Windows you'll do...
 docker-machine ssh default -- ./cyber-dojo ...
 And DIR has to exist on default.
 
-Alternative is that known folder is always mounted
-and DIR has to be relative to that...?
+-------------------------------------------
+
+Get commander up and working without further internal refactoring.
+  - Recreate image from Dockerfile.
+  - Use shunit2 for tests? Or do inside a container and use Ruby?
+    - sh
+    - update
+    - start-point create NAME ---dir=DIR
+Make separate setup pages for
+  Linux - install docker, install cyber-dojo script
+  Mac- install Docker-Toolbox. Install and run cyber-dojo script locally
+  Windows - install Docker-Toolbox. Install and run cyber-dojo script inside default.
