@@ -62,6 +62,11 @@ cyber_dojo_start_point_create_git() {
   command="docker volume create --name=${name} --label=cyber-dojo-start-point=${url}"
   run "${command}" || clean_up_and_exit_fail "FAILED: check command carefully"
   g_vol=${name}
+
+
+  # TODO: can I simplify 2. with
+  #       g_cid=`docker create ...`
+
   # 2. mount empty volume inside docker container
   command="docker run
                --detach
@@ -72,6 +77,8 @@ cyber_dojo_start_point_create_git() {
                ${cyber_dojo_commander} sh"
   run "${command}" || clean_up_and_exit_fail "${command} failed!?"
   g_cid=`docker ps --quiet --latest`
+
+
   # 3. clone git repo to local folder
   command="docker exec ${g_cid} sh -c 'git clone --depth=1 --branch=master ${url} /data'"
   run "${command}" || clean_up_and_exit_fail "${command} failed!?"
