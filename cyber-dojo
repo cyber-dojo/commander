@@ -36,7 +36,7 @@ delegate_to_commander() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_sh_handle_locally_and_exit() {
+if_sh_then_handle_locally_and_exit() {
   # TODO: if cyber-dojo-web is not running echo diagnostic
   if [ "$*" = "sh" ]; then
     # TODO: allow shelling into any container web/commander/differ/storer/runner?
@@ -47,7 +47,7 @@ if_sh_handle_locally_and_exit() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_update_handle_locally_and_exit() {
+if_update_then_handle_locally_and_exit() {
   if [ "$*" = "update" ]; then
     docker pull ${cyber_dojo_commander} # update commander image
     delegate_to_commander $*            # update other images
@@ -66,7 +66,7 @@ if_update_handle_locally_and_exit() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_start_point_create_dir_handle_locally_and_exit() {
+if_start_point_create_dir_then_handle_locally_and_exit() {
 
   # TODO: if $5 != '' OR other-error ... need to show start-point create HELP
 
@@ -128,7 +128,7 @@ start_point_exists() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_quiet() {
-  local me='run'
+  local me='run_quiet'
   local command="$1"
   debug "${me}: command=${command}"
   eval ${command} > /dev/null 2>&1
@@ -213,7 +213,7 @@ debug() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_if_docker_not_installed
-if_sh_handle_locally_and_exit $*
-if_update_handle_locally_and_exit $*
-if_start_point_create_dir_handle_locally_and_exit $*
+if_sh_then_handle_locally_and_exit $*
+if_update_then_handle_locally_and_exit $*
+if_start_point_create_dir_then_handle_locally_and_exit $*
 delegate_to_commander $*
