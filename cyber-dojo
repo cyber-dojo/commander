@@ -1,5 +1,6 @@
 #!/bin/sh
 set -e
+set -x
 
 # Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
