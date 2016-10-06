@@ -52,7 +52,7 @@ one_time_creation_of_katas_data_volume() {
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
-cyber_dojo_start_point_create_git() {
+start_point_create_git() {
   # TODO: cyber-dojo.rb has already been called to check arguments and handle --help
   local name=$1
   local url=$2
@@ -254,7 +254,7 @@ if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local url=$(echo $4 | cut -f2 -s -d=)
   if [ "${lhs}" = '--git' ]; then
-    cyber_dojo_start_point_create_git "${name}" "${url}"
+    start_point_create_git "${name}" "${url}"
   fi
 fi
 

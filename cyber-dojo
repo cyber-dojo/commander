@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 # Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
@@ -7,9 +6,18 @@ set -e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+exit_success() {
+  exit 0
+}
+
+exit_fail() {
+  exit 1
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 hash docker 2> /dev/null
 if [ $? != 0 ]; then
-  echo
   echo 'docker is not installed'
   echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
   exit_fail
@@ -191,18 +199,6 @@ clean_up() {
   else
     debug "${me}: g_vol='' -> NOT doing [docker volume rm]"
   fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_success() {
-  exit 0
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_fail() {
-  exit 1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
