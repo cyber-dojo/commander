@@ -61,7 +61,7 @@ start_point_create_git() {
   fi
   # 1. make an empty docker volume
   command="docker volume create --name=${name} --label=cyber-dojo-start-point=${url}"
-  run "${command}" || clean_up_and_exit_fail "FAILED: check command carefully"
+  run_quiet "${command}" || clean_up_and_exit_fail "FAILED: check command carefully"
   g_vol=${name}
 
   # 2. mount empty volume inside docker container
@@ -94,7 +94,7 @@ start_point_create_git() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_quiet() {
-  local me='run'
+  local me='run_quiet'
   local command="$1"
   debug "${me}: command=${command}"
   eval ${command} > /dev/null 2>&1
