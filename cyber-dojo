@@ -32,21 +32,21 @@ delegate_to_commander() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if_sh_then_handle_locally_and_exit() {
-  if ! web_server_running; then
+  local name='cyber-dojo-web'
+  if ! running_container ${name}; then
     exit_fail 'cyber-dojo web server is not running'
   fi
   if [ "$*" = "sh" ]; then
-    # TODO: allow shelling into any container web/commander/differ/storer/runner?
-    docker exec --interactive --tty cyber-dojo-web sh
+    docker exec --interactive --tty ${name} sh
     exit_success
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-web_server_running() {
+running_container() {
   local space='\s'
-  local name='cyber-dojo-web'
+  local name=$1
   local end_of_line='$'
   docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
   return $?
@@ -58,8 +58,7 @@ if_update_then_handle_locally_and_exit() {
   if [ "$*" = "update" ]; then
     docker pull ${cyber_dojo_commander} # update commander image
     delegate_to_commander $*            # update other images
-    # replace myself
-    # https://bani.com.br/2013/04/shell-script-that-updates-itself/
+    # replace myself. See https://bani.com.br/2013/04/shell-script-that-updates-itself/
     local cid=$(docker create ${cyber_dojo_commander})
     local new_me=/tmp/cyber-dojo.new
     docker cp ${cid}:/cyber-dojo ${new_me}
