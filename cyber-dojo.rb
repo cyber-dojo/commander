@@ -27,6 +27,8 @@ def quoted(s); '"' + s + '"'; end
 
 def docker_version; `docker --version`.split()[2].chomp(','); end
 
+def cyber_dojo_commander; "cyberdojo/commander:#{docker_version}"; end
+
 def web_container_name; 'cyber-dojo-web'; end
 
 def web_server_running; `docker ps --quiet --filter "name=#{web_container_name}"` != ''; end
@@ -328,7 +330,7 @@ end
 
 def cyber_dojo_data_manifest(vol)
   command = quoted "cat /data/setup.json"
-  JSON.parse(run "docker run --rm -v #{vol}:/data #{cyber_dojo_hub}/user-base sh -c #{command}")
+  JSON.parse(run "docker run --rm -v #{vol}:/data #{cyber_dojo_commander} sh -c #{command}")
 end
 
 def cyber_dojo_type(vol)
@@ -518,10 +520,9 @@ def start_point_inspect
     "--user=root",
     "--volume=#{vol}:/data:#{read_only}",
     '--volume=/var/run/docker.sock:/var/run/docker.sock',
-    "#{cyber_dojo_hub}/web:#{docker_version}",
-    "sh -c 'cd /usr/src/cyber-dojo/cli && ./start_point_inspect.rb /data'"
+    "#{cyber_dojo_commander}",
+    "sh -c './start_point_inspect.rb /data'"
   ].join(space=' ')
-
   print run(command)
 end
 
@@ -593,8 +594,8 @@ def start_point_pull
     "--user=root",
     "--volume=#{vol}:/data:#{read_only}",
     '--volume=/var/run/docker.sock:/var/run/docker.sock',
-    "#{cyber_dojo_hub}/web:#{docker_version}",
-    "sh -c 'cd /usr/src/cyber-dojo/cli && ./start_point_pull.rb /data'"
+    "#{cyber_dojo_commander}",
+    "sh -c './start_point_pull.rb /data'"
   ].join(space=' ')
 
   system(command)
