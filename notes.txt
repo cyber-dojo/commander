@@ -14,6 +14,9 @@ On Linux/Mac that is locally.
 On Windows you'll do...
 docker-machine ssh default -- ./cyber-dojo ...
 And DIR has to exist on default.
+Or will it?
+Docker-Toolbox installs bash in the quickstart-terminal.
+Does it also install the other utils I use, eg grep?
 
 -------------------------------------------
 
