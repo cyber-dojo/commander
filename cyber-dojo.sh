@@ -41,7 +41,7 @@ one_time_creation_of_katas_data_volume() {
     docker create --volume ${CYBER_DOJO_ROOT}/katas \
       --name ${CYBER_DOJO_KATAS_DATA_CONTAINER} \
       ${cyber_dojo_commander} \
-      /bin/true
+      /bin/true > /dev/null
   fi
 }
 

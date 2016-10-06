@@ -24,3 +24,4 @@ before_install:
 script:
     - ./build-image.sh ${DOCKER_ENGINE_VERSION}
     - sudo ./cyber-dojo
+    - sudo ./cyber-dojo
