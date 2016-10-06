@@ -1,6 +1,5 @@
 #!/bin/sh
 set -e
-set -x
 
 # Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
@@ -33,13 +32,14 @@ delegate_to_commander() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if_sh_then_handle_locally_and_exit() {
-  local name='cyber-dojo-web'
-  if ! running_container ${name}; then
-    exit_fail 'cyber-dojo web server is not running'
-  fi
   if [ "$*" = "sh" ]; then
-    docker exec --interactive --tty ${name} sh
-    exit_success
+    local name='cyber-dojo-web'
+    if running_container ${name}; then
+      docker exec --interactive --tty ${name} sh
+      exit_success
+    else
+      exit_fail "${name} is not running"
+    fi
   fi
 }
 
