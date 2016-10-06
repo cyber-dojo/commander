@@ -37,9 +37,10 @@ one_time_creation_of_katas_data_volume() {
   # have a look at test/notes/copy_katas_into_data_container.sh
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
-    docker create -v ${CYBER_DOJO_ROOT}/katas \
+    echo "Creating katas data-volume"
+    docker create --volume ${CYBER_DOJO_ROOT}/katas \
       --name ${CYBER_DOJO_KATAS_DATA_CONTAINER} \
-      cyberdojo/user-base \
+      ${cyber_dojo_commander} \
       /bin/true
   fi
 }
@@ -71,17 +72,17 @@ cyber_dojo_start_point_create_git() {
                ${cyber_dojo_commander} sh"
   g_cid=`${command}`
   command="docker start ${g_cid}"
-  run "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
   # 3. clone git repo to local folder
   command="docker exec ${g_cid} sh -c 'git clone --depth=1 --branch=master ${url} /data'"
-  run "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
   # 4. remove .git repo
   command="docker exec ${g_cid} sh -c 'rm -rf /data/.git"
-  run "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
   # 5. ensure cyber-dojo user owns everything in the volume
   command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
-  run "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
   # 6. check the volume is a good start-point
   command="docker exec ${g_cid} sh -c './start_point_check.rb /data'"
   run_loud "${command}" || clean_up_and_exit_fail
@@ -92,18 +93,14 @@ cyber_dojo_start_point_create_git() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-run() {
+run_quiet() {
   local me='run'
   local command="$1"
   debug "${me}: command=${command}"
   eval ${command} > /dev/null 2>&1
   local exit_status=$?
   debug "${me}: exit_status=${exit_status}"
-  if [ "${exit_status}" = 0 ]; then
-    return 0
-  else
-    return 1
-  fi
+  return ${exit_status}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -115,11 +112,7 @@ run_loud() {
   eval ${command} > /dev/null
   local exit_status=$?
   debug "${me}: exit_status=${exit_status}"
-  if [ "${exit_status}" = 0 ]; then
-    return 0
-  else
-    return 1
-  fi
+  return ${exit_status}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
