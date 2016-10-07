@@ -1,5 +1,11 @@
 #!/bin/sh
 
+# This file and cyber-dojo.rb combine to run all the cyber-dojo
+# commands except [sh], [update], [start-point create NAME --dir=DIR]
+# The reason it is split across two files is historical, from when
+# there was no commander image and you had to install docker-compose.
+# Should be merged into cyber-dojo.rb
+
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
@@ -253,8 +259,7 @@ cyber_dojo_up() {
 one_time_creation_of_katas_data_volume
 
 ./cyber-dojo.rb "$@"
-
-if [ $? != 0  ]; then
+if [ $? != 0 ]; then
   exit_fail
 fi
 

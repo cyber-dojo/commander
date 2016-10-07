@@ -11,7 +11,9 @@ exit_success() {
 }
 
 exit_fail() {
-  echo $1
+  if [ "$*" != '' ]; then
+    echo "FAILED: $*"
+  fi
   exit 1
 }
 
@@ -40,7 +42,7 @@ delegate_to_commander() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_sh_then_handle_locally_and_exit() {
+if_sh_then_handle_locally() {
   if [ "$*" = "sh" ]; then
     local name='cyber-dojo-web'
     if running_container ${name}; then
@@ -64,7 +66,7 @@ running_container() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_update_then_handle_locally_and_exit() {
+if_update_then_handle_locally() {
   if [ "$*" = "update" ]; then
     docker pull ${cyber_dojo_commander} # update commander image
     delegate_to_commander $*            # update other images
@@ -85,16 +87,15 @@ if_update_then_handle_locally_and_exit() {
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
-if_start_point_create_dir_then_handle_locally_and_exit() {
-
-
-  # TODO: if $5 != '' OR other-error ... need to show start-point create HELP
-
+if_start_point_create_dir_then_handle_locally() {
   local name=$3
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local dir=$(echo $4 | cut -f2 -s -d=)
-  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ] &&
-     [ "${lhs}" = '--dir' ] && [ "${dir}" != '' ]; then
+  if [ "$1" = 'start-point' ] &&
+     [ "$2" = 'create' ] &&
+     [ "${lhs}" = '--dir' ] &&
+     [ "${dir}" != '' ] &&
+     [ "$5" == '' ]; then
 
     if start_point_exists ${name}; then
       exit_fail "A start-point called ${name} already exists"
@@ -175,8 +176,11 @@ run_loud() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up_and_exit_fail() {
+  if [ "$*" != '' ]; then
+    echo "FAILED: $*"
+  fi
   clean_up
-  exit_fail $1
+  exit 1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -214,7 +218,11 @@ debug() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_sh_then_handle_locally_and_exit $*
-if_update_then_handle_locally_and_exit $*
-if_start_point_create_dir_then_handle_locally_and_exit $*
 delegate_to_commander $*
+if [ $? != 0 ]; then
+  exit_fail
+fi
+
+if_sh_then_handle_locally $*
+if_update_then_handle_locally $*
+if_start_point_create_dir_then_handle_locally $*
