@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# requires
+#   awk  (line 34)
+#   sed  (line 34)
+#   grep (lines 68,153)
+
 # Control a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
 # A few commands have to be handled locally.
@@ -94,8 +99,7 @@ if_start_point_create_dir_then_handle_locally() {
   if [ "$1" = 'start-point' ] &&
      [ "$2" = 'create' ] &&
      [ "${lhs}" = '--dir' ] &&
-     [ "${dir}" != '' ] &&
-     [ "$5" == '' ]; then
+     [ "${dir}" != '' ]; then
 
     if start_point_exists ${name}; then
       exit_fail "A start-point called ${name} already exists"
