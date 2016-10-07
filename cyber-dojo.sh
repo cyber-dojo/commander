@@ -37,17 +37,15 @@ one_time_creation_of_katas_data_volume() {
   # have a look at test/notes/copy_katas_into_data_container.sh
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
-    echo "creating new empty ${CYBER_DOJO_KATAS_DATA_CONTAINER}"
     CONTEXT_DIR=.
-    local tag=${cyber_dojo_hub}/katas
     cp Dockerignore.katas .dockerignore
+    local tag=${cyber_dojo_hub}/katas
     docker build \
               --build-arg=CYBER_DOJO_KATAS_ROOT=${CYBER_DOJO_ROOT}/katas \
               --tag=${tag} \
               --file=Dockerfile.katas \
               ${CONTEXT_DIR}
     rm .dockerignore
-    # use image to create data-container
     docker create \
               --name ${CYBER_DOJO_KATAS_DATA_CONTAINER} \
               ${tag} \
