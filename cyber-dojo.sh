@@ -34,12 +34,14 @@ one_time_creation_of_katas_data_volume() {
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
   # It doesn't do that any more. If you want to upgrade an older server
-  # have a look at test/notes/copy_katas_into_data_container.sh
+  # have a look at test/notes/copy_katas_into_data_container.sh in the web repo
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
     CONTEXT_DIR=.
     cp Dockerignore.katas .dockerignore
     local tag=${cyber_dojo_hub}/katas
+    # create a katas volume - it is mounted into the web container
+    # using a volumes_from in docker-compose.yml
     docker build \
               --build-arg=CYBER_DOJO_KATAS_ROOT=${CYBER_DOJO_ROOT}/katas \
               --tag=${tag} \
