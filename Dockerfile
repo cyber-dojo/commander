@@ -67,13 +67,14 @@ RUN apk add --no-cache curl openssl ca-certificates \
  && apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 3. install ruby, git (for git clone) and json gem
+# 3. install ruby and json gem
 
 RUN apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata \
  && gem install json_pure --no-ri --no-rdoc
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 4. [start-point create] requirements
+# 4. [start-point create NAME --git=URL] requires git clone
+# [start-point create ...] requires cyber-dojo user to own created volume
 # -D=no password, -H=no home directory
 RUN apk add git \
  && adduser -D -H -u 19661 cyber-dojo
