@@ -44,12 +44,12 @@ one_time_creation_of_katas_data_volume() {
               --build-arg=CYBER_DOJO_KATAS_ROOT=${CYBER_DOJO_ROOT}/katas \
               --tag=${tag} \
               --file=Dockerfile.katas \
-              ${CONTEXT_DIR}
+              ${CONTEXT_DIR} > /dev/null
     rm .dockerignore
     docker create \
               --name ${CYBER_DOJO_KATAS_DATA_CONTAINER} \
               ${tag} \
-              echo 'cdfKatasDC'
+              echo 'cdfKatasDC' > /dev/null
   fi
 }
 
