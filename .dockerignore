@@ -4,11 +4,15 @@
 
 #-----!Except these
 
-!install.sh
 !cyber-dojo
 !cyber-dojo.sh
 !cyber-dojo.rb
+
+!Dockerfile.katas
+!Dockerignore.katas
+
 !docker-compose.yml
+
 !start_point_check.rb
 !start_point_inspect.rb
 !start_point_pull.rb
