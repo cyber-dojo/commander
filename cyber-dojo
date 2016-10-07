@@ -11,6 +11,7 @@ exit_success() {
 }
 
 exit_fail() {
+  echo $1
   exit 1
 }
 
@@ -85,6 +86,7 @@ g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
 if_start_point_create_dir_then_handle_locally_and_exit() {
+
 
   # TODO: if $5 != '' OR other-error ... need to show start-point create HELP
 
@@ -173,9 +175,8 @@ run_loud() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up_and_exit_fail() {
-  echo $1
   clean_up
-  exit_fail
+  exit_fail $1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
