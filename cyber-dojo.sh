@@ -71,7 +71,6 @@ start_point_create_git() {
   command="docker volume create --name=${name} --label=cyber-dojo-start-point=${url}"
   run_quiet "${command}" || clean_up_and_exit_fail "FAILED: check command carefully"
   g_vol=${name}
-
   # 2. mount empty volume inside docker container
   command="docker create
                --interactive
@@ -81,7 +80,6 @@ start_point_create_git() {
   g_cid=`${command}`
   command="docker start ${g_cid}"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
-
   # 3. clone git repo to local folder
   command="docker exec ${g_cid} sh -c 'git clone --depth=1 --branch=master ${url} /data'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
@@ -175,7 +173,7 @@ start_point_exists() {
   local start_of_line='^'
   local start_point=$1
   local end_of_line='$'
-  docker volume ls --quiet | grep -s "${start_of_line}${start_point}${end_of_line}"
+  docker volume ls --quiet | grep -s "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -201,6 +199,7 @@ cyber_dojo_up() {
       export CYBER_DOJO_START_POINT_CUSTOM=${value}
     fi
   done
+
   # create default start-points if necessary
   local github_cyber_dojo='https://github.com/cyber-dojo'
   if [ "${CYBER_DOJO_START_POINT_LANGUAGES}" = "${default_start_point_languages}" ]; then
@@ -221,6 +220,7 @@ cyber_dojo_up() {
       start_point_create_git ${default_start_point_custom} "${github_cyber_dojo}/start-points-custom.git"
     fi
   fi
+
   # check volumes exist
   if ! start_point_exists ${CYBER_DOJO_START_POINT_LANGUAGES}; then
     echo "FAILED: start-point ${CYBER_DOJO_START_POINT_LANGUAGES} does not exist"
