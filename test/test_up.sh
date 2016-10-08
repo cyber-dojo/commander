@@ -2,6 +2,37 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_up_creates_and_uses_default_start_points_and_creates_containers()
+{
+  ./../cyber-dojo down >${stdoutF} 2>${stderrF}
+  local currentStartPoints=`./../cyber-dojo start-point ls --quiet`
+  local defaultStartPoints=( "languages" "exercises" "custom" )
+  for defaultStartPoint in "${defaultStartPoints[@]}"
+  do
+    if grep -q ${defaultStartPoint} <<< ${currentStartPoints}; then
+      ./../cyber-dojo start-point rm ${defaultStartPoint} >${stdoutF} 2>${stderrF}
+    fi
+  done
+
+  local expectedStdout="Creating start-point languages from https://github.com/cyber-dojo/start-points-languages.git
+Creating start-point exercises from https://github.com/cyber-dojo/start-points-exercises.git
+Creating start-point custom from https://github.com/cyber-dojo/start-points-custom.git
+Using start-point --languages=languages
+Using start-point --exercises=exercises
+Using start-point --custom=custom
+Creating cyber-dojo-differ
+Creating cyber-dojo-web
+Creating cyber-dojo-nginx"
+
+  ./../cyber-dojo up >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  assertTrue ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_up_help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="

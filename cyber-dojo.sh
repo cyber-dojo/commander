@@ -250,8 +250,10 @@ cyber_dojo_up() {
   echo "Using start-point --exercises=${CYBER_DOJO_START_POINT_EXERCISES}"
   echo "Using start-point --custom=${CYBER_DOJO_START_POINT_CUSTOM}"
 
-  # bring up server with volumes
-  ${docker_compose_cmd} up -d
+  # Bring up server with volumes
+  # It seems a successful [docker-compose up] writes to stderr !?
+  # See https://github.com/docker/compose/issues/3267
+  ${docker_compose_cmd} up -d 2>&1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
