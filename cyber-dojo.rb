@@ -103,7 +103,9 @@ def clean
     exit failed
   end
 
-  command = "docker images -q -f='dangling=true' | xargs --no-run-if-empty docker rmi --force"
+  command = "docker images --quiet --filter='dangling=true' | xargs --no-run-if-empty docker rmi --force"
+  run command
+  command = "docker ps --all --quiet --filter='status=exited' | xargs --no-run-if-empty docker rm --force"
   run command
 end
 
@@ -246,9 +248,10 @@ def up
   end
 
   # unknown arguments?
+  args = ARGV[1..-1]
   knowns = ['languages','exercises','custom']
-  unknown = ARGV[1..-1].select do |argv|
-    knowns.none? { |known| argv.start_with?('--' + known + '=') }
+  unknown = args.select do |arg|
+    knowns.none? { |known| arg.start_with?('--' + known + '=') }
   end
   unless unknown == []
     unknown.each { |arg| STDERR.puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
@@ -376,7 +379,7 @@ def start_point_create
   end
 
   if volume_exists? vol
-    puts "FAILED: a start-point called #{vol} already exists"
+    STDERR.puts "FAILED: a start-point called #{vol} already exists"
     exit failed
   end
 

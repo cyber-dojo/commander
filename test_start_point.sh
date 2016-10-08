@@ -69,7 +69,7 @@ NAME must be at least two letters long"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_first_letter_prints_use_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_first_letter_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: +bad is an illegal NAME"
   ./cyber-dojo start-point create +bad >${stdoutF} 2>${stderrF}
@@ -81,7 +81,7 @@ test_start_point_create_IllegalName_first_letter_prints_use_to_stderr_and_exits_
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_second_letter_prints_use_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_second_letter_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: b+ad is an illegal NAME"
   ./cyber-dojo start-point create b+ad >${stdoutF} 2>${stderrF}
@@ -93,7 +93,7 @@ test_start_point_create_IllegalName_second_letter_prints_use_to_stderr_and_exits
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_one_letter_name_prints_use_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_one_letter_name_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: b is an illegal NAME"
   ./cyber-dojo start-point create b >${stdoutF} 2>${stderrF}
@@ -105,7 +105,7 @@ test_start_point_create_IllegalName_one_letter_name_prints_use_to_stderr_and_exi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_Unknown_arg_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_UnknownArg_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [--where]"
   local name=jj
@@ -118,7 +118,7 @@ test_start_point_create_name_Unknown_arg_prints_terse_msg_to_stderr_and_exits_no
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_Unknown_args_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_UnknownArgs_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [--where]
 FAILED: unknown argument [--there]"
@@ -132,7 +132,7 @@ FAILED: unknown argument [--there]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_dir_and_git_args_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_DirAndGit_args_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: specify --git=... OR --dir=... but not both"
   local name=jj
@@ -141,6 +141,30 @@ test_start_point_create_name_dir_and_git_args_prints_terse_msg_to_stderr_and_exi
   assertFalse ${exit_status}
   assertNoStdout
   assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+github_cyber_dojo='https://github.com/cyber-dojo'
+
+test_start_point_create_NameExists_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  local name=jj
+  local url="${github_cyber_dojo}/start-points-exercises.git"
+  ./cyber-dojo start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  assertTrue ${exit_status}
+  assertNoStdout
+  assertNoStderr
+
+  local expectedStderr="FAILED: a start-point called ${name} already exists"
+  ./cyber-dojo start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+
+  ./cyber-dojo start-point rm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

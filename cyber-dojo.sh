@@ -75,9 +75,10 @@ start_point_create_git() {
   if start_point_exists ${name}; then
     echo "FAILED: a start-point called ${name} already exists"
   fi
+
   # 1. make an empty docker volume
   command="docker volume create --name=${name} --label=cyber-dojo-start-point=${url}"
-  run_quiet "${command}" || clean_up_and_exit_fail "FAILED: check command carefully"
+  run_quiet "${command}" || clean_up_and_exit_fail "${command} FAILED"
   g_vol=${name}
   # 2. mount empty volume inside docker container
   command="docker create
@@ -91,9 +92,11 @@ start_point_create_git() {
   # 3. clone git repo to local folder
   command="docker exec ${g_cid} sh -c 'git clone --depth=1 --branch=master ${url} /data'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
+
   # 4. remove .git repo
-  command="docker exec ${g_cid} sh -c 'rm -rf /data/.git"
+  command="docker exec ${g_cid} sh -c 'rm -rf /data/.git'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
+
   # 5. ensure cyber-dojo user owns everything in the volume
   command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
@@ -132,7 +135,7 @@ run_loud() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up_and_exit_fail() {
-  echo $1
+  echo $*
   clean_up
   exit_fail
 }
@@ -170,7 +173,7 @@ exit_fail() {
 
 debug() {
   # Use 'echo $1' to debug. Use ':' to not debug
-  #echo $1
+  #echo $*
   :
 }
 
@@ -271,8 +274,6 @@ if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
   local name=$3
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local url=$(echo $4 | cut -f2 -s -d=)
-
-
   if [ "${lhs}" = '--git' ]; then
     start_point_create_git "${name}" "${url}"
   fi
