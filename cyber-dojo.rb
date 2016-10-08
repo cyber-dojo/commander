@@ -9,6 +9,8 @@ require 'tempfile'
 $debug_mode = false
 $exit_status = 0
 
+def succeeded; 0; end
+
 def failed; 1; end
 
 def me; 'cyber-dojo'; end
@@ -93,7 +95,7 @@ def clean
 
   if ['help','--help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   unless ARGV[1].nil?
@@ -119,7 +121,7 @@ def down
 
   if ['help','--help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   unless ARGV[1].nil?
@@ -618,8 +620,6 @@ def help
     '',
     "Run '#{me} COMMAND --help' for more information on a command."
   ].join("\n") + "\n"
-
-  # TODO: add [help,--help] processing for ALL commands, eg clean,down,up
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
