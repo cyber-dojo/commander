@@ -126,15 +126,18 @@ test_up_namedExercisesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero(
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-# off because it relies on custom start-point existing
-x_test_up_namedExercisesNotExerciseType_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_namedExercisesIsNotExerciseType_prints_terse_msg_to_sterr_and_exits_non_zero()
 {
-  local expectedStderr="FAILED: custom is not a exercises start-point (it's type from setup.json is custom)"
-  ./../cyber-dojo up --exercises=custom >${stdoutF} 2>${stderrF}
+  local url=https://github.com/cyber-dojo/start-points-custom.git
+  ./../cyber-dojo start-point create jj --git=${url} >${stdoutF} 2>${stderrF}
+
+  local expectedStderr="FAILED: jj is not a exercises start-point (it's type from setup.json is custom)"
+  ./../cyber-dojo up --exercises=jj >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
   assertEqualsStderr "${expectedStderr}"
+  ./../cyber-dojo start-point rm jj
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

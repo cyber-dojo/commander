@@ -228,7 +228,7 @@ cyber_dojo_up() {
   fi
   if [ "${CYBER_DOJO_START_POINT_CUSTOM}" = "${default_start_point_custom}" ]; then
     if ! start_point_exists ${default_start_point_custom}; then
-      echo "Creating start-point ${default_start_point_custom}  from ${github_cyber_dojo}/start-points-custom.git"
+      echo "Creating start-point ${default_start_point_custom} from ${github_cyber_dojo}/start-points-custom.git"
       start_point_create_git ${default_start_point_custom} "${github_cyber_dojo}/start-points-custom.git"
     fi
   fi
