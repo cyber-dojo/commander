@@ -90,7 +90,7 @@ def clean
     '',
     "Use: #{me} clean",
     '',
-    'Removes dangling docker images',
+    'Removes dangling docker images and exited containers',
   ]
 
   if ['help'].include? ARGV[1]
@@ -204,19 +204,16 @@ def up_arg_ok(help, args, name)
   end
 
   if vol == ''
-    show help
-    puts "FAILED: missing argument value --#{name}=[???]"
+    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
   unless volume_exists?(vol)
-    show help
-    puts "FAILED: start-point #{vol} does not exist"
+    STDERR.puts "FAILED: start-point #{vol} does not exist"
     return false
   end
   type = cyber_dojo_type(vol)
   if type != name
-    show help
-    puts "FAILED: #{vol} is not a #{name} start-point (it's type from setup.json is #{type})"
+    STDERR.puts "FAILED: #{vol} is not a #{name} start-point (it's type from setup.json is #{type})"
     return false
   end
   return true
@@ -234,9 +231,11 @@ def up
     minitab + '--languages=START-POINT  Specify the languages start-point.',
     minitab + "                         Defaults to a start-point named 'languages' created from",
     minitab + '                         https://github.com/cyber-dojo/start-points-languages.git',
+    '',
     minitab + '--exercises=START-POINT  Specify the exercises start-point.',
     minitab + "                         Defaults to a start-point named 'exercises' created from",
     minitab + '                         https://github.com/cyber-dojo/start-points-exercises.git',
+    '',
     minitab + '--custom=START-POINT     Specify the custom start-point.',
     minitab + "                         Defaults to a start-point named 'custom' created from",
     minitab + '                         https://github.com/cyber-dojo/start-points-custom.git'

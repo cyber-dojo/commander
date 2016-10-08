@@ -5,7 +5,7 @@ test_clean_help_prints_use_to_stdout_and_exits_zero()
   expectedStdout="
 Use: cyber-dojo clean
 
-Removes dangling docker images"
+Removes dangling docker images and exited containers"
   ./../cyber-dojo clean help >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertTrue ${exit_status}
@@ -27,7 +27,7 @@ test_clean_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_clean_produces_no_output_exits_zero()
+test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_exits_zero()
 {
   # Can give the following
   # Error response from daemon: conflict: unable to delete cfc459985b4b (cannot be forced)
@@ -37,12 +37,10 @@ test_clean_produces_no_output_exits_zero()
   assertTrue ${exit_status}
   assertNoStdout
   assertNoStderr
-  # repeat
-  ./../cyber-dojo clean >${stdoutF} 2>${stderrF}
-  exit_status=$?
-  assertTrue ${exit_status}
-  assertNoStdout
-  assertNoStderr
+  local danglingImages=`docker images --quiet --filter='dangling=true'`
+  assertEquals "" "${danglingImages}"
+  local exitedContainers=`docker ps --all --quiet --filter='status=exited'`
+  assertEquals "" "${exitedContainers}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
