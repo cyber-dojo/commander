@@ -367,9 +367,9 @@ def start_point_create
   #          includes invalid characters for a local volume name,
   #          only "[a-zA-Z0-9][a-zA-Z0-9_.-]" are allowed
   # Experimenting with [docker volume create] reveals this means
-  # [a-zA-Z0-9] for the first letter
-  # [a-zA-Z0-9_.-] for the remaining letters
-  # Also, docker volume names must be at least 2 letters long
+  #   [a-zA-Z0-9] for the first letter
+  #   [a-zA-Z0-9_.-] for the *remaining* letters
+  # Docker volume names must be at least 2 letters long.
   # See https://github.com/docker/docker/issues/20122'
 
   vol = ARGV[2]

@@ -94,6 +94,7 @@ start_point_create_git() {
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
   # 4. remove .git repo
+  # NOTE: typicall still leaves [.gitignore .travis.yml README.md]
   command="docker exec ${g_cid} sh -c 'rm -rf /data/.git'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
