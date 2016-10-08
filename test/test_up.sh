@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_up_help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
@@ -124,7 +126,8 @@ test_up_namedExercisesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero(
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_namedExercisesNotExerciseType_prints_terse_msg_to_sterr_and_exits_non_zero()
+# off because it relies on custom start-point existing
+x_test_up_namedExercisesNotExerciseType_prints_terse_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: custom is not a exercises start-point (it's type from setup.json is custom)"
   ./../cyber-dojo up --exercises=custom >${stdoutF} 2>${stderrF}
