@@ -2,12 +2,12 @@
 
 test_logs_help_prints_use_to_stdout_and_exits_zero()
 {
-  expectedStdout="
+  local expectedStdout="
 Use: cyber-dojo logs
 
 Fetches and prints the logs of the web server (if running)"
   ./../cyber-dojo logs help >${stdoutF} 2>${stderrF}
-  exit_status=$?
+  local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
@@ -17,9 +17,9 @@ Fetches and prints the logs of the web server (if running)"
 
 test_logs_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
-  expectedStderr="FAILED: unknown argument [unknown]"
+  local expectedStderr="FAILED: unknown argument [unknown]"
   ./../cyber-dojo logs unknown >${stdoutF} 2>${stderrF}
-  exit_status=$?
+  local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
   assertEqualsStderr "${expectedStderr}"
