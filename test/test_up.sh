@@ -27,7 +27,9 @@ Creating cyber-dojo-nginx"
   ./../cyber-dojo up >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  if [[ "`cat ${stdoutF}`" != *"${expectedStdout}"* ]]; then
+    fail "expected stdout to include ${expectedStdout}"
+  fi
   assertNoStderr
 }
 
