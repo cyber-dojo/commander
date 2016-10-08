@@ -11,11 +11,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-exit_success() {
+exit_success()
+{
   exit 0
 }
 
-exit_fail() {
+exit_fail()
+{
   if [ "$*" != '' ]; then
     echo "FAILED: $*"
   fi
@@ -36,7 +38,8 @@ cyber_dojo_commander=cyberdojo/commander:${docker_version}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-delegate_to_commander() {
+delegate_to_commander()
+{
   docker run \
     --rm \
     --user=root \
@@ -47,7 +50,8 @@ delegate_to_commander() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_sh_then_handle_locally() {
+if_sh_then_handle_locally()
+{
   if [ "$*" = "sh" ]; then
     local name='cyber-dojo-web'
     if running_container ${name}; then
@@ -61,7 +65,8 @@ if_sh_then_handle_locally() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-running_container() {
+running_container()
+{
   local space='\s'
   local name=$1
   local end_of_line='$'
@@ -71,7 +76,8 @@ running_container() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_update_then_handle_locally() {
+if_update_then_handle_locally()
+{
   if [ "$*" = "update" ]; then
     docker pull ${cyber_dojo_commander} # update commander image
     delegate_to_commander $*            # update other images
@@ -92,7 +98,8 @@ if_update_then_handle_locally() {
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
-if_start_point_create_dir_then_handle_locally() {
+if_start_point_create_dir_then_handle_locally()
+{
   local name=$3
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local dir=$(echo $4 | cut -f2 -s -d=)
@@ -144,7 +151,8 @@ if_start_point_create_dir_then_handle_locally() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-start_point_exists() {
+start_point_exists()
+{
   # don't match a substring
   local start_of_line='^'
   local start_point=$1
@@ -155,7 +163,8 @@ start_point_exists() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-run_quiet() {
+run_quiet()
+{
   local me='run_quiet'
   local command="$1"
   debug "${me}: command=${command}"
@@ -167,7 +176,8 @@ run_quiet() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-run_loud() {
+run_loud()
+{
   local me='run_loud'
   local command="$1"
   debug "${me}: command=${command}"
@@ -179,7 +189,8 @@ run_loud() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-clean_up_and_exit_fail() {
+clean_up_and_exit_fail()
+{
   if [ "$*" != '' ]; then
     echo "FAILED: $*"
   fi
@@ -189,7 +200,8 @@ clean_up_and_exit_fail() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-clean_up() {
+clean_up()
+{
   local me='clean_up'
   # remove docker container?
   if [ "${g_cid}" != '' ]; then
@@ -212,7 +224,8 @@ clean_up() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-debug() {
+debug()
+{
   # Use 'echo $1' to debug.
   #echo $1
   # Use ':' to not debug

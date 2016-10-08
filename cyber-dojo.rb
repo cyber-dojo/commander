@@ -101,10 +101,7 @@ def clean
     exit failed
   end
 
-  # Can give the following
-  # Error response from daemon: conflict: unable to delete cfc459985b4b (cannot be forced)
-  #   image is being used by running container a7108a524a4d
-  command = "docker images -q -f='dangling=true' | xargs docker rmi --force"
+  command = "docker images -q -f='dangling=true' | xargs --no-run-if-empty docker rmi --force"
   run command
 end
 

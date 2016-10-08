@@ -1,10 +1,7 @@
 #!/bin/bash
 
-test_cyberdojo_with_no_args_prints_use_to_stdout()
+test_cyberdojo_with_no_args_or_minus_minus_help_prints_use_to_stdout()
 {
-  ./cyber-dojo >${stdoutF} 2>${stderrF}
-  rtrn=$?
-  assertTrue ${rtrn}
   expectedStdout="
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
@@ -19,10 +16,48 @@ Commands:
     start-point  Manages cyber-dojo start-points
 
 Run 'cyber-dojo COMMAND --help' for more information on a command."
-
-  assertEquals "${expectedStdout}" "`cat ${stdoutF}`"
-  assertEquals "" "`cat ${stderrF}`"
+  ./cyber-dojo >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStderr ""
+  # and with --help
+  ./cyber-dojo --help >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStderr ""
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_cyberdojo_clean()
+{
+  # Can give the following
+  # Error response from daemon: conflict: unable to delete cfc459985b4b (cannot be forced)
+  #   image is being used by running container a7108a524a4d
+  ./cyber-dojo clean >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue ${exit_status}
+  assertNoStdout
+  assertNoStderr
+  # repeat
+  ./cyber-dojo clean >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue ${exit_status}
+  assertNoStdout
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertEqualsStdout() { assertEquals 'stdout' "$1" "`cat ${stdoutF}`"; }
+assertEqualsStderr() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
+assertNoStdout() { assertEqualsStdout ""; }
+assertNoStderr() { assertEqualsStderr ""; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
