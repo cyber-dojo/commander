@@ -370,42 +370,32 @@ def start_point_create
   # See https://github.com/docker/docker/issues/20122'
 
   vol = ARGV[2]
-  args = ARGV[3..-1]
   unless vol =~ /^[a-zA-Z0-9][a-zA-Z0-9_.-]+$/
-    msg = [
-      "FAILED: #{vol} is an illegal NAME",
-      "Use [a-ZA-Z0-9] for the first character",
-      "Use [a-zA-Z0-9_.-] for the remaining characters",
-      "NAME must be at least two letters long"
-    ]
-    puts msg.join("\n")
+    STDERR.puts "FAILED: #{vol} is an illegal NAME"
     exit failed
   end
+
   if volume_exists? vol
     puts "FAILED: a start-point called #{vol} already exists"
     exit failed
   end
 
   # unknown arguments?
+  args = ARGV[3..-1]
   knowns = ['git','dir']
   unknown = args.select do |argv|
     knowns.none? { |known| argv.start_with?('--' + known + '=') }
   end
   unless unknown == []
-    show help
-    unknown.each { |arg| puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
+    unknown.each { |arg| STDERR.puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
     exit failed
   end
 
   # required known arguments
   url = get_arg('--git', args)
   dir = get_arg('--dir', args)
-  if url.nil? && dir.nil?
-    show help
-    exit failed
-  end
   if url && dir
-    puts 'FAILED: specify --git=... OR --dir=... but not both'
+    STDERR.puts 'FAILED: specify --git=... OR --dir=... but not both'
     exit failed
   end
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
