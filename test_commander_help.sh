@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# TODO: add [help] processing for ALL commands, eg clean,down,up
-
 test_cyberdojo_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
 {
   expectedStdout="
@@ -32,6 +30,9 @@ Run 'cyber-dojo COMMAND help' for more information on a command."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# clean
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 test_cyberdojo_clean_help_prints_use_to_stdout_and_exits_zero()
 {
@@ -43,9 +44,21 @@ Removes dangling docker images"
   exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
-  assertEqualsStderr ""
+  assertNoStderr
 }
 
+test_cyberdojo_clean_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo clean unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# down
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_down_help_prints_use_to_stdout_and_exits_zero()
@@ -56,11 +69,23 @@ Use: cyber-dojo down
 Stops and removes docker containers created with 'up'"
   ./cyber-dojo down help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
+test_cyberdojo_down_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo down unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# logs
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_logs_help_prints_use_to_stdout_and_exits_zero()
@@ -71,11 +96,23 @@ Use: cyber-dojo logs
 Fetches and prints the logs of the web server (if running)"
   ./cyber-dojo logs help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
+test_cyberdojo_logs_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo logs unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# sh
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_sh_help_prints_use_to_stdout_and_exits_zero()
@@ -86,11 +123,23 @@ Use: cyber-dojo sh
 Shells into the cyber-dojo web server docker container"
   ./cyber-dojo sh help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
+test_cyberdojo_sh_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo sh unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# up
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_up_help_prints_use_to_stdout_and_exits_zero()
@@ -111,11 +160,23 @@ Creates and starts the cyber-dojo server using named/default start-points
                            https://github.com/cyber-dojo/start-points-custom.git"
   ./cyber-dojo up help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
+test_cyberdojo_up_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo up unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# update
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_update_help_prints_use_to_stdout_and_exits_zero()
@@ -126,11 +187,23 @@ Use: cyber-dojo update
 Updates all cyber-dojo docker images and the cyber-dojo script file"
   ./cyber-dojo update help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
+test_cyberdojo_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  expectedStderr="FAILED: unknown argument [unknown]"
+  ./cyber-dojo update unknown >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# start-point
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_cyberdojo_start_point_help_prints_use_to_stdout_and_exits_zero()
@@ -150,33 +223,19 @@ Commands:
 Run 'cyber-dojo start-point COMMAND help' for more information on a command"
   ./cyber-dojo start-point help >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertTrue 'true' ${exit_status}
+  assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_cyberdojo_start_unknown_arg_prints_use_to_stdout_and_exits_non_zero()
+test_cyberdojo_start_point_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
-  expectedStdout="
-Use: cyber-dojo start-point [COMMAND]
-
-Manage cyber-dojo start-points
-
-Commands:
-  create         Creates a new start-point
-  rm             Removes a start-point
-  ls             Lists the names of all start-points
-  inspect        Displays details of a start-point
-  pull           Pulls all the docker images named inside a start-point
-
-Run 'cyber-dojo start-point COMMAND help' for more information on a command"
+  expectedStderr="FAILED: unknown argument [unknown]"
   ./cyber-dojo start-point unknown >${stdoutF} 2>${stderrF}
   exit_status=$?
-  assertFalse 'false' ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
-  assertNoStderr
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

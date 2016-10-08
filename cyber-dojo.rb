@@ -74,7 +74,7 @@ def update
   end
 
   unless ARGV[1].nil?
-    puts "FAILED: unknown argument [#{ARGV[1]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 
@@ -99,7 +99,7 @@ def clean
   end
 
   unless ARGV[1].nil?
-    puts "FAILED: unknown argument [#{ARGV[1]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 
@@ -125,7 +125,7 @@ def down
   end
 
   unless ARGV[1].nil?
-    puts "FAILED: unknown argument [#{ARGV[1]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 
@@ -150,7 +150,7 @@ def sh
   end
 
   unless ARGV[1].nil?
-    puts "FAILED: unknown argument [#{ARGV[1]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 
@@ -179,7 +179,7 @@ def logs
   end
 
   unless ARGV[1].nil?
-    puts "FAILED: unknown argument [#{ARGV[1]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 
@@ -251,8 +251,7 @@ def up
     knowns.none? { |known| argv.start_with?('--' + known + '=') }
   end
   unless unknown == []
-    show help
-    unknown.each { |arg| puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
+    unknown.each { |arg| STDERR.puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
     exit failed
   end
 
@@ -296,7 +295,10 @@ def start_point
     when 'ls'      then start_point_ls
     when 'inspect' then start_point_inspect
     when 'pull'    then start_point_pull
-    else begin; show(help); exit(failed); end
+    else begin
+      STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
+      exit(failed)
+    end
   end
 end
 
