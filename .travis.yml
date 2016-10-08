@@ -27,4 +27,4 @@ before_install:
 
 script:
     - ./build-image.sh ${DOCKER_ENGINE_VERSION}
-    - ./test_commander.sh
+    - ./run_tests.sh
