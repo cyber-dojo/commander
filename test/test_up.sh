@@ -14,21 +14,25 @@ test_up_creates_and_uses_default_start_points_and_creates_containers()
     fi
   done
 
-  local expectedStdout="Creating start-point languages from https://github.com/cyber-dojo/start-points-languages.git
+  local expectedStdoutPart1="Creating start-point languages from https://github.com/cyber-dojo/start-points-languages.git
 Creating start-point exercises from https://github.com/cyber-dojo/start-points-exercises.git
 Creating start-point custom from https://github.com/cyber-dojo/start-points-custom.git
 Using start-point --languages=languages
 Using start-point --exercises=exercises
-Using start-point --custom=custom
-Creating cyber-dojo-differ
+Using start-point --custom=custom"
+
+  local expectedStdoutPart2="Creating cyber-dojo-differ
 Creating cyber-dojo-web
 Creating cyber-dojo-nginx"
 
   ./../cyber-dojo up >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  if [[ "`cat ${stdoutF}`" != *"${expectedStdout}"* ]]; then
-    fail "expected stdout to include ${expectedStdout}"
+  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutPart1}"* ]]; then
+    fail "expected stdout to include ${expectedStdoutPart1}"
+  fi
+  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutPart2}"* ]]; then
+    fail "expected stdout to include ${expectedStdoutPart2}"
   fi
   assertNoStderr
 }
