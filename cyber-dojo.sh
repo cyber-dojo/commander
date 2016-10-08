@@ -263,21 +263,26 @@ if [ $? != 0 ]; then
   exit_fail
 fi
 
+##########
+# TODO: what about [start-point create --help]
+##########
 # cyber-dojo start-point create NAME --git=URL
 if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
   local name=$3
   local lhs=$(echo $4 | cut -f1 -s -d=)
   local url=$(echo $4 | cut -f2 -s -d=)
+
+
   if [ "${lhs}" = '--git' ]; then
     start_point_create_git "${name}" "${url}"
   fi
 fi
 
-if [ "$1" = 'up' ]; then
+if [ "$*" = 'up' ]; then
   shift # up
   cyber_dojo_up "$@"
 fi
 
-if [ "$1" = 'down' ]; then
+if [ "$*" = 'down' ]; then
   ${docker_compose_cmd} down
 fi

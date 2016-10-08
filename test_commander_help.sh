@@ -63,6 +63,58 @@ Stops and removes docker containers created with 'up'"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_cyberdojo_logs_minus_minus_help_prints_use_to_stdout()
+{
+  expectedStdout="
+Use: cyber-dojo logs
+
+Fetches and prints the logs of the web server (if running)"
+  ./cyber-dojo logs --help >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue 'true' ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_cyberdojo_sh_minus_minus_help_prints_use_to_stdout()
+{
+  expectedStdout="
+Use: cyber-dojo sh
+
+Shells into the cyber-dojo web server docker container"
+  ./cyber-dojo sh --help >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue 'true' ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_cyberdojo_up_minus_minus_help_prints_use_to_stdout()
+{
+  expectedStdout="
+Use: cyber-dojo up [OPTIONS]
+
+Creates and starts the cyber-dojo server using named/default start-points
+
+  --languages=START-POINT  Specify the languages start-point.
+                           Defaults to a start-point named 'languages' created from
+                           https://github.com/cyber-dojo/start-points-languages.git
+  --exercises=START-POINT  Specify the exercises start-point.
+                           Defaults to a start-point named 'exercises' created from
+                           https://github.com/cyber-dojo/start-points-exercises.git
+  --custom=START-POINT     Specify the custom start-point.
+                           Defaults to a start-point named 'custom' created from
+                           https://github.com/cyber-dojo/start-points-custom.git"
+  ./cyber-dojo up --help >${stdoutF} 2>${stderrF}
+  exit_status=$?
+  assertTrue 'true' ${exit_status}
+  assertEqualsStdout "${expectedStdout}"
+  assertNoStderr
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

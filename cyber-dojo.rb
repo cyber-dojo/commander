@@ -146,7 +146,7 @@ def sh
 
   if ['help','--help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   unless ARGV[1].nil?
@@ -175,7 +175,7 @@ def logs
   ]
   if ['help','--help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   unless ARGV[1].nil?
@@ -242,7 +242,7 @@ def up
 
   if ['help','--help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   # unknown arguments?
