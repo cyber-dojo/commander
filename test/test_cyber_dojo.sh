@@ -1,8 +1,6 @@
 #!/bin/bash
 
-# TODO --debug
-
-test_cyberdojo_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
+test_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
 {
   expectedStdout="
 Use: cyber-dojo [--debug] COMMAND
@@ -18,13 +16,13 @@ Commands:
     start-point  Manages cyber-dojo start-points
 
 Run 'cyber-dojo COMMAND help' for more information on a command."
-  ./cyber-dojo >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertEqualsStderr ""
   # and with help
-  ./cyber-dojo help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo help >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
@@ -33,10 +31,10 @@ Run 'cyber-dojo COMMAND help' for more information on a command."
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_cyberdojo_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   expectedStderr="FAILED: unknown argument [unknown]"
-  ./cyber-dojo unknown >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo unknown >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
@@ -45,5 +43,5 @@ test_cyberdojo_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./test_helpers.sh
+. ./shunit2_helpers.sh
 . ./shunit2

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-test_cyberdojo_update_help_prints_use_to_stdout_and_exits_zero()
+test_logs_help_prints_use_to_stdout_and_exits_zero()
 {
   expectedStdout="
-Use: cyber-dojo update
+Use: cyber-dojo logs
 
-Updates all cyber-dojo docker images and the cyber-dojo script file"
-  ./cyber-dojo update help >${stdoutF} 2>${stderrF}
+Fetches and prints the logs of the web server (if running)"
+  ./../cyber-dojo logs help >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
@@ -15,10 +15,10 @@ Updates all cyber-dojo docker images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_cyberdojo_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_logs_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   expectedStderr="FAILED: unknown argument [unknown]"
-  ./cyber-dojo update unknown >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo logs unknown >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
@@ -27,5 +27,5 @@ test_cyberdojo_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./test_helpers.sh
+. ./shunit2_helpers.sh
 . ./shunit2

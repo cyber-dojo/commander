@@ -1,12 +1,12 @@
 #!/bin/bash
 
-test_cyberdojo_sh_help_prints_use_to_stdout_and_exits_zero()
+test_update_help_prints_use_to_stdout_and_exits_zero()
 {
   expectedStdout="
-Use: cyber-dojo sh
+Use: cyber-dojo update
 
-Shells into the cyber-dojo web server docker container"
-  ./cyber-dojo sh help >${stdoutF} 2>${stderrF}
+Updates all cyber-dojo docker images and the cyber-dojo script file"
+  ./../cyber-dojo update help >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
@@ -15,10 +15,10 @@ Shells into the cyber-dojo web server docker container"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_cyberdojo_sh_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 {
   expectedStderr="FAILED: unknown argument [unknown]"
-  ./cyber-dojo sh unknown >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo update unknown >${stdoutF} 2>${stderrF}
   exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
@@ -27,5 +27,5 @@ test_cyberdojo_sh_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./test_helpers.sh
+. ./shunit2_helpers.sh
 . ./shunit2
