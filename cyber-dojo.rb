@@ -68,9 +68,9 @@ def update
     'Updates all cyber-dojo docker images and the cyber-dojo script file'
   ]
 
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
-    exit failed
+    exit succeeded
   end
 
   unless ARGV[1].nil?
@@ -93,7 +93,7 @@ def clean
     'Removes dangling docker images',
   ]
 
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -119,7 +119,7 @@ def down
     "Stops and removes docker containers created with 'up'",
   ]
 
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -144,7 +144,7 @@ def sh
     "Shells into the cyber-dojo web server docker container",
   ]
 
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -173,7 +173,7 @@ def logs
     '',
     "Fetches and prints the logs of the web server (if running)",
   ]
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -240,28 +240,19 @@ def up
     minitab + '                         https://github.com/cyber-dojo/start-points-custom.git'
   ]
 
-  if ['help','--help'].include? ARGV[1]
+  if ['help'].include? ARGV[1]
     show help
     exit succeeded
   end
 
   # unknown arguments?
-  knowns = ['env','languages','exercises','custom']
+  knowns = ['languages','exercises','custom']
   unknown = ARGV[1..-1].select do |argv|
     knowns.none? { |known| argv.start_with?('--' + known + '=') }
   end
   unless unknown == []
     show help
     unknown.each { |arg| puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
-    exit failed
-  end
-
-  # --env=
-  args = ARGV[1..-1]
-  env = get_arg('--env', args)
-  if !env.nil? && !['development','production','test'].include?(env)
-    show help
-    puts "FAILED: bad argument value --env=[#{env}]"
     exit failed
   end
 
@@ -291,15 +282,21 @@ def start_point
     minitab + 'inspect        Displays details of a start-point',
     minitab + 'pull           Pulls all the docker images named inside a start-point',
     '',
-    "Run '#{me} start-point COMMAND --help' for more information on a command",
+    "Run '#{me} start-point COMMAND help' for more information on a command",
   ]
+
+  if ['help'].include? ARGV[1]
+    show help
+    exit succeeded
+  end
+
   case ARGV[1]
     when 'create'  then start_point_create
     when 'rm'      then start_point_rm
     when 'ls'      then start_point_ls
     when 'inspect' then start_point_inspect
     when 'pull'    then start_point_pull
-    else                show help
+    else begin; show(help); exit(failed); end
   end
 end
 
@@ -354,9 +351,9 @@ def start_point_create
     "NAME must be at least two letters long"
   ]
 
-  if [nil,'help','--help'].include? ARGV[2]
+  if [nil,'help'].include? ARGV[2]
     show help
-    exit failed
+    exit succeeded
   end
 
   # If you do
@@ -441,9 +438,9 @@ def start_point_ls
     minitab + '--quiet     Only display start-point names'
   ]
 
-  if ['help','--help'].include? ARGV[2]
+  if ['help'].include? ARGV[2]
     show help
-    exit failed
+    exit succeeded
   end
 
   # As of docker 1.12.0 there is no [--filter label=LABEL]  option on [docker volume ls]
@@ -501,9 +498,9 @@ def start_point_inspect
   ]
 
   vol = ARGV[2]
-  if [nil,'help','--help'].include? vol
+  if [nil,'help'].include? vol
     show help
-    exit failed
+    exit succeeded
   end
 
   exit_unless_is_cyber_dojo_volume(vol, 'inspect')
@@ -541,9 +538,9 @@ def start_point_rm
   ]
 
   vol = ARGV[2]
-  if [nil,'help','--help'].include? vol
+  if [nil,'help'].include? vol
     show help
-    exit failed
+    exit succeeded
   end
 
   exit_unless_is_cyber_dojo_volume(vol, 'rm')
@@ -574,9 +571,9 @@ def start_point_pull
   ]
 
   vol = ARGV[2]
-  if [nil,'help','--help'].include? vol
+  if [nil,'help'].include? vol
     show help
-    exit failed
+    exit succeeded
   end
 
   exit_unless_is_cyber_dojo_volume(vol, 'pull')
@@ -607,7 +604,7 @@ def help
   puts [
     '',
     "Use: #{me} [--debug] COMMAND",
-    "     #{me} --help",
+    "     #{me} help",
     '',
     'Commands:',
     tab + 'clean        Removes dangling images',
@@ -618,7 +615,7 @@ def help
     tab + 'update       Updates the server to the latest image',
     tab + 'start-point  Manages cyber-dojo start-points',
     '',
-    "Run '#{me} COMMAND --help' for more information on a command."
+    "Run '#{me} COMMAND help' for more information on a command."
   ].join("\n") + "\n"
 end
 
@@ -631,7 +628,6 @@ end
 
 case ARGV[0]
   when nil            then help
-  when '--help'       then help
   when 'help'         then help
   when 'clean'        then clean
   when 'down'         then down
@@ -642,7 +638,7 @@ case ARGV[0]
   when 'start-point'  then start_point
   else
     puts "#{me}: '#{ARGV[0]}' is not a command."
-    puts "See '#{me} --help'."
+    puts "See '#{me} help'."
     exit failed
 end
 
