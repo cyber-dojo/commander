@@ -284,7 +284,7 @@ def start_point
     "Run '#{me} start-point COMMAND help' for more information on a command",
   ]
 
-  if ['help'].include? ARGV[1]
+  if [nil,'help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -639,8 +639,7 @@ case ARGV[0]
   when 'update'       then update
   when 'start-point'  then start_point
   else
-    puts "#{me}: '#{ARGV[0]}' is not a command."
-    puts "See '#{me} help'."
+    STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed
 end
 
