@@ -448,7 +448,7 @@ def start_point_ls
   else
 
     unless ARGV[2].nil?
-      puts "FAILED: unknown argument [#{ARGV[2]}]"
+      STDERR.puts "FAILED: unknown argument [#{ARGV[2]}]"
       exit failed
     end
 
