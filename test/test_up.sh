@@ -4,16 +4,6 @@
 
 test_up_creates_and_uses_default_start_points_and_creates_containers()
 {
-  #./../cyber-dojo down >${stdoutF} 2>${stderrF}
-  #local currentStartPoints=`./../cyber-dojo start-point ls --quiet`
-  #local defaultStartPoints=( "languages" "exercises" "custom" )
-  #for defaultStartPoint in "${defaultStartPoints[@]}"
-  #do
-  #  if grep -q ${defaultStartPoint} <<< ${currentStartPoints}; then
-  #    ./../cyber-dojo start-point rm ${defaultStartPoint} >${stdoutF} 2>${stderrF}
-  #  fi
-  #done
-
   local expectedStdoutPart1="Creating start-point languages from https://github.com/cyber-dojo/start-points-languages.git
 Creating start-point exercises from https://github.com/cyber-dojo/start-points-exercises.git
 Creating start-point custom from https://github.com/cyber-dojo/start-points-custom.git
