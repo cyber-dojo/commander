@@ -28,10 +28,11 @@ Creating cyber-dojo-nginx"
   ./../cyber-dojo up >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutPart1}"* ]]; then
+  local stdout="`cat ${stdoutF}`"
+  if [[ "${stdout}" != *"${expectedStdoutPart1}"* ]]; then
     fail "expected stdout to include ${expectedStdoutPart1}"
   fi
-  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutPart2}"* ]]; then
+  if [[ "${stdout}" != *"${expectedStdoutPart2}"* ]]; then
     fail "expected stdout to include ${expectedStdoutPart2}"
   fi
   assertNoStderr
