@@ -561,7 +561,7 @@ def start_point_pull
     '',
     "Use: #{me} start-point pull NAME",
     '',
-    'Pulls all the docker images named inside the cyber-dojo start-point'
+    'Pulls all the docker images inside the named start-point'
   ]
 
   vol = ARGV[2]
@@ -573,7 +573,7 @@ def start_point_pull
   exit_unless_is_cyber_dojo_volume(vol, 'pull')
 
   unless ARGV[3].nil?
-    puts "FAILED: unknown argument [#{ARGV[3]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[3]}]"
     exit failed
   end
 
