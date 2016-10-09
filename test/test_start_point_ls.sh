@@ -4,7 +4,7 @@ github_cyber_dojo='https://github.com/cyber-dojo'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_help_prints_use_to_stdout_and_exits_zero()
+test_start_point_ls_help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
 Use: cyber-dojo start-point [OPTIONS] ls

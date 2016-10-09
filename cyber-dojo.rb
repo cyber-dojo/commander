@@ -408,12 +408,12 @@ end
 
 def exit_unless_is_cyber_dojo_volume(vol, command)
   if !volume_exists? vol
-    puts "FAILED: #{vol} does not exist."
+    STDERR.puts "FAILED: #{vol} does not exist."
     exit failed
   end
 
   unless cyber_dojo_volume? vol
-    puts "FAILED: #{vol} is not a cyber-dojo start-point."
+    STDERR.puts "FAILED: #{vol} is not a cyber-dojo start-point."
     exit failed
   end
 end
@@ -488,7 +488,7 @@ def start_point_inspect
     '',
     "Use: #{me} start-point inspect NAME",
     '',
-    'Displays details of the named cyber-dojo start-point',
+    'Displays details of the named start-point',
   ]
 
   vol = ARGV[2]
@@ -500,7 +500,7 @@ def start_point_inspect
   exit_unless_is_cyber_dojo_volume(vol, 'inspect')
 
   unless ARGV[3].nil?
-    puts "FAILED: unknown argument [#{ARGV[3]}]"
+    STDERR.puts "FAILED: unknown argument [#{ARGV[3]}]"
     exit failed
   end
 
