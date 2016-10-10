@@ -68,7 +68,7 @@ def update
     'Updates all cyber-dojo docker images and the cyber-dojo script file'
   ]
 
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -93,7 +93,7 @@ def clean
     'Removes dangling docker images and exited containers',
   ]
 
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -121,7 +121,7 @@ def down
     "Stops and removes docker containers created with 'up'",
   ]
 
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -146,7 +146,7 @@ def sh
     "Shells into the cyber-dojo web server docker container",
   ]
 
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -175,7 +175,7 @@ def logs
     '',
     "Fetches and prints the logs of the web server (if running)",
   ]
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -241,7 +241,7 @@ def up
     minitab + '                         https://github.com/cyber-dojo/start-points-custom.git'
   ]
 
-  if ['help'].include? ARGV[1]
+  if ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -283,10 +283,10 @@ def start_point
     minitab + 'inspect        Displays details of a start-point',
     minitab + 'pull           Pulls all the docker images named inside a start-point',
     '',
-    "Run '#{me} start-point COMMAND help' for more information on a command",
+    "Run '#{me} start-point COMMAND --help' for more information on a command",
   ]
 
-  if [nil,'help'].include? ARGV[1]
+  if [nil,'--help'].include? ARGV[1]
     show help
     exit succeeded
   end
@@ -355,7 +355,7 @@ def start_point_create
     "NAME must be at least two letters long"
   ]
 
-  if [nil,'help'].include? ARGV[2]
+  if [nil,'--help'].include? ARGV[2]
     show help
     exit succeeded
   end
@@ -432,7 +432,7 @@ def start_point_ls
     minitab + '--quiet     Only display start-point names'
   ]
 
-  if ['help'].include? ARGV[2]
+  if ARGV[2] == '--help'
     show help
     exit succeeded
   end
@@ -492,7 +492,7 @@ def start_point_inspect
   ]
 
   vol = ARGV[2]
-  if [nil,'help'].include? vol
+  if [nil,'--help'].include? vol
     show help
     exit succeeded
   end
@@ -565,7 +565,7 @@ def start_point_pull
   ]
 
   vol = ARGV[2]
-  if [nil,'help'].include? vol
+  if [nil,'--help'].include? vol
     show help
     exit succeeded
   end
@@ -598,7 +598,7 @@ def help
   puts [
     '',
     "Use: #{me} [--debug] COMMAND",
-    "     #{me} help",
+    "     #{me} --help",
     '',
     'Commands:',
     tab + 'clean        Removes dangling images',
@@ -609,7 +609,7 @@ def help
     tab + 'update       Updates the server to the latest image',
     tab + 'start-point  Manages cyber-dojo start-points',
     '',
-    "Run '#{me} COMMAND help' for more information on a command."
+    "Run '#{me} COMMAND --help' for more information on a command."
   ].join("\n") + "\n"
 end
 
@@ -622,7 +622,7 @@ end
 
 case ARGV[0]
   when nil            then help
-  when 'help'         then help
+  when '--help'       then help
   when 'clean'        then clean
   when 'down'         then down
   when 'logs'         then logs

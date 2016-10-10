@@ -19,13 +19,13 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_help_prints_use_to_stdout_and_exits_zero()
+test_start_point_inspect_Help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
 Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
-  ./../cyber-dojo start-point inspect help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo start-point inspect --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

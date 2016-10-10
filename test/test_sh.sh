@@ -6,7 +6,7 @@ test_sh_help_prints_use_to_stdout_and_exits_zero()
 Use: cyber-dojo sh
 
 Shells into the cyber-dojo web server docker container"
-  ./../cyber-dojo sh help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo sh --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

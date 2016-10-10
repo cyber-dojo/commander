@@ -14,13 +14,13 @@ Commands:
   inspect        Displays details of a start-point
   pull           Pulls all the docker images named inside a start-point
 
-Run 'cyber-dojo start-point COMMAND help' for more information on a command"
+Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
   ./../cyber-dojo start-point >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
-  ./../cyber-dojo start-point help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo start-point --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

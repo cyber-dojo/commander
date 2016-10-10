@@ -6,7 +6,7 @@ test_clean_help_prints_use_to_stdout_and_exits_zero()
 Use: cyber-dojo clean
 
 Removes dangling docker images and exited containers"
-  ./../cyber-dojo clean help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo clean --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

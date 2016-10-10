@@ -6,7 +6,7 @@ test_down_help_prints_use_to_stdout_and_exits_zero()
 Use: cyber-dojo down
 
 Stops and removes docker containers created with 'up'"
-  ./../cyber-dojo down help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo down --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

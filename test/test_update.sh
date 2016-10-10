@@ -6,7 +6,7 @@ test_update_help_prints_use_to_stdout_and_exits_zero()
 Use: cyber-dojo update
 
 Updates all cyber-dojo docker images and the cyber-dojo script file"
-  ./../cyber-dojo update help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo update --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

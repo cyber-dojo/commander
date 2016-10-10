@@ -12,7 +12,7 @@ Use: cyber-dojo start-point [OPTIONS] ls
 Lists the names of all cyber-dojo start-points
 
   --quiet     Only display start-point names"
-  ./../cyber-dojo start-point ls help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo start-point ls --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

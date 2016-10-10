@@ -19,13 +19,13 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_help_prints_use_to_stdout_and_exits_zero()
+test_start_point_pull_Help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
 Use: cyber-dojo start-point pull NAME
 
 Pulls all the docker images inside the named start-point"
-  ./../cyber-dojo start-point pull help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo start-point pull --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

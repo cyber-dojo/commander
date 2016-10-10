@@ -6,7 +6,7 @@ test_logs_help_prints_use_to_stdout_and_exits_zero()
 Use: cyber-dojo logs
 
 Fetches and prints the logs of the web server (if running)"
-  ./../cyber-dojo logs help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo logs --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

@@ -30,7 +30,7 @@ Creating cyber-dojo-nginx"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_help_prints_use_to_stdout_and_exits_zero()
+test_up_Help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
 Use: cyber-dojo up [OPTIONS]
@@ -48,7 +48,7 @@ Creates and starts the cyber-dojo server using named/default start-points
   --custom=START-POINT     Specify the custom start-point.
                            Defaults to a start-point named 'custom' created from
                            https://github.com/cyber-dojo/start-points-custom.git"
-  ./../cyber-dojo up help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo up --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

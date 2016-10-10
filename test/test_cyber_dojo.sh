@@ -4,7 +4,7 @@ test_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
 {
   local expectedStdout="
 Use: cyber-dojo [--debug] COMMAND
-     cyber-dojo help
+     cyber-dojo --help
 
 Commands:
     clean        Removes dangling images
@@ -15,14 +15,14 @@ Commands:
     update       Updates the server to the latest image
     start-point  Manages cyber-dojo start-points
 
-Run 'cyber-dojo COMMAND help' for more information on a command."
+Run 'cyber-dojo COMMAND --help' for more information on a command."
   ./../cyber-dojo >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertEqualsStderr ""
   # and with help
-  ./../cyber-dojo help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"

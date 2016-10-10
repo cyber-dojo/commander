@@ -17,7 +17,7 @@ NAME must be at least two letters long"
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
   assertNoStderr
-  ./../cyber-dojo start-point create help >${stdoutF} 2>${stderrF}
+  ./../cyber-dojo start-point create --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertEqualsStdout "${expectedStdout}"
