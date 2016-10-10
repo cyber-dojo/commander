@@ -49,9 +49,9 @@ def run(command)
   output = `#{command}`
   $exit_status = $?.exitstatus
   if $debug_on
-    puts command
+    STDERR.puts command
     puts $exit_status
-    puts output
+    STDERR.puts output
   end
   output
 end

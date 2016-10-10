@@ -56,7 +56,8 @@ export CYBER_DOJO_ROOT=${cyber_dojo_root}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-one_time_creation_of_katas_data_volume() {
+one_time_creation_of_katas_data_volume()
+{
   # A previous version of this script detected if /var/www/cyber-dojo/katas
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
@@ -89,7 +90,8 @@ one_time_creation_of_katas_data_volume() {
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
-start_point_create_git() {
+start_point_create_git()
+{
   # TODO: cyber-dojo.rb has already been called to check arguments and handle --help
   local name=$1
   local url=$2
@@ -132,7 +134,8 @@ start_point_create_git() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-run_quiet() {
+run_quiet()
+{
   local me='run_quiet'
   local command="$1"
   debug "${me}: command=${command}"
@@ -144,7 +147,8 @@ run_quiet() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-run_loud() {
+run_loud()
+{
   local me='run_loud'
   local command="$1"
   debug "${me}: command=${command}"
@@ -156,7 +160,8 @@ run_loud() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-clean_up_and_exit_fail() {
+clean_up_and_exit_fail()
+{
   echo $*
   clean_up
   exit_fail
@@ -164,7 +169,8 @@ clean_up_and_exit_fail() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-clean_up() {
+clean_up()
+{
   local me='clean_up'
   # remove docker container?
   if [ "${g_cid}" != '' ]; then
@@ -187,13 +193,15 @@ clean_up() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-exit_fail() {
+exit_fail()
+{
   exit 1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-start_point_exists() {
+start_point_exists()
+{
   # don't match a substring
   local start_of_line='^'
   local start_point=$1
@@ -205,7 +213,8 @@ start_point_exists() {
 # $ ./cyber-dojo up
 # = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-cyber_dojo_up() {
+cyber_dojo_up()
+{
   # cyber-dojo.rb has already been called to check arguments and handle --help
   for arg in $@
   do
