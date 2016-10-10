@@ -1,7 +1,0 @@
-
-TODO --debug in [cyber-dojo] help text
-
-Use: cyber-dojo [--debug] COMMAND
-     cyber-dojo help
-
-
