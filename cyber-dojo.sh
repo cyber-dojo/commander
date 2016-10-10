@@ -7,6 +7,27 @@
 # Should be merged into cyber-dojo.rb
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "$1" == '--debug' ]; then
+  debug_on='true'
+  shift
+else
+  debug_on='false'
+fi
+
+debug()
+{
+  if [ "${debug_on}" == 'true' ]; then
+    echo $*
+  else
+    :
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 
@@ -172,14 +193,6 @@ exit_fail() {
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-debug() {
-  # Use 'echo $1' to debug. Use ':' to not debug
-  #echo $*
-  :
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 start_point_exists() {
   # don't match a substring
   local start_of_line='^'
@@ -264,14 +277,16 @@ cyber_dojo_up() {
 
 one_time_creation_of_katas_data_volume
 
-./cyber-dojo.rb "$@"
+if [ "${debug_on}" == 'true' ]; then
+  ./cyber-dojo.rb "--debug" "$@"
+else
+  ./cyber-dojo.rb "$@"
+fi
+
 if [ $? != 0 ]; then
   exit_fail
 fi
 
-##########
-# TODO: what about [start-point create --help]
-##########
 # cyber-dojo start-point create NAME --git=URL
 if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
   local name=$3

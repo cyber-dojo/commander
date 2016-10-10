@@ -6,8 +6,16 @@
 require 'json'
 require 'tempfile'
 
-$debug_mode = false
 $exit_status = 0
+
+if ARGV[0] == '--debug'
+  $debug_on = true
+  ARGV.shift
+else
+  $debug_on = false
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def succeeded; 0; end
 
@@ -40,7 +48,7 @@ def read_only; 'ro'; end
 def run(command)
   output = `#{command}`
   $exit_status = $?.exitstatus
-  if $debug_mode
+  if $debug_on
     puts command
     puts $exit_status
     puts output
@@ -614,11 +622,6 @@ def help
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-if ARGV[0] == '--debug'
-  $debug_mode = true
-  ARGV.shift
-end
 
 case ARGV[0]
   when nil            then help

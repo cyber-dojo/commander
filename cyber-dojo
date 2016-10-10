@@ -1,13 +1,27 @@
 #!/bin/bash
 
-# requires
-#   awk  (line 34)
-#   sed  (line 34)
-#   grep (lines 68,153)
-
-# Control a cyber-dojo web server.
+# Controls a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
 # A few commands have to be handled locally.
+# requires: awk, sed, grep
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "$1" == '--debug' ]; then
+  debug_on='true'
+  shift
+else
+  debug_on='false'
+fi
+
+debug()
+{
+  if [ "${debug_on}" == 'true' ]; then
+    echo $*
+  else
+    :
+  fi
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -223,19 +237,14 @@ clean_up()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-debug()
-{
-  # Use 'echo $1' to debug.
-  #echo $1
-  # Use ':' to not debug
-  :
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-delegate_to_commander $*
+if [ "${debug_on}" == 'true' ]; then
+  delegate_to_commander "--debug $*"
+else
+  delegate_to_commander "$*"
+fi
+
 if [ $? != 0 ]; then
   exit_fail
 fi
