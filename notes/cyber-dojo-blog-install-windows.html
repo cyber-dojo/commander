@@ -1,0 +1,89 @@
+
+<h1>running your own cyber-dojo server on Windows</h1>
+
+<h2>install Docker-Toolbox for Windows</h2>
+From <a href="https://www.docker.com/products/docker-toolbox">here</a>.<br/>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2>open a Docker Quickstart Terminal</h2>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2>install the <b>cyber-dojo</b> shell script</h2>
+In the Docker Quickstart Terminal
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ curl -O https://raw.githubusercontent.com/cyber-dojo/commander/master/cyber-dojo
+$ chmod +x cyber-dojo
+</div>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2 id="up">bring up your cyber-dojo server</h2>
+In the Docker Quickstart Terminal
+<div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo up
+</div>
+The first time you run this it will download the necessary docker images for your server.<br/>
+This may take several minutes depending on your network connection.<br/>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2 id="up">access the server via a browser</h2>
+In the Docker Quickstart Terminal, find your server's IP address:
+<div style="font-size:0.75em;padding:1em;" class="bash">$ docker-machine ip default
+</div>
+Put your server's IP address into your browser.<br/>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2 id="up">bring down your cyber-dojo server</h2>
+In the Docker Quickstart Terminal
+<div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo down
+</div>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2>pre-pulling language images</h2>
+
+Each practice session is associated with a given language and test framework (eg C# and NUnit).<br/>
+If the server has not yet pulled its
+associated docker-image (eg cyberdojofoundation/csharp_nunit) it will pull it.<br/>
+
+ADD INSPECT INFO HERE SO YOU CAN SEE WHAT WILL BE PULLED<br/>
+ADD HOW TO PULL ONE IMAGE<br/>
+
+If you want to pre-pull <em>all</em> docker-images named in a
+<a href="http://blog.cyber-dojo.org/2016/08/creating-your-own-start-points.html">start-point</a>
+use the [start-point pull] command.<br/>
+In the Docker Quickstart Terminal
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ ./cyber-dojo start-point pull languages
+PULLING cyberdojofoundation/nasm_assert (Asm, assert)
+...
+PULLING cyberdojofoundation/bcpl_all_tests_passed (BCPL, all_tests_passed)
+...
+PULLING cyberdojofoundation/bash_unit (Bash, bash_unit)
+...
+PULLING cyberdojofoundation/clang_cgreen (C (clang), Cgreen)
+...
+</div>
+
+<hr style="border: 1px dashed gray;" />
+
+<h2>problems?</h2>
+
+<ul>
+<li>Some cyberdojo images are docker-version-sensitive.</li>
+<li>To determine the version of docker running, in the Docker Quickstart Terminal, type:
+<div style="font-size:0.65em;padding:1em;" class="bash"
+>$ docker --version
+</div>
+</li>
+<li>If your version of docker is
+<em>not</em> in <a href="https://hub.docker.com/r/cyberdojo/commander/tags/">this list</a>
+please upgrade Docker Toolbox or <a href="mailto:jon@jaggersoft.com">email me</a>.
+</li>
+</ul>
+
+<br/>
+<br/>
