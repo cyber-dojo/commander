@@ -4,6 +4,8 @@
 
 #-----!Except these
 
+!Gemfile
+
 !cyber-dojo.sh
 !cyber-dojo.rb
 
@@ -16,3 +18,5 @@
 !start_point_checker.rb
 !start_point_inspect.rb
 !start_point_pull.rb
+
+!test/rb

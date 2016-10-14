@@ -67,17 +67,22 @@ RUN apk add --no-cache curl openssl ca-certificates \
  && apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 3. install ruby and json gem
-
-RUN apk add ruby ruby-irb ruby-io-console ruby-bigdecimal tzdata \
- && gem install json_pure --no-ri --no-rdoc
-
-# - - - - - - - - - - - - - - - - - - - - - -
-# 4. [start-point create NAME --git=URL] requires git clone
+# 3. [start-point create NAME --git=URL] requires git clone
 # [start-point create ...] requires cyber-dojo user to own created volume
 # -D=no password, -H=no home directory
 RUN apk add git \
  && adduser -D -H -u 19661 cyber-dojo
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# 4. install ruby and gems
+
+RUN apk add ruby ruby-irb ruby-io-console ruby-bigdecimal ruby-dev ruby-bundler tzdata
+RUN echo 'gem: --no-document' > ~/.gemrc
+COPY Gemfile ${app_dir}/
+RUN apk --update add --virtual build-dependencies build-base \
+  && bundle install && gem clean \
+  && apk del build-dependencies \
+  && rm -vrf /var/cache/apk/*
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 5. install commander source
