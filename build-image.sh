@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-docker_version=${1:-1.12.1}
-docker_compose_version=${2:-1.8.0}
+docker_version=${1:-1.12.2}
+docker_compose_version=${2:-1.8.1}
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 

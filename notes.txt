@@ -15,8 +15,10 @@ https://github.com/docker/kitematic/wiki/Common-Issues-and-Fixes
 Suggests it might be a anti-virus/security/firewall issue.
 
 Scrolling down a bit it mentioned Edge...
-Tries that
+Tried that
+Nope
 
-Suggestion is to try this terminal command
+Suggestion is to command below in terminal
+Right click on Start menu, open Terminal as Admin, run
 CheckNetIsolation LoopbackExempt -a -n=Microsoft.MicrosoftEdge_8wekyb3d8bbwe
-Tries that
+Still no access
