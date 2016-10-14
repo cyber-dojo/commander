@@ -3,7 +3,7 @@
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to a cyber-dojo commander container.
 # A few commands have to be handled locally.
-# requires: awk, sed, grep
+# requires: awk, sed, grep which are in DockerToolbox quickstart terminal.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

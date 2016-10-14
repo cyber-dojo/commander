@@ -1,0 +1,22 @@
+
+Installed DockerToolbox on Windows 10 Pro laptop.
+Opened Docker Quickstart Terminal
+downloaded cyber-dojo script
+$ ./cyber-dojo up
+
+Trying it on Chrome...YES
+Trying it on Firefox...YES
+Trying it on Opera...YES
+Trying it on Edge... NO
+
+So clearly edge is not giving access to 192.168.99.100
+
+https://github.com/docker/kitematic/wiki/Common-Issues-and-Fixes
+Suggests it might be a anti-virus/security/firewall issue.
+
+Scrolling down a bit it mentioned Edge...
+Tries that
+
+Suggestion is to try this terminal command
+CheckNetIsolation LoopbackExempt -a -n=Microsoft.MicrosoftEdge_8wekyb3d8bbwe
+Tries that
