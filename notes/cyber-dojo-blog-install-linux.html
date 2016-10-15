@@ -1,63 +1,87 @@
 
-<h1>running your own cyber-dojo server on Linux</h1>
+TITLE: running your own cyber-dojo server on Linux
 
-<h2>install docker</h2>
+<h1>install docker</h1>
 <div style="font-size:0.65em;padding:1em;" class="bash"
 >$ sudo curl -sSL https://get.docker.com/ | sh
 </div>
 
+<br/>
 <hr style="border: 1px dashed gray;" />
 
-<h2>install the <b>cyber-dojo</b> shell script</h2>
+<h1>install the <b>cyber-dojo</b> shell script</h1>
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ curl -O https://raw.githubusercontent.com/cyber-dojo/commander/master/cyber-dojo
 $ chmod +x cyber-dojo
 </div>
 
+<br/>
 <hr style="border: 1px dashed gray;" />
 
-<h2 id="up">bring up your cyber-dojo server</h2>
+<h1 id="up">bring up your cyber-dojo server</h1>
 <div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo up
 </div>
 The first time you run this it will download the necessary docker images for your server.<br/>
 Put your server's IP address into your browser.<br/>
 
+<br/>
 <hr style="border: 1px dashed gray;" />
 
-<h2 id="up">bring down your cyber-dojo server</h2>
+<h1 id="up">bring down your cyber-dojo server</h1>
 <div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo down
 </div>
 
+<br/>
 <hr style="border: 1px dashed gray;" />
 
-<h2>pre-pulling language images</h2>
+<h1>pre-pulling <em>all</em> the language images</h1>
 
-Each practice session is associated with a given language and test framework
-(eg C# and NUnit). If the server has not yet pulled its
-associated docker-image (eg cyberdojofoundation/csharp_nunit) it will pull it.<br/>
+Each practice session is associated with a given language and
+test framework, eg (C#,NUnit).<br/>
 
-ADD INSPECT HERE SO YOU CAN SEE WHAT WILL BE PULLED<br/>
-ADD HOW TO PULL ONE IMAGE<br/>
-
-If you want to pre-pull <em>all</em> docker-images named in a
-<a href="http://blog.cyber-dojo.org/2016/08/creating-your-own-start-points.html">start-point</a>
-onto the web server use the [start-point pull] command.
-
+To pre-pull all the images (this will take a while), type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ sudo ./cyber-dojo start-point pull languages
-PULLING cyberdojofoundation/nasm_assert (Asm, assert)
-...
-PULLING cyberdojofoundation/bcpl_all_tests_passed (BCPL, all_tests_passed)
-...
-PULLING cyberdojofoundation/bash_unit (Bash, bash_unit)
-...
-PULLING cyberdojofoundation/clang_cgreen (C (clang), Cgreen)
-...
 </div>
 
+<br/>
 <hr style="border: 1px dashed gray;" />
 
-<h2>problems?</h2>
+<h1>pre-pulling an <em>individual</em> language image</h1>
+To display the names of all the languages, test-frameworks, and images, type:
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ sudo ./cyber-dojo start-point inspect languages
+</div>
+For example:
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>MAJOR_NAME      MINOR_NAME         IMAGE_NAME                                             PULLED?
+Asm             assert             cyberdojofoundation/nasm_assert                        no
+BCPL            all_tests_passed   cyberdojofoundation/bcpl_all_tests_passed              no
+Bash            bash_unit          cyberdojofoundation/bash_unit                          no
+Bash            shunit2            cyberdojofoundation/bash_shunit2                       no
+C (clang)       Cgreen             cyberdojofoundation/clang_cgreen                       no
+C (clang)       assert             cyberdojofoundation/clang_assert                       no
+C (gcc)         Cgreen             cyberdojofoundation/gcc_cgreen                         no
+C (gcc)         CppUTest           cyberdojofoundation/gcc_cpputest                       no
+C (gcc)         Unity              cyberdojofoundation/gcc_unity                          no
+C (gcc)         assert             cyberdojofoundation/gcc_assert                         no
+C#              Moq                cyberdojofoundation/csharp_moq                         no
+C#              NUnit              cyberdojofoundation/csharp_nunit                       no
+C#              SpecFlow           cyberdojofoundation/csharp_specflow                    no
+C++ (clang++)   Cgreen             cyberdojofoundation/clangpp_cgreen                     no
+C++ (clang++)   GoogleMock         cyberdojofoundation/clangpp_googlemock                 no
+C++ (clang++)   GoogleTest         cyberdojofoundation/clangpp_googletest                 no
+...
+</div>
+Then pull your chosen image name. For example, type:
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ sudo docker pull cyberdojofoundation/csharp_nunit
+</div>
+
+<br/>
+<hr style="border: 1px dashed gray;" />
+
+<h1>problems?</h1>
 
 <ul>
 <li>Some cyberdojo images are docker-version-sensitive.</li>
