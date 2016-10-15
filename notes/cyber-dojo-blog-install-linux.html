@@ -2,6 +2,7 @@
 TITLE: running your own cyber-dojo server on Linux
 
 <h1>install docker</h1>
+In a terminal, type:
 <div style="font-size:0.65em;padding:1em;" class="bash"
 >$ sudo curl -sSL https://get.docker.com/ | sh
 </div>
@@ -10,6 +11,7 @@ TITLE: running your own cyber-dojo server on Linux
 <hr style="border: 1px dashed gray;" />
 
 <h1>install the <b>cyber-dojo</b> shell script</h1>
+In a terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ curl -O https://raw.githubusercontent.com/cyber-dojo/commander/master/cyber-dojo
 $ chmod +x cyber-dojo
@@ -19,29 +21,25 @@ $ chmod +x cyber-dojo
 <hr style="border: 1px dashed gray;" />
 
 <h1>bring up your cyber-dojo server</h1>
+In a terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo up
 </div>
 The first time you run this it will download the necessary docker images for your server.<br/>
 Put your server's IP address into your browser.<br/>
-That's it!
+That's it!<br/>
 
+<br/>
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1>pre-pull <em>all</em> the language+test images</h1>
+<h1>pre-pull an <em>individual</em> language+test image?</h1>
 
-Pre-pulling a language+test image speeds up setting up a practice-session
-since the server does not have to pull it.
-To pre-pull all the images (this will take a while), type:
-<div style="font-size:0.75em;padding:1em;" class="bash"
->$ sudo ./cyber-dojo start-point pull languages
-</div>
+The first time you setup a practice-session for a given language and test framework
+(eg C#, NUnit) the server will pull its docker image.
+This can take a few minutes depending on your network connection.
+You can pre-pull images to avoid this delay.<br/>
 
-<br/>
-<hr style="border: 1px dashed gray;" />
-
-<h1>pre-pull an <em>individual</em> language+test image</h1>
-To display all the language+test image names, type:
+To display all the language+test image names, in a terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ sudo ./cyber-dojo start-point inspect languages
 </div>
@@ -66,9 +64,19 @@ C++ (clang++)   GoogleMock         cyberdojofoundation/clangpp_googlemock       
 C++ (clang++)   GoogleTest         cyberdojofoundation/clangpp_googletest                 no
 ...
 </div>
-Then pull your chosen image name. For example, type:
+Then pull your chosen image name. For example, in a terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ sudo docker pull cyberdojofoundation/csharp_nunit
+</div>
+
+<br/>
+<hr style="border: 1px dashed gray;" />
+
+<h1>pre-pull <em>all</em> the language+test images?</h1>
+
+This will take a while. In a terminal, type:
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ sudo ./cyber-dojo start-point pull languages
 </div>
 
 <br/>
@@ -78,7 +86,7 @@ Then pull your chosen image name. For example, type:
 
 <ul>
 <li>Some cyberdojo images are docker-version-sensitive.</li>
-<li>To determine the version of docker running, type:
+<li>To determine the version of docker running, in a terminal, type:
 <div style="font-size:0.65em;padding:1em;" class="bash"
 >$ sudo docker --version
 </div>
@@ -93,6 +101,7 @@ please upgrade docker or <a href="mailto:jon@jaggersoft.com">email me</a>.
 <hr style="border: 1px dashed gray;" />
 
 <h1>bring down your cyber-dojo server</h1>
+In a terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo down
 </div>
 

@@ -13,7 +13,7 @@ From <a href="https://www.docker.com/products/docker-toolbox">here</a>.<br/>
 <hr style="border: 1px dashed gray;" />
 
 <h1>install the <b>cyber-dojo</b> shell script</h1>
-In the Docker-Quickstart-Terminal
+In the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ curl -O https://raw.githubusercontent.com/cyber-dojo/commander/master/cyber-dojo
 $ chmod +x cyber-dojo
@@ -23,7 +23,7 @@ $ chmod +x cyber-dojo
 <hr style="border: 1px dashed gray;" />
 
 <h1>bring up your cyber-dojo server</h1>
-In the Docker-Quickstart-Terminal
+In the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo up
 </div>
 The first time you run this it will download the necessary docker images for your server.<br/>
@@ -38,30 +38,24 @@ To find your server's IP address, in the Docker-Quickstart-Terminal, type:
 </div>
 Put your server's IP address (eg 192.168.99.100) into your browser's address bar.<br/>
 That's it!<br/>
+<br/>
 This works in <a href="https://www.google.co.uk/chrome/browser/desktop/index.html">Chrome</a>,
 in <a href="https://www.mozilla.org/firefox/new/">Firefox</a>,
 in <a href="http://www.opera.com/">Opera</a>,
 and in <a href="https://www.microsoft.com/download/internet-explorer.aspx">Internet Explorer</a>.
 Edge sometimes <a href="https://github.com/docker/kitematic/wiki/Common-Issues-and-Fixes">has problems</a>.
-<hr style="border: 1px dashed gray;" />
-
 <br/>
-<hr style="border: 1px dashed gray;" />
-
-<h1>pre-pull <em>all</em> the language+test images</h1>
-
-Pre-pulling a language+test image speeds up setting up a practice-session
-since the server does not have to pull it.
-To pre-pull all the images (this will take a while),
-in the Docker-Quickstart-Terminal, type:
-<div style="font-size:0.75em;padding:1em;" class="bash"
->$ ./cyber-dojo start-point pull languages
-</div>
-
 <br/>
+
 <hr style="border: 1px dashed gray;" />
 
-<h1>pre-pull an <em>individual</em> language+test image</h1>
+<h1>pre-pull an <em>individual</em> language+test image?</h1>
+
+The first time you setup a practice-session for a given language and test framework
+(eg C#, NUnit) the server will pull its docker image.
+This can take a few minutes depending on your network connection.
+You can pre-pull images to avoid this delay.<br/>
+
 To display all the language+test image names,
 in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
@@ -92,6 +86,16 @@ Then pull your chosen image name. For example,
 in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ docker pull cyberdojofoundation/csharp_nunit
+</div>
+
+<br/>
+<hr style="border: 1px dashed gray;" />
+
+<h1>pre-pull <em>all</em> the language+test images?</h1>
+
+This will take a while. In the Docker-Quickstart-Terminal, type:
+<div style="font-size:0.75em;padding:1em;" class="bash"
+>$ ./cyber-dojo start-point pull languages
 </div>
 
 <br/>
