@@ -9,7 +9,7 @@ Trying it on Firefox...YES
 Trying it on Opera...YES
 Trying it on Edge... NO
 
-So clearly edge is not giving access to 192.168.99.100
+So it seems edge is not giving access to 192.168.99.100
 
 https://github.com/docker/kitematic/wiki/Common-Issues-and-Fixes
 Suggests it might be a anti-virus/security/firewall issue.
@@ -18,7 +18,7 @@ Scrolling down a bit it mentioned Edge...
 Tried that
 Nope
 
-Suggestion is to command below in terminal
+Suggestion is to try command below in terminal
 Right click on Start menu, open Terminal as Admin, run
-CheckNetIsolation LoopbackExempt -a -n=Microsoft.MicrosoftEdge_8wekyb3d8bbwe
-Still no access
+$ CheckNetIsolation LoopbackExempt -a -n=Microsoft.MicrosoftEdge_8wekyb3d8bbwe
+Nope. Still no access
