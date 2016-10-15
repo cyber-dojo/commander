@@ -7,7 +7,7 @@ From <a href="https://www.docker.com/products/docker-toolbox">here</a>.<br/>
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1>open a Docker Quickstart Terminal</h1>
+<h1>open a Docker-Quickstart-Terminal</h1>
 
 <br/>
 <hr style="border: 1px dashed gray;" />
@@ -22,7 +22,8 @@ $ chmod +x cyber-dojo
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1 id="up">bring up your cyber-dojo server</h1>
+<h1>bring up your cyber-dojo server</h1>
+
 In the Docker-Quickstart-Terminal
 <div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo up
 </div>
@@ -32,29 +33,21 @@ This may take several minutes depending on your network connection.<br/>
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1 id="up">access the server via a browser</h1>
+<h1>access the server via a browser</h1>
 
 To find your server's IP address, in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash">$ docker-machine ip default
 </div>
 Put your server's IP address (eg 192.168.99.100) into your browser's address bar.<br/>
+That's it!
 
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1 id="up">bring down your cyber-dojo server</h1>
-In the Docker-Quickstart-Terminal
-<div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo down
-</div>
+<h1>pre-pull <em>all</em> the language+test images</h1>
 
-<br/>
-<hr style="border: 1px dashed gray;" />
-
-<h1>pre-pulling <em>all</em> the language images</h1>
-
-Each practice session is associated with a given language and
-test framework, eg (C#,NUnit).<br/>
-
+Pre-pulling a language+test image speeds up setting up a practice-session
+since the server does not have to pull it.
 To pre-pull all the images (this will take a while),
 in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
@@ -64,8 +57,8 @@ in the Docker-Quickstart-Terminal, type:
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1>pre-pulling an <em>individual</em> language image</h1>
-To display the names of all the languages, test-frameworks, and images,
+<h1>pre-pull an <em>individual</em> language+test image</h1>
+To display all the language+test image names,
 in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ ./cyber-dojo start-point inspect languages
@@ -84,7 +77,7 @@ C (gcc)         CppUTest           cyberdojofoundation/gcc_cpputest             
 C (gcc)         Unity              cyberdojofoundation/gcc_unity                          no
 C (gcc)         assert             cyberdojofoundation/gcc_assert                         no
 C#              Moq                cyberdojofoundation/csharp_moq                         no
-C#              NUnit              cyberdojofoundation/csharp_nunit                       no
+C#              NUnit              <b>cyberdojofoundation/csharp_nunit</b>                       no
 C#              SpecFlow           cyberdojofoundation/csharp_specflow                    no
 C++ (clang++)   Cgreen             cyberdojofoundation/clangpp_cgreen                     no
 C++ (clang++)   GoogleMock         cyberdojofoundation/clangpp_googlemock                 no
@@ -104,7 +97,7 @@ in the Docker-Quickstart-Terminal, type:
 
 <ul>
 <li>Some cyberdojo images are docker-version-sensitive.</li>
-<li>To determine the version of docker running, in the Docker Quickstart Terminal, type:
+<li>To determine the version of docker running, in the Docker-Quickstart-Terminal, type:
 <div style="font-size:0.65em;padding:1em;" class="bash"
 >$ docker --version
 </div>
@@ -114,6 +107,14 @@ in the Docker-Quickstart-Terminal, type:
 please upgrade Docker Toolbox for Mac or <a href="mailto:jon@jaggersoft.com">email me</a>.
 </li>
 </ul>
+
+<br/>
+<hr style="border: 1px dashed gray;" />
+
+<h1>bring down your cyber-dojo server</h1>
+In the Docker-Quickstart-Terminal
+<div style="font-size:0.75em;padding:1em;" class="bash">$ ./cyber-dojo down
+</div>
 
 <br/>
 <br/>

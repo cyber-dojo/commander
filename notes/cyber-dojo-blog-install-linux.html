@@ -18,27 +18,20 @@ $ chmod +x cyber-dojo
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1 id="up">bring up your cyber-dojo server</h1>
+<h1>bring up your cyber-dojo server</h1>
 <div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo up
 </div>
 The first time you run this it will download the necessary docker images for your server.<br/>
 Put your server's IP address into your browser.<br/>
+That's it!
 
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1 id="up">bring down your cyber-dojo server</h1>
-<div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo down
-</div>
+<h1>pre-pull <em>all</em> the language+test images</h1>
 
-<br/>
-<hr style="border: 1px dashed gray;" />
-
-<h1>pre-pulling <em>all</em> the language images</h1>
-
-Each practice session is associated with a given language and
-test framework, eg (C#,NUnit).<br/>
-
+Pre-pulling a language+test image speeds up setting up a practice-session
+since the server does not have to pull it.
 To pre-pull all the images (this will take a while), type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ sudo ./cyber-dojo start-point pull languages
@@ -47,8 +40,8 @@ To pre-pull all the images (this will take a while), type:
 <br/>
 <hr style="border: 1px dashed gray;" />
 
-<h1>pre-pulling an <em>individual</em> language image</h1>
-To display the names of all the languages, test-frameworks, and images, type:
+<h1>pre-pull an <em>individual</em> language+test image</h1>
+To display all the language+test image names, type:
 <div style="font-size:0.75em;padding:1em;" class="bash"
 >$ sudo ./cyber-dojo start-point inspect languages
 </div>
@@ -66,7 +59,7 @@ C (gcc)         CppUTest           cyberdojofoundation/gcc_cpputest             
 C (gcc)         Unity              cyberdojofoundation/gcc_unity                          no
 C (gcc)         assert             cyberdojofoundation/gcc_assert                         no
 C#              Moq                cyberdojofoundation/csharp_moq                         no
-C#              NUnit              cyberdojofoundation/csharp_nunit                       no
+C#              NUnit              <b>cyberdojofoundation/csharp_nunit</b>                       no
 C#              SpecFlow           cyberdojofoundation/csharp_specflow                    no
 C++ (clang++)   Cgreen             cyberdojofoundation/clangpp_cgreen                     no
 C++ (clang++)   GoogleMock         cyberdojofoundation/clangpp_googlemock                 no
@@ -95,6 +88,13 @@ Then pull your chosen image name. For example, type:
 please upgrade docker or <a href="mailto:jon@jaggersoft.com">email me</a>.
 </li>
 </ul>
+
+<br/>
+<hr style="border: 1px dashed gray;" />
+
+<h1>bring down your cyber-dojo server</h1>
+<div style="font-size:0.75em;padding:1em;" class="bash">$ sudo ./cyber-dojo down
+</div>
 
 <br/>
 <br/>
