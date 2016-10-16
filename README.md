@@ -6,3 +6,4 @@ cyberdojo/commander is the image that the [cyber-dojo](http://cyber-dojo.org) sh
 Embedded within cyberdojo/commander are docker and docker-compose, together with the
 docker-compose.yml file which launches the [web](https://github.com/cyber-dojo/web) server.
 
+The update commands is not yet implemented.
