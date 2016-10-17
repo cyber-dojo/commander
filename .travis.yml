@@ -10,10 +10,6 @@ env:
         - DOCKER_ENGINE_VERSION=1.12.2
         - DOCKER_COMPOSE_VERSION=1.8.1
 
-after_success:
-    - docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
-    - docker push cyberdojo/commander:${DOCKER_ENGINE_VERSION}
-
 before_install:
     # list docker-engine versions
     - apt-cache madison docker-engine
@@ -30,3 +26,7 @@ script:
     - ./build-image.sh ${DOCKER_ENGINE_VERSION} ${DOCKER_COMPOSE_VERSION}
     - cd test/sh && ./run.sh
     - docker run --rm cyberdojo/commander:${DOCKER_ENGINE_VERSION} sh -c 'cd test/rb && ./run.sh'
+
+after_success:
+    - docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
+    - docker push cyberdojo/commander:${DOCKER_ENGINE_VERSION}
