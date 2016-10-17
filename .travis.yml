@@ -3,8 +3,6 @@ sudo: required
 services:
   - docker
 
-language: ruby
-
 env:
     global:
         - DOCKER_ENGINE_VERSION=1.12.2
