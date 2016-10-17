@@ -92,14 +92,24 @@ running_container()
 
 if_update_then_handle_locally()
 {
+  # delegate_to_commander $* has already happened to check command line args
   if [ "$*" = "update" ]; then
-    docker pull ${cyber_dojo_commander} # update commander image
-    delegate_to_commander $*            # update other images
+    # update commander image
+    docker pull ${cyber_dojo_commander}
+    # update service images: nginx,web,differ,...
+    # by calling directly into cyber-dojo.rb (not cyber-dojo.sh)
+    docker run \
+      --rm \
+      --user=root \
+      --volume=/var/run/docker.sock:/var/run/docker.sock \
+      ${cyber_dojo_commander} \
+      /app/cyber-dojo.rb update-images
+
     # replace myself. See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-    local cid=$(docker create ${cyber_dojo_commander})
-    local new_me=/tmp/cyber-dojo.new
-    docker cp ${cid}:/cyber-dojo ${new_me}
+    local cid=$(docker create --interactive ${cyber_dojo_commander} sh)
+    docker cp ${cid}:/app/cyber-dojo /tmp
     docker rm ${cid} > /dev/null
+    local new_me=/tmp/cyber-dojo
     chmod +x ${new_me}
     cp ${new_me} $0
     rm ${new_me}

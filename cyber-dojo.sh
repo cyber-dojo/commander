@@ -32,7 +32,6 @@ docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 
 cyber_dojo_commander=cyberdojo/commander:${docker_version}
-
 cyber_dojo_hub=cyberdojo
 cyber_dojo_root=/usr/src/cyber-dojo
 
@@ -48,7 +47,6 @@ export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
 
 # set environment variables required by docker-compose.yml
-
 export CYBER_DOJO_WEB_SERVER=${cyber_dojo_hub}/web:${docker_version}
 export CYBER_DOJO_WEB_CONTAINER=cyber-dojo-web
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
@@ -92,7 +90,6 @@ g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
 start_point_create_git()
 {
-  # TODO: cyber-dojo.rb has already been called to check arguments and handle --help
   local name=$1
   local url=$2
   if start_point_exists ${name}; then
@@ -117,7 +114,7 @@ start_point_create_git()
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
   # 4. remove .git repo
-  # NOTE: typicall still leaves [.gitignore .travis.yml README.md]
+  # NOTE: typically still leaves [.gitignore .travis.yml README.md]
   command="docker exec ${g_cid} sh -c 'rm -rf /data/.git'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
@@ -283,6 +280,12 @@ cyber_dojo_up()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "$*" = 'update-images' ]; then
+  # TODO: echo to stderr not stdout
+  echo "FAILED: unknown argument [update-images]"
+  exit_fail
+fi
 
 one_time_creation_of_katas_data_volume
 

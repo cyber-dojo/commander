@@ -85,8 +85,21 @@ def update
     STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
+end
 
-  # cyber-dojo.sh does actual [update]
+def update_images
+  # special command called directly from ./cyber-dojo
+  # I'd like to get these image names directly from docker-compose.yml
+  # but there does not seem to be a simple way to do that :-(
+  images = [
+    'nginx:latest',
+    "web:#{docker_version}",
+    'differ:latest'
+  ]
+  images.each do |name|
+    command = "docker pull cyberdojo/#{name}"
+    run command
+  end
 end
 
 #=========================================================================================
@@ -138,7 +151,6 @@ def down
     STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
-
   # cyber-dojo.sh does actual [down]
 end
 
@@ -168,7 +180,6 @@ def sh
     puts "FAILED: cannot shell in - the web server is not running"
     exit failed
   end
-
   # cyber-dojo.sh does actual [sh]
 end
 
@@ -624,15 +635,16 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 case ARGV[0]
-  when nil            then help
-  when '--help'       then help
-  when 'clean'        then clean
-  when 'down'         then down
-  when 'logs'         then logs
-  when 'sh'           then sh
-  when 'up'           then up
-  when 'update'       then update
-  when 'start-point'  then start_point
+  when nil             then help
+  when '--help'        then help
+  when 'clean'         then clean
+  when 'down'          then down
+  when 'logs'          then logs
+  when 'sh'            then sh
+  when 'up'            then up
+  when 'update'        then update
+  when 'update-images' then update_images
+  when 'start-point'   then start_point
   else
     STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed
