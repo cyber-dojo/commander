@@ -1,5 +1,6 @@
 
 require_relative './lib_test_base'
+require_relative '../../start_point_checker.rb'
 
 class StartPointCheckerTest < LibTestBase
 
@@ -15,7 +16,6 @@ class StartPointCheckerTest < LibTestBase
     assert_equal 5, checker.manifests.size
   end
 
-=begin
   test '112',
   'test_data/custom has no errors' do
     checker = StartPointChecker.new(start_points_path + '/custom')
@@ -476,12 +476,17 @@ class StartPointCheckerTest < LibTestBase
   def is_empty
     'is empty'
   end
-=end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def start_points_path
     File.expand_path(File.dirname(__FILE__)) + '/example_start_points'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def test_id
+    ENV['DIFFER_TEST_ID']
   end
 
 end
