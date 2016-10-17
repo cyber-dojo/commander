@@ -31,7 +31,7 @@ Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_Unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_Unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [unknown]"
   ${exe} start-point unknown >${stdoutF} 2>${stderrF}

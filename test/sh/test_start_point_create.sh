@@ -32,7 +32,7 @@ NAME must be at least two letters long"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_first_letter_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_first_letter_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: +bad is an illegal NAME"
   ${exe} start-point create +bad >${stdoutF} 2>${stderrF}
@@ -44,7 +44,7 @@ test_start_point_create_IllegalName_first_letter_prints_terse_msg_to_stderr_and_
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_second_letter_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_second_letter_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: b+ad is an illegal NAME"
   ${exe} start-point create b+ad >${stdoutF} 2>${stderrF}
@@ -56,7 +56,7 @@ test_start_point_create_IllegalName_second_letter_prints_terse_msg_to_stderr_and
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_IllegalName_one_letter_name_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_IllegalName_one_letter_name_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: b is an illegal NAME"
   ${exe} start-point create b >${stdoutF} 2>${stderrF}
@@ -68,7 +68,7 @@ test_start_point_create_IllegalName_one_letter_name_prints_terse_msg_to_stderr_a
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_UnknownArg_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_UnknownArg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [--where]"
   local name=jj
@@ -81,7 +81,7 @@ test_start_point_create_name_UnknownArg_prints_terse_msg_to_stderr_and_exits_non
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_UnknownArgs_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_UnknownArgs_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [--where]
 FAILED: unknown argument [--there]"
@@ -95,7 +95,7 @@ FAILED: unknown argument [--there]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_DirAndGit_args_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_name_DirAndGit_args_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: specify --git=... OR --dir=... but not both"
   local name=jj
@@ -124,7 +124,7 @@ test_start_point_create_fromGitRepoWithNewName_prints_nothing_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_fromGitRepoButNameExists_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_fromGitRepoButNameExists_prints_msg_to_stderr_and_exits_non_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -144,7 +144,7 @@ test_start_point_create_fromGitRepoButNameExists_prints_terse_msg_to_stderr_and_
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_fromDirWithBadContent_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_create_fromDirWithBadContent_prints_msg_to_stderr_and_exits_non_zero()
 {
   local bad_dir=./../rb/example_start_points/bad_custom
   ${exe} start-point create bad --dir=${bad_dir} >${stdoutF} 2>${stderrF}

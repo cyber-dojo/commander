@@ -34,7 +34,7 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_AbsentStartPoint_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_inspect_AbsentStartPoint_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: absent does not exist.'
   ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
@@ -46,7 +46,7 @@ test_start_point_inspect_AbsentStartPoint_prints_terse_msg_to_stderr_and_exits_n
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_PresentButNotStartPoint_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_inspect_PresentButNotStartPoint_prints_msg_to_stderr_and_exits_non_zero()
 {
   docker volume create --name notStartPoint > /dev/null
   local expectedStderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
@@ -60,7 +60,7 @@ test_start_point_inspect_PresentButNotStartPoint_prints_terse_msg_to_stderr_and_
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_ExtraArg_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_start_point_inspect_ExtraArg_prints_msg_to_stderr_and_exits_non_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   local expectedStderr='FAILED: unknown argument [extraArg]'

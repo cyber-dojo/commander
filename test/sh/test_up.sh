@@ -57,7 +57,7 @@ Creates and starts the cyber-dojo server using named/default start-points
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_up_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [salmon]"
   ${exe} up salmon >${stdoutF} 2>${stderrF}
@@ -69,7 +69,7 @@ test_up_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_unknowns_prints_terse_msg_to_left_of_equal_to_stderr_and_exits_non_zero()
+test_up_unknowns_prints_msg_to_left_of_equal_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [--spey]
 FAILED: unknown argument [--tay]"
@@ -82,7 +82,7 @@ FAILED: unknown argument [--tay]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missingLanguages_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_missingLanguages_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: missing argument value --languages=[???]'
   ${exe} up --languages= >${stdoutF} 2>${stderrF}
@@ -94,7 +94,7 @@ test_up_missingLanguages_prints_terse_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missingCustom_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_missingCustom_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: missing argument value --custom=[???]'
   ${exe} up --custom= >${stdoutF} 2>${stderrF}
@@ -106,7 +106,7 @@ test_up_missingCustom_prints_terse_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missingExercises_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_missingExercises_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: missing argument value --exercises=[???]'
   ${exe} up --exercises= >${stdoutF} 2>${stderrF}
@@ -118,7 +118,7 @@ test_up_missingExercises_prints_terse_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_namedLanguagesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_namedLanguagesDoesNotExist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: start-point notExist does not exist'
   ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
@@ -130,7 +130,7 @@ test_up_namedLanguagesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero(
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_namedCustomDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_namedCustomDoesNotExist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: start-point notExist does not exist'
   ${exe} up --custom=notExist >${stdoutF} 2>${stderrF}
@@ -142,7 +142,7 @@ test_up_namedCustomDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_namedExercisesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_namedExercisesDoesNotExist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expectedStderr='FAILED: start-point notExist does not exist'
   ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
@@ -154,7 +154,7 @@ test_up_namedExercisesDoesNotExist_prints_terse_msg_to_sterr_and_exits_non_zero(
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_namedExercisesIsNotExerciseType_prints_terse_msg_to_sterr_and_exits_non_zero()
+test_up_namedExercisesIsNotExerciseType_prints_msg_to_sterr_and_exits_non_zero()
 {
   local url=https://github.com/cyber-dojo/start-points-custom.git
   ${exe} start-point create jj --git=${url} >${stdoutF} 2>${stderrF}

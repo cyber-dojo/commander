@@ -17,7 +17,7 @@ Updates all cyber-dojo docker images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_update_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expectedStderr="FAILED: unknown argument [unknown]"
   ${exe} update unknown >${stdoutF} 2>${stderrF}
@@ -29,7 +29,7 @@ test_update_unknown_prints_terse_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_update_images_prints_terse_msg_to_stderr_and_exits_non_zero()
+test_update_images_prints_msg_to_stderr_and_exits_non_zero()
 {
   # update-images is only callable indirectly via
   # ./cyber-dojo update
