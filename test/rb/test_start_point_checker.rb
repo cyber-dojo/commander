@@ -455,12 +455,6 @@ class StartPointCheckerTest < LibTestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def start_points_path
-    File.expand_path(File.dirname(__FILE__)) + '/example_start_points'
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   def any_bad_json
     'xxx'
   end
@@ -483,5 +477,11 @@ class StartPointCheckerTest < LibTestBase
     'is empty'
   end
 =end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def start_points_path
+    File.expand_path(File.dirname(__FILE__)) + '/example_start_points'
+  end
 
 end

@@ -38,9 +38,8 @@ test_update_images_prints_terse_msg_to_stderr_and_exits_non_zero()
   ${exe} update-images >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
-  echo "??? ECHO TO STDERR ????"
-  assertNoStderr
-  assertEqualsStdout "${expectedStderr}"
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

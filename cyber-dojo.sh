@@ -283,7 +283,7 @@ cyber_dojo_up()
 
 if [ "$*" = 'update-images' ]; then
   # TODO: echo to stderr not stdout
-  echo "FAILED: unknown argument [update-images]"
+  echo "FAILED: unknown argument [update-images]" >&2
   exit_fail
 fi
 
