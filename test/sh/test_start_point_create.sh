@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Some of these tests will fail
+#   o) if you do not have a network connection
+#   o) if github is down
+
 . ./cyber_dojo_helpers.sh
 
 test_start_point_create_Help_prints_use_to_stdout_and_exits_zero()
@@ -125,6 +129,8 @@ test_start_point_create_fromGitRepoButNameExists_prints_terse_msg_to_stderr_and_
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
   ${exe} start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  assertTrue ${exit_status}
 
   local expectedStderr="FAILED: a start-point called ${name} already exists"
   ${exe} start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
@@ -134,6 +140,22 @@ test_start_point_create_fromGitRepoButNameExists_prints_terse_msg_to_stderr_and_
   assertEqualsStderr "${expectedStderr}"
 
   ${exe} start-point rm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_start_point_create_fromDirWithBadContent_prints_terse_msg_to_stderr_and_exits_non_zero()
+{
+  local bad_dir=./../rb/example_start_points/bad_custom
+  ${exe} start-point create bad --dir=${bad_dir} >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  # TODO: lose /data/ from output?
+  # TODO: secretly pass host path to commander?
+  local expectedStderr="FAILED...
+/data/Tennis/C#/manifest.json: Xfilename_extension: unknown key"
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expectedStderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
