@@ -1,7 +1,7 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # I'd like to set cpu/memory/swap limits on the test-run containers
-# and the web server containers independently.
+# and the app containers independently.
 # This appears to be impossible so I have to try to get some kind
 # of compromise; I don't want to limit the web-server but I do want
 # to limit the test-containers. However if the limits are too low
@@ -25,8 +25,8 @@ nginx:
 
 web:
   user: cyber-dojo
-  image: ${CYBER_DOJO_WEB_SERVER}
-  container_name: ${CYBER_DOJO_WEB_CONTAINER}
+  image: cyberdojo/web:${DOCKER_VERSION}
+  container_name: cyber-dojo-web
   cpu_shares: 512
   mem_limit: 2G
   memswap_limit: 2G

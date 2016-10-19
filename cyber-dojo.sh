@@ -47,10 +47,9 @@ export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
 
 # set environment variables required by docker-compose.yml
-export CYBER_DOJO_WEB_SERVER=${cyber_dojo_hub}/web:${docker_version}
-export CYBER_DOJO_WEB_CONTAINER=cyber-dojo-web
-export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
+export DOCKER_VERSION=${docker_version}
 export CYBER_DOJO_ROOT=${cyber_dojo_root}
+export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -60,7 +59,8 @@ one_time_creation_of_katas_data_volume()
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
   # It doesn't do that any more. If you want to upgrade an older server
-  # have a look at test/notes/copy_katas_into_data_container.sh in the web repo
+  # have a look at test/notes/copy_katas_into_data_container.sh in
+  # https://github.com/cyber-dojo/web
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
     CONTEXT_DIR=.
