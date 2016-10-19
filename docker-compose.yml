@@ -13,6 +13,7 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 nginx:
+  user: nobody
   image: cyberdojo/nginx
   container_name: cyber-dojo-nginx
   cpu_shares: 256
