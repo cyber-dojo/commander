@@ -98,7 +98,8 @@ def update_images
   ]
   images.each do |name|
     command = "docker pull cyberdojo/#{name}"
-    run command
+    # use system() so pulls are visible in terminal
+    system(command)
   end
 end
 

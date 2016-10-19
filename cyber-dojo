@@ -94,6 +94,8 @@ if_update_then_handle_locally()
 {
   # delegate_to_commander $* has already happened to check command line args
   if [ "$*" = "update" ]; then
+    # shut down containers run from the old images whilst old-images still exist
+    delegate_to_commander 'down'
     # update commander image
     docker pull ${cyber_dojo_commander}
     # update service images: nginx,web,differ,...
@@ -104,6 +106,8 @@ if_update_then_handle_locally()
       --volume=/var/run/docker.sock:/var/run/docker.sock \
       ${cyber_dojo_commander} \
       /app/cyber-dojo.rb update-images
+    # bring up new server
+    delegate_to_commander 'up'
 
     # replace myself. See https://bani.com.br/2013/04/shell-script-that-updates-itself/
     local cid=$(docker create --interactive ${cyber_dojo_commander} sh)
