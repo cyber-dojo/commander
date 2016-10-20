@@ -282,7 +282,6 @@ cyber_dojo_up()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$*" = 'update-images' ]; then
-  # TODO: echo to stderr not stdout
   echo "FAILED: unknown argument [update-images]" >&2
   exit_fail
 fi
@@ -309,7 +308,7 @@ if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
   fi
 fi
 
-if [ "$*" = 'up' ]; then
+if [ "$1" = 'up' ] && [ "$2" != '--help' ]; then
   shift # up
   cyber_dojo_up "$@"
 fi
