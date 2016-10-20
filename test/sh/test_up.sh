@@ -191,7 +191,7 @@ test_up_customStartPoint_prints_msg_saying_its_being_used_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-custom.git"
-  ${exe} start-point create ${name} --git=${url} # >${stdoutF} 2>${stderrF}
+  ${exe} start-point create ${name} --git=${url}
   local exit_status=$?
   assertTrue ${exit_status}
   ${exe} up --custom=${name} >${stdoutF} 2>${stderrF}
