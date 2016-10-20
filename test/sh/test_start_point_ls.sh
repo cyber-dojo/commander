@@ -78,6 +78,8 @@ test_start_point_ls_prints_heading_and_names_and_exits_zero()
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
   ${exe} start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  assertTrue ${exit_status}
 
   local expectedStdoutHeading='NAME   TYPE        SRC'
   local expectedStdoutLine='jj     exercises   https://github.com/cyber-dojo/start-points-exercises.git'
@@ -86,12 +88,8 @@ test_start_point_ls_prints_heading_and_names_and_exits_zero()
 
   local exit_status=$?
   assertTrue ${exit_status}
-  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutHeading}"* ]]; then
-    fail "expected stdout to include ${expectedStdoutHeading}"
-  fi
-  if [[ "`cat ${stdoutF}`" != *"${expectedStdoutLine}"* ]]; then
-    fail "expected stdout to include ${expectedStdoutLine}"
-  fi
+  assertStdoutIncludes ${expectedStdoutHeading}
+  assertStdoutIncludes ${expectedStdoutLine}
   assertNoStderr
 
   ${exe} start-point rm ${name}

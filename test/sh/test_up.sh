@@ -15,13 +15,8 @@ Creating cyber-dojo-nginx"
   ${exe} up >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  local stdout="`cat ${stdoutF}`"
-  if [[ "${stdout}" != *"${expectedStdoutPart1}"* ]]; then
-    fail "expected stdout to include ${expectedStdoutPart1}"
-  fi
-  if [[ "${stdout}" != *"${expectedStdoutPart2}"* ]]; then
-    fail "expected stdout to include ${expectedStdoutPart2}"
-  fi
+  assertStdoutIncludes "${expectedStdoutPart1}"
+  assertStdoutIncludes "${expectedStdoutPart2}"
   assertNoStderr
 }
 
@@ -172,13 +167,10 @@ test_up_prints_msg_naming_default_start_points_exits_zero()
   ${exe} up >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  local expectedStdout="Using start-point --languages=languages
+  local expected_stdout="Using start-point --languages=languages
 Using start-point --exercises=exercises
 Using start-point --custom=custom"
-  local stdout="`cat ${stdoutF}`"
-  if [[ "${stdout}" != *"${expectedStdout}"* ]]; then
-    fail "expected stdout to include ${expectedStdout}"
-  fi
+  assertStdoutIncludes ${expected_stdout}
   assertNoStderr
   ${exe} down >${stdoutF} 2>${stderrF}
   local exit_status=$?
@@ -198,13 +190,10 @@ test_up_customStartPoint_prints_msg_saying_its_being_used_exits_zero()
   local exit_status=$?
   assertTrue ${exit_status}
 
-  local expectedStdout="Using start-point --languages=languages
+  local expected_stdout="Using start-point --languages=languages
 Using start-point --exercises=exercises
 Using start-point --custom=${name}"
-  local stdout="`cat ${stdoutF}`"
-  if [[ "${stdout}" != *"${expectedStdout}"* ]]; then
-    fail "expected stdout to include ${expectedStdout}"
-  fi
+  assertStdoutIncludes ${expected_stdout}
   assertNoStderr
   ${exe} down >${stdoutF} 2>${stderrF}
   local exit_status=$?

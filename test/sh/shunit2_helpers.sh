@@ -4,6 +4,15 @@ assertEqualsStderr() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
 assertNoStdout() { assertEqualsStdout ""; }
 assertNoStderr() { assertEqualsStderr ""; }
 
+assertStdoutIncludes()
+{
+  local stdout="`cat ${stdoutF}`"
+  if [[ "${stdout}" != *"${1}"* ]]; then
+    fail "expected stdout to include ${1}"
+  fi
+}
+
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 oneTimeSetUp()
