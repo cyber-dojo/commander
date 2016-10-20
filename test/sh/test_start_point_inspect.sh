@@ -11,8 +11,7 @@ Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
   ${exe} start-point inspect >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -26,8 +25,7 @@ Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
   ${exe} start-point inspect --help >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -38,8 +36,7 @@ test_start_point_inspect_AbsentStartPoint_prints_msg_to_stderr_and_exits_non_zer
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }

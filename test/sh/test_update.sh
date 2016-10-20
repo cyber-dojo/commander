@@ -9,8 +9,7 @@ Use: cyber-dojo update
 
 Updates all cyber-dojo docker images and the cyber-dojo script file"
   ${exe} update --help >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -21,8 +20,7 @@ test_update_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} update unknown >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }
@@ -36,8 +34,7 @@ test_update_images_prints_msg_to_stderr_and_exits_non_zero()
   # after the command line arguments have been checked
   local expected_stderr="FAILED: unknown argument [update-images]"
   ${exe} update-images >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }

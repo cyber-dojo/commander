@@ -19,14 +19,12 @@ Commands:
 
 Run 'cyber-dojo COMMAND --help' for more information on a command."
   ${exe} >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertEqualsStderr ""
   # and with help
   ${exe} --help >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertEqualsStderr ""
 }
@@ -37,8 +35,7 @@ test_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} unknown >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }

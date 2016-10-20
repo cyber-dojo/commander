@@ -11,8 +11,7 @@ Use: cyber-dojo start-point pull NAME
 
 Pulls all the docker images inside the named start-point"
   ${exe} start-point pull >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -26,8 +25,7 @@ Use: cyber-dojo start-point pull NAME
 
 Pulls all the docker images inside the named start-point"
   ${exe} start-point pull --help >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -38,8 +36,7 @@ test_start_point_pull_AbsentStartPoint_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point pull absent >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }

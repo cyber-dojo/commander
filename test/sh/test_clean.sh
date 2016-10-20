@@ -9,8 +9,7 @@ Use: cyber-dojo clean
 
 Removes dangling docker images and exited containers"
   ${exe} clean --help >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -21,8 +20,7 @@ test_clean_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} clean unknown >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertFalse ${exit_status}
+  assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
 }
@@ -32,8 +30,7 @@ test_clean_unknown_prints_msg_to_stderr_and_exits_non_zero()
 test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_exits_zero()
 {
   ${exe} clean >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertTrue ${exit_status}
+  assertTrue $?
   assertNoStdout
   assertNoStderr
   local dangling_images=`docker images --quiet --filter='dangling=true'`
