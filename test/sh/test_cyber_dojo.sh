@@ -4,7 +4,7 @@
 
 test_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
 {
-  local expectedStdout="
+  local expected_stdout="
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
@@ -21,13 +21,13 @@ Run 'cyber-dojo COMMAND --help' for more information on a command."
   ${exe} >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertEqualsStderr ""
   # and with help
   ${exe} --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertEqualsStderr ""
 }
 
@@ -35,12 +35,12 @@ Run 'cyber-dojo COMMAND --help' for more information on a command."
 
 test_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
-  local expectedStderr="FAILED: unknown argument [unknown]"
+  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} unknown >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expectedStderr}"
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

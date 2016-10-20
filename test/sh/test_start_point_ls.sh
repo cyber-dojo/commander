@@ -6,7 +6,7 @@
 
 test_start_point_ls_help_prints_use_to_stdout_and_exits_zero()
 {
-  local expectedStdout="
+  local expected_stdout="
 Use: cyber-dojo start-point [OPTIONS] ls
 
 Lists the names of all cyber-dojo start-points
@@ -15,7 +15,7 @@ Lists the names of all cyber-dojo start-points
   ${exe} start-point ls --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
 
@@ -23,12 +23,12 @@ Lists the names of all cyber-dojo start-points
 
 test_start_point_ls_UnknownArg_prints_msg_to_stderr_exits_non_zero()
 {
-  local expectedStderr='FAILED: unknown argument [salmo]'
+  local expected_stderr='FAILED: unknown argument [salmo]'
   ${exe} start-point ls salmo >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expectedStderr}"
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -61,11 +61,11 @@ test_start_point_ls_quiet_prints_just_names_and_exits_zero()
   local url="${github_cyber_dojo}/start-points-exercises.git"
   ${exe} start-point create ${name} --git=${url} >${stdoutF} 2>${stderrF}
 
-  local expectedStdout='jj'
+  local expected_stdout='jj'
   ${exe} start-point ls --quiet >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 
   ${exe} start-point rm ${name}
@@ -81,15 +81,15 @@ test_start_point_ls_prints_heading_and_names_and_exits_zero()
   local exit_status=$?
   assertTrue ${exit_status}
 
-  local expectedStdoutHeading='NAME   TYPE        SRC'
-  local expectedStdoutLine='jj     exercises   https://github.com/cyber-dojo/start-points-exercises.git'
+  local expected_stdout_heading='NAME   TYPE        SRC'
+  local expected_stdout_line='jj     exercises   https://github.com/cyber-dojo/start-points-exercises.git'
 
   ${exe} start-point ls >${stdoutF} 2>${stderrF}
 
   local exit_status=$?
   assertTrue ${exit_status}
-  assertStdoutIncludes ${expectedStdoutHeading}
-  assertStdoutIncludes ${expectedStdoutLine}
+  assertStdoutIncludes ${expected_stdout_heading}
+  assertStdoutIncludes ${expected_stdout_line}
   assertNoStderr
 
   ${exe} start-point rm ${name}

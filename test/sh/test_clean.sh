@@ -4,14 +4,14 @@
 
 test_clean_help_prints_use_to_stdout_and_exits_zero()
 {
-  local expectedStdout="
+  local expected_stdout="
 Use: cyber-dojo clean
 
 Removes dangling docker images and exited containers"
   ${exe} clean --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
 
@@ -19,30 +19,27 @@ Removes dangling docker images and exited containers"
 
 test_clean_unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
-  local expectedStderr="FAILED: unknown argument [unknown]"
+  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} clean unknown >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expectedStderr}"
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_exits_zero()
 {
-  # Can give the following
-  # Error response from daemon: conflict: unable to delete cfc459985b4b (cannot be forced)
-  #   image is being used by running container a7108a524a4d
   ${exe} clean >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
   assertNoStdout
   assertNoStderr
-  local danglingImages=`docker images --quiet --filter='dangling=true'`
-  assertEquals "" "${danglingImages}"
-  local exitedContainers=`docker ps --all --quiet --filter='status=exited'`
-  assertEquals "" "${exitedContainers}"
+  local dangling_images=`docker images --quiet --filter='dangling=true'`
+  assertEquals "" "${dangling_images}"
+  local exited_containers=`docker ps --all --quiet --filter='status=exited'`
+  assertEquals "" "${exited_containers}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

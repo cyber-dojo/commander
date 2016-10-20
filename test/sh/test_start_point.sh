@@ -4,7 +4,7 @@
 
 test_start_point_Help_prints_use_to_stdout_and_exits_zero()
 {
-  local expectedStdout="
+  local expected_stdout="
 Use: cyber-dojo start-point [COMMAND]
 
 Manage cyber-dojo start-points
@@ -20,12 +20,12 @@ Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
   ${exe} start-point >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertNoStderr
   ${exe} start-point --help >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertTrue ${exit_status}
-  assertEqualsStdout "${expectedStdout}"
+  assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
 
@@ -33,12 +33,12 @@ Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
 
 test_start_point_Unknown_prints_msg_to_stderr_and_exits_non_zero()
 {
-  local expectedStderr="FAILED: unknown argument [unknown]"
+  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} start-point unknown >${stdoutF} 2>${stderrF}
   local exit_status=$?
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expectedStderr}"
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
