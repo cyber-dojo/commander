@@ -183,9 +183,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '942',
-  'invalid display_name is an error' do
+  'display_name not in A,B format is an error' do
     @key = 'display_name'
-    not_in_A_comma_B_format = "not in 'A,B' format"
+    not_in_A_comma_B_format = "not in 'major,minor' format"
     assert_key_error 1               , must_be_a_String
     assert_key_error [ 1 ]           , must_be_a_String
     assert_key_error ''              , not_in_A_comma_B_format
@@ -193,6 +193,16 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error 'one,two,commas', not_in_A_comma_B_format
     assert_key_error ',right only'   , not_in_A_comma_B_format
     assert_key_error 'left only,'    , not_in_A_comma_B_format
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test 'D14',
+  'display_name has an embedded hyphen is an error' do
+    @key = 'display_name'
+    cannot_contain_hypens = 'cannot contain hyphens(-)'
+    assert_key_error 'C-CppUTest, CircularBuffer',  cannot_contain_hypens
+    assert_key_error 'C:CppUTest, Circular-Buffer', cannot_contain_hypens
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
