@@ -209,9 +209,10 @@ class StartPointChecker
     parts = display_name.split(',').select { |part| part.strip != '' }
     unless parts.length == 2
       error "not in 'major,minor' format"
+      return
     end
-    if display_name.include?('-')
-      error 'cannot contain hyphens(-)'
+    if parts[0].include?('-')
+      error "'major,minor' major cannot contain hyphens(-)"
     end
   end
 
