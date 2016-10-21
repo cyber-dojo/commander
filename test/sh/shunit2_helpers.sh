@@ -1,6 +1,7 @@
 
 assertEqualsStdout() { assertEquals 'stdout' "$1" "`cat ${stdoutF}`"; }
 assertEqualsStderr() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
+
 assertNoStdout() { assertEqualsStdout ""; }
 assertNoStderr() { assertEqualsStderr ""; }
 
@@ -11,7 +12,6 @@ assertStdoutIncludes()
     fail "expected stdout to include ${1}"
   fi
 }
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
