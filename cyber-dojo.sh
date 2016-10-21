@@ -1,10 +1,14 @@
 #!/bin/sh
 
-# This file and cyber-dojo.rb combine to run all the cyber-dojo
-# commands except [sh], [update], [start-point create NAME --dir=DIR]
-# The reason it is split across two files is historical, from when
+# This file and cyber-dojo.rb, start_point_inspect.rb, start_point_pull.rb
+# all combine to run all the cyber-dojo commands except
+#   ./cyber-dojo sh
+#   ./cyber-dojo update
+#   ./cyber-dojo start-point create NAME --dir=DIR
+#
+# The reason it is split across several files is historical, from when
 # there was no commander image and you had to install docker-compose.
-# Should be merged into cyber-dojo.rb
+# Could do with consolidating (into cyber-dojo.rb?)
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
