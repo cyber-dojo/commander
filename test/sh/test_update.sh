@@ -41,5 +41,35 @@ test_update_images_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+x_test_update()
+{
+  # this could be a long running test...
+  # Stdout? Stderr? to check
+  local expected_1="Stopping cyber-dojo-nginx ... done
+Stopping cyber-dojo-web ... done
+Stopping cyber-dojo-differ ... done"
+
+  local expected_2="Removing cyber-dojo-nginx ... done
+Removing cyber-dojo-web ... done
+Removing cyber-dojo-differ ... done"
+
+  local expected_3="1.12.2: Pulling from cyberdojo/commander"
+  local expected_4="latest: Pulling from cyberdojo/nginx"
+  local expected_5="1.12.2: Pulling from cyberdojo/web"
+  local expected_6="latest: Pulling from cyberdojo/differ"
+
+  local expected_7="Using start-point --languages=languages
+Using start-point --exercises=exercises
+Using start-point --custom=custom"
+  local expected_8="Creating cyber-dojo-differ
+Creating cyber-dojo-web
+Creating cyber-dojo-nginx"
+
+  #...
+
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 . ./shunit2_helpers.sh
 . ./shunit2
