@@ -4,9 +4,8 @@
 
 # the **cyber-dojo** bash script
 
-The cyber-dojo shell script controls a
-[cyber-dojo](http://cyber-dojo.org) web server.
-It delegates its commands to a docker container created from the
+Controls a [cyber-dojo](http://cyber-dojo.org) web server.
+Delegates its commands to a docker container created from the
 cyberdojo/commander docker image.
 
 ```
@@ -29,5 +28,5 @@ Run 'cyber-dojo COMMAND --help' for more information on a command.
 
 # **cyberdojo/commander** docker image
 
-Embedded within cyberdojo/commander are docker and docker-compose, together with its
+Within cyberdojo/commander are docker and docker-compose, together with its
 docker-compose.yml.
