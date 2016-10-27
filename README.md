@@ -2,11 +2,11 @@
 
 <img src="https://raw.githubusercontent.com/cyber-dojo/nginx/master/images/home_page_logo.png" alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
 
-# the **cyber-dojo** bash script
+# the cyber-dojo bash script
 
 Controls a [cyber-dojo](http://cyber-dojo.org) web server.
-Delegates its commands to a docker container created from the
-cyberdojo/commander docker image.
+Delegates its commands to a docker container created from
+**cyberdojo/commander**.
 
 ```
 $ ./cyber-dojo
@@ -26,7 +26,7 @@ Commands:
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
 
-# **cyberdojo/commander** docker image
+# cyberdojo/commander docker image
 
-Within cyberdojo/commander are docker and docker-compose, together with its
+Installed within **cyberdojo/commander** are docker and docker-compose, together with its
 docker-compose.yml.

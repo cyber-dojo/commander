@@ -14,7 +14,7 @@ Commands:
     logs         Prints the logs from the server
     sh           Shells into the server
     up           Brings up the server
-    update       Updates the server to the latest image
+    update       Updates the server to the latest images
     start-point  Manages cyber-dojo start-points
 
 Run 'cyber-dojo COMMAND --help' for more information on a command."
