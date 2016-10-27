@@ -626,7 +626,7 @@ def help
     tab + 'logs         Prints the logs from the server',
     tab + 'sh           Shells into the server',
     tab + 'up           Brings up the server',
-    tab + 'update       Updates the server to the latest image',
+    tab + 'update       Updates the server to the latest images',
     tab + 'start-point  Manages cyber-dojo start-points',
     '',
     "Run '#{me} COMMAND --help' for more information on a command."
