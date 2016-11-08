@@ -8,7 +8,8 @@ test_up_uses_default_start_points_and_creates_containers()
 Using start-point --exercises=exercises
 Using start-point --custom=custom"
 
-  local expected_stdout_part_2="Creating cyber-dojo-differ
+  local expected_stdout_part_2="Creating cyber-dojo-runner
+Creating cyber-dojo-differ
 Creating cyber-dojo-web
 Creating cyber-dojo-nginx"
 
