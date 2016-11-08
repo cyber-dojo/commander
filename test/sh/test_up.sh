@@ -4,19 +4,15 @@
 
 test_up_uses_default_start_points_and_creates_containers()
 {
-  local expected_stdout_part_1="Using start-point --languages=languages
-Using start-point --exercises=exercises
-Using start-point --custom=custom"
-
-  local expected_stdout_part_2="Creating cyber-dojo-runner
-Creating cyber-dojo-differ
-Creating cyber-dojo-web
-Creating cyber-dojo-nginx"
-
   ${exe} up >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertStdoutIncludes "${expected_stdout_part_1}"
-  assertStdoutIncludes "${expected_stdout_part_2}"
+  assertStdoutIncludes 'Using start-point --languages=languages'
+  assertStdoutIncludes 'Using start-point --exercises=exercises'
+  assertStdoutIncludes 'Using start-point --custom=custom'
+  assertStdoutIncludes 'Creating cyber-dojo-runner'
+  assertStdoutIncludes 'Creating cyber-dojo-differ'
+  assertStdoutIncludes 'Creating cyber-dojo-web'
+  assertStdoutIncludes 'Creating cyber-dojo-nginx'
   assertNoStderr
 }
 
