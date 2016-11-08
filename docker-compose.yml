@@ -25,7 +25,7 @@ nginx:
 
 web:
   user: cyber-dojo
-  image: cyberdojo/web:${DOCKER_VERSION}
+  image: cyberdojo/web
   container_name: cyber-dojo-web
   cpu_shares: 256
   mem_limit: 2G
@@ -43,7 +43,7 @@ web:
 
 runner:
   user: root
-  image: cyberdojo/runner:${DOCKER_VERSION}
+  image: cyberdojo/runner
   container_name: cyber-dojo-runner
   cpu_shares: 256
   mem_limit: 2G
