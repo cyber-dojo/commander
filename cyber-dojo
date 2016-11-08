@@ -47,8 +47,8 @@ if [ $? != 0 ]; then
   exit_fail
 fi
 
-docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
-cyber_dojo_commander=cyberdojo/commander:${docker_version}
+# docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
+cyber_dojo_commander=cyberdojo/commander
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

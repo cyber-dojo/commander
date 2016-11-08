@@ -10,7 +10,7 @@ context_dir=${my_dir}
 docker build \
   --build-arg=DOCKER_VERSION=${docker_version} \
   --build-arg=DOCKER_COMPOSE_VERSION=${docker_compose_version} \
-  --tag=cyberdojo/commander:${docker_version} \
+  --tag=cyberdojo/commander \
   --file=${context_dir}/Dockerfile \
   ${context_dir}
 
