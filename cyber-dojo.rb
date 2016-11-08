@@ -37,7 +37,7 @@ def quoted(s); '"' + s + '"'; end
 
 def docker_version; `docker --version`.split()[2].chomp(','); end
 
-def cyber_dojo_commander; "cyberdojo/commander:#{docker_version}"; end
+def cyber_dojo_commander; "cyberdojo/commander"; end
 
 def web_container_name; 'cyber-dojo-web'; end
 

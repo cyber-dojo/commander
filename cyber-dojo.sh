@@ -33,9 +33,8 @@ debug()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
-docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
 
-cyber_dojo_commander=cyberdojo/commander:${docker_version}
+cyber_dojo_commander=cyberdojo/commander
 cyber_dojo_hub=cyberdojo
 cyber_dojo_root=/usr/src/cyber-dojo
 
@@ -51,7 +50,6 @@ export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
 
 # set environment variables required by docker-compose.yml
-export DOCKER_VERSION=${docker_version}
 export CYBER_DOJO_ROOT=${cyber_dojo_root}
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
