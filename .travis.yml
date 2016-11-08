@@ -14,8 +14,10 @@ before_install:
 script:
     - ./build-image.sh ${DOCKER_ENGINE_VERSION} ${DOCKER_COMPOSE_VERSION}
     - cd test/sh && ./run.sh
-    - docker run --rm cyberdojo/commander:${DOCKER_ENGINE_VERSION} sh -c 'cd test/rb && ./run.sh'
+    - docker run --rm cyberdojo/commander sh -c 'cd test/rb && ./run.sh'
 
 after_success:
-    - docker login --username ${DOCKER_USERNAME} --password ${DOCKER_PASSWORD}
-    - docker push cyberdojo/commander:${DOCKER_ENGINE_VERSION}
+    - if [ "${TRAVIS_BRANCH}" == "master" ]; then
+        docker login --username "${DOCKER_USERNAME}" --password "${DOCKER_PASSWORD}";
+        docker push cyberdojo/commander
+      fi
