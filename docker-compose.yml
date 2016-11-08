@@ -13,7 +13,7 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 nginx:
-  user: nobody
+  user: root
   image: cyberdojo/nginx
   container_name: cyber-dojo-nginx
   cpu_shares: 256
@@ -27,20 +27,32 @@ web:
   user: cyber-dojo
   image: cyberdojo/web:${DOCKER_VERSION}
   container_name: cyber-dojo-web
-  cpu_shares: 512
+  cpu_shares: 256
   mem_limit: 2G
   memswap_limit: 2G
   restart: on-failure
   command: rails server --environment=production
-  links: [ differ ]
+  links: [ differ,runner ]
   ports: [ "3000:3000" ]
   volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
     - ${CYBER_DOJO_START_POINT_LANGUAGES}:${CYBER_DOJO_ROOT}/start_points/languages:ro
     - ${CYBER_DOJO_START_POINT_EXERCISES}:${CYBER_DOJO_ROOT}/start_points/exercises:ro
     - ${CYBER_DOJO_START_POINT_CUSTOM}:${CYBER_DOJO_ROOT}/start_points/custom:ro
   volumes_from:
     - ${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+
+runner:
+  user: root
+  image: cyberdojo/runner:${DOCKER_VERSION}
+  container_name: cyber-dojo-runner
+  cpu_shares: 256
+  mem_limit: 2G
+  memswap_limit: 2G
+  restart: on-failure
+  command: [ "foreman", "start", "-d", "/app" ]
+  ports: [ "4557:4557" ]
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
 
 differ:
   user: nobody
