@@ -85,6 +85,8 @@ def update
   end
 end
 
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def update_images
   # special command called directly from ./cyber-dojo
   # I'd like to get these image names directly from docker-compose.yml
