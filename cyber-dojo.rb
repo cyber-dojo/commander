@@ -35,8 +35,6 @@ def show(lines); lines.each { |line| puts line }; print "\n"; end
 
 def quoted(s); '"' + s + '"'; end
 
-def docker_version; `docker --version`.split()[2].chomp(','); end
-
 def cyber_dojo_commander; "cyberdojo/commander"; end
 
 def web_container_name; 'cyber-dojo-web'; end
@@ -93,7 +91,8 @@ def update_images
   # but there does not seem to be a simple way to do that :-(
   images = [
     'nginx:latest',
-    "web:#{docker_version}",
+    'web:latest',
+    'runner:latest',
     'differ:latest'
   ]
   images.each do |name|
