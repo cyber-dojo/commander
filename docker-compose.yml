@@ -34,7 +34,6 @@ services:
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
-    links: [ "web:cyber-dojo-web" ]
     ports: [ "80:80" ]
 
   web:
