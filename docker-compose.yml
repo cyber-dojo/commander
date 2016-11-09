@@ -71,5 +71,4 @@ services:
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
-    command: [ "foreman", "start", "-d", "/app" ]
 
