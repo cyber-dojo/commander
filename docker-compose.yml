@@ -45,7 +45,6 @@ services:
     memswap_limit: 2G
     restart: on-failure
     command: rails server --environment=production
-    ports: [ "3000:3000" ]
     volumes:
       - languages:${CYBER_DOJO_ROOT}/start_points/languages:ro
       - exercises:${CYBER_DOJO_ROOT}/start_points/exercises:ro
@@ -62,7 +61,6 @@ services:
     memswap_limit: 2G
     restart: on-failure
     command: [ "foreman", "start", "-d", "/app" ]
-    ports: [ "4557:4557" ]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -75,5 +73,4 @@ services:
     memswap_limit: 1G
     restart: on-failure
     command: [ "foreman", "start", "-d", "/app" ]
-    ports: [ "4567:4567" ]
 
