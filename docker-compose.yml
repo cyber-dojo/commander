@@ -60,7 +60,6 @@ services:
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
-    command: [ "foreman", "start", "-d", "/app" ]
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
