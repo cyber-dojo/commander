@@ -44,7 +44,6 @@ services:
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
-    command: rails server --environment=production
     volumes:
       - languages:${CYBER_DOJO_ROOT}/start_points/languages:ro
       - exercises:${CYBER_DOJO_ROOT}/start_points/exercises:ro
