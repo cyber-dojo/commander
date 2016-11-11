@@ -19,7 +19,6 @@ RUN apk update \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 2. install docker-compose
-# https://github.com/marcosnils/compose/blob/master/Dockerfile.run
 
 ARG DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
 RUN apk add --no-cache curl openssl ca-certificates \
@@ -34,13 +33,17 @@ RUN apk add --no-cache curl openssl ca-certificates \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 3. [start-point create NAME --git=URL] requires git clone
-#    [start-point create ...] requires cyber-dojo user to own created volume
-# -D=no password, -H=no home directory
-RUN apk add git \
- && adduser -D -H -u 19661 cyber-dojo
+
+RUN apk add git
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 4. install ruby and gems
+# 4. [start-point create ...] requires cyber-dojo user to own created volume
+#    -D=no password, -H=no home directory
+
+RUN adduser -D -H -u 19661 cyber-dojo
+
+# - - - - - - - - - - - - - - - - - - - - - -
+# 5. install ruby and gems
 
 RUN apk add ruby ruby-irb ruby-io-console ruby-bigdecimal ruby-dev ruby-bundler tzdata
 RUN echo 'gem: --no-document' > ~/.gemrc
@@ -51,7 +54,7 @@ RUN apk --update add --virtual build-dependencies build-base \
   && rm -vrf /var/cache/apk/*
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# 5. install commander source
+# 6. install commander source
 
 ARG HOME_DIR=/app
 RUN mkdir ${HOME_DIR}
