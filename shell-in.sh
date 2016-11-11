@@ -1,6 +1,4 @@
-#!/bin/sh
-
-docker_version=$(docker --version | awk '{print $3}' | sed '$s/.$//')
+#!/bin/bash
 
 docker run \
   --rm \
@@ -8,6 +6,6 @@ docker run \
   --tty \
   --user=root \
   --volume=/var/run/docker.sock:/var/run/docker.sock \
-  cyberdojo/commander:${docker_version} \
+  cyberdojo/commander \
   sh
 
