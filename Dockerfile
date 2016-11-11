@@ -34,7 +34,7 @@ RUN apk add --no-cache curl openssl ca-certificates \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # 3. [start-point create NAME --git=URL] requires git clone
-# [start-point create ...] requires cyber-dojo user to own created volume
+#    [start-point create ...] requires cyber-dojo user to own created volume
 # -D=no password, -H=no home directory
 RUN apk add git \
  && adduser -D -H -u 19661 cyber-dojo
