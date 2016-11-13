@@ -57,6 +57,8 @@ export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
 one_time_creation_of_katas_data_volume()
 {
+  # The katas data-volume is not created as a named volume because
+  # it predates that feature.
   # A previous version of this script detected if /var/www/cyber-dojo/katas
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
