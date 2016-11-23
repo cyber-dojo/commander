@@ -63,7 +63,7 @@ one_time_creation_of_katas_data_volume()
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
   # It doesn't do that any more. If you want to upgrade an older server
-  # have a look at test/notes/copy_katas_into_data_container.sh in
+  # have a look at notes/copy_katas_into_data_container.sh in
   # https://github.com/cyber-dojo/web
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
