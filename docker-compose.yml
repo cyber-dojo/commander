@@ -40,7 +40,7 @@ services:
     user: cyber-dojo
     image: cyberdojo/web
     container_name: cyber-dojo-web
-    cpu_shares: 256
+    cpu_shares: 250
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
@@ -55,9 +55,20 @@ services:
     user: root
     image: cyberdojo/runner
     container_name: cyber-dojo-runner
-    cpu_shares: 256
+    cpu_shares: 250
     mem_limit: 2G
     memswap_limit: 2G
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  collector:
+    user: root
+    image: cyberdojo/collector
+    container_name: cyber-dojo-collector
+    cpu_shares: 24
+    mem_limit: 1G
+    memswap_limit: 1G
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -66,7 +77,7 @@ services:
     user: nobody
     image: cyberdojo/differ
     container_name: cyber-dojo-differ
-    cpu_shares: 256
+    cpu_shares: 250
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
