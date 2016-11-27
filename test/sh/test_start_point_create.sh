@@ -97,8 +97,6 @@ test_start_point_create_name_DirAndGit_args_prints_msg_to_stderr_and_exits_non_z
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-github_cyber_dojo='https://github.com/cyber-dojo'
-
 test_start_point_create_fromGitRepoWithNewName_prints_nothing_and_exits_zero()
 {
   local name=jj
