@@ -95,7 +95,8 @@ def update_images
     'nginx:latest',
     'web:latest',
     'runner:latest',
-    'differ:latest'
+    'differ:latest',
+    'collector:latest'
   ]
   images.each do |name|
     command = "docker pull cyberdojo/#{name}"
