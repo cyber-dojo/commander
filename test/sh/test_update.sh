@@ -41,8 +41,12 @@ test_update_images_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_update_pull_latest_image_for_all_services()
+x_test_update_pull_latest_image_for_all_services()
 {
+  # This test is not turned on.
+  # If it runs then the update will [docker pull] the commander
+  # image from dockerhub which will overwrite the one created by
+  # build.sh and the travis script will repush the old image!
   ${exe} update-images >${stdoutF} 2>${stderrF}
   assertStdoutIncludes "latest: Pulling from cyberdojo/collector"
   assertStdoutIncludes "latest: Pulling from cyberdojo/commander"
