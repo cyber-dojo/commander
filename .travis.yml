@@ -11,6 +11,6 @@ script:
     - chmod +x push.sh
 
     - ./build.sh ${DOCKER_COMPOSE_VERSION}
-    - cd test/sh && ./run.sh
+    - cd test/sh && ./run.sh & cd ../..
     - docker run --rm cyberdojo/commander sh -c 'cd test/rb && ./run.sh'
     - ./push.sh
