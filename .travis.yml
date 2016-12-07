@@ -9,9 +9,5 @@ env:
 script:
     - curl -O https://raw.githubusercontent.com/cyber-dojo/ruby/master/push.sh
     - chmod +x push.sh
-
-    - ./build.sh ${DOCKER_COMPOSE_VERSION}
-    - cd test/sh && ./run.sh & cd ../..
-    - docker run --rm cyberdojo/commander sh -c 'cd test/rb && ./run.sh'
-    - cd ${TRAVIS_BUILD_DIR}
+    - ./pipe_build_up_test.sh ${DOCKER_COMPOSE_VERSION}
     - ./push.sh
