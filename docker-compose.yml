@@ -30,17 +30,15 @@ services:
     user: root
     image: cyberdojo/nginx
     container_name: cyber-dojo-nginx
-    cpu_shares: 256
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
     ports: [ "80:80" ]
 
   web:
-    user: cyber-dojo
+    user: root
     image: cyberdojo/web
     container_name: cyber-dojo-web
-    cpu_shares: 250
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
@@ -48,14 +46,11 @@ services:
       - languages:${CYBER_DOJO_ROOT}/start_points/languages:ro
       - exercises:${CYBER_DOJO_ROOT}/start_points/exercises:ro
       - custom:${CYBER_DOJO_ROOT}/start_points/custom:ro
-    volumes_from:
-      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
 
   runner:
     user: root
     image: cyberdojo/runner
     container_name: cyber-dojo-runner
-    cpu_shares: 250
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
@@ -66,12 +61,23 @@ services:
     user: root
     image: cyberdojo/collector
     container_name: cyber-dojo-collector
-    cpu_shares: 24
+    cpu_shares: 32
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  storer:
+    user: cyber-dojo
+    image: cyberdojo/storer
+    container_name: cyber-dojo-storer
+    environment: [ CYBER_DOJO_KATAS_ROOT=/usr/src/cyber-dojo/katas ]
+    volumes_from:
+      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+    mem_limit: 2G
+    memswap_limit: 2G
+    restart: on-failure
 
   differ:
     user: nobody
@@ -79,7 +85,6 @@ services:
     container_name: cyber-dojo-differ
     read_only: true
     tmpfs: /tmp
-    cpu_shares: 250
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
