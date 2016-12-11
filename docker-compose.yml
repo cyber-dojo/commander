@@ -59,17 +59,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  collector:
-    user: root
-    image: cyberdojo/collector
-    container_name: cyber-dojo-collector
-    cpu_shares: 32
-    mem_limit: 1G
-    memswap_limit: 1G
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
   storer:
     user: cyber-dojo
     image: cyberdojo/storer
@@ -92,3 +81,13 @@ services:
     memswap_limit: 1G
     restart: on-failure
 
+  collector:
+    user: root
+    image: cyberdojo/collector
+    container_name: cyber-dojo-collector
+    cpu_shares: 32
+    mem_limit: 1G
+    memswap_limit: 1G
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
