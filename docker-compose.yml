@@ -77,6 +77,8 @@ services:
     user: nobody
     image: cyberdojo/differ
     container_name: cyber-dojo-differ
+    read_only: true
+    tmpfs: /tmp
     cpu_shares: 250
     mem_limit: 1G
     memswap_limit: 1G
