@@ -51,6 +51,8 @@ services:
     user: root
     image: cyberdojo/runner
     container_name: cyber-dojo-runner
+    read_only: true
+    tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
