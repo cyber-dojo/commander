@@ -53,6 +53,7 @@ x_test_update_pull_latest_image_for_all_services()
   assertStdoutIncludes "latest: Pulling from cyberdojo/differ"
   assertStdoutIncludes "latest: Pulling from cyberdojo/nginx"
   assertStdoutIncludes "latest: Pulling from cyberdojo/runner"
+  assertStdoutIncludes "latest: Pulling from cyberdojo/storer"
   assertStdoutIncludes "latest: Pulling from cyberdojo/web"
 }
 
