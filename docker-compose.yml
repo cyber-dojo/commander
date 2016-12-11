@@ -72,6 +72,7 @@ services:
     user: cyber-dojo
     image: cyberdojo/storer
     container_name: cyber-dojo-storer
+    read_only: true
     environment: [ CYBER_DOJO_KATAS_ROOT=/usr/src/cyber-dojo/katas ]
     volumes_from:
       - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
