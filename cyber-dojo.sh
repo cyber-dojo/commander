@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# This file and cyber-dojo.rb, start_point_inspect.rb, start_point_pull.rb
+# This file and cyber-dojo.rb, start_point_*.rb
 # all combine to run all the cyber-dojo commands except
 #   ./cyber-dojo sh
 #   ./cyber-dojo update
@@ -9,8 +9,6 @@
 # The reason it is split across several files is historical, from when
 # there was no commander image and you had to install docker-compose.
 # Could do with consolidating (into cyber-dojo.rb?)
-
-my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -32,25 +30,22 @@ debug()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 
-cyber_dojo_commander=cyberdojo/commander
 cyber_dojo_hub=cyberdojo
-cyber_dojo_root=/usr/src/cyber-dojo
+cyber_dojo_commander=${cyber_dojo_hub}/commander
+cyber_dojo_home=/app
 
 default_start_point_languages=languages
 default_start_point_exercises=exercises
 default_start_point_custom=custom
 
-# start-points are held off CYBER_DOJO_ROOT/start_points/
-# it's important they are not under app so any ruby files they might contain
-# are *not* slurped by the rails web server as it starts!
+# set environment variables required by docker-compose.yml
+export CYBER_DOJO_HOME=${cyber_dojo_home}
 export CYBER_DOJO_START_POINT_LANGUAGES=${default_start_point_languages}
 export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
-
-# set environment variables required by docker-compose.yml
-export CYBER_DOJO_ROOT=${cyber_dojo_root}
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,7 +68,7 @@ one_time_creation_of_katas_data_volume()
     # create a katas volume - it is mounted into the web container
     # using a volumes_from in docker-compose.yml
     docker build \
-              --build-arg=CYBER_DOJO_KATAS_ROOT=${CYBER_DOJO_ROOT}/katas \
+              --build-arg=CYBER_DOJO_KATAS_ROOT=/usr/src/cyber-dojo/katas \
               --tag=${tag} \
               --file=Dockerfile.katas \
               ${CONTEXT_DIR} > /dev/null
