@@ -115,7 +115,7 @@ def clean
     '',
     "Use: #{me} clean",
     '',
-    'Removes dangling docker images and exited containers',
+    'Removes dangling docker images/volumes and exited containers',
   ]
 
   if ARGV[1] == '--help'
@@ -131,6 +131,8 @@ def clean
   command = "docker images --quiet --filter='dangling=true' | xargs --no-run-if-empty docker rmi --force"
   run command
   command = "docker ps --all --quiet --filter='status=exited' | xargs --no-run-if-empty docker rm --force"
+  run command
+  command = "docker volume ls --quiet --filter='dangling=true' | xargs --no-run-if-empty docker volume rm"
   run command
 end
 
@@ -624,7 +626,7 @@ def help
     "     #{me} --help",
     '',
     'Commands:',
-    tab + 'clean        Removes dangling images',
+    tab + 'clean        Removes old images/volumes/containers',
     tab + 'down         Brings down the server',
     tab + 'logs         Prints the logs from the server',
     tab + 'sh           Shells into the server',
