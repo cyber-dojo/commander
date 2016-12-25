@@ -7,7 +7,7 @@ test_clean_help_prints_use_to_stdout_and_exits_zero()
   local expected_stdout="
 Use: cyber-dojo clean
 
-Removes dangling docker images and exited containers"
+Removes dangling docker images/volumes and exited containers"
   ${exe} clean --help >${stdoutF} 2>${stderrF}
   assertTrue $?
   assertEqualsStdout "${expected_stdout}"
