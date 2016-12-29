@@ -1,4 +1,3 @@
-
 require 'json'
 
 class StartPointChecker
@@ -163,10 +162,6 @@ class StartPointChecker
       error "must contain 'cyber-dojo.sh'"
       return
     end
-    # check cyber-dojo.sh has execute permission
-    unless File.stat(dir + '/' + 'cyber-dojo.sh').executable?
-      error "'cyber-dojo.sh' must be executable"
-    end
   end
 
   # - - - - - - - - - - - - - - - - - - - -
@@ -282,7 +277,6 @@ class StartPointChecker
         error "cannot create regex from #{s}"
       end
     end
-
   end
 
   # - - - - - - - - - - - - - - - - - - - -

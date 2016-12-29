@@ -1,5 +1,4 @@
-
-require_relative './lib_test_base'
+require_relative 'lib_test_base'
 require_relative '../../start_point_checker.rb'
 
 class StartPointCheckerTest < LibTestBase
@@ -294,19 +293,6 @@ class StartPointCheckerTest < LibTestBase
       File.delete(File.dirname(junit_manifest_filename) + '/cyber-dojo.sh')
       check
       assert_error junit_manifest_filename, "visible_filenames: must contain 'cyber-dojo.sh'"
-    end
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '1DF',
-  'cyber-dojo.sh not executable is an error' do
-    copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
-      cyber_dojo_sh = "#{tmp_dir}/Java/JUnit/cyber-dojo.sh"
-      File.chmod(0604, cyber_dojo_sh)
-      check
-      assert_error junit_manifest_filename, "visible_filenames: 'cyber-dojo.sh' must be executable"
     end
   end
 
