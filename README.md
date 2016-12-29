@@ -15,7 +15,7 @@ Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
 Commands:
-    clean        Removes dangling images
+    clean        Removes old images/volumes/containers
     down         Brings down the server
     logs         Prints the logs from the server
     sh           Shells into the server
