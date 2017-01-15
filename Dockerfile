@@ -22,7 +22,7 @@ RUN apk add --no-cache curl openssl ca-certificates \
 # - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --git=URL] requires git clone
 
-RUN apk add git
+RUN apk add --update git
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
