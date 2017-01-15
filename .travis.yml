@@ -7,6 +7,7 @@ env:
         - DOCKER_COMPOSE_VERSION=1.8.1
 
 before_script:
+    - docker-compose --version
     - curl -O https://raw.githubusercontent.com/cyber-dojo/ruby/master/push_and_trigger.sh
     - chmod +x push_and_trigger.sh
 
