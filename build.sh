@@ -3,10 +3,9 @@ set -e
 
 DOCKER_COMPOSE_VERSION=$1
 
-if [ -z ${DOCKER_COMPOSE_VERSION} ]
-then
+if [ -z ${DOCKER_COMPOSE_VERSION} ]; then
   echo "Error: build.sh [DOCKER_COMPOSE_VERSION]."
-  exit
+  exit 1
 fi
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
