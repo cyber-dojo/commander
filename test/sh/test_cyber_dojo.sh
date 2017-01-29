@@ -4,12 +4,12 @@
 
 test_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
 {
+  #clean        Removes old images/volumes/containers
   local expected_stdout="
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
 Commands:
-    clean        Removes old images/volumes/containers
     down         Brings down the server
     logs         Prints the logs from the server
     sh           Shells into the server

@@ -626,7 +626,7 @@ def help
     "     #{me} --help",
     '',
     'Commands:',
-    tab + 'clean        Removes old images/volumes/containers',
+    #tab + 'clean        Removes old images/volumes/containers',
     tab + 'down         Brings down the server',
     tab + 'logs         Prints the logs from the server',
     tab + 'sh           Shells into the server',
@@ -643,7 +643,7 @@ end
 case ARGV[0]
   when nil             then help
   when '--help'        then help
-  when 'clean'         then clean
+  #when 'clean'         then clean
   when 'down'          then down
   when 'logs'          then logs
   when 'sh'            then sh

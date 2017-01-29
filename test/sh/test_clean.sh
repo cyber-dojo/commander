@@ -41,5 +41,5 @@ test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+#. ./shunit2_helpers.sh
+#. ./shunit2
