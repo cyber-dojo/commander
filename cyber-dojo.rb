@@ -133,8 +133,10 @@ def clean
   run command
   command = "docker ps --all --quiet --filter='status=exited' | xargs --no-run-if-empty docker rm --force"
   run command
-  command = "docker volume ls --quiet --filter='dangling=true' | xargs --no-run-if-empty docker volume rm"
-  run command
+
+  # TODO: Bug - this removes start-point volumes
+  #command = "docker volume ls --quiet --filter='dangling=true' | xargs --no-run-if-empty docker volume rm"
+  #run command
 end
 
 #==========================================================
@@ -463,8 +465,10 @@ def start_point_ls
     exit succeeded
   end
 
-  # As of docker 1.12.0 there is no [--filter label=LABEL]  option on [docker volume ls]
-  # So I have to inspect all volumes. Could be slow if lots of volumes.
+  # As of docker 1.12.0 there is no [--filter label=LABEL]
+  # option on the [docker volume ls] command.
+  # So I have to inspect all volumes.
+  # Could be slow for lots of volumes.
 
   names = run("docker volume ls --quiet").split
   names = names.select{ |name| cyber_dojo_volume?(name) }
@@ -627,7 +631,7 @@ def help
     "     #{me} --help",
     '',
     'Commands:',
-    #tab + 'clean        Removes old images/volumes/containers',
+    tab + 'clean        Removes old images/volumes/containers',
     tab + 'down         Brings down the server',
     tab + 'logs         Prints the logs from the server',
     tab + 'sh           Shells into the server',
@@ -644,7 +648,7 @@ end
 case ARGV[0]
   when nil             then help
   when '--help'        then help
-  #when 'clean'         then clean   # OFF: Bug - removed start-point volumes
+  when 'clean'         then clean
   when 'down'          then down
   when 'logs'          then logs
   when 'sh'            then sh
