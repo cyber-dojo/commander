@@ -5,7 +5,7 @@
 # A few commands have to be handled locally.
 # requires: awk, sed, grep which are in DockerToolbox quickstart terminal.
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" == '--debug' ]; then
   debug_on='true'
@@ -23,7 +23,7 @@ debug()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_success()
 {
@@ -38,7 +38,7 @@ exit_fail()
   exit 1
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 hash docker 2> /dev/null
 if [ $? != 0 ]; then
@@ -49,7 +49,7 @@ fi
 
 cyber_dojo_commander=cyberdojo/commander
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander()
 {
@@ -61,7 +61,7 @@ delegate_to_commander()
     /app/cyber-dojo.sh $*
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if_sh_then_handle_locally()
 {
@@ -76,7 +76,7 @@ if_sh_then_handle_locally()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 running_container()
 {
@@ -87,7 +87,7 @@ running_container()
   return $?
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if_update_then_handle_locally()
 {
@@ -116,7 +116,7 @@ if_update_then_handle_locally()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
@@ -172,7 +172,7 @@ if_start_point_create_dir_then_handle_locally()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 start_point_exists()
 {
@@ -184,7 +184,7 @@ start_point_exists()
   return $?
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_quiet()
 {
@@ -197,7 +197,7 @@ run_quiet()
   return ${exit_status}
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_loud()
 {
@@ -210,7 +210,7 @@ run_loud()
   return ${exit_status}
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up_and_exit_fail()
 {
@@ -221,7 +221,7 @@ clean_up_and_exit_fail()
   exit 1
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up()
 {
@@ -245,8 +245,8 @@ clean_up()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "${debug_on}" == 'true' ]; then
   delegate_to_commander "--debug $*"

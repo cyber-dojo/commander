@@ -1,16 +1,16 @@
 #!/bin/sh
 
-# This file and cyber-dojo.rb, start_point_*.rb
+# This file and cyber-dojo.rb, and start_point_*.rb
 # all combine to run all the cyber-dojo commands except
 #   ./cyber-dojo sh
 #   ./cyber-dojo update
 #   ./cyber-dojo start-point create NAME --dir=DIR
 #
-# The reason it is split across several files is historical, from when
-# there was no commander image and you had to install docker-compose.
+# Splitting across several files is historical, from when there
+# was no commander image and you had to install docker-compose.
 # Could do with consolidating (into cyber-dojo.rb?)
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" == '--debug' ]; then
   debug_on='true'
@@ -28,7 +28,7 @@ debug()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
@@ -48,7 +48,10 @@ export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# propagate runner choice from host into commander and then into runner
+export CYBER_DOJO_RUNNER_CLASS=${CYBER_DOJO_RUNNER_CLASS}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 one_time_creation_of_katas_data_volume()
 {
@@ -80,9 +83,9 @@ one_time_creation_of_katas_data_volume()
   fi
 }
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # $ ./cyber-dojo start-point create --git=URL
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
@@ -128,7 +131,7 @@ start_point_create_git()
   clean_up
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_quiet()
 {
@@ -141,7 +144,7 @@ run_quiet()
   return ${exit_status}
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 run_loud()
 {
@@ -154,7 +157,7 @@ run_loud()
   return ${exit_status}
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up_and_exit_fail()
 {
@@ -163,7 +166,7 @@ clean_up_and_exit_fail()
   exit_fail
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean_up()
 {
@@ -187,14 +190,14 @@ clean_up()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_fail()
 {
   exit 1
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 start_point_exists()
 {
@@ -205,9 +208,9 @@ start_point_exists()
   docker volume ls --quiet | grep -s "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 # $ ./cyber-dojo up
-# = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+# = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 cyber_dojo_up()
 {
@@ -274,11 +277,11 @@ cyber_dojo_up()
   ${docker_compose_cmd} up -d 2>&1
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$*" = 'update-images' ]; then
   echo "FAILED: unknown argument [update-images]" >&2
