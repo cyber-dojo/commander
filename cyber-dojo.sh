@@ -48,9 +48,6 @@ export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
-# propagate runner choice from host into commander and then into runner
-export CYBER_DOJO_RUNNER_CLASS=${CYBER_DOJO_RUNNER_CLASS}
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 one_time_creation_of_katas_data_volume()
