@@ -98,7 +98,8 @@ def update_images
     'runner:latest',
     'storer:latest',
     'differ:latest',
-    'collector:latest'
+    'collector:latest',
+    'zipper:latest'
   ]
   images.each do |name|
     command = "docker pull cyberdojo/#{name}"

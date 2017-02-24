@@ -1,13 +1,5 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# I'd like to set cpu/memory/swap limits on the test-run containers
-# and the app containers independently.
-# This appears to be impossible so I have to try to get some kind
-# of compromise; I don't want to limit the web-server but I do want
-# to limit the test-containers. However if the limits are too low
-# the web server container is unable to [docker pull] images on-demand
-# in the setup pages.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Note: Dependencies between nginx and web are reflected in the
 # nginx.conf file
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -25,7 +17,10 @@ volumes:
     external:
       name: ${CYBER_DOJO_START_POINT_CUSTOM}
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 services:
+
   nginx:
     user: root
     image: cyberdojo/nginx
@@ -39,14 +34,21 @@ services:
     user: root
     image: cyberdojo/web
     container_name: cyber-dojo-web
-    environment: [ CYBER_DOJO_HOME ]
+    environment:
+      - CYBER_DOJO_HOME
+      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
+    depends_on:
+      - zipper
+      - zipper-shared-tmp-container
     volumes:
       - languages:${CYBER_DOJO_HOME}/start_points/languages:ro
       - exercises:${CYBER_DOJO_HOME}/start_points/exercises:ro
       - custom:${CYBER_DOJO_HOME}/start_points/custom:ro
+    volumes_from:
+      - zipper-shared-tmp-container:ro
 
   puller:
     user: root
@@ -104,3 +106,28 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  zipper:
+    user: zipper
+    image: cyberdojo/zipper
+    container_name: cyber-dojo-zipper
+    cpu_shares: 16
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
+    restart: on-failure
+    depends_on:
+      - storer
+      - zipper-shared-tmp-container
+    volumes_from:
+      - zipper-shared-tmp-container:rw
+    environment:
+      - CYBER_DOJO_ZIPPER_ROOT=/tmp_zipper
+
+  zipper-shared-tmp-container:
+    image: cyberdojo/zipper
+    container_name: zipper-shared-tmp-container
+    volumes:
+      - /tmp_zipper
+    command: "chown zipper:zipper /tmp_zipper"
