@@ -28,6 +28,8 @@ services:
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
+    depends_on:
+      - web
     ports: [ "80:80" ]
 
   web:
@@ -41,6 +43,10 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
+      - puller
+      - runner
+      - storer
+      - differ
       - zipper
       - zipper-shared-tmp-container
     volumes:
