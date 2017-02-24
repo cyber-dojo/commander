@@ -35,14 +35,12 @@ docker_compose_cmd="docker-compose --file=${my_dir}/docker-compose.yml"
 
 cyber_dojo_hub=cyberdojo
 cyber_dojo_commander=${cyber_dojo_hub}/commander
-cyber_dojo_home=/app
 
 default_start_point_languages=languages
 default_start_point_exercises=exercises
 default_start_point_custom=custom
 
 # set environment variables required by docker-compose.yml
-export CYBER_DOJO_HOME=${cyber_dojo_home}
 export CYBER_DOJO_START_POINT_LANGUAGES=${default_start_point_languages}
 export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}

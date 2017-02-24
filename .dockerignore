@@ -11,6 +11,7 @@
 !Dockerfile.katas
 !Dockerignore.katas
 
+!.env
 !docker-compose.yml
 
 !start_point_check.rb
