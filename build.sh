@@ -1,12 +1,7 @@
 #!/bin/bash
 set -e
 
-DOCKER_COMPOSE_VERSION=$1
-
-if [ -z ${DOCKER_COMPOSE_VERSION} ]; then
-  echo "Error: build.sh [DOCKER_COMPOSE_VERSION]."
-  exit 1
-fi
+DOCKER_COMPOSE_VERSION=${1:-1.11.1}
 
 my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
