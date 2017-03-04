@@ -7,10 +7,10 @@ env:
         - DOCKER_COMPOSE_VERSION=1.8.1
 
 before_script:
-    - docker-compose --version
-    - curl -O https://raw.githubusercontent.com/cyber-dojo/ruby/master/push_and_trigger.sh
+    - curl -O https://raw.githubusercontent.com/cyber-dojo/home/master/shared/push_and_trigger.sh
     - chmod +x push_and_trigger.sh
 
 script:
+    - docker-compose --version
     - ./pipe_build_up_test.sh ${DOCKER_COMPOSE_VERSION} \
         && ./push_and_trigger.sh cyber-dojo/system-tests
