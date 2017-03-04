@@ -12,4 +12,3 @@ docker build \
   --tag=cyberdojo/commander \
   --file=${context_dir}/Dockerfile \
   ${context_dir}
-
