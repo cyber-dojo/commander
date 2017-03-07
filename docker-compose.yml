@@ -75,8 +75,8 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - prometheus_pushgateway
+    ports:
+      - '4557:4557'
 
   storer:
     user: cyber-dojo
@@ -126,13 +126,6 @@ services:
       - storer
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-
-  prometheus_pushgateway:
-    image: prom/pushgateway
-    container_name: cyber-dojo-prometheus_pushgateway
-    ports:
-      - '9091:9091'
-
 
   prometheus:
     image: cyberdojo/prometheus
