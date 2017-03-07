@@ -14,7 +14,7 @@ $max_major = major_name.size
 $max_minor = minor_name.size
 $max_image = image_name.size
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def failed; 1; end
 
@@ -44,7 +44,7 @@ def inspect_line(major, minor, image, pulled)
   line += pulled
 end
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def docker_images_pulled
   `docker images`.split("\n").drop(1).map{ |line| line.split[0] }.sort - ['<none>']
@@ -59,13 +59,13 @@ def docker_images_pulled
   # cyberdojofoundation/ruby_rspec
 end
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def max_size(lhs, rhs)
   lhs.size > rhs.size ? lhs : rhs
 end
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def manifests_hash
   hash = {}
@@ -87,14 +87,14 @@ def manifests_hash
   hash
 end
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def setup
+def type
   content = IO.read("#{path}/setup.json")
-  JSON.parse(content)
+  JSON.parse(content)['type']
 end
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if path.nil?
   show_use
@@ -106,10 +106,16 @@ if !File.directory?(path)
   exit failed
 end
 
-hash = manifests_hash
-puts inspect_line(major_name, minor_name, image_name, 'PULLED?')
-hash.sort.map do |major,minors|
-  minors.sort.map do |minor, hash|
-    puts inspect_line(major, minor, hash['image_name'], hash['pulled'])
+if type == 'exercises'
+  Dir.glob("#{path}/**/instructions").each do |filename|
+    puts filename.split('/')[-2].sub('_', ' ')
+  end
+else
+  hash = manifests_hash
+  puts inspect_line(major_name, minor_name, image_name, 'PULLED?')
+  hash.sort.map do |major,minors|
+    minors.sort.map do |minor, hash|
+      puts inspect_line(major, minor, hash['image_name'], hash['pulled'])
+    end
   end
 end

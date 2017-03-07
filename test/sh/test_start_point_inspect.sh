@@ -71,7 +71,7 @@ test_start_point_inspect_ExtraArg_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_StartPoint_prints_details_and_exits_zero()
+test_start_point_inspect_CustomStartPoint_prints_details_and_exits_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
@@ -99,6 +99,29 @@ test_start_point_inspect_StartPoint_prints_details_and_exits_zero()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_start_point_inspect_ExercisesStartPoint_prints_details_and_exits_zero()
+{
+  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-exercises.git
+  ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  ${exe} start-point rm ok
+  assertTrue ${exit_status}
+
+  local stdout="`cat ${stdoutF}`"
+  local expected_exercises=( 'Fizz\sBuzz' 'Mars\sRover' 'Print\sDiamond' )
+  for expected_exercise in "${expected_exercises[@]}"
+  do
+    if ! grep -q ${expected_exercise} <<< "${stdout}"; then
+      fail "expected stdout to include ${expected_exercise}"
+    fi
+  done
+
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 . ./shunit2_helpers.sh
 . ./shunit2
