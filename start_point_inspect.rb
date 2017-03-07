@@ -10,9 +10,9 @@ major_name = 'MAJOR_NAME'
 minor_name = 'MINOR_NAME'
 image_name = 'IMAGE_NAME'
 
-$max_major = major_name.size
-$max_minor = minor_name.size
-$max_image = image_name.size
+$max_major = major_name
+$max_minor = minor_name
+$max_image = image_name
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
