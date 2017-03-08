@@ -113,8 +113,8 @@ if type == 'exercises'
 else
   hash = manifests_hash
   puts inspect_line(major_name, minor_name, image_name, 'PULLED?')
-  hash.sort.map do |major,minors|
-    minors.sort.map do |minor, hash|
+  hash.sort.each do |major,minors|
+    minors.sort.each do |minor, hash|
       puts inspect_line(major, minor, hash['image_name'], hash['pulled'])
     end
   end
