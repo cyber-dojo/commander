@@ -43,8 +43,8 @@ if !File.directory?(path)
   exit failed
 end
 
-manifests_hash.sort.map do |major,minors|
-  minors.sort.map do |minor, hash|
+manifests_hash.sort.each do |major,minors|
+  minors.sort.each do |minor, hash|
     image = hash['image_name']
     puts "PULLING #{image} (#{major}, #{minor})"
     system("docker pull #{image}")
