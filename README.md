@@ -31,6 +31,8 @@ Run 'cyber-dojo COMMAND --help' for more information on a command.
 
 # cyberdojo/commander docker image
 
-Installed within **cyberdojo/commander** are docker and docker-compose, together with its
-docker-compose.yml.
+Installed within **cyberdojo/commander** are docker and docker-compose, together with the
+main cyber-dojo server's
+[docker-compose.yml](https://github.com/cyber-dojo/commander/blob/master/docker-compose.yml)
+file.
 
