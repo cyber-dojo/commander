@@ -308,6 +308,7 @@ def start_point
     'Commands:',
     minitab + 'create         Creates a new start-point',
     minitab + 'rm             Removes a start-point',
+    minitab + 'latest         Updates docker images named inside a start-point',
     minitab + 'ls             Lists the names of all start-points',
     minitab + 'inspect        Displays details of a start-point',
     minitab + 'pull           Pulls all the docker images named inside a start-point',
@@ -323,6 +324,7 @@ def start_point
   case ARGV[1]
     when 'create'  then start_point_create
     when 'rm'      then start_point_rm
+    when 'latest'  then start_point_latest
     when 'ls'      then start_point_ls
     when 'inspect' then start_point_inspect
     when 'pull'    then start_point_pull
@@ -618,6 +620,46 @@ def start_point_pull
     '--volume=/var/run/docker.sock:/var/run/docker.sock',
     "#{cyber_dojo_commander}",
     "sh -c './start_point_pull.rb /data'"
+  ].join(space=' ')
+
+  system(command)
+end
+
+#==========================================================
+# $ ./cyber-dojo start-point latest
+#==========================================================
+#
+def start_point_latest
+  help = [
+    '',
+    "Use: #{me} start-point latest NAME",
+    '',
+    'Re-pulls already pulled docker images inside the named start-point'
+  ]
+
+  vol = ARGV[2]
+  if [nil,'--help'].include? vol
+    show help
+    exit succeeded
+  end
+
+  exit_unless_is_cyber_dojo_volume(vol, 'pull')
+
+  unless ARGV[3].nil?
+    STDERR.puts "FAILED: unknown argument [#{ARGV[3]}]"
+    exit failed
+  end
+
+  command =
+  [
+    'docker run',
+    '--rm',
+    '--tty',
+    "--user=root",
+    "--volume=#{vol}:/data:#{read_only}",
+    '--volume=/var/run/docker.sock:/var/run/docker.sock',
+    "#{cyber_dojo_commander}",
+    "sh -c './start_point_latest.rb /data'"
   ].join(space=' ')
 
   system(command)

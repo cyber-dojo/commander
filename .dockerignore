@@ -18,5 +18,6 @@
 !start_point_checker.rb
 !start_point_inspect.rb
 !start_point_pull.rb
+!start_point_latest.rb
 
 !test/rb

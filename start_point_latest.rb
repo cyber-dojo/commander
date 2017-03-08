@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Pulls all docker images named in manifest.json files below path.
+# Re-pulls already pulled docker images named in manifest.json files below path.
 
 require 'json'
 
@@ -10,7 +10,7 @@ def path; ARGV[0]; end
 
 def show_use(message = '')
   STDERR.puts
-  STDERR.puts 'USE: start_point_pull.rb PATH'
+  STDERR.puts 'USE: start_point_latest.rb PATH'
   STDERR.puts
   STDERR.puts "   ERROR: #{message}" if message != ''
   STDERR.puts
@@ -18,17 +18,14 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def manifests_hash
-  hash = {}
+def manifests_image_names
+  image_names = []
   Dir.glob("#{path}/**/manifest.json").each do |filename|
     content = IO.read(filename)
     manifest = JSON.parse(content)
-    major, minor = manifest['display_name'].split(',').map { |s| s.strip }
-    image_name = manifest['image_name']
-    hash[major] ||= {}
-    hash[major][minor] = { 'image_name' => image_name }
+    image_names << manifest['image_name']
   end
-  hash
+  image_names
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -43,10 +40,10 @@ if !File.directory?(path)
   exit failed
 end
 
-manifests_hash.sort.each do |major,minors|
-  minors.sort.each do |minor, hash|
-    image = hash['image_name']
-    puts "PULLING #{image} (#{major}, #{minor})"
-    system("docker pull #{image}")
+image_names = `docker images --format {{.Repository}}`.split - ['<none>']
+manifests_image_names.sort.each do |image_name|
+  if image_names.include? image_name
+    puts "PULLING #{image_name}:latest"
+    system("docker pull #{image_name}:latest")
   end
 end
