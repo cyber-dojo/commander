@@ -124,14 +124,3 @@ services:
     restart: on-failure
     depends_on:
       - storer
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-
-  prometheus:
-    image: cyberdojo/prometheus
-    container_name: cyber-dojo-prometheus
-    ports:
-        - '9090:9090'
-
-
-
