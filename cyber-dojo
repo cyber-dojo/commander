@@ -14,6 +14,12 @@ else
   debug_on='false'
 fi
 
+if [ "$1" == "up" ]; then
+  is_up='true'
+else
+  is_up='false'
+fi
+
 debug()
 {
   if [ "${debug_on}" == 'true' ]; then
@@ -53,10 +59,25 @@ cyber_dojo_commander=cyberdojo/commander
 
 delegate_to_commander()
 {
+  local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+
+  if [ -f ${my_dir}/grafana.env ] && [ "${is_up}" == 'true' ];  then
+    local grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
+  fi
+
+  if [ ! -f ${my_dir}/grafana.env ] && [ "${is_up}" == 'true' ];  then
+    echo 'WARNING: Using default grafana admin password.'
+    echo 'To set your own password and remove this warning:'
+    echo '   1. Add a file grafana.env with contents GF_SECURITY_ADMIN_PASSWORD=mypassword'
+    echo '      in the same directory as the cyber-dojo script.'
+    echo '   2. Re-issue the cyberdojo up command.'
+  fi
+
   docker run \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
+    ${grafana_env_file} \
     ${cyber_dojo_commander} \
     /app/cyber-dojo.sh $*
 }

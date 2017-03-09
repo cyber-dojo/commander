@@ -13,6 +13,7 @@
 
 !.env
 !docker-compose.yml
+!grafana.env
 
 !start_point_check.rb
 !start_point_checker.rb
@@ -20,3 +21,4 @@
 !start_point_pull.rb
 
 !test/rb
+
