@@ -1,5 +1,7 @@
 
-[cyber-dojo home page](https://github.com/cyber-dojo/cyber-dojo).
+[Take me to the cyber-dojo home page](https://github.com/cyber-dojo/cyber-dojo).
+
+- - - -
 
 [![Build Status](https://travis-ci.org/cyber-dojo/commander.svg?branch=master)](https://travis-ci.org/cyber-dojo/commander)
 
