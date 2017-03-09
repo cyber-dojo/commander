@@ -75,8 +75,6 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - '4557:4557'
 
   storer:
     user: cyber-dojo
@@ -130,8 +128,11 @@ services:
   prometheus:
     image: cyberdojo/prometheus
     container_name: cyber-dojo-prometheus
+
+  grafana:
+    image: cyberdojo/grafana
+    container_name: cyber-dojo-grafana
+    env_file:
+      - /app/grafana.env
     ports:
-        - '9090:9090'
-
-
-
+      - '3000:3000'
