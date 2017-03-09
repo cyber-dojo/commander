@@ -122,3 +122,17 @@ services:
     restart: on-failure
     depends_on:
       - storer
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+
+  prometheus:
+    image: cyberdojo/prometheus
+    container_name: cyber-dojo-prometheus
+
+  grafana:
+    image: cyberdojo/grafana
+    container_name: cyber-dojo-grafana
+    env_file:
+      - /app/grafana.env
+    ports:
+      - '3000:3000'
