@@ -16,6 +16,7 @@ volumes:
   custom:
     external:
       name: ${CYBER_DOJO_START_POINT_CUSTOM}
+  grafana_data: {}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -132,6 +133,10 @@ services:
   grafana:
     image: cyberdojo/grafana
     container_name: cyber-dojo-grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - prometheus
     env_file:
       - /app/grafana.env
     ports:
