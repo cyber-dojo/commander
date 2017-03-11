@@ -1,9 +1,4 @@
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Note: Dependencies between nginx and web are reflected in the
-# nginx.conf file
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 version: '2'
 
 volumes:
