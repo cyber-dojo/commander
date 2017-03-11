@@ -26,7 +26,8 @@ services:
     restart: on-failure
     depends_on:
       - web
-    ports: [ "80:80" ]
+    ports:
+      - '80:80'
 
   web:
     user: root
@@ -71,6 +72,8 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - prometheus
 
   storer:
     user: cyber-dojo
@@ -84,6 +87,8 @@ services:
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
+    depends_on:
+      - prometheus
 
   differ:
     user: nobody
@@ -94,6 +99,8 @@ services:
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
+    depends_on:
+      - prometheus
 
   collector:
     user: root
