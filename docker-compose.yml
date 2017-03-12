@@ -39,7 +39,6 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - puller
       - runner
       - storer
       - differ
@@ -48,18 +47,6 @@ services:
       - languages:${CYBER_DOJO_HOME}/start_points/languages:ro
       - exercises:${CYBER_DOJO_HOME}/start_points/exercises:ro
       - custom:${CYBER_DOJO_HOME}/start_points/custom:ro
-
-  puller:
-    user: root
-    image: cyberdojo/puller
-    container_name: cyber-dojo-puller
-    read_only: true
-    tmpfs: /tmp
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
   runner:
     user: root

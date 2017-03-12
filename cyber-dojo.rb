@@ -94,7 +94,6 @@ def update_images
   images = [
     'nginx:latest',
     'web:latest',
-    'puller:latest',
     'runner:latest',
     'storer:latest',
     'differ:latest',
