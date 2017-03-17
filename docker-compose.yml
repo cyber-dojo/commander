@@ -11,7 +11,6 @@ volumes:
   custom:
     external:
       name: ${CYBER_DOJO_START_POINT_CUSTOM}
-  prometheus_data: {}
   grafana_data: {}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,8 +118,6 @@ services:
   prometheus:
     image: cyberdojo/prometheus
     container_name: cyber-dojo-prometheus
-    volumes:
-      - prometheus_data:/prometheus
 
   grafana:
     image: cyberdojo/grafana
