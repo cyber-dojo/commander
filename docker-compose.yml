@@ -27,6 +27,8 @@ services:
     restart: on-failure
     depends_on:
       - web
+    env_file:
+      - /app/nginx.env
     ports:
       - '80:80'
 

@@ -14,6 +14,7 @@
 !.env
 !docker-compose.yml
 !grafana.env
+!nginx.env
 
 !start_point_check.rb
 !start_point_checker.rb
