@@ -35,7 +35,11 @@ Creates and starts the cyber-dojo server using named/default start-points
 
   --custom=START-POINT     Specify the custom start-point.
                            Defaults to a start-point named 'custom' created from
-                           https://github.com/cyber-dojo/start-points-custom.git"
+                           https://github.com/cyber-dojo/start-points-custom.git
+
+  --port=LISTEN-PORT       Specify port to listen on.
+                           Defaults to 80"
+  ${exe} up --help >${stdoutF} 2>${stderrF}
   ${exe} up --help >${stdoutF} 2>${stderrF}
   assertTrue $?
   assertEqualsStdout "${expected_stdout}"
@@ -100,6 +104,17 @@ test_up_missingExercises_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_up_missingPort_prints_msg_to_sterr_and_exits_non_zero()
+{
+  local expected_stderr='FAILED: missing argument value --port=[???]'
+  ${exe} up --port= >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_up_namedLanguagesDoesNotExist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: start-point notExist does not exist'
@@ -149,13 +164,14 @@ test_up_namedExercisesIsNotExerciseType_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_prints_msg_naming_default_start_points_exits_zero()
+test_up_prints_msg_naming_default_start_points_and_port_exits_zero()
 {
   ${exe} up >${stdoutF} 2>${stderrF}
   assertTrue $?
   local expected_stdout="Using start-point --languages=languages
 Using start-point --exercises=exercises
-Using start-point --custom=custom"
+Using start-point --custom=custom
+Listening on port 80"
   assertStdoutIncludes ${expected_stdout}
   assertNoStderr
   ${exe} down >${stdoutF} 2>${stderrF}
@@ -175,12 +191,31 @@ test_up_customStartPoint_prints_msg_saying_its_being_used_exits_zero()
 
   local expected_stdout="Using start-point --languages=languages
 Using start-point --exercises=exercises
-Using start-point --custom=${name}"
+Using start-point --custom=${name}
+Listening on port 80"
   assertStdoutIncludes ${expected_stdout}
   assertNoStderr
   ${exe} down >${stdoutF} 2>${stderrF}
   assertTrue $?
   ${exe} start-point rm ${name} >${stdoutF} 2>${stderrF}
+  assertTrue $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_up_customPort_prints_msg_saying_its_being_used_exits_zero()
+{
+  local port=8462
+  ${exe} up --port=${port} >${stdoutF} 2>${stderrF}
+  assertTrue $?
+
+  local expected_stdout="Using start-point --languages=languages
+Using start-point --exercises=exercises
+Using start-point --custom=custom
+Listening on port ${port}"
+  assertStdoutIncludes ${expected_stdout}
+  assertNoStderr
+  ${exe} down >${stdoutF} 2>${stderrF}
   assertTrue $?
 }
 
