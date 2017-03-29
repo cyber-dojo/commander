@@ -235,6 +235,24 @@ end
 # $ ./cyber-dojo up
 #==========================================================
 
+def up_arg_int_ok(help, args, name)
+  integer_value = get_arg("--#{name}", args)
+  if integer_value.nil?
+    return true
+  end
+
+  if integer_value == ''
+    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
+    return false
+  end
+
+  # TODO: Do we want to validate that it's an integer?
+
+  return true
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def up_arg_ok(help, args, name)
   vol = get_arg("--#{name}", args)
   if vol.nil? || vol == name # handled in cyber-dojo.sh
@@ -276,7 +294,10 @@ def up
     '',
     minitab + '--custom=START-POINT     Specify the custom start-point.',
     minitab + "                         Defaults to a start-point named 'custom' created from",
-    minitab + '                         https://github.com/cyber-dojo/start-points-custom.git'
+    minitab + '                         https://github.com/cyber-dojo/start-points-custom.git',
+    '',
+    minitab + '--port=LISTEN-PORT       Specify port to listen on.',
+    minitab + "                         Defaults to 80"
   ]
 
   if ARGV[1] == '--help'
@@ -286,7 +307,7 @@ def up
 
   # unknown arguments?
   args = ARGV[1..-1]
-  knowns = ['languages','exercises','custom']
+  knowns = ['languages','exercises','custom','port']
   unknown = args.select do |arg|
     knowns.none? { |known| arg.start_with?('--' + known + '=') }
   end
@@ -299,6 +320,7 @@ def up
   exit failed unless up_arg_ok(help, args, 'languages')  # --languages=NAME
   exit failed unless up_arg_ok(help, args, 'exercises')  # --exercises=NAME
   exit failed unless up_arg_ok(help, args,    'custom')  # --custom=NAME
+  exit failed unless up_arg_int_ok(help, args,  'port')  # --port=PORT
 
   # cyber-dojo.sh does actual [up]
 end

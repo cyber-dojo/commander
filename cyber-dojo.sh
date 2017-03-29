@@ -40,11 +40,13 @@ cyber_dojo_commander=${cyber_dojo_hub}/commander
 default_start_point_languages=languages
 default_start_point_exercises=exercises
 default_start_point_custom=custom
+default_nginx_port=80
 
 # set environment variables required by docker-compose.yml
 export CYBER_DOJO_START_POINT_LANGUAGES=${default_start_point_languages}
 export CYBER_DOJO_START_POINT_EXERCISES=${default_start_point_exercises}
 export CYBER_DOJO_START_POINT_CUSTOM=${default_start_point_custom}
+export CYBER_DOJO_NGINX_PORT=${default_nginx_port}
 export CYBER_DOJO_KATAS_DATA_CONTAINER=cyber-dojo-katas-DATA-CONTAINER
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -227,6 +229,10 @@ cyber_dojo_up()
     if [ "${name}" = "--custom" ] && [ "${value}" != '' ]; then
       export CYBER_DOJO_START_POINT_CUSTOM=${value}
     fi
+    # --port=listen-port
+    if [ "${name}" = "--port" ] && [ "${value}" != '' ]; then
+      export CYBER_DOJO_NGINX_PORT=${value}
+    fi
   done
 
   # create default start-points if necessary
@@ -266,6 +272,7 @@ cyber_dojo_up()
   echo "Using start-point --languages=${CYBER_DOJO_START_POINT_LANGUAGES}"
   echo "Using start-point --exercises=${CYBER_DOJO_START_POINT_EXERCISES}"
   echo "Using start-point --custom=${CYBER_DOJO_START_POINT_CUSTOM}"
+  echo "Listening on port ${CYBER_DOJO_NGINX_PORT}"
 
   # Bring up server with volumes
   # It seems a successful [docker-compose up] writes to stderr !?

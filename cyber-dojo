@@ -61,6 +61,10 @@ delegate_to_commander()
 {
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
+  if [ -f ${my_dir}/nginx.env ] && [ "${is_up}" == 'true' ];  then
+    local nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
+  fi
+
   if [ -f ${my_dir}/grafana.env ] && [ "${is_up}" == 'true' ];  then
     local grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
   fi
@@ -78,6 +82,7 @@ delegate_to_commander()
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     ${grafana_env_file} \
+    ${nginx_env_file} \
     ${cyber_dojo_commander} \
     /app/cyber-dojo.sh $*
 }
