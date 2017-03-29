@@ -91,7 +91,7 @@ def update_images
   # special command called directly from ./cyber-dojo
   # I'd like to get these image names directly from docker-compose.yml
   # but there does not seem to be a simple way to do that :-(
-  images = [
+  service_images = [
     'nginx:latest',
     'web:latest',
     'runner:latest',
@@ -102,9 +102,17 @@ def update_images
     'prometheus:latest',
     'grafana:latest'
   ]
-  images.each do |name|
+  service_images.each do |name|
     command = "docker pull cyberdojo/#{name}"
     # use system() so pulls are visible in terminal
+    system(command)
+  end
+
+  cmd = "docker images --format '{{.Repository}}' | grep cyberdojofoundation"
+  stdout = `#{cmd}`
+  language_images = stdout.split("\n")
+  language_images.each do |name|
+    command = "docker pull #{name}"
     system(command)
   end
 end

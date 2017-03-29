@@ -1,14 +1,15 @@
 #!/bin/sh
 
-# This file and cyber-dojo.rb, and start_point_*.rb
-# all combine to run all the cyber-dojo commands except
+# This file [cyber-dojo.sh] and cyber-dojo.rb, and start_point_*.rb
+# all combine to handle all the cyber-dojo commands except
+# the three commands that have to be handled by cyber-dojo
 #   ./cyber-dojo sh
 #   ./cyber-dojo update
 #   ./cyber-dojo start-point create NAME --dir=DIR
 #
-# Splitting across several files is historical, from when there
-# was no commander image and you had to install docker-compose.
-# Could do with consolidating (into cyber-dojo.rb?)
+# Splitting across several files is messy and historical,
+# from when there was no commander image and you had to
+# install docker-compose. Needs consolidating.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
