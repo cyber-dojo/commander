@@ -42,7 +42,6 @@ class StartPointChecker
       check_visible_filenames_is_valid
       check_display_name_is_valid
       check_image_name_is_valid
-      check_red_amber_green_is_valid
       # optional
       check_progress_regexs_is_valid
       check_filename_extension_is_valid
@@ -227,34 +226,6 @@ class StartPointChecker
 
   # - - - - - - - - - - - - - - - - - - - -
 
-  def check_red_amber_green_is_valid
-    @key = 'red_amber_green'
-    return if red_amber_green.nil? # required-key different check
-    unless red_amber_green.is_a? Array
-      error 'must be an Array of Strings'
-      return
-    end
-    unless red_amber_green.all? { |item| item.is_a? String }
-      error 'must be an Array of Strings'
-      return
-    end
-    begin
-      lambda = eval(red_amber_green.join("\n"))
-      colour = lambda.call('sdsd')
-      # Most test frameworks have specific patterns for red/green
-      # and you get amber if its not red or green.
-      # But a few test frameworks have a specific pattern for amber
-      # so 'sdsd' is not amber for these.
-      unless [:red,:amber,:green].include?(colour)
-        error "lambda.call('sdsd') expecting one of :red,:amber,:green (got #{colour})"
-      end
-    rescue
-      error "cannot create lambda from #{red_amber_green}"
-    end
-  end
-
-  # - - - - - - - - - - - - - - - - - - - -
-
   def check_progress_regexs_is_valid
     @key = 'progress_regexs'
     return if progress_regexs.nil?  # it's optional
@@ -353,7 +324,6 @@ class StartPointChecker
         image_name
         progress_regexs
         tab_size
-        red_amber_green
         visible_filenames
       )
   end
@@ -361,7 +331,6 @@ class StartPointChecker
   def required_keys
     %w( display_name
         image_name
-        red_amber_green
         visible_filenames
       )
   end
@@ -382,10 +351,6 @@ class StartPointChecker
 
   def image_name
     @manifest['image_name']
-  end
-
-  def red_amber_green
-    @manifest['red_amber_green']
   end
 
   def progress_regexs
