@@ -10,13 +10,5 @@
 
   "display_name": "Yahtzee refactoring, Python unitttest",
 
-  "image_name": "cyberdojofoundation/python_unittest",
-
-  "red_amber_green" : [
-    "lambda { |output|",
-    "  return :red   if /FAILED \\(failures=/.match(output)",
-    "  return :green if /OK/.match(output)",
-    "  return :amber",
-    "}"
-  ]
+  "image_name": "cyberdojofoundation/python_unittest"
 }

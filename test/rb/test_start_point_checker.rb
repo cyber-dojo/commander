@@ -171,7 +171,6 @@ class StartPointCheckerTest < LibTestBase
     end
     required_keys = %w( display_name
                         image_name
-                        red_amber_green
                         visible_filenames
                       )
     required_keys.each { |key| missing_require_key.call(key) }
@@ -213,25 +212,6 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error 1    , must_be_a_String
     assert_key_error [ 1 ], must_be_a_String
     assert_key_error ''   , is_empty
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # required-key: red_amber_green
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'C2A',
-  'invalid red_amber_green is an error' do
-    @key = 'red_amber_green'
-    not_lambda = ['o','k']
-    assert_key_error 1     , must_be_an_Array_of_Strings
-    assert_key_error [ 1 ] , must_be_an_Array_of_Strings
-    assert_key_error not_lambda, "cannot create lambda from #{not_lambda}"
-    bad_lambda = [
-      "lambda { |output|",
-      "  return :yellow",
-      "}"
-    ]
-    assert_key_error bad_lambda, "lambda.call('sdsd') expecting one of :red,:amber,:green (got yellow)"
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
