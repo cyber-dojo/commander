@@ -69,6 +69,7 @@ services:
     image: cyberdojo/storer
     container_name: cyber-dojo-storer
     read_only: true
+    tmpfs: /tmp
     environment:
       - CYBER_DOJO_KATAS_ROOT
     volumes_from:
