@@ -212,6 +212,7 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error 1    , must_be_a_String
     assert_key_error [ 1 ], must_be_a_String
     assert_key_error ''   , is_empty
+    assert_key_error ';;;', is_invalid
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -450,6 +451,12 @@ class StartPointCheckerTest < LibTestBase
 
   def is_empty
     'is empty'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def is_invalid
+    'is invalid'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
