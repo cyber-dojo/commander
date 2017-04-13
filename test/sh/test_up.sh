@@ -9,10 +9,16 @@ test_up_uses_default_start_points_and_creates_containers()
   assertStdoutIncludes 'Using start-point --languages=languages'
   assertStdoutIncludes 'Using start-point --exercises=exercises'
   assertStdoutIncludes 'Using start-point --custom=custom'
-  assertStdoutIncludes 'Creating cyber-dojo-runner'
+  assertStdoutIncludes 'Creating cyber-dojo-collector'
   assertStdoutIncludes 'Creating cyber-dojo-differ'
-  assertStdoutIncludes 'Creating cyber-dojo-web'
+  assertStdoutIncludes 'Creating cyber-dojo-grafana'
+  assertStdoutIncludes 'Creating cyber-dojo-prometheus'
   assertStdoutIncludes 'Creating cyber-dojo-nginx'
+  assertStdoutIncludes 'Creating cyber-dojo-runner'
+  assertStdoutIncludes 'Creating cyber-dojo-runner-stateless'
+  assertStdoutIncludes 'Creating cyber-dojo-storer'
+  assertStdoutIncludes 'Creating cyber-dojo-web'
+  assertStdoutIncludes 'Creating cyber-dojo-zipper'
   assertNoStderr
 }
 
