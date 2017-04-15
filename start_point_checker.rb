@@ -223,16 +223,26 @@ class StartPointChecker
       error 'is empty'
       return
     end
+
     # http://stackoverflow.com/questions/37861791/
-    # https://github.com/docker/docker/blob/master/image/spec/v1.1.md
-    # Simplified, no hostname
+    i = image_name.index('/')
+    if i.nil? || i == -1 || (
+        !image_name[0...i].include?('.') &&
+        !image_name[0...i].include?(':') &&
+         image_name[0...i] != 'localhost')
+      hostname = ''
+      remote_name = image_name
+    else
+      hostname = image_name[0..i-1]
+      remote_name = image_name[i+1..-1]
+    end
+
     alpha_numeric = '[a-z0-9]+'
-    separator = '[_.-]+'
+    separator = '([.]{1}|[_]{1,2}|[-]+)'
     component = "#{alpha_numeric}(#{separator}#{alpha_numeric})*"
     name = "#{component}(/#{component})*"
-    tag = '[\w][\w.-]{0,127}'
-    md = /^(#{name})(:#{tag})?$/o.match(image_name)
-    if md.nil?
+    tag = '[\w][\w.-]{0,126}'
+    unless remote_name =~ /^(#{name})(:#{tag})?$/
       error 'is invalid'
     end
   end

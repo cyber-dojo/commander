@@ -207,12 +207,31 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '696',
-  'invalid image_name not an error' do
+  'invalid image_name is an error' do
     @key = 'image_name'
     assert_key_error 1    , must_be_a_String
     assert_key_error [ 1 ], must_be_a_String
     assert_key_error ''   , is_empty
     assert_key_error ';;;', is_invalid
+    assert_key_error 'gcc/Assert', is_invalid # no uppercase
+  end
+
+  test '697',
+  'valid image_name is not an error' do
+    @key = 'image_name'
+    %w(
+      cdf/gcc_assert
+      quay.io/cdf/gcc_assert
+      quay.io:8080/cdf/gcc_assert
+      quay.io/cdf/gcc_assert:latest
+      quay.io:8080/cdf/gcc_assert:12
+      localhost/cdf/gcc_assert
+      localhost/cdf/gcc_assert:tag
+      localhost:80/cdf/gcc_assert
+      localhost:80/cdf/gcc_assert:1.2.3
+    ).each { |image_name|
+      refute_key_error image_name
+    }
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -380,6 +399,18 @@ class StartPointCheckerTest < LibTestBase
       IO.write(junit_manifest_filename, JSON.unparse(junit_manifest))
       check
       assert_error junit_manifest_filename, @key + ': ' + expected
+    end
+  end
+
+  def refute_key_error(valid)
+    copy_good_master('languages') do |tmp_dir|
+      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      content = IO.read(junit_manifest_filename)
+      junit_manifest = JSON.parse(content)
+      junit_manifest[@key] = valid
+      IO.write(junit_manifest_filename, JSON.unparse(junit_manifest))
+      errors = check
+      assert_zero errors
     end
   end
 
