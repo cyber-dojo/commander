@@ -21,6 +21,7 @@ services:
     user: root
     image: cyberdojo/nginx
     container_name: cyber-dojo-nginx
+    cpu_shares: 1024
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
@@ -35,6 +36,7 @@ services:
     user: root
     image: cyberdojo/web
     container_name: cyber-dojo-web
+    cpu_shares: 1024
     environment:
       - CYBER_DOJO_HOME
     mem_limit: 2G
@@ -55,6 +57,7 @@ services:
     user: root
     image: cyberdojo/runner
     container_name: cyber-dojo-runner
+    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
@@ -69,6 +72,7 @@ services:
     user: root
     image: cyberdojo/runner_stateless
     container_name: cyber-dojo-runner-stateless
+    cpu_shares:  1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
@@ -83,6 +87,7 @@ services:
     user: cyber-dojo
     image: cyberdojo/storer
     container_name: cyber-dojo-storer
+    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     environment:
@@ -99,6 +104,7 @@ services:
     user: nobody
     image: cyberdojo/differ
     container_name: cyber-dojo-differ
+    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 1G
@@ -111,7 +117,7 @@ services:
     user: root
     image: cyberdojo/collector
     container_name: cyber-dojo-collector
-    cpu_shares: 32
+    cpu_shares: 256
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
@@ -122,7 +128,7 @@ services:
     user: zipper
     image: cyberdojo/zipper
     container_name: cyber-dojo-zipper
-    cpu_shares: 16
+    cpu_shares: 256
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
@@ -136,10 +142,12 @@ services:
   prometheus:
     image: cyberdojo/prometheus
     container_name: cyber-dojo-prometheus
+    cpu_shares: 128
 
   grafana:
     image: cyberdojo/grafana
     container_name: cyber-dojo-grafana
+    cpu_shares: 128
     volumes:
       - grafana_data:/var/lib/grafana
     depends_on:
