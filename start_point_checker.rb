@@ -254,7 +254,13 @@ class StartPointChecker
     component = "#{alpha_numeric}(#{separator}#{alpha_numeric})*"
     name = "#{component}(/#{component})*"
     tag = '[\w][\w.-]{0,126}'
-    remote_name =~ /^(#{name})(:(#{tag}))?$/
+
+    digest_component = '[A-Za-z][A-Za-z0-9]*'
+    digest_separator = '[+.\-_]'
+    digest_algorithm = "#{digest_component}(#{digest_separator}#{digest_component})*"
+    digest_hex = "[0-9a-fA-F]{32,}"
+    digest = "#{digest_algorithm}[:]#{digest_hex}"
+    remote_name =~ /^(#{name})(:(#{tag}))?(@#{digest})?$/
   end
 
   # - - - - - - - - - - - - - - - - - - - -

@@ -211,6 +211,7 @@ class StartPointCheckerTest < LibTestBase
     @key = 'image_name'
     assert_key_error 1    , must_be_a_String
     assert_key_error [ 1 ], must_be_a_String
+    hex = '9'*32
     [
       '',              # nothing!
       '_',             # cannot start with separator
@@ -227,7 +228,12 @@ class StartPointCheckerTest < LibTestBase
       '-/gcc/assert:23',    # - is illegal hostname
       '-x/gcc/assert:23',   # -x is illegal hostname
       'x-/gcc/assert:23',   # x- is illegal hostname
-      '/gcc/assert'         # remote-name can't start with /
+      '/gcc/assert',        # remote-name can't start with /
+      'gcc_assert@sha256:1234567890123456789012345678901',  # >=32 hex-digits
+      "gcc_assert!sha256-2:#{hex}",  # need @ to start digest
+      "gcc_assert@256:#{hex}",       # algorithm must start with letter
+      "gcc_assert@sha256-2:#{hex}",  # alg-component must start with letter
+      "gcc_assert@sha256#{hex}",     # need : to start hex-digits
     ].each do |image_name|
       assert_key_error image_name, is_invalid
     end
@@ -276,6 +282,15 @@ class StartPointCheckerTest < LibTestBase
       a-b-c:80/cdf/gcc__sd.a--ssert:latest
       a.b.c:80/cdf/gcc__sd.a--ssert:latest
       A.B.C:80/cdf/gcc__sd.a--ssert:latest
+      gcc_assert@sha256:12345678901234567890123456789012
+      gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      localhost/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      localhost:80/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      localhost:80/gcc_assert:tag@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      quay.io/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      quay.io:80/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      quay.io:80/gcc_assert:latest@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      quay.io:80/gcc_assert:latest@sha2-s1+s2.s3_s5:123456789012345678901234567890123456789
     ).each { |image_name|
       refute_key_error image_name
     }
