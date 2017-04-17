@@ -287,10 +287,13 @@ class StartPointCheckerTest < LibTestBase
       localhost/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       localhost:80/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       localhost:80/gcc_assert:tag@sha2-s1+s2.s3_s5:12345678901234567890123456789012
+      localhost:80/cdf/gcc_assert:tag@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       quay.io/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       quay.io:80/gcc_assert@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       quay.io:80/gcc_assert:latest@sha2-s1+s2.s3_s5:12345678901234567890123456789012
       quay.io:80/gcc_assert:latest@sha2-s1+s2.s3_s5:123456789012345678901234567890123456789
+      quay.io:80/cdf/gcc_assert:latest@sha2-s1+s2.s3_s5:123456789012345678901234567890123456789
+      q.uay.io:80/cdf/gcc_assert:latest@sha2-s1+s2.s3_s5:123456789012345678901234567890123456789
     ).each { |image_name|
       refute_key_error image_name
     }
