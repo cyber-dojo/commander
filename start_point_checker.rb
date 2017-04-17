@@ -219,10 +219,6 @@ class StartPointChecker
       error 'must be a String'
       return
     end
-    if image_name == ''
-      error 'is empty'
-      return
-    end
 
     # http://stackoverflow.com/questions/37861791/
     i = image_name.index('/')
@@ -237,14 +233,28 @@ class StartPointChecker
       remote_name = image_name[i+1..-1]
     end
 
+    unless valid_hostname?(hostname)
+      error 'is invalid'
+    end
+    unless valid_remote_name?(remote_name)
+      error 'is invalid'
+    end
+  end
+
+  def valid_hostname?(hostname)
+    return true if hostname == ''
+    port = '[\d]+'
+    component = "([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])"
+    hostname =~ /^(#{component}(\.#{component})*)(:(#{port}))?$/
+  end
+
+  def valid_remote_name?(remote_name)
     alpha_numeric = '[a-z0-9]+'
     separator = '([.]{1}|[_]{1,2}|[-]+)'
     component = "#{alpha_numeric}(#{separator}#{alpha_numeric})*"
     name = "#{component}(/#{component})*"
     tag = '[\w][\w.-]{0,126}'
-    unless remote_name =~ /^(#{name})(:#{tag})?$/
-      error 'is invalid'
-    end
+    remote_name =~ /^(#{name})(:(#{tag}))?$/
   end
 
   # - - - - - - - - - - - - - - - - - - - -
