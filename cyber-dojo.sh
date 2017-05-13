@@ -94,6 +94,7 @@ start_point_create_git()
   local url=$2
   if start_point_exists ${name}; then
     echo "FAILED: a start-point called ${name} already exists"
+    exit_fail
   fi
 
   # 1. make an empty docker volume
