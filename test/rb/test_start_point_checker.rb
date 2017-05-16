@@ -224,7 +224,7 @@ class StartPointCheckerTest < LibTestBase
       'gcc:.',         # tag can't start with .
       'gcc:-',         # tag can't start with -
       'gcc:{}',        # bad tag
-      "gcc:#{'x'*128}",# tag too long
+      "gcc:#{'x'*129}",# tag too long
       '-/gcc/assert:23',    # - is illegal hostname
       '-x/gcc/assert:23',   # -x is illegal hostname
       'x-/gcc/assert:23',   # x- is illegal hostname
