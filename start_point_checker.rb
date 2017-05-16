@@ -253,7 +253,7 @@ class StartPointChecker
     separator = '([.]{1}|[_]{1,2}|[-]+)'
     component = "#{alpha_numeric}(#{separator}#{alpha_numeric})*"
     name = "#{component}(/#{component})*"
-    tag = '[\w][\w.-]{0,126}'
+    tag = '[\w][\w.-]{0,127}'
 
     digest_component = '[A-Za-z][A-Za-z0-9]*'
     digest_separator = '[-_+.]'
