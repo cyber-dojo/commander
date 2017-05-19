@@ -95,6 +95,7 @@ def update_images
     'nginx:latest',
     'web:latest',
     'runner:latest',
+    'runner_stateless:latest',
     'storer:latest',
     'differ:latest',
     'collector:latest',
