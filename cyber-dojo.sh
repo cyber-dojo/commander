@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This file [cyber-dojo.sh] and cyber-dojo.rb, and start_point_*.rb
 # all combine to handle all the cyber-dojo commands except
@@ -318,9 +318,9 @@ fi
 
 # cyber-dojo start-point create NAME --git=URL
 if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-  local name=$3
-  local lhs=$(echo $4 | cut -f1 -s -d=)
-  local url=$(echo $4 | cut -f2 -s -d=)
+  name=$3
+  lhs=$(echo $4 | cut -f1 -s -d=)
+  url=$(echo $4 | cut -f2 -s -d=)
   if [ "${lhs}" = '--git' ]; then
     start_point_create_git "${name}" "${url}"
   fi
