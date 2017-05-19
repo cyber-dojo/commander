@@ -107,7 +107,6 @@ start_point_create_git()
                --interactive
                --user=root
                --volume=${name}:/data
-               --workdir /data
                ${cyber_dojo_commander} sh"
   g_cid=`${command}`
   command="docker start ${g_cid}"
@@ -115,13 +114,13 @@ start_point_create_git()
 
   # 3. pull git repo into docker volume
   declare -a commands=(
-    "git init"
-    "git remote add origin ${url}"
-    "git config core.sparseCheckout true"
-    "echo !*/_docker_context >> .git/info/sparse-checkout"
-    "echo /\*                >> .git/info/sparse-checkout"
-    "git pull --depth=1 origin master"
-    "rm -rf .git"
+    "cd /data && git init"
+    "cd /data && git remote add origin ${url}"
+    "cd /data && git config core.sparseCheckout true"
+    "cd /data && echo !*/_docker_context >> .git/info/sparse-checkout"
+    "cd /data && echo /\*                >> .git/info/sparse-checkout"
+    "cd /data && git pull --depth=1 origin master"
+    "cd /data && rm -rf .git"
   )
   for cmd in "${commands[@]}"
   do
