@@ -101,31 +101,43 @@ start_point_create_git()
   command="docker volume create --name=${name} --label=cyber-dojo-start-point=${url}"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} FAILED"
   g_vol=${name}
-  # 2. mount empty volume inside docker container
+
+  # 2. mount empty docker volume inside docker container
   command="docker create
                --interactive
                --user=root
                --volume=${name}:/data
+               --workdir /data
                ${cyber_dojo_commander} sh"
   g_cid=`${command}`
   command="docker start ${g_cid}"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
-  # 3. clone git repo to local folder
-  command="docker exec ${g_cid} sh -c 'git clone --depth=1 --branch=master ${url} /data'"
-  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
-  # 4. remove .git repo
-  # NOTE: typically still leaves [.gitignore .travis.yml README.md]
-  command="docker exec ${g_cid} sh -c 'rm -rf /data/.git'"
-  run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  # 3. pull git repo into docker volume
+  declare -a commands=(
+    "git init"
+    "git remote add origin ${url}"
+    "git config core.sparseCheckout true"
+    "echo !*/_docker_context >> .git/info/sparse-checkout"
+    "echo /\*                >> .git/info/sparse-checkout"
+    "git pull --depth=1 origin master"
+    "rm -rf .git"
+  )
+  for cmd in "${commands[@]}"
+  do
+    command="docker exec ${g_cid} sh -c '${cmd}'"
+    run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  done
 
-  # 5. ensure cyber-dojo user owns everything in the volume
+  # 4. ensure cyber-dojo user owns everything in the volume
   command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
-  # 6. check the volume is a good start-point
+
+  # 5. check the volume is a good start-point
   command="docker exec ${g_cid} sh -c './start_point_check.rb /data'"
   run_loud "${command}" || clean_up_and_exit_fail
-  # clean up everything used to create the volume, but not the volume itself
+
+  # 6. clean up everything used to create the volume, but not the volume itself
   g_vol=''
   clean_up
 }
