@@ -91,30 +91,28 @@ def update_images
   # special command called directly from ./cyber-dojo
   # I'd like to get these image names directly from docker-compose.yml
   # but there does not seem to be a simple way to do that :-(
-  service_images = [
-    'nginx:latest',
-    'web:latest',
-    'runner:latest',
-    'runner_stateless:latest',
-    'storer:latest',
-    'differ:latest',
-    'collector:latest',
-    'zipper:latest',
-    'prometheus:latest',
-    'grafana:latest'
-  ]
+  service_images = %w(
+    nginx
+    web
+    runner
+    runner_stateless
+    storer
+    differ
+    collector
+    zipper
+    prometheus
+    grafana
+  )
   service_images.each do |name|
-    command = "docker pull cyberdojo/#{name}"
     # use system() so pulls are visible in terminal
-    system(command)
+    system "docker pull cyberdojo/#{name}:latest"
   end
 
   cmd = "docker images --format '{{.Repository}}' | grep cyberdojofoundation"
   stdout = `#{cmd}`
   language_images = stdout.split("\n")
   language_images.each do |name|
-    command = "docker pull #{name}"
-    system(command)
+    system "docker pull #{name}"
   end
 end
 
@@ -237,17 +235,17 @@ end
 #==========================================================
 
 def up_arg_int_ok(help, args, name)
-  integer_value = get_arg("--#{name}", args)
-  if integer_value.nil?
+  int_value = get_arg("--#{name}", args)
+  if int_value.nil?
     return true
   end
 
-  if integer_value == ''
+  if int_value == ''
     STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
 
-  # TODO: Do we want to validate that it's an integer?
+  # TODO: validate that it's an int?
 
   return true
 end
@@ -309,13 +307,14 @@ def up
   # unknown arguments?
   args = ARGV[1..-1]
   knowns = ['languages','exercises','custom','port']
-  unknown = args.select do |arg|
+  unknowns = args.select do |arg|
     knowns.none? { |known| arg.start_with?('--' + known + '=') }
   end
-  unless unknown == []
-    unknown.each { |arg| STDERR.puts "FAILED: unknown argument [#{arg.split('=')[0]}]" }
-    exit failed
+  unknowns.each do |unknown|
+    arg = unknown.split('=')[0]
+    STDERR.puts "FAILED: unknown argument [#{arg}]"
   end
+  exit failed unless unknowns == []
 
   # explicit start-points?
   exit failed unless up_arg_ok(help, args, 'languages')  # --languages=NAME
