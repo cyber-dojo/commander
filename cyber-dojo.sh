@@ -88,6 +88,27 @@ one_time_creation_of_katas_data_volume()
 g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
 g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
 
+start_point_git_sparse_pull()
+{
+  local url=$1
+  declare -a commands=(
+    "cd /data && git init"
+    "cd /data && git remote add origin ${url}"
+    "cd /data && git config core.sparseCheckout true"
+    "cd /data && echo !**/_docker_context >> .git/info/sparse-checkout"
+    "cd /data && echo /\*                 >> .git/info/sparse-checkout"
+    "cd /data && git pull --depth=1 origin master"
+    "cd /data && rm -rf .git"
+  )
+  for cmd in "${commands[@]}"
+  do
+    command="docker exec ${g_cid} sh -c '${cmd}'"
+    run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
+  done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 start_point_create_git()
 {
   local name=$1
@@ -113,20 +134,7 @@ start_point_create_git()
   run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
 
   # 3. pull git repo into docker volume
-  declare -a commands=(
-    "cd /data && git init"
-    "cd /data && git remote add origin ${url}"
-    "cd /data && git config core.sparseCheckout true"
-    "cd /data && echo !**/_docker_context >> .git/info/sparse-checkout"
-    "cd /data && echo /\*                  >> .git/info/sparse-checkout"
-    "cd /data && git pull --depth=1 origin master"
-    "cd /data && rm -rf .git"
-  )
-  for cmd in "${commands[@]}"
-  do
-    command="docker exec ${g_cid} sh -c '${cmd}'"
-    run_quiet "${command}" || clean_up_and_exit_fail "${command} failed!?"
-  done
+  start_point_git_sparse_pull ${url}
 
   # 4. ensure cyber-dojo user owns everything in the volume
   command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
