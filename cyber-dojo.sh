@@ -337,7 +337,3 @@ if [ "$1" = 'up' ] && [ "$2" != '--help' ]; then
   shift # up
   cyber_dojo_up "$@"
 fi
-
-if [ "$*" = 'down' ]; then
-  ${docker_compose_cmd} down
-fi
