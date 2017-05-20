@@ -7,9 +7,9 @@
 #   ./cyber-dojo update
 #   ./cyber-dojo start-point create NAME --dir=DIR
 #
-# Splitting across several files is messy and historical,
+# Splitting across this file and .rb files is messy and historical,
 # from when there was no commander image and you had to
-# install docker-compose. Needs consolidating.
+# install docker-compose. Needs consolidating into just .rb files.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -59,8 +59,8 @@ one_time_creation_of_katas_data_volume()
   # existed on the host in which case it assumed an old cyber-dojo server
   # was being upgraded and automatically copied it into the new volume.
   # It doesn't do that any more. If you want to upgrade an older server
-  # have a look at notes/copy_katas_into_data_container.sh in
-  # https://github.com/cyber-dojo/web
+  # have a look at old-notes/copy_katas_into_data_container.sh in
+  # https://github.com/cyber-dojo/cyber-dojo
   docker ps --all | grep -s ${CYBER_DOJO_KATAS_DATA_CONTAINER} > /dev/null
   if [ $? != 0 ]; then
     CONTEXT_DIR=.

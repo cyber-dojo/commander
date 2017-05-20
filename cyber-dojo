@@ -1,9 +1,20 @@
 #!/bin/bash
 
 # Controls a cyber-dojo web server.
-# The aim is for all commands to forward to a cyber-dojo commander container.
-# A few commands have to be handled locally.
-# requires: awk, sed, grep which are in DockerToolbox quickstart terminal.
+# The aim is for all commands to forward to
+# the cyber-dojo commander container.
+# However, three commands have to be handled locally. Viz:
+#
+#  1) ./cyber-dojo sh
+#  2)  ./cyber-dojo update
+#  3) ./cyber-dojo start-point create NAME --dir=DIR
+#
+#  1) provides an interactive terminal.
+#  2) replaces this script.
+#  3) needs access to DIR.
+
+# requires: awk, sed, grep which are in DockerToolbox
+# quickstart terminal.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
