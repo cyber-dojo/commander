@@ -9,11 +9,6 @@ def cyber_dojo_start_point_create_list(name, list)
     exit failed
   end
 
-  list_content = %w(
-    https://github.com/cyber-dojo-languages/elm-test
-    https://github.com/cyber-dojo-languages/haskell-hunit
-  )
-
   # 1. make an empty docker volume
   command="docker volume create --name=#{name} --label=cyber-dojo-start-point"
   run(command)
@@ -33,7 +28,7 @@ def cyber_dojo_start_point_create_list(name, list)
       "#{cyber_dojo_commander}",
       'sh'
   ].join(space)
-  $g_cid = run command
+  $g_cid = run(command).strip
   command = "docker start #{$g_cid}"
   run command
   if $exit_status != 0
@@ -42,12 +37,51 @@ def cyber_dojo_start_point_create_list(name, list)
     exit failed
   end
 
+  # 3. pull git repos into docker volume
+  list_urls = %w(
+    https://github.com/cyber-dojo-languages/elm-test
+    https://github.com/cyber-dojo-languages/haskell-hunit
+  )
+  list_urls.each_with_index do |url, index|
+    start_point_git_sparse_pull url, index
+  end
+
 
   # ...
 
+
+  # TODO: put in rescue statement
   # 6. clean up everything used to create the volume, but not the volume itself
   $g_vol = ''
   clean_up
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def start_point_git_sparse_pull(url, index)
+  commands = [
+    "cd /data && mkdir #{index}",
+    "cd /data/#{index} && git init",
+    "cd /data/#{index} && git remote add origin #{url}",
+    "cd /data/#{index} && git config core.sparseCheckout true",
+    "cd /data/#{index} && echo !\\*\\*/_docker_context >> .git/info/sparse-checkout",
+    "cd /data/#{index} && echo /\\*                    >> .git/info/sparse-checkout",
+    "cd /data/#{index} && git pull --depth=1 origin master &> /dev/null",
+    "cd /data/#{index} && rm -rf .git",
+    "cd /data/#{index} && cp setup.json .."
+  ]
+  commands.each do |cmd|
+    command = "docker exec #{$g_cid} sh -c '#{cmd}'"
+    output = run(command)
+    #STDERR.puts command
+    #STDERR.puts ":#{output}:"
+    #STDERR.puts ":#{$exit_status}:"
+    if $exit_status != 0
+      clean_up
+      STDERR.puts "#{command} failed!?"
+      exit failed
+    end
+  end
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
