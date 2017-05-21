@@ -11,18 +11,27 @@ test_CYBER_DOJO_START_POINT_CREATE_DIR()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_from_good_dir_with_new_name_prints_nothing_and_exits_zero()
+startPointCreateDir()
+{
+  local name=$1
+  local dir=$2
+  ${exe} start-point create ${name} --dir=${dir} >${stdoutF} 2>${stderrF}
+}
+
+test_from_good_dir_with_new_name_creates_start_point_prints_nothing_and_exits_zero()
 {
   local name=good
   local good_dir=./../rb/example_start_points/custom
-  ${exe} start-point create ${name} --dir=${good_dir} >${stdoutF} 2>${stderrF}
+
+  refuteStartPointExists ${name}
+  startPointCreateDir ${name} ${good_dir}
   assertTrue $?
   assertNoStdout
   assertNoStderr
-  ${exe} start-point ls --quiet >${stdoutF} 2>${stderrF}
-  assertStdoutIncludes ${name}
+  assertStartPointExists ${name}
 
-  ${exe} start-point rm ${name}
+  startPointRm ${name}
+  refuteStartPointExists ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -31,16 +40,21 @@ test_from_good_dir_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
 {
   local name=good
   local good_dir=./../rb/example_start_points/custom
-  ${exe} start-point create ${name} --dir=${good_dir} >${stdoutF} 2>${stderrF}
-  assertTrue $?
+
+  refuteStartPointExists ${name}
+  startPointCreateDir ${name} ${good_dir}
+  assertStartPointExists ${name}
 
   local expected_stderr="FAILED: a start-point called ${name} already exists"
-  ${exe} start-point create ${name} --dir=${good_dir} >${stdoutF} 2>${stderrF}
+
+  startPointCreateDir ${name} ${good_dir}
   assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
+  assertStartPointExists ${name}
 
-  ${exe} start-point rm ${name}
+  startPointRm ${name}
+  refuteStartPointExists ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -52,11 +66,15 @@ test_from_bad_dir_prints_msg_to_stderr_and_exits_non_zero()
   # TODO: lose /data/ from output?
   # TODO: secretly pass host path to commander?
 
+  local name=bad
   local bad_dir=./../rb/example_start_points/bad_custom
-  ${exe} start-point create bad --dir=${bad_dir} >${stdoutF} 2>${stderrF}
+
+  refuteStartPointExists ${name}
+  startPointCreateDir ${name} ${bad_dir}
   assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"
+  refuteStartPointExists ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

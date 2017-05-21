@@ -1,11 +1,8 @@
 #!/bin/bash
 
 # This file [cyber-dojo.sh] and cyber-dojo.rb, and start_point_*.rb
-# all combine to handle all the cyber-dojo commands except
-# the three commands that have to be handled by cyber-dojo
-#   ./cyber-dojo sh
-#   ./cyber-dojo update
-#   ./cyber-dojo start-point create NAME --dir=DIR
+# combine to handle all the cyber-dojo commands except for the three
+# commands that have to be handled by the cyber-dojo (no extension) script:
 #
 # Splitting across this file and .rb files is messy and historical,
 # from when there was no commander image and you had to
