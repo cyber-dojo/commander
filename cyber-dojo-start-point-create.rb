@@ -58,6 +58,7 @@ def cyber_dojo_start_point_create
     STDERR.puts 'FAILED: specify --git=... OR --dir=... but not both'
     exit failed
   end
+
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
   # [cyber-dojo.sh] does actual [start-point create NAME --git=URL]
 end
