@@ -2,7 +2,7 @@
 
 # This file [cyber-dojo.sh] and cyber-dojo.rb, and start_point_*.rb
 # combine to handle all the cyber-dojo commands except for the three
-# commands that have to be handled by the cyber-dojo (no extension) script:
+# commands that have to be handled by the cyber-dojo (no extension) script.
 #
 # Splitting across this file and .rb files is messy and historical,
 # from when there was no commander image and you had to
@@ -321,16 +321,6 @@ fi
 
 if [ $? != 0 ]; then
   exit_fail
-fi
-
-# cyber-dojo start-point create NAME --git=URL
-if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-  name=$3
-  lhs=$(echo $4 | cut -f1 -s -d=)
-  url=$(echo $4 | cut -f2 -s -d=)
-  if [ "${lhs}" = '--git' ]; then
-    start_point_create_git "${name}" "${url}"
-  fi
 fi
 
 if [ "$1" = 'up' ] && [ "$2" != '--help' ]; then

@@ -1,4 +1,5 @@
 
+require_relative 'cyber-dojo-start-point-create-git'
 require_relative 'cyber-dojo-start-point-create-list'
 
 def cyber_dojo_start_point_create
@@ -57,11 +58,11 @@ def cyber_dojo_start_point_create
   end
 
   # required known arguments
-  url  = get_arg('--git' , args)
+  git  = get_arg('--git' , args)
   dir  = get_arg('--dir' , args)
   list = get_arg('--list', args)
   count = 0
-  count += 1 if url
+  count += 1 if git
   count += 1 if dir
   count += 1 if list
   if count > 1
@@ -70,10 +71,13 @@ def cyber_dojo_start_point_create
   end
 
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
-  # [cyber-dojo.sh] does actual [start-point create NAME --git=URL]
+
+  if git
+    cyber_dojo_start_point_create_git(vol, git)
+  end
 
   if list
-    cyber_dojo_start_point_create_list vol, list
+    cyber_dojo_start_point_create_list(vol, list)
   end
 
 end

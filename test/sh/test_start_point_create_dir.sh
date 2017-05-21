@@ -55,11 +55,6 @@ test_____good_dir_but_name_already_exists()
 
 test_____bad_dir_content()
 {
-  local expected_stderr="FAILED...
-/data/Tennis/C#/manifest.json: Xfilename_extension: unknown key"
-  # TODO: lose /data/ from output?
-  # TODO: secretly pass host path to commander?
-
   local name=bad
   local bad_dir=./../rb/example_start_points/bad_custom
 
@@ -67,7 +62,9 @@ test_____bad_dir_content()
   startPointCreateDir ${name} ${bad_dir}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrIncludes "FAILED..."
+  assertStderrIncludes "Tennis/C#/manifest.json: Xdisplay_name: unknown key"
+  assertStderrIncludes "Tennis/C#/manifest.json: display_name: missing"
   refuteStartPointExists ${name}
 }
 

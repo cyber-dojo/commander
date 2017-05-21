@@ -30,15 +30,20 @@ def cyber_dojo_start_point_create_list(name, list)
     https://github.com/cyber-dojo-languages/elm-test
     https://github.com/cyber-dojo-languages/haskell-hunit
   )
-  list_urls.each_with_index do |url, index|
-    start_point_git_sparse_pull url, index
+  list_urls.each do |url|
+    name = url.split('/')[-1]
+    start_point_git_sparse_pull url, name
   end
 
   # 4. ensure cyber-dojo user owns everything in the volume
   assert_run "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
   # 5. check the volume is a good start-point
-  assert_run "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
+  run "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
+  if $exit_status != 0
+    clean_up
+    exit failed
+  end
 
   # TODO: put in rescue statement
   # 6. clean up everything used to create the volume, but not the volume itself
