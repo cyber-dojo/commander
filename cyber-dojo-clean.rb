@@ -23,6 +23,8 @@ def cyber_dojo_clean
   run command
 
   # TODO: Bug - this removes start-point volumes
+  #       if the cyber-dojo server is down
+  #
   #command = "docker volume ls --quiet --filter='dangling=true' | xargs --no-run-if-empty docker volume rm"
   #run command
 end
