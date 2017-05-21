@@ -18,6 +18,9 @@ test_CYBER_DOJO_START_POINT_CREATE()
 test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
+Use: cyber-dojo start-point create NAME --list=FILE
+Creates a start-point named NAME from the URLs listed in FILE
+
 Use: cyber-dojo start-point create NAME --git=URL
 Creates a start-point named NAME from a git clone of URL
 
@@ -97,7 +100,7 @@ FAILED: unknown argument [--there]"
 
 test_dir_and_git_args_prints_msg_to_stderr_and_exits_non_zero()
 {
-  local expected_stderr="FAILED: specify --git=... OR --dir=... but not both"
+  local expected_stderr="FAILED: specify ONE of --git= / --dir= / --list="
   ${exe} start-point create jj --dir=where --git=url >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout

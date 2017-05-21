@@ -2,6 +2,9 @@
 def cyber_dojo_start_point_create
   help = [
     '',
+    "Use: #{me} start-point create NAME --list=FILE",
+    'Creates a start-point named NAME from the URLs listed in FILE',
+    '',
     "Use: #{me} start-point create NAME --git=URL",
     'Creates a start-point named NAME from a git clone of URL',
     '',
@@ -42,7 +45,7 @@ def cyber_dojo_start_point_create
 
   # unknown arguments?
   args = ARGV[3..-1]
-  knowns = ['git','dir']
+  knowns = ['git','dir','list']
   unknown = args.select do |argv|
     knowns.none? { |known| argv.start_with?('--' + known + '=') }
   end
@@ -52,13 +55,44 @@ def cyber_dojo_start_point_create
   end
 
   # required known arguments
-  url = get_arg('--git', args)
-  dir = get_arg('--dir', args)
-  if url && dir
-    STDERR.puts 'FAILED: specify --git=... OR --dir=... but not both'
+  url  = get_arg('--git' , args)
+  dir  = get_arg('--dir' , args)
+  list = get_arg('--list', args)
+  count = 0
+  count += 1 if url
+  count += 1 if dir
+  count += 1 if list
+  if count > 1
+    STDERR.puts 'FAILED: specify ONE of --git= / --dir= / --list='
     exit failed
   end
 
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
   # [cyber-dojo.sh] does actual [start-point create NAME --git=URL]
+
+  if list
+    cyber_dojo_start_point_create_list vol list
+  end
+
 end
+
+# - - - - - - - - - - - - - - - - - - - - - -
+
+def cyber_dojo_start_point_create_list(name, list)
+
+  if volume_exists? name
+    StDERR.puts "A start-point called #{name} already exists"
+    exit failed
+  end
+
+  list_content = %w(
+    https://github.com/cyber-dojo-languages/elm-test
+    https://github.com/cyber-dojo-languages/haskell-hunit
+  )
+
+
+
+
+end
+
+

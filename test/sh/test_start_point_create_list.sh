@@ -8,30 +8,14 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_CREATE_GIT()
+test_CYBER_DOJO_START_POINT_CREATE_LIST()
 {
   :
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_from_good_git_repo_with_new_name_creates_start_point_prints_nothing_and_exits_zero()
-{
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
-  refuteStartPointExists ${name}
-  startPointCreateGit ${name} ${url}
-  assertTrue $?
-  assertNoStdout
-  assertNoStderr
-  assertStartPointExists ${name}
-  startPointRm ${name}
-  refuteStartPointExists ${name}
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_from_good_git_repo_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
+test_name_exists_prints_msg_to_stderr_and_exits_non_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -41,7 +25,7 @@ test_from_good_git_repo_but_name_exists_prints_msg_to_stderr_and_exits_non_zero(
   assertStartPointExists ${name}
 
   local expected_stderr="FAILED: a start-point called ${name} already exists"
-  startPointCreateGit ${name} ${url}
+  startPointCreateList ${name} ${url}
   assertFalse $?
   assertNoStdout
   assertEqualsStderr "${expected_stderr}"

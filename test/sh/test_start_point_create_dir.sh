@@ -11,13 +11,6 @@ test_CYBER_DOJO_START_POINT_CREATE_DIR()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-startPointCreateDir()
-{
-  local name=$1
-  local dir=$2
-  ${exe} start-point create ${name} --dir=${dir} >${stdoutF} 2>${stderrF}
-}
-
 test_from_good_dir_with_new_name_creates_start_point_prints_nothing_and_exits_zero()
 {
   local name=good

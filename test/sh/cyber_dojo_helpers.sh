@@ -13,6 +13,29 @@ start_point_exists()
   #return $?
 }
 
+start_point_create()
+{
+  local name=$1
+  local option=$2
+  local value=$3
+  ${exe} start-point create ${name} --${option}=${value} >${stdoutF} 2>${stderrF}
+}
+
+startPointCreateGit()
+{
+  start_point_create $1 git $2
+}
+
+startPointCreateDir()
+{
+  start_point_create $1 dir $2
+}
+
+startPointCreateList()
+{
+  start_point_create $1 list $2
+}
+
 startPointRm()
 {
   local name=$1
