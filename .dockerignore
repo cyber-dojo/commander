@@ -4,9 +4,7 @@
 
 #-----!Except these
 
-!cyber-dojo
-!cyber-dojo.sh
-!cyber-dojo.rb
+!cyber-dojo*
 
 !Dockerfile.katas
 !Dockerignore.katas
@@ -16,11 +14,7 @@
 !grafana.env
 !nginx.env
 
-!start_point_check.rb
-!start_point_checker.rb
-!start_point_inspect.rb
-!start_point_pull.rb
-!start_point_latest.rb
+!start_point_*.rb
 
 !test/rb
 

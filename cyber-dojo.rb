@@ -119,34 +119,7 @@ end
 #==========================================================
 # $ ./cyber-dojo clean
 #==========================================================
-
-def clean
-  help = [
-    '',
-    "Use: #{me} clean",
-    '',
-    'Removes dangling docker images/volumes and exited containers',
-  ]
-
-  if ARGV[1] == '--help'
-    show help
-    exit succeeded
-  end
-
-  unless ARGV[1].nil?
-    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
-    exit failed
-  end
-
-  command = "docker images --quiet --filter='dangling=true' | xargs --no-run-if-empty docker rmi --force"
-  run command
-  command = "docker ps --all --quiet --filter='status=exited' | xargs --no-run-if-empty docker rm --force"
-  run command
-
-  # TODO: Bug - this removes start-point volumes
-  #command = "docker volume ls --quiet --filter='dangling=true' | xargs --no-run-if-empty docker volume rm"
-  #run command
-end
+require_relative 'cyber-dojo-clean'
 
 #==========================================================
 # $ ./cyber-dojo down
@@ -623,7 +596,7 @@ end
 #==========================================================
 # $ ./cyber-dojo start-point pull
 #==========================================================
-#
+
 def start_point_pull
   help = [
     '',
@@ -726,7 +699,7 @@ end
 case ARGV[0]
   when nil             then help
   when '--help'        then help
-  when 'clean'         then clean
+  when 'clean'         then cyber_dojo_clean
   when 'down'          then down
   when 'logs'          then logs
   when 'sh'            then sh

@@ -27,7 +27,7 @@ test_clean_unknown_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_exits_zero()
+test_clean_produces_no_output_leaves_no_dangling_images_or_exited_containers_and_exits_zero()
 {
   ${exe} clean >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -41,5 +41,5 @@ test_clean_produces_no_output_leaves_no_danglingImages_or_exitedContainers_and_e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#. ./shunit2_helpers.sh
-#. ./shunit2
+. ./shunit2_helpers.sh
+. ./shunit2

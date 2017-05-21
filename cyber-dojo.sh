@@ -9,7 +9,8 @@
 #
 # Splitting across this file and .rb files is messy and historical,
 # from when there was no commander image and you had to
-# install docker-compose. Needs consolidating into just .rb files.
+# install docker-compose.
+# Needs consolidating into just .rb files.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -19,6 +20,8 @@ if [ "$1" == '--debug' ]; then
 else
   debug_on='false'
 fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 debug()
 {
