@@ -19,8 +19,7 @@ test_____new_name_creates_start_point_prints_nothing()
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git-UNUSED_AT_PRESENT"
   refuteStartPointExists ${name}
-  startPointCreateList ${name} ${url}
-  assertTrue $?
+  assertStartPointCreateList ${name} ${url}
   assertNoStdout
   assertNoStderr
   assertStartPointExists ${name}
@@ -37,12 +36,10 @@ test_____name_already_exists()
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
   refuteStartPointExists ${name}
-  startPointCreateGit ${name} ${url}
-  assertTrue $?
+  assertStartPointCreateGit ${name} ${url}
   assertStartPointExists ${name}
 
-  startPointCreateList ${name} ${url}
-  assertFalse $?
+  refuteStartPointCreateList ${name} ${url}
   assertNoStdout
   assertEqualsStderr "FAILED: a start-point called ${name} already exists"
   assertStartPointExists ${name}

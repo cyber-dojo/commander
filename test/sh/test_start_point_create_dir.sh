@@ -16,8 +16,7 @@ test_____good_dir_with_new_name_creates_start_point_prints_nothing()
   local good_dir=./../rb/example_start_points/custom
 
   refuteStartPointExists ${name}
-  startPointCreateDir ${name} ${good_dir}
-  assertTrue $?
+  assertStartPointCreateDir ${name} ${good_dir}
   assertNoStdout
   assertNoStderr
   assertStartPointExists ${name}
@@ -36,11 +35,10 @@ test_____good_dir_but_name_already_exists()
   local good_dir=./../rb/example_start_points/custom
 
   refuteStartPointExists ${name}
-  startPointCreateDir ${name} ${good_dir}
+  assertStartPointCreateDir ${name} ${good_dir}
   assertStartPointExists ${name}
 
-  startPointCreateDir ${name} ${good_dir}
-  assertFalse $?
+  refuteStartPointCreateDir ${name} ${good_dir}
   assertNoStdout
   assertEqualsStderr "FAILED: a start-point called ${name} already exists"
   assertStartPointExists ${name}
@@ -57,8 +55,7 @@ test_____bad_dir_content()
   local bad_dir=./../rb/example_start_points/bad_custom
 
   refuteStartPointExists ${name}
-  startPointCreateDir ${name} ${bad_dir}
-  assertFalse $?
+  refuteStartPointCreateDir ${name} ${bad_dir}
   assertNoStdout
   assertStderrIncludes "FAILED..."
   assertStderrIncludes "Tennis/C#/manifest.json: Xdisplay_name: unknown key"

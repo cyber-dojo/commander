@@ -17,8 +17,7 @@ test_____good_git_repo_with_new_name_creates_start_point_prints_nothing()
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
   refuteStartPointExists ${name}
-  startPointCreateGit ${name} ${url}
-  assertTrue $?
+  assertStartPointCreateGit ${name} ${url}
   assertNoStdout
   assertNoStderr
   assertStartPointExists ${name}
@@ -35,12 +34,10 @@ test_____name_already_exists()
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
   refuteStartPointExists ${name}
-  startPointCreateGit ${name} ${url}
-  assertTrue $?
+  assertStartPointCreateGit ${name} ${url}
   assertStartPointExists ${name}
 
-  startPointCreateGit ${name} ${url}
-  assertFalse $?
+  refuteStartPointCreateGit ${name} ${url}
   assertNoStdout
   assertEqualsStderr "FAILED: a start-point called ${name} already exists"
   assertStartPointExists ${name}
@@ -56,8 +53,7 @@ test_____bad_git_content()
   local name=bad
   local url="https://github.com/cyber-dojo-languages/${repo}"
   refuteStartPointExists ${name}
-  startPointCreateGit ${name} ${url}
-  assertFalse $?
+  refuteStartPointCreateGit ${name} ${url}
   assertNoStdout
   assertStderrIncludes "FAILED..."
   assertStderrIncludes "${repo}/manifest.json: Ximage_name: unknown key"

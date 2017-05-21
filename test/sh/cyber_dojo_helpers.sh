@@ -20,26 +20,60 @@ start_point_create()
   ${exe} start-point create ${name} --${option}=${value} >${stdoutF} 2>${stderrF}
 }
 
-startPointCreateGit()
-{
-  start_point_create $1 git $2
-}
-
-startPointCreateDir()
-{
-  start_point_create $1 dir $2
-}
-
-startPointCreateList()
-{
-  start_point_create $1 list $2
-}
+startPointCreateGit()  { start_point_create $1 git  $2; }
+startPointCreateDir()  { start_point_create $1 dir  $2; }
+startPointCreateList() { start_point_create $1 list $2; }
 
 startPointRm()
 {
   local name=$1
   ${exe} start-point rm ${name}
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertStartPointCreateGit()
+{
+  startPointCreateGit $1 $2
+  assertTrue $?
+}
+
+refuteStartPointCreateGit()
+{
+  startPointCreateGit $1 $2
+  assertFalse $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertStartPointCreateDir()
+{
+  startPointCreateDir $1 $2
+  assertTrue $?
+}
+
+refuteStartPointCreateDir()
+{
+  startPointCreateDir $1 $2
+  assertFalse $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+assertStartPointCreateList()
+{
+  startPointCreateList $1 $2
+  assertTrue $?
+}
+
+refuteStartPointCreateList()
+{
+  startPointCreateList $1 $2
+  assertFalse $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointExists()
 {
