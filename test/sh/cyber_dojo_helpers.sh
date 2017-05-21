@@ -10,7 +10,6 @@ start_point_exists()
   local start_point=$1
   local end_of_line='$'
   docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
-  #return $?
 }
 
 start_point_create()
