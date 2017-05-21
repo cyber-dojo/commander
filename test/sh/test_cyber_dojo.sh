@@ -23,9 +23,9 @@ Commands:
     down         Brings down the server
     logs         Prints the logs from the server
     sh           Shells into the server
+    start-point  Manages cyber-dojo start-points
     up           Brings up the server
     update       Updates the server to the latest images
-    start-point  Manages cyber-dojo start-points
 
 Run 'cyber-dojo COMMAND --help' for more information on a command."
   ${exe} >${stdoutF} 2>${stderrF}
