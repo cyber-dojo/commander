@@ -103,6 +103,24 @@ def cyber_dojo_start_point_create_list(name, list)
   end
   $g_vol = name
 
+  # 2. mount empty docker volume inside docker container
+  command = [
+    'docker create',
+      '--interactive',
+      '--user=root',
+      "--volume=#{name}:/data",
+      "#{cyber_dojo_commander}",
+      'sh'
+  ].join(space)
+  $g_cid = run command
+  command = "docker start #{$g_cid}"
+  run command
+  if $exit_status != 0
+    clean_up
+    STDERR.puts "#{command} failed!?"
+    exit failed
+  end
+
 
   # ...
 
