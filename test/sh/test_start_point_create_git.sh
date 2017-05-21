@@ -50,5 +50,22 @@ test_____name_already_exists()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____bad_git_content()
+{
+  local repo='elm-test-bad-manifest-for-testing'
+  local name=bad
+  local url="https://github.com/cyber-dojo-languages/${repo}"
+  refuteStartPointExists ${name}
+  startPointCreateGit ${name} ${url}
+  assertFalse $?
+  assertNoStdout
+  assertStderrIncludes "FAILED..."
+  assertStderrIncludes "${repo}/manifest.json: Ximage_name: unknown key"
+  assertStderrIncludes "${repo}/manifest.json: image_name: missing"
+  refuteStartPointExists ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 . ./shunit2_helpers.sh
 . ./shunit2
