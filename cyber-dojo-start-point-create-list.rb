@@ -46,9 +46,23 @@ def cyber_dojo_start_point_create_list(name, list)
     start_point_git_sparse_pull url, index
   end
 
+  # 4. ensure cyber-dojo user owns everything in the volume
+  command = "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
+  run command
+  if $exit_status != 0
+    clean_up
+    STDERR.puts "#{command} failed!?"
+    exit failed
+  end
 
-  # ...
-
+  # 5. check the volume is a good start-point
+  command = "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
+  run command
+  if $exit_status != 0
+    clean_up
+    STDERR.puts "#{command} failed!?"
+    exit failed
+  end
 
   # TODO: put in rescue statement
   # 6. clean up everything used to create the volume, but not the volume itself
