@@ -4,14 +4,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_LS()
-{
-  :
-}
+test_START_POINT_LS() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_help_arg_prints_use_to_stdout_and_exits_zero()
+test_SUCCESS_exits_zero() { :; }
+
+test_help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point [OPTIONS] ls
@@ -25,20 +24,7 @@ Lists the name, type, and source of all cyber-dojo start-points
   assertNoStderr
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_unknown_arg_prints_msg_to_stderr_exits_non_zero()
-{
-  local expected_stderr='FAILED: unknown argument [salmo]'
-  ${exe} start-point ls salmo >${stdoutF} 2>${stderrF}
-  assertFalse $?
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_no_args_prints_nothing_when_no_volumes_and_exits_zero()
+test_no_args_prints_nothing_when_no_volumes()
 {
   ${exe} start-point ls >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -48,7 +34,7 @@ test_no_args_prints_nothing_when_no_volumes_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_quiet_arg_prints_nothing_when_no_volumes_and_exits_zero()
+test_quiet_arg_prints_nothing_when_no_volumes()
 {
   ${exe} start-point ls --quiet >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -58,7 +44,7 @@ test_quiet_arg_prints_nothing_when_no_volumes_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_quiet_arg_prints_just_names_when_volumes_exist_and_exits_zero()
+test_quiet_arg_prints_just_names_when_volumes_exist()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -75,7 +61,7 @@ test_quiet_arg_prints_just_names_when_volumes_exist_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_no_arg_prints_heading_and_names_types_sources_and_exits_zero()
+test_no_arg_prints_heading_and_names_types_sources()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -92,6 +78,19 @@ test_no_arg_prints_heading_and_names_types_sources_and_exits_zero()
   assertNoStderr
 
   ${exe} start-point rm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test_unknown_arg()
+{
+  local expected_stderr='FAILED: unknown argument [salmo]'
+  ${exe} start-point ls salmo >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

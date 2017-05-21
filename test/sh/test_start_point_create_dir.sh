@@ -4,14 +4,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_CREATE_DIR()
-{
-  :
-}
+test_START_POINT_CREATE_DIR() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_from_good_dir_with_new_name_creates_start_point_prints_nothing_and_exits_zero()
+test_SUCCESS_exits_zero() { :; }
+
+test_from_good_dir_with_new_name_creates_start_point_prints_nothing()
 {
   local name=good
   local good_dir=./../rb/example_start_points/custom
@@ -29,7 +28,9 @@ test_from_good_dir_with_new_name_creates_start_point_prints_nothing_and_exits_ze
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_from_good_dir_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
+test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test_from_good_dir_but_name_exists()
 {
   local name=good
   local good_dir=./../rb/example_start_points/custom
@@ -52,7 +53,7 @@ test_from_good_dir_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_from_bad_dir_prints_msg_to_stderr_and_exits_non_zero()
+test_from_bad_dir_content()
 {
   local expected_stderr="FAILED...
 /data/Tennis/C#/manifest.json: Xfilename_extension: unknown key"

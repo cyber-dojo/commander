@@ -8,14 +8,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_CREATE_LIST()
-{
-  :
-}
+test_START_POINT_CREATE_LIST() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_new_name_creates_start_point_prints_nothing_and_exits_zero()
+test_SUCCESS_exits_zero() { :; }
+
+test_new_name_creates_start_point_prints_nothing()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git-UNUSED_AT_PRESENT"
@@ -31,7 +30,9 @@ test_new_name_creates_start_point_prints_nothing_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_name_exists_prints_msg_to_stderr_and_exits_non_zero()
+test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test_name_exists()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"

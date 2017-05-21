@@ -4,14 +4,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_INSPECT()
-{
-  :
-}
+test_START_POINT_INSPECT() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_no_args_prints_use_to_stdout_and_exits_zero()
+test_SUCCESS_exits_zero() { :; }
+
+test_no_args_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -25,7 +24,7 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_help_arg_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -37,48 +36,7 @@ Displays details of the named start-point"
   assertNoStderr
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
-{
-  local expected_stderr='FAILED: absent does not exist.'
-  ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
-  assertFalse $?
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
-{
-  docker volume create --name notStartPoint > /dev/null
-  local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
-  ${exe} start-point inspect notStartPoint >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  docker volume rm notStartPoint > /dev/null
-  assertFalse ${exit_status}
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
-{
-  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
-  local expected_stderr='FAILED: unknown argument [extraArg]'
-  ${exe} start-point inspect ok extraArg >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  ${exe} start-point rm ok
-  assertFalse ${exit_status}
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_custom_start_point_prints_details_and_exits_zero()
+test_custom_start_point_prints_details()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
@@ -107,7 +65,7 @@ test_custom_start_point_prints_details_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_exercises_start_point_prints_details_and_exits_zero()
+test_exercises_start_point_prints_details()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-exercises.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
@@ -125,6 +83,47 @@ test_exercises_start_point_prints_details_and_exits_zero()
   done
 
   assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test_absent_start_point()
+{
+  local expected_stderr='FAILED: absent does not exist.'
+  ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_present_but_not_a_start_point()
+{
+  docker volume create --name notStartPoint > /dev/null
+  local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
+  ${exe} start-point inspect notStartPoint >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  docker volume rm notStartPoint > /dev/null
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_extra_arg()
+{
+  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
+  local expected_stderr='FAILED: unknown argument [extraArg]'
+  ${exe} start-point inspect ok extraArg >${stdoutF} 2>${stderrF}
+  local exit_status=$?
+  ${exe} start-point rm ok
+  assertFalse ${exit_status}
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

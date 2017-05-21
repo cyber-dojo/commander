@@ -4,14 +4,13 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_CYBER_DOJO_START_POINT_PULL()
-{
-  :
-}
+test_START_POINT_PULL() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_no_arg_prints_use_to_stdout_and_exits_zero()
+test_SUCCESS_exits_zero() { :; }
+
+test_no_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -25,7 +24,7 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_help_arg_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -39,7 +38,9 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test_absent_start_point()
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point pull absent >${stdoutF} 2>${stderrF}
@@ -50,7 +51,7 @@ test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_present_but_not_a_start_point()
 {
   docker volume create --name notStartPoint > /dev/null
   local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
@@ -64,7 +65,7 @@ test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_extra_arg()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   local expected_stderr='FAILED: unknown argument [extraArg]'
