@@ -4,7 +4,14 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_help_prints_use_to_stdout_and_exits_zero()
+test_CYBER_DOJO_START_POINT_LS()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point [OPTIONS] ls
@@ -20,7 +27,7 @@ Lists the names of all cyber-dojo start-points
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_unknown_arg_prints_msg_to_stderr_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_exits_non_zero()
 {
   local expected_stderr='FAILED: unknown argument [salmo]'
   ${exe} start-point ls salmo >${stdoutF} 2>${stderrF}
@@ -31,7 +38,7 @@ test_start_point_ls_unknown_arg_prints_msg_to_stderr_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_prints_nothing_when_no_volumes_and_exits_zero()
+test_no_args_prints_nothing_when_no_volumes_and_exits_zero()
 {
   ${exe} start-point ls >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -41,7 +48,7 @@ test_start_point_ls_prints_nothing_when_no_volumes_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_quiet_prints_nothing_when_no_volumes_and_exits_zero()
+test_quiet_arg_prints_nothing_when_no_volumes_and_exits_zero()
 {
   ${exe} start-point ls --quiet >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -51,7 +58,7 @@ test_start_point_ls_quiet_prints_nothing_when_no_volumes_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_quiet_prints_just_names_and_exits_zero()
+test_quiet_arg_prints_just_names_when_volumes_exist_and_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -68,7 +75,7 @@ test_start_point_ls_quiet_prints_just_names_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_prints_heading_and_names_and_exits_zero()
+test_no_arg_prints_heading_and_names_and_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"

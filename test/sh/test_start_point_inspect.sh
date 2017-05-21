@@ -4,7 +4,14 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_no_args_prints_use_to_stdout_and_exits_zero()
+test_CYBER_DOJO_START_POINT_INSPECT()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_no_args_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -18,7 +25,7 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_help_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -32,7 +39,7 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
@@ -43,7 +50,7 @@ test_start_point_inspect_absent_start_point_prints_msg_to_stderr_and_exits_non_z
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   docker volume create --name notStartPoint > /dev/null
   local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
@@ -57,7 +64,7 @@ test_start_point_inspect_present_but_not_start_point_prints_msg_to_stderr_and_ex
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   local expected_stderr='FAILED: unknown argument [extraArg]'
@@ -71,7 +78,7 @@ test_start_point_inspect_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_custom_start_point_prints_details_and_exits_zero()
+test_custom_start_point_prints_details_and_exits_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
@@ -100,7 +107,7 @@ test_start_point_inspect_custom_start_point_prints_details_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_inspect_exercises_start_point_prints_details_and_exits_zero()
+test_exercises_start_point_prints_details_and_exits_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-exercises.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
@@ -121,7 +128,6 @@ test_start_point_inspect_exercises_start_point_prints_details_and_exits_zero()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 . ./shunit2_helpers.sh
 . ./shunit2

@@ -6,7 +6,16 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_start_point_create_Help_prints_use_to_stdout_and_exits_zero()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_CYBER_DOJO_START_POINT_CREATE()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point create NAME --git=URL
@@ -30,7 +39,7 @@ NAME must be at least two letters long"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_illegal_name_first_letter_prints_msg_to_stderr_and_exits_non_zero()
+test_illegal_name_first_letter_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: +bad is an illegal NAME"
   ${exe} start-point create +bad >${stdoutF} 2>${stderrF}
@@ -41,7 +50,7 @@ test_start_point_create_illegal_name_first_letter_prints_msg_to_stderr_and_exits
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_illegal_name_second_letter_prints_msg_to_stderr_and_exits_non_zero()
+test_illegal_name_second_letter_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: b+ad is an illegal NAME"
   ${exe} start-point create b+ad >${stdoutF} 2>${stderrF}
@@ -52,7 +61,7 @@ test_start_point_create_illegal_name_second_letter_prints_msg_to_stderr_and_exit
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_illegal_name_one_letter_name_prints_msg_to_stderr_and_exits_non_zero()
+test_illegal_name_one_letter_name_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: b is an illegal NAME"
   ${exe} start-point create b >${stdoutF} 2>${stderrF}
@@ -63,7 +72,7 @@ test_start_point_create_illegal_name_one_letter_name_prints_msg_to_stderr_and_ex
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [--where]"
   ${exe} start-point create jj --where=tay >${stdoutF} 2>${stderrF}
@@ -74,7 +83,7 @@ test_start_point_create_name_unknown_arg_prints_msg_to_stderr_and_exits_non_zero
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_unknown_args_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_args_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [--where]
 FAILED: unknown argument [--there]"
@@ -86,7 +95,7 @@ FAILED: unknown argument [--there]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_name_dir_and_git_args_prints_msg_to_stderr_and_exits_non_zero()
+test_dir_and_git_args_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: specify --git=... OR --dir=... but not both"
   ${exe} start-point create jj --dir=where --git=url >${stdoutF} 2>${stderrF}
@@ -97,7 +106,7 @@ test_start_point_create_name_dir_and_git_args_prints_msg_to_stderr_and_exits_non
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_from_git_repo_with_new_name_prints_nothing_and_exits_zero()
+test_from_git_repo_with_new_name_prints_nothing_and_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -110,7 +119,7 @@ test_start_point_create_from_git_repo_with_new_name_prints_nothing_and_exits_zer
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_from_git_repo_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
+test_from_git_repo_but_name_exists_prints_msg_to_stderr_and_exits_non_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
@@ -128,7 +137,7 @@ test_start_point_create_from_git_repo_but_name_exists_prints_msg_to_stderr_and_e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_create_from_dir_with_bad_content_prints_msg_to_stderr_and_exits_non_zero()
+test_from_dir_with_bad_content_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED...
 /data/Tennis/C#/manifest.json: Xfilename_extension: unknown key"

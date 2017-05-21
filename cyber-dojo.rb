@@ -83,6 +83,7 @@ def update
     STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
+  # cyber-dojo script does actual [update]
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,7 +2,16 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_with_no_args_or_help_prints_use_to_stdout_and_exits_zero()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_CYBER_DOJO()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_with_no_args_or_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   #clean        Removes old images/volumes/containers
   local expected_stdout="

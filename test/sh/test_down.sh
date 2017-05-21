@@ -2,7 +2,16 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_down_help_prints_use_to_stdout_and_exits_zero()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_CYBER_DOJO_DOWN()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo down
@@ -16,7 +25,7 @@ Stops and removes docker containers created with 'up'"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_down_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} down unknown >${stdoutF} 2>${stderrF}
@@ -27,7 +36,7 @@ test_down_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_down_removes_containers_exits_zero()
+test_no_args_removes_containers_exits_zero()
 {
   ${exe} up >${stdoutF} 2>${stderrF}
   assertTrue $?

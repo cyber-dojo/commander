@@ -2,7 +2,16 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_clean_help_prints_use_to_stdout_and_exits_zero()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_CYBER_DOJO_CLEAN()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo clean
@@ -16,7 +25,7 @@ Removes dangling docker images/volumes and exited containers"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_clean_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} clean unknown >${stdoutF} 2>${stderrF}
@@ -27,7 +36,7 @@ test_clean_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_clean_produces_no_output_leaves_no_dangling_images_or_exited_containers_and_exits_zero()
+test_no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers_and_exits_zero()
 {
   ${exe} clean >${stdoutF} 2>${stderrF}
   assertTrue $?

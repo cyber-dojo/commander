@@ -2,7 +2,16 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_up_uses_default_start_points_and_creates_containers()
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_CYBER_DOJO_UP()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_no_args_uses_default_start_points_and_creates_containers()
 {
   ${exe} up >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -24,7 +33,7 @@ test_up_uses_default_start_points_and_creates_containers()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_help_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo up [OPTIONS]
@@ -54,7 +63,7 @@ Creates and starts the cyber-dojo server using named/default start-points
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [salmon]"
   ${exe} up salmon >${stdoutF} 2>${stderrF}
@@ -65,7 +74,7 @@ test_up_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_unknown_args_prints_msg_to_left_of_equal_to_stderr_and_exits_non_zero()
+test_unknown_args_prints_msg_to_left_of_equal_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [--spey]
 FAILED: unknown argument [--tay]"
@@ -77,7 +86,7 @@ FAILED: unknown argument [--tay]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missing_languages_prints_msg_to_sterr_and_exits_non_zero()
+test_missing_languages_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: missing argument value --languages=[???]'
   ${exe} up --languages= >${stdoutF} 2>${stderrF}
@@ -88,7 +97,7 @@ test_up_missing_languages_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missing_custom_prints_msg_to_sterr_and_exits_non_zero()
+test_missing_custom_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: missing argument value --custom=[???]'
   ${exe} up --custom= >${stdoutF} 2>${stderrF}
@@ -99,7 +108,7 @@ test_up_missing_custom_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missing_exercises_prints_msg_to_sterr_and_exits_non_zero()
+test_missing_exercises_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: missing argument value --exercises=[???]'
   ${exe} up --exercises= >${stdoutF} 2>${stderrF}
@@ -110,7 +119,7 @@ test_up_missing_exercises_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_missing_port_prints_msg_to_sterr_and_exits_non_zero()
+test_missing_port_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: missing argument value --port=[???]'
   ${exe} up --port= >${stdoutF} 2>${stderrF}
@@ -121,7 +130,7 @@ test_up_missing_port_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_named_languages_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
+test_named_languages_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: start-point notExist does not exist'
   ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
@@ -132,7 +141,7 @@ test_up_named_languages_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_named_custom_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
+test_named_custom_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: start-point notExist does not exist'
   ${exe} up --custom=notExist >${stdoutF} 2>${stderrF}
@@ -143,7 +152,7 @@ test_up_named_custom_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_named_exercises_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
+test_named_exercises_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: start-point notExist does not exist'
   ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
@@ -154,7 +163,7 @@ test_up_named_exercises_does_not_exist_prints_msg_to_sterr_and_exits_non_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_named_exercises_is_not_exercise_type_prints_msg_to_sterr_and_exits_non_zero()
+test_named_exercises_is_not_exercise_type_prints_msg_to_sterr_and_exits_non_zero()
 {
   local url=https://github.com/cyber-dojo/start-points-custom.git
   ${exe} start-point create jj --git=${url} >${stdoutF} 2>${stderrF}
@@ -170,7 +179,7 @@ test_up_named_exercises_is_not_exercise_type_prints_msg_to_sterr_and_exits_non_z
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_prints_msg_naming_default_start_points_and_port_exits_zero()
+test_prints_msg_naming_default_start_points_and_port_exits_zero()
 {
   ${exe} up >${stdoutF} 2>${stderrF}
   assertTrue $?
@@ -186,7 +195,7 @@ Listening on port 80"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_custom_start_point_prints_msg_saying_its_being_used_exits_zero()
+test_custom_start_point_prints_msg_saying_its_being_used_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-custom.git"
@@ -209,7 +218,7 @@ Listening on port 80"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_up_custom_port_prints_msg_saying_its_being_used_exits_zero()
+test_custom_port_prints_msg_saying_its_being_used_exits_zero()
 {
   local port=8462
   ${exe} up --port=${port} >${stdoutF} 2>${stderrF}

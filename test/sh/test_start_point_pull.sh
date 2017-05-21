@@ -4,7 +4,14 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_prints_use_to_stdout_and_exits_zero()
+test_CYBER_DOJO_START_POINT_PULL()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_no_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -18,7 +25,7 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_help_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -32,7 +39,7 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point pull absent >${stdoutF} 2>${stderrF}
@@ -43,7 +50,7 @@ test_start_point_pull_absent_start_point_prints_msg_to_stderr_and_exits_non_zero
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   docker volume create --name notStartPoint > /dev/null
   local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
@@ -57,7 +64,7 @@ test_start_point_pull_present_but_not_start_point_prints_msg_to_stderr_and_exits
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_pull_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   local expected_stderr='FAILED: unknown argument [extraArg]'

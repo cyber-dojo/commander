@@ -6,7 +6,7 @@
 # However, three commands have to be handled locally. Viz:
 #
 #  1) ./cyber-dojo sh
-#  2)  ./cyber-dojo update
+#  2) ./cyber-dojo update
 #  3) ./cyber-dojo start-point create NAME --dir=DIR
 #
 #  1) provides an interactive terminal.

@@ -4,7 +4,14 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_latest_prints_use_to_stdout_and_exits_zero()
+test_CYBER_DOJO_START_POINT_LATEST()
+{
+  :
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_no_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point latest NAME
@@ -18,7 +25,7 @@ Re-pulls already pulled docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_latest_help_prints_use_to_stdout_and_exits_zero()
+test_help_arg_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point latest NAME
@@ -32,7 +39,7 @@ Re-pulls already pulled docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_latest_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_absent_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point latest absent >${stdoutF} 2>${stderrF}
@@ -43,7 +50,7 @@ test_start_point_latest_absent_start_point_prints_msg_to_stderr_and_exits_non_ze
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_latest_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
+test_present_but_not_start_point_prints_msg_to_stderr_and_exits_non_zero()
 {
   docker volume create --name notStartPoint > /dev/null
   local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
@@ -57,7 +64,7 @@ test_start_point_latest_present_but_not_start_point_prints_msg_to_stderr_and_exi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_latest_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
+test_extra_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
   local expected_stderr='FAILED: unknown argument [extraArg]'
