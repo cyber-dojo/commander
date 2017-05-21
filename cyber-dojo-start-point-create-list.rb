@@ -26,6 +26,8 @@ def cyber_dojo_start_point_create_list(name, list)
   assert_run "docker start #{$g_cid}"
 
   # 3. pull git repos into docker volume
+
+  # TODO: hard-wired. Needs to get urls from list
   list_urls = %w(
     https://github.com/cyber-dojo-languages/elm-test
     https://github.com/cyber-dojo-languages/haskell-hunit
