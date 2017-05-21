@@ -5,18 +5,12 @@ $g_cid = ''
 def cyber_dojo_start_point_create_list(name, list)
 
   if volume_exists? name
-    StDERR.puts "A start-point called #{name} already exists"
+    STDERR.puts "A start-point called #{name} already exists"
     exit failed
   end
 
   # 1. make an empty docker volume
-  command="docker volume create --name=#{name} --label=cyber-dojo-start-point"
-  run(command)
-  if $exit_status != 0
-    clean_up
-    STDERR.puts "${command} FAILED"
-    exit failed
-  end
+  assert_run "docker volume create --name=#{name} --label=cyber-dojo-start-point"
   $g_vol = name
 
   # 2. mount empty docker volume inside docker container
@@ -28,14 +22,8 @@ def cyber_dojo_start_point_create_list(name, list)
       "#{cyber_dojo_commander}",
       'sh'
   ].join(space)
-  $g_cid = run(command).strip
-  command = "docker start #{$g_cid}"
-  run command
-  if $exit_status != 0
-    clean_up
-    STDERR.puts "#{command} failed!?"
-    exit failed
-  end
+  $g_cid = assert_run(command).strip
+  assert_run "docker start #{$g_cid}"
 
   # 3. pull git repos into docker volume
   list_urls = %w(
@@ -47,22 +35,10 @@ def cyber_dojo_start_point_create_list(name, list)
   end
 
   # 4. ensure cyber-dojo user owns everything in the volume
-  command = "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
-  run command
-  if $exit_status != 0
-    clean_up
-    STDERR.puts "#{command} failed!?"
-    exit failed
-  end
+  assert_run "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
   # 5. check the volume is a good start-point
-  command = "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
-  run command
-  if $exit_status != 0
-    clean_up
-    STDERR.puts "#{command} failed!?"
-    exit failed
-  end
+  assert_run "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
 
   # TODO: put in rescue statement
   # 6. clean up everything used to create the volume, but not the volume itself
@@ -86,16 +62,20 @@ def start_point_git_sparse_pull(url, index)
   ]
   commands.each do |cmd|
     command = "docker exec #{$g_cid} sh -c '#{cmd}'"
-    output = run(command)
-    #STDERR.puts command
-    #STDERR.puts ":#{output}:"
-    #STDERR.puts ":#{$exit_status}:"
-    if $exit_status != 0
-      clean_up
-      STDERR.puts "#{command} failed!?"
-      exit failed
-    end
+    output = assert_run(command)
   end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def assert_run(command)
+  output = run(command)
+  if $exit_status != 0
+    clean_up
+    STDERR.puts "#{command} failed!?"
+    exit failed
+  end
+  output
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
