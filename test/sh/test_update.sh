@@ -8,9 +8,9 @@ test_UPDATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_SUCCESS_exits_zero() { :; }
+test___SUCCESS_exits_zero() { :; }
 
-test_help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo update
@@ -24,34 +24,7 @@ Updates all cyber-dojo docker images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
-
-test_unknown_arg()
-{
-  local expected_stderr="FAILED: unknown argument [unknown]"
-  ${exe} update unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_update_images_is_private_function()
-{
-  # update-images is only callable indirectly via
-  # ./cyber-dojo update
-  # after the command line arguments have been checked
-  local expected_stderr="FAILED: unknown argument [update-images]"
-  ${exe} update-images >${stdoutF} 2>${stderrF}
-  assertFalse $?
-  assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-x_test_pull_latest_image_for_all_services()
+x_test_____pull_latest_image_for_all_services()
 {
   # This test turned off.
   # If it runs then the update will [docker pull] the commander
@@ -65,6 +38,33 @@ x_test_pull_latest_image_for_all_services()
   assertStdoutIncludes "latest: Pulling from cyberdojo/runner"
   assertStdoutIncludes "latest: Pulling from cyberdojo/storer"
   assertStdoutIncludes "latest: Pulling from cyberdojo/web"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+
+test______unknown_arg()
+{
+  local expected_stderr="FAILED: unknown argument [unknown]"
+  ${exe} update unknown >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____update_images_is_private_function()
+{
+  # update-images is only callable indirectly via
+  # ./cyber-dojo update
+  # after the command line arguments have been checked
+  local expected_stderr="FAILED: unknown argument [update-images]"
+  ${exe} update-images >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertEqualsStderr "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

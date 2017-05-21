@@ -12,9 +12,9 @@ test_START_POINT_CREATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_SUCCESS_exits_zero() { :; }
+test___SUCCESS_exits_zero() { :; }
 
-test_help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point create NAME --list=FILE
@@ -41,9 +41,9 @@ NAME must be at least two letters long"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
-test_illegal_name_first_letter()
+test_____illegal_name_first_letter()
 {
   local expected_stderr="FAILED: +bad is an illegal NAME"
   ${exe} start-point create +bad >${stdoutF} 2>${stderrF}
@@ -54,7 +54,7 @@ test_illegal_name_first_letter()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_illegal_name_second_letter()
+test_____illegal_name_second_letter()
 {
   local expected_stderr="FAILED: b+ad is an illegal NAME"
   ${exe} start-point create b+ad >${stdoutF} 2>${stderrF}
@@ -65,7 +65,7 @@ test_illegal_name_second_letter()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_illegal_name_one_letter_name()
+test_____illegal_name_one_letter_name()
 {
   local expected_stderr="FAILED: b is an illegal NAME"
   ${exe} start-point create b >${stdoutF} 2>${stderrF}
@@ -76,7 +76,7 @@ test_illegal_name_one_letter_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_unknown_arg()
+test_____unknown_arg()
 {
   local expected_stderr="FAILED: unknown argument [--where]"
   ${exe} start-point create jj --where=tay >${stdoutF} 2>${stderrF}
@@ -87,7 +87,7 @@ test_unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_unknown_args()
+test_____unknown_args()
 {
   local expected_stderr="FAILED: unknown argument [--where]
 FAILED: unknown argument [--there]"
@@ -99,7 +99,7 @@ FAILED: unknown argument [--there]"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_dir_and_git_args_prints()
+test_____dir_and_git_args()
 {
   local expected_stderr="FAILED: specify ONE of --git= / --dir= / --list="
   ${exe} start-point create jj --dir=where --git=url >${stdoutF} 2>${stderrF}

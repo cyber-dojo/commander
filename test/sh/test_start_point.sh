@@ -8,9 +8,9 @@ test_START_POINT() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_SUCCESS_exits_zero() { :; }
+test___SUCCESS_exits_zero() { :; }
 
-test_help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point [COMMAND]
@@ -38,9 +38,9 @@ Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
-test_unknown_arg()
+test_____unknown_arg()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} start-point unknown >${stdoutF} 2>${stderrF}

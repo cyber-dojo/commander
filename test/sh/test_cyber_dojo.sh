@@ -8,9 +8,9 @@ test_CYBER_DOJO() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_SUCCESS_exits_zero() { :; }
+test___SUCCESS_exits_zero() { :; }
 
-test_with_no_args_or_help_arg_prints_use_to_stdout()
+test_____with_no_args_or_help_arg_prints_use_to_stdout()
 {
   #clean        Removes old images/volumes/containers
   local expected_stdout="
@@ -40,9 +40,9 @@ Run 'cyber-dojo COMMAND --help' for more information on a command."
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
-test_unknown_arg()
+test_____unknown_arg()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} unknown >${stdoutF} 2>${stderrF}
