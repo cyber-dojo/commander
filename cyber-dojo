@@ -178,7 +178,7 @@ if_start_point_create_dir_then_handle_locally()
     fi
 
     # 1. make an empty docker volume with the given name
-    command="docker volume create --name=${name} --label=cyber-dojo-start-point=${src}"
+    command="docker volume create --name=${name} --label=cyber-dojo-start-point=${dir}"
     run_quiet "${command}" || clean_up_and_exit_fail '[docker volume create] failed!?'
     g_vol=${name}
 

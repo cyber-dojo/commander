@@ -4,7 +4,7 @@ def cyber_dojo_start_point_ls
     '',
     "Use: #{me} start-point [OPTIONS] ls",
     '',
-    'Lists the names of all cyber-dojo start-points',
+    'Lists the name, type, and source of all cyber-dojo start-points',
     '',
     minitab + '--quiet     Only display start-point names'
   ]

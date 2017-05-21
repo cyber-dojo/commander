@@ -16,7 +16,7 @@ test_help_arg_prints_use_to_stdout_and_exits_zero()
   local expected_stdout="
 Use: cyber-dojo start-point [OPTIONS] ls
 
-Lists the names of all cyber-dojo start-points
+Lists the name, type, and source of all cyber-dojo start-points
 
   --quiet     Only display start-point names"
   ${exe} start-point ls --help >${stdoutF} 2>${stderrF}
@@ -75,7 +75,7 @@ test_quiet_arg_prints_just_names_when_volumes_exist_and_exits_zero()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_no_arg_prints_heading_and_names_and_exits_zero()
+test_no_arg_prints_heading_and_names_types_sources_and_exits_zero()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
