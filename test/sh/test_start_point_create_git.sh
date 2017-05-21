@@ -39,11 +39,10 @@ test_____name_already_exists()
   assertTrue $?
   assertStartPointExists ${name}
 
-  local expected_stderr="FAILED: a start-point called ${name} already exists"
   startPointCreateGit ${name} ${url}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr "FAILED: a start-point called ${name} already exists"
   assertStartPointExists ${name}
   startPointRm ${name}
   refuteStartPointExists ${name}
