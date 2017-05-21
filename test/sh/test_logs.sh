@@ -16,7 +16,7 @@ Fetches and prints the logs of the web server (if running)"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_logs_unknown_prints_msg_to_stderr_and_exits_non_zero()
+test_logs_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} logs unknown >${stdoutF} 2>${stderrF}

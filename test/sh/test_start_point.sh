@@ -2,7 +2,7 @@
 
 . ./cyber_dojo_helpers.sh
 
-test_start_point_Help_prints_use_to_stdout_and_exits_zero()
+test_start_point_help_prints_use_to_stdout_and_exits_zero()
 {
   local expected_stdout="
 Use: cyber-dojo start-point [COMMAND]
@@ -30,7 +30,7 @@ Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_Unknown_prints_msg_to_stderr_and_exits_non_zero()
+test_start_point_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} start-point unknown >${stdoutF} 2>${stderrF}

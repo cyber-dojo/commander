@@ -16,7 +16,7 @@ Updates all cyber-dojo docker images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_update_unknown_prints_msg_to_stderr_and_exits_non_zero()
+test_update_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} update unknown >${stdoutF} 2>${stderrF}
@@ -43,7 +43,7 @@ test_update_images_prints_msg_to_stderr_and_exits_non_zero()
 
 x_test_update_pull_latest_image_for_all_services()
 {
-  # This test is not turned on.
+  # This test turned off.
   # If it runs then the update will [docker pull] the commander
   # image from dockerhub which will overwrite the one created by
   # build.sh and the travis script will repush the old image!

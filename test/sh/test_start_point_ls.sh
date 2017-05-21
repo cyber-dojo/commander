@@ -20,7 +20,7 @@ Lists the names of all cyber-dojo start-points
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_start_point_ls_UnknownArg_prints_msg_to_stderr_exits_non_zero()
+test_start_point_ls_unknown_arg_prints_msg_to_stderr_exits_non_zero()
 {
   local expected_stderr='FAILED: unknown argument [salmo]'
   ${exe} start-point ls salmo >${stdoutF} 2>${stderrF}

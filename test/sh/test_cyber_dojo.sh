@@ -32,7 +32,7 @@ Run 'cyber-dojo COMMAND --help' for more information on a command."
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_unknown_prints_msg_to_stderr_and_exits_non_zero()
+test_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} unknown >${stdoutF} 2>${stderrF}

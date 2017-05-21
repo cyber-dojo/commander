@@ -16,7 +16,7 @@ Stops and removes docker containers created with 'up'"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_down_unknown_prints_msg_to_stderr_and_exits_non_zero()
+test_down_unknown_arg_prints_msg_to_stderr_and_exits_non_zero()
 {
   local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} down unknown >${stdoutF} 2>${stderrF}
