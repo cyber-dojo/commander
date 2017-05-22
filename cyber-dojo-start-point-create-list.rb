@@ -21,7 +21,9 @@ def cyber_dojo_start_point_create_list(name, urls)
 
   # pull git repos into docker volume
   # TODO: need to check all setup.json files are same type
-  urls.each { |url| start_point_git_sparse_pull(url, cid) }
+  urls.each_with_index do |url,index|
+    start_point_git_sparse_pull(url, index, cid)
+  end
 
   # ensure cyber-dojo user owns everything in the volume
   assert_run_loud "docker exec #{cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
@@ -36,19 +38,25 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def start_point_git_sparse_pull(url, cid)
+def start_point_git_sparse_pull(url, index, cid)
+  # The sparse-pull is done not by specifying
+  # what we want don't want. This is because
+  # it has to work for all three start-point types.
   name = url.split('/')[-1]
-  dir = '/data/' + name
+  dir = "/data/#{index}_#{name}"
+  sparse = '.git/info/sparse-checkout'
   commands = [
     "mkdir #{dir}",
     "cd #{dir} && git init",
     "cd #{dir} && git remote add origin #{url}",
     "cd #{dir} && git config core.sparseCheckout true",
-    "cd #{dir} && echo !\\*\\*/_docker_context >> .git/info/sparse-checkout",
-    "cd #{dir} && echo /\\*                    >> .git/info/sparse-checkout",
+    "cd #{dir} && echo !\\*\\*/_docker_context/\\* >> #{sparse}",
+    "cd #{dir} && echo !\\*\\*/README.md           >> #{sparse}",
+    "cd #{dir} && echo !\\*\\*/LICENSE.md          >> #{sparse}",
+    "cd #{dir} && echo /\\*                        >> #{sparse}",
     "cd #{dir} && git pull --depth=1 origin master &> /dev/null",
     "cd #{dir} && rm -rf .git",
-    "cd #{dir} && cp setup.json .."
+    "cd #{dir} && mv setup.json .."
   ]
   commands.each do |cmd|
     command = "docker exec #{cid} sh -c '#{cmd}'"
