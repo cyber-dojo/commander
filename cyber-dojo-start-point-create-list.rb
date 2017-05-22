@@ -31,6 +31,8 @@ def cyber_dojo_start_point_create_list(name, urls)
   # TODO: put in rescue statement?
   # 6. clean up everything used to create the volume, but not the volume itself
   $g_vol = ''
+
+ensure
   clean_up
 end
 
@@ -69,7 +71,6 @@ end
 def assert_run(command)
   output = run(command)
   if $exit_status != 0
-    clean_up
     yield
     exit failed
   end
