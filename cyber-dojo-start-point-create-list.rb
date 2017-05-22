@@ -3,7 +3,6 @@ $g_vol = ''
 $g_cid = ''
 
 def cyber_dojo_start_point_create_list(name, urls)
-
   # make an empty docker volume
   run_loud "docker volume create --name=#{name} --label=cyber-dojo-start-point"
   $g_vol = name
@@ -28,10 +27,6 @@ def cyber_dojo_start_point_create_list(name, urls)
 
   # check the volume is a good start-point
   run_quiet "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
-  #if $exit_status != 0
-  #  clean_up
-  #  exit failed
-  #end
 
   # TODO: put in rescue statement?
   # 6. clean up everything used to create the volume, but not the volume itself
