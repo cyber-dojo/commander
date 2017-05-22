@@ -51,12 +51,11 @@ def start_point_git_sparse_pull(url, index, cid)
     "cd #{dir} && git init",
     "cd #{dir} && git remote add origin #{url}",
     "cd #{dir} && git config core.sparseCheckout true",
-    "cd #{dir} && echo !\\*\\*/_docker_context/\\* >> #{sparse}",
-    "cd #{dir} && echo !\\*\\*/README.md           >> #{sparse}",
-    "cd #{dir} && echo !\\*\\*/LICENSE.md          >> #{sparse}",
-    "cd #{dir} && echo /\\*                        >> #{sparse}",
+    "cd #{dir} && echo !\\*\\*/docker/\\* >> #{sparse}",
+    "cd #{dir} && echo /\\*               >> #{sparse}",
     "cd #{dir} && git pull --depth=1 origin master &> /dev/null",
     "cd #{dir} && rm -rf .git",
+    "cd #{dir} && rm -f README.md LICENSE.md",
     "cd #{dir} && mv setup.json .."
   ]
   commands.each do |cmd|
