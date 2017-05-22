@@ -5,7 +5,7 @@ $g_cid = ''
 def cyber_dojo_start_point_create_list(name, urls)
 
   # make an empty docker volume
-  assert_run "docker volume create --name=#{name} --label=cyber-dojo-start-point"
+  run_loud "docker volume create --name=#{name} --label=cyber-dojo-start-point"
   $g_vol = name
 
   # mount empty docker volume inside docker container
@@ -17,21 +17,21 @@ def cyber_dojo_start_point_create_list(name, urls)
       "#{cyber_dojo_commander}",
       'sh'
   ].join(space)
-  $g_cid = assert_run(command).strip
-  assert_run "docker start #{$g_cid}"
+  $g_cid = run_loud(command).strip
+  run_loud "docker start #{$g_cid}"
 
   # pull git repos into docker volume
   urls.each { |url| start_point_git_sparse_pull(url) }
 
   # ensure cyber-dojo user owns everything in the volume
-  assert_run "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
+  run_loud "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
   # check the volume is a good start-point
-  run "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
-  if $exit_status != 0
-    clean_up
-    exit failed
-  end
+  run_quiet "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
+  #if $exit_status != 0
+  #  clean_up
+  #  exit failed
+  #end
 
   # TODO: put in rescue statement?
   # 6. clean up everything used to create the volume, but not the volume itself
@@ -57,17 +57,25 @@ def start_point_git_sparse_pull(url)
   ]
   commands.each do |cmd|
     command = "docker exec #{$g_cid} sh -c '#{cmd}'"
-    output = assert_run(command)
+    output = run_loud(command)
   end
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def run_loud(command)
+  assert_run(command) { STDERR.puts "#{command} failed!?" }
+end
+
+def run_quiet(command)
+  assert_run(command) { }
+end
+
 def assert_run(command)
   output = run(command)
   if $exit_status != 0
     clean_up
-    STDERR.puts "#{command} failed!?"
+    yield
     exit failed
   end
   output
