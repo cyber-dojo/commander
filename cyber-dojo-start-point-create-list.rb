@@ -1,11 +1,11 @@
 
-$g_vol = ''
-$g_cid = ''
-
 def cyber_dojo_start_point_create_list(name, urls)
+  cid = ''
+  vol = ''
+
   # make an empty docker volume
   run_loud "docker volume create --name=#{name} --label=cyber-dojo-start-point"
-  $g_vol = name
+  vol = name
 
   # mount empty docker volume inside docker container
   command = [
@@ -16,29 +16,26 @@ def cyber_dojo_start_point_create_list(name, urls)
       "#{cyber_dojo_commander}",
       'sh'
   ].join(space)
-  $g_cid = run_loud(command).strip
-  run_loud "docker start #{$g_cid}"
+  cid = run_loud(command).strip
+  run_loud "docker start #{cid}"
 
   # pull git repos into docker volume
-  urls.each { |url| start_point_git_sparse_pull(url) }
+  urls.each { |url| start_point_git_sparse_pull(url, cid) }
 
   # ensure cyber-dojo user owns everything in the volume
-  run_loud "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
+  run_loud "docker exec #{cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
-  # check the volume is a good start-point
-  run_quiet "docker exec #{$g_cid} sh -c './start_point_check.rb /data'"
-
-  # TODO: put in rescue statement?
-  # 6. clean up everything used to create the volume, but not the volume itself
-  $g_vol = ''
+  # is the volume a good start-point?
+  run_quiet "docker exec #{cid} sh -c './start_point_check.rb /data'"
+  vol = '' # yes
 
 ensure
-  clean_up
+  clean_up(cid, vol)
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def start_point_git_sparse_pull(url)
+def start_point_git_sparse_pull(url, cid)
   name = url.split('/')[-1]
   dir = '/data/' + name
   commands = [
@@ -53,7 +50,7 @@ def start_point_git_sparse_pull(url)
     "cd #{dir} && cp setup.json .."
   ]
   commands.each do |cmd|
-    command = "docker exec #{$g_cid} sh -c '#{cmd}'"
+    command = "docker exec #{cid} sh -c '#{cmd}'"
     output = run_loud(command)
   end
 end
@@ -79,26 +76,26 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def clean_up
+def clean_up(cid, vol)
   me = __method__.to_s
 
   # Remove docker container?
-  if $g_cid != ''
-    debug "#{me}: doing [docker rm -f $g_cid]"
-    run "docker rm -f #{$g_cid} > /dev/null 2>&1"
+  if cid != ''
+    debug "#{me}: doing [docker rm -f #{cid}]"
+    run "docker rm -f #{cid} > /dev/null 2>&1"
   else
-    debug "#{me}: NOT doing [docker rm -f $g_cid]"
+    debug "#{me}: NOT doing [docker rm -f cid]"
   end
 
   # Remove docker volume?
-  if $g_vol != ''
-    debug "#{me}: doing [docker volume rm $g_vol]"
+  if vol != ''
+    debug "#{me}: doing [docker volume rm #{vol}]"
     # previous [docker rm] command seems to sometimes complete
-    # before it is safe to remove its volume?!
+    # before it is safe to remove its volume? so pausing.
     sleep 1
-    run "docker volume rm #{$g_vol} > /dev/null 2>&1"
+    run "docker volume rm #{vol} > /dev/null 2>&1"
   else
-    debug "#{me}: NOT doing [docker volume rm $g_vol]"
+    debug "#{me}: NOT doing [docker volume rm vol]"
   end
 end
 
