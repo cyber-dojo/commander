@@ -4,7 +4,7 @@ def cyber_dojo_start_point_create_list(name, urls)
   vol = ''
 
   # make an empty docker volume
-  run_loud "docker volume create --name=#{name} --label=cyber-dojo-start-point"
+  assert_run_loud "docker volume create --name=#{name} --label=cyber-dojo-start-point"
   vol = name
 
   # mount empty docker volume inside docker container
@@ -16,17 +16,17 @@ def cyber_dojo_start_point_create_list(name, urls)
       "#{cyber_dojo_commander}",
       'sh'
   ].join(space)
-  cid = run_loud(command).strip
-  run_loud "docker start #{cid}"
+  cid = assert_run_loud(command).strip
+  assert_run_loud "docker start #{cid}"
 
   # pull git repos into docker volume
   urls.each { |url| start_point_git_sparse_pull(url, cid) }
 
   # ensure cyber-dojo user owns everything in the volume
-  run_loud "docker exec #{cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
+  assert_run_loud "docker exec #{cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
   # is the volume a good start-point?
-  run_quiet "docker exec #{cid} sh -c './start_point_check.rb /data'"
+  assert_run_quiet "docker exec #{cid} sh -c './start_point_check.rb /data'"
   vol = '' # yes
 
 ensure
@@ -36,6 +36,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def start_point_git_sparse_pull(url, cid)
+  # TODO: need to check all setup.json files are same type
   name = url.split('/')[-1]
   dir = '/data/' + name
   commands = [
@@ -51,17 +52,17 @@ def start_point_git_sparse_pull(url, cid)
   ]
   commands.each do |cmd|
     command = "docker exec #{cid} sh -c '#{cmd}'"
-    output = run_loud(command)
+    output = assert_run_loud(command)
   end
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def run_loud(command)
+def assert_run_loud(command)
   assert_run(command) { STDERR.puts "#{command} failed!?" }
 end
 
-def run_quiet(command)
+def assert_run_quiet(command)
   assert_run(command) { }
 end
 
