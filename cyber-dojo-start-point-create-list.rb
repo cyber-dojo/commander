@@ -20,6 +20,7 @@ def cyber_dojo_start_point_create_list(name, urls)
   assert_run_loud "docker start #{cid}"
 
   # pull git repos into docker volume
+  # TODO: need to check all setup.json files are same type
   urls.each { |url| start_point_git_sparse_pull(url, cid) }
 
   # ensure cyber-dojo user owns everything in the volume
@@ -36,7 +37,6 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def start_point_git_sparse_pull(url, cid)
-  # TODO: need to check all setup.json files are same type
   name = url.split('/')[-1]
   dir = '/data/' + name
   commands = [
