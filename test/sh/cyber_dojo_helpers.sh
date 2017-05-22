@@ -20,8 +20,8 @@ start_point_create()
   ${exe} start-point create ${name} --${option}=${value} >${stdoutF} 2>${stderrF}
 }
 
-startPointCreateGit()  { start_point_create $1 git  $2; }
-startPointCreateDir()  { start_point_create $1 dir  $2; }
+startPointCreateGit()  { start_point_create $1  git $2; }
+startPointCreateDir()  { start_point_create $1  dir $2; }
 startPointCreateList() { start_point_create $1 list $2; }
 
 startPointRm()
