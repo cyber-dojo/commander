@@ -69,6 +69,11 @@ def cyber_dojo_start_point_create
     exit failed
   end
 
+  if volume_exists? vol
+    STDERR.puts "A start-point called #{vol} already exists"
+    exit failed
+  end
+
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
 
   if git
