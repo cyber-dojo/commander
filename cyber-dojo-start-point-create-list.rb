@@ -23,6 +23,7 @@ def cyber_dojo_start_point_create_list(name, urls)
   # TODO: need to check all setup.json files are same type
   urls.each_with_index do |url,index|
     start_point_git_sparse_pull(url, index, cid)
+    STDOUT.puts url
   end
 
   # ensure cyber-dojo user owns everything in the volume
