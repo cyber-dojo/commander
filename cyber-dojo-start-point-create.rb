@@ -1,5 +1,4 @@
 
-require_relative 'cyber-dojo-start-point-create-git'
 require_relative 'cyber-dojo-start-point-create-list'
 
 def cyber_dojo_start_point_create
@@ -73,11 +72,16 @@ def cyber_dojo_start_point_create
   # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
 
   if git
-    cyber_dojo_start_point_create_git(vol, git)
+    cyber_dojo_start_point_create_list(vol, [ git ])
   end
 
   if list
-    cyber_dojo_start_point_create_list(vol, list)
+    # TODO: unfake
+    urls = %w(
+      https://github.com/cyber-dojo-languages/elm-test
+      https://github.com/cyber-dojo-languages/haskell-hunit
+    )
+    cyber_dojo_start_point_create_list(vol, urls)
   end
 
 end

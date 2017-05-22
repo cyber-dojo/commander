@@ -2,7 +2,7 @@
 $g_vol = ''
 $g_cid = ''
 
-def cyber_dojo_start_point_create_list(name, list)
+def cyber_dojo_start_point_create_list(name, urls)
 
   if volume_exists? name
     STDERR.puts "A start-point called #{name} already exists"
@@ -26,16 +26,7 @@ def cyber_dojo_start_point_create_list(name, list)
   assert_run "docker start #{$g_cid}"
 
   # 3. pull git repos into docker volume
-
-  # TODO: hard-wired. Needs to get urls from list
-  list_urls = %w(
-    https://github.com/cyber-dojo-languages/elm-test
-    https://github.com/cyber-dojo-languages/haskell-hunit
-  )
-  list_urls.each do |url|
-    name = url.split('/')[-1]
-    start_point_git_sparse_pull url, name
-  end
+  urls.each { |url| start_point_git_sparse_pull(url) }
 
   # 4. ensure cyber-dojo user owns everything in the volume
   assert_run "docker exec #{$g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
@@ -55,17 +46,19 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def start_point_git_sparse_pull(url, index)
+def start_point_git_sparse_pull(url)
+  name = url.split('/')[-1]
+  dir = '/data/' + name
   commands = [
-    "cd /data && mkdir #{index}",
-    "cd /data/#{index} && git init",
-    "cd /data/#{index} && git remote add origin #{url}",
-    "cd /data/#{index} && git config core.sparseCheckout true",
-    "cd /data/#{index} && echo !\\*\\*/_docker_context >> .git/info/sparse-checkout",
-    "cd /data/#{index} && echo /\\*                    >> .git/info/sparse-checkout",
-    "cd /data/#{index} && git pull --depth=1 origin master &> /dev/null",
-    "cd /data/#{index} && rm -rf .git",
-    "cd /data/#{index} && cp setup.json .."
+    "mkdir #{dir}",
+    "cd #{dir} && git init",
+    "cd #{dir} && git remote add origin #{url}",
+    "cd #{dir} && git config core.sparseCheckout true",
+    "cd #{dir} && echo !\\*\\*/_docker_context >> .git/info/sparse-checkout",
+    "cd #{dir} && echo /\\*                    >> .git/info/sparse-checkout",
+    "cd #{dir} && git pull --depth=1 origin master &> /dev/null",
+    "cd #{dir} && rm -rf .git",
+    "cd #{dir} && cp setup.json .."
   ]
   commands.each do |cmd|
     command = "docker exec #{$g_cid} sh -c '#{cmd}'"
