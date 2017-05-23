@@ -20,9 +20,7 @@ test_____good_git_repo_with_new_name_creates_start_point_prints_url()
   assertStartPointCreateGit ${name} ${url}
   assertStdoutIncludes ${url}
   assertNoStderr
-  assertStartPointExists ${name}
-  startPointRm ${name}
-  refuteStartPointExists ${name}
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,22 +33,18 @@ test_____name_already_exists()
   local url="${github_cyber_dojo}/start-points-exercises.git"
   refuteStartPointExists ${name}
   assertStartPointCreateGit ${name} ${url}
-  assertStartPointExists ${name}
-
   refuteStartPointCreateGit ${name} ${url}
   assertNoStdout
   assertEqualsStderr "FAILED: a start-point called ${name} already exists"
-  assertStartPointExists ${name}
-  startPointRm ${name}
-  refuteStartPointExists ${name}
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____bad_git_content()
 {
-  local repo='elm-test-bad-manifest-for-testing'
   local name=bad
+  local repo='elm-test-bad-manifest-for-testing'
   local url="https://github.com/cyber-dojo-languages/${repo}"
   refuteStartPointExists ${name}
   refuteStartPointCreateGit ${name} ${url}
@@ -58,7 +52,6 @@ test_____bad_git_content()
   assertStderrIncludes "FAILED..."
   assertStderrIncludes "${repo}/manifest.json: Ximage_name: unknown key"
   assertStderrIncludes "${repo}/manifest.json: image_name: missing"
-  refuteStartPointExists ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

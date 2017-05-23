@@ -19,14 +19,47 @@ startPointCreateGit()  { start_point_create $1  git $2; }
 startPointCreateDir()  { start_point_create $1  dir $2; }
 startPointCreateList() { start_point_create $1 list $2; }
 
-assertStartPointCreateGit() { startPointCreateGit $1 $2; assertTrue  $?; }
-refuteStartPointCreateGit() { startPointCreateGit $1 $2; assertFalse $?; }
+assertStartPointCreateGit()
+{
+  startPointCreateGit $1 $2;
+  assertTrue $?;
+  assertStartPointExists $1
+}
 
-assertStartPointCreateDir() { startPointCreateDir $1 $2; assertTrue  $?; }
-refuteStartPointCreateDir() { startPointCreateDir $1 $2; assertFalse $?; }
+refuteStartPointCreateGit()
+{
+  startPointCreateGit $1 $2;
+  assertFalse $?;
+  refuteStartPointExists $1
+}
 
-assertStartPointCreateList() { startPointCreateList $1 $2; assertTrue  $?; }
-refuteStartPointCreateList() { startPointCreateList $1 $2; assertFalse $?; }
+assertStartPointCreateDir()
+{
+  startPointCreateDir $1 $2;
+  assertTrue $?;
+  assertStartPointExists $1
+}
+
+refuteStartPointCreateDir()
+{
+  startPointCreateDir $1 $2;
+  assertFalse $?;
+  refuteStartPointExists $1
+}
+
+assertStartPointCreateList()
+{
+  startPointCreateList $1 $2;
+  assertTrue $?;
+  assertStartPointExists $1
+}
+
+refuteStartPointCreateList()
+{
+  startPointCreateList $1 $2;
+  assertFalse $?;
+  refuteStartPointExists $1
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point rm
@@ -34,7 +67,12 @@ refuteStartPointCreateList() { startPointCreateList $1 $2; assertFalse $?; }
 
 startPointRm() { ${exe} start-point rm $1; }
 
-assertStartPointRm() { startPointRm $1; assertTrue  $?; }
+assertStartPointRm()
+{
+  assertStartPointExists $1
+  startPointRm $1;
+  assertTrue $?;
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point exists
