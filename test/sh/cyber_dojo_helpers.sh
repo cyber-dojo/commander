@@ -30,6 +30,12 @@ startPointRm()
   ${exe} start-point rm ${name}
 }
 
+assertStartPointRm()
+{
+  startPointRm $1
+  assertTrue $?
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointCreateGit()
