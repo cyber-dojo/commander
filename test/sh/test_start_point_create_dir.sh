@@ -31,7 +31,7 @@ test_____good_dir_but_name_already_exists()
   assertStartPointCreate ${name} --dir=${good_dir}
   refuteStartPointCreate ${name} --dir=${good_dir}
   assertNoStdout
-  assertEqualsStderr "FAILED: a start-point called ${name} already exists"
+  assertStderrEquals "FAILED: a start-point called ${name} already exists"
   assertStartPointRm ${name}
 }
 

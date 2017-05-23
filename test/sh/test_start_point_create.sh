@@ -31,11 +31,11 @@ NAME's remaining letters must be [a-zA-Z0-9_.-]
 NAME must be at least two letters long"
 
   assertStartPointCreate
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 
   assertStartPointCreate --help
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -47,7 +47,7 @@ test_____illegal_name_first_letter()
 {
   refuteStartPointCreate +bad
   assertNoStdout
-  assertEqualsStderr 'FAILED: +bad is an illegal NAME'
+  assertStderrEquals 'FAILED: +bad is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,7 +56,7 @@ test_____illegal_name_second_letter()
 {
   refuteStartPointCreate b+ad
   assertNoStdout
-  assertEqualsStderr 'FAILED: b+ad is an illegal NAME'
+  assertStderrEquals 'FAILED: b+ad is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +65,7 @@ test_____illegal_name_one_letter_name()
 {
   refuteStartPointCreate b
   assertNoStdout
-  assertEqualsStderr 'FAILED: b is an illegal NAME'
+  assertStderrEquals 'FAILED: b is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -74,7 +74,7 @@ test_____unknown_arg()
 {
   refuteStartPointCreate jj --where=tay
   assertNoStdout
-  assertEqualsStderr 'FAILED: unknown argument [--where]'
+  assertStderrEquals 'FAILED: unknown argument [--where]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,7 +93,7 @@ test_____dir_and_git_args()
 {
   refuteStartPointCreate jj --dir=where --git=url
   assertNoStdout
-  assertEqualsStderr 'FAILED: specify ONE of --git= / --dir= / --list='
+  assertStderrEquals 'FAILED: specify ONE of --git= / --dir= / --list='
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

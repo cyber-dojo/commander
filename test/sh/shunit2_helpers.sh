@@ -1,11 +1,11 @@
 
-assertEqualsStdout() { assertEquals 'stdout' "$1" "`cat ${stdoutF}`"; }
-assertEqualsStderr() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
+assertStdoutEquals() { assertEquals 'stdout' "$1" "`cat ${stdoutF}`"; }
+assertStderrEquals() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertNoStdout() { assertEqualsStdout ""; }
-assertNoStderr() { assertEqualsStderr ""; }
+assertNoStdout() { assertStdoutEquals ""; }
+assertNoStderr() { assertStderrEquals ""; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

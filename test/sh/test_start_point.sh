@@ -28,11 +28,11 @@ Commands:
 Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
   ${exe} start-point >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
   ${exe} start-point --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -42,11 +42,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} start-point unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [unknown]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -18,7 +18,7 @@ Use: cyber-dojo update
 Updates all cyber-dojo docker images and the cyber-dojo script file"
   ${exe} update --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -46,11 +46,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test______unknown_arg()
 {
-  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} update unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [unknown]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -60,11 +59,10 @@ test_____update_images_is_private_function()
   # update-images is only callable indirectly via
   # ./cyber-dojo update
   # after the command line arguments have been checked
-  local expected_stderr="FAILED: unknown argument [update-images]"
   ${exe} update-images >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [update-images]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

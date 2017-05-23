@@ -36,7 +36,7 @@ test_____name_already_exists()
   assertStartPointCreate ${name} --git=${url}
   refuteStartPointCreate ${name} --list=${url}
   assertNoStdout
-  assertEqualsStderr "FAILED: a start-point called ${name} already exists"
+  assertStderrEquals "FAILED: a start-point called ${name} already exists"
   assertStartPointRm ${name}
 }
 

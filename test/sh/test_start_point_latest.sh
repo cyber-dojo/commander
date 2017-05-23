@@ -18,7 +18,7 @@ Use: cyber-dojo start-point latest NAME
 Re-pulls already pulled docker images inside the named start-point"
   ${exe} start-point latest >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -32,7 +32,7 @@ Use: cyber-dojo start-point latest NAME
 Re-pulls already pulled docker images inside the named start-point"
   ${exe} start-point latest --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -42,11 +42,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____absent_start_point()
 {
-  local expected_stderr='FAILED: absent does not exist.'
   ${exe} start-point latest absent >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: absent does not exist.'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,13 +53,12 @@ test_____absent_start_point()
 test_____present_but_not_a_start_point()
 {
   docker volume create --name notStartPoint > /dev/null
-  local expected_stderr='FAILED: notStartPoint is not a cyber-dojo start-point.'
   ${exe} start-point latest notStartPoint >${stdoutF} 2>${stderrF}
   local exit_status=$?
   docker volume rm notStartPoint > /dev/null
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: notStartPoint is not a cyber-dojo start-point.'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -68,13 +66,12 @@ test_____present_but_not_a_start_point()
 test_____extra_arg()
 {
   ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
-  local expected_stderr='FAILED: unknown argument [extraArg]'
   ${exe} start-point latest ok extraArg >${stdoutF} 2>${stderrF}
   local exit_status=$?
   ${exe} start-point rm ok
   assertFalse ${exit_status}
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [extraArg]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

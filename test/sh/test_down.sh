@@ -18,7 +18,7 @@ Use: cyber-dojo down
 Stops and removes docker containers created with 'up'"
   ${exe} down --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -59,7 +59,7 @@ test_____unknown_arg()
   ${exe} down unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

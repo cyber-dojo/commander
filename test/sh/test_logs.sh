@@ -18,7 +18,7 @@ Use: cyber-dojo logs
 Fetches and prints the logs of the web server (if running)"
   ${exe} logs --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -28,11 +28,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} logs unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [unknown]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

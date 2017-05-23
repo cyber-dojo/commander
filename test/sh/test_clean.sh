@@ -18,7 +18,7 @@ Use: cyber-dojo clean
 Removes dangling docker images/volumes and exited containers"
   ${exe} clean --help >${stdoutF} 2>${stderrF}
   assertTrue $?
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -46,7 +46,7 @@ test_____unknown_arg()
   ${exe} clean unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrEquals "${expected_stderr}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

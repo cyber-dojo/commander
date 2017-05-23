@@ -56,7 +56,7 @@ Creates and starts the cyber-dojo server using named/default start-points
                            Defaults to 80"
 
   assertUp --help
-  assertEqualsStdout "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
@@ -99,7 +99,7 @@ test_____unknown_arg()
 {
   refuteUp salmon
   assertNoStdout
-  assertEqualsStderr 'FAILED: unknown argument [salmon]'
+  assertStderrEquals 'FAILED: unknown argument [salmon]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -118,7 +118,7 @@ test_____missing_languages()
 {
   refuteUp --languages=
   assertNoStdout
-  assertEqualsStderr 'FAILED: missing argument value --languages=[???]'
+  assertStderrEquals 'FAILED: missing argument value --languages=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -127,7 +127,7 @@ test_____missing_custom()
 {
   refuteUp --custom=
   assertNoStdout
-  assertEqualsStderr 'FAILED: missing argument value --custom=[???]'
+  assertStderrEquals 'FAILED: missing argument value --custom=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,7 +136,7 @@ test_____missing_exercises()
 {
   refuteUp --exercises=
   assertNoStdout
-  assertEqualsStderr 'FAILED: missing argument value --exercises=[???]'
+  assertStderrEquals 'FAILED: missing argument value --exercises=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -145,7 +145,7 @@ test_____missing_port()
 {
   refuteUp --port=
   assertNoStdout
-  assertEqualsStderr 'FAILED: missing argument value --port=[???]'
+  assertStderrEquals 'FAILED: missing argument value --port=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -154,7 +154,7 @@ test_____named_languages_does_not_exist()
 {
   refuteUp --exercises=notExist
   assertNoStdout
-  assertEqualsStderr 'FAILED: start-point notExist does not exist'
+  assertStderrEquals 'FAILED: start-point notExist does not exist'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -163,7 +163,7 @@ test_____named_custom_does_not_exist()
 {
   refuteUp --custom=notExist
   assertNoStdout
-  assertEqualsStderr 'FAILED: start-point notExist does not exist'
+  assertStderrEquals 'FAILED: start-point notExist does not exist'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -172,7 +172,7 @@ test_____named_exercises_does_not_exist()
 {
   refuteUp --exercises=notExist
   assertNoStdout
-  assertEqualsStderr 'FAILED: start-point notExist does not exist'
+  assertStderrEquals 'FAILED: start-point notExist does not exist'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -184,7 +184,7 @@ test_____named_exercises_is_not_exercise_type()
   refuteUp --exercises=jj
   assertStartPointRm jj
   assertNoStdout
-  assertEqualsStderr "FAILED: jj is not a exercises start-point (it's type from setup.json is custom)"
+  assertStderrEquals "FAILED: jj is not a exercises start-point (it's type from setup.json is custom)"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
