@@ -16,8 +16,7 @@ test_____help_arg_prints_use_to_stdout()
 Use: cyber-dojo clean
 
 Removes dangling docker images/volumes and exited containers"
-  ${exe} clean --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertClean --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -26,8 +25,7 @@ Removes dangling docker images/volumes and exited containers"
 
 test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers()
 {
-  ${exe} clean >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertClean
   assertNoStdout
   assertNoStderr
   local dangling_images=`docker images --quiet --filter='dangling=true'`
@@ -40,12 +38,12 @@ test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containe
 
 test___FAILURE_prints_msg_to_stderr_exits_non_zero() { :; }
 
-test_____unknown_arg()
+test_____extra_arg()
 {
-  ${exe} clean unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local name=extra
+  refuteClean ${name}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [unknown]'
+  assertStderrEquals "FAILED: unknown argument [${name}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

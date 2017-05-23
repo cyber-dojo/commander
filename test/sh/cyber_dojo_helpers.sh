@@ -1,13 +1,19 @@
 
+github_cyber_dojo='https://github.com/cyber-dojo'
+
 exe=./../../cyber-dojo
 
-github_cyber_dojo='https://github.com/cyber-dojo'
+up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
+clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
+down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
+startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
+startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
+startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
+startPointRm()      { ${exe} start-point rm $1; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point create
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-startPointCreate() { ${exe} start-point create $* >${stdoutF} 2>${stderrF}; }
 
 assertStartPointCreate()
 {
@@ -28,8 +34,6 @@ refuteStartPointCreate()
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point rm
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-startPointRm() { ${exe} start-point rm $1; }
 
 assertStartPointRm()
 {
@@ -58,8 +62,6 @@ refuteStartPointExists() { startPointExists $1; assertFalse $?; }
 # start point inspect
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
-
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
 refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
@@ -67,17 +69,12 @@ refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 # start point latest
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-startPointLatest() { ${exe} start-point latest $* >${stdoutF} 2>${stderrF}; }
-
 assertStartPointLatest() { startPointLatest $*; assertTrue  $?; }
 refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # up
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-
-up() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; }
 
 assertUp() { up $*; assertTrue  $?; }
 refuteUp() { up $*; assertFalse $?; }
@@ -86,7 +83,12 @@ refuteUp() { up $*; assertFalse $?; }
 # down
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-down() { ${exe} down "$*" >${stdoutF} 2>${stderrF}; }
-
 assertDown() { down $*; assertTrue  $?; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# clean
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertClean() { clean $*; assertTrue  $?; }
+refuteClean() { clean $*; assertFalse $?; }
 

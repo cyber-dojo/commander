@@ -10,7 +10,7 @@ test_START_POINT_INSPECT() { :; }
 
 test___SUCCESS_exits_zero() { :; }
 
-test_____no_args_prints_use_to_stdout()
+test_____no_args_or_help_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -19,20 +19,13 @@ Displays details of the named start-point"
   assertStartPointInspect
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
-}
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____help_arg_prints_use_to_stdout()
-{
-  local expected_stdout="
-Use: cyber-dojo start-point inspect NAME
-
-Displays details of the named start-point"
   assertStartPointInspect --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____custom_start_point_prints_details_to_stdout()
 {
@@ -109,7 +102,7 @@ test_____present_but_not_a_start_point()
 
 test_____extra_arg()
 {
-  local name=pl
+  local name=ok
   local extra=wibble
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   refuteStartPointInspect ${name} ${extra}
