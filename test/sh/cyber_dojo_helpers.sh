@@ -7,19 +7,26 @@ github_cyber_dojo='https://github.com/cyber-dojo'
 # start point create
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-startPointCreate() { ${exe} start-point create "$*" >${stdoutF} 2>${stderrF}; }
+startPointCreate() { ${exe} start-point create $* >${stdoutF} 2>${stderrF}; }
 
 assertStartPointCreate()
 {
+#echo "1"
   refuteStartPointExists $1
-  startPointCreate "$*"
+#echo "2"
+  startPointCreate $*
+#echo "3"
   assertTrue $?
-  assertStartPointExists $1
+#echo "4"
+  if [ "$*" != '' ] && [ "$*" != '--help' ]; then
+    assertStartPointExists $1
+  fi
+#echo "5"
 }
 
 refuteStartPointCreate()
 {
-  startPointCreate "$*"
+  startPointCreate $*
   assertFalse $?
 }
 
@@ -32,8 +39,8 @@ startPointRm() { ${exe} start-point rm $1; }
 assertStartPointRm()
 {
   assertStartPointExists $1
-  startPointRm $1;
-  assertTrue $?;
+  startPointRm $1
+  assertTrue $?
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

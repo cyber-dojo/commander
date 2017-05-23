@@ -29,12 +29,12 @@ Creates a start-point named NAME from a copy of DIR
 NAME's first letter must be [a-zA-Z0-9]
 NAME's remaining letters must be [a-zA-Z0-9_.-]
 NAME must be at least two letters long"
-  ${exe} start-point create >${stdoutF} 2>${stderrF}
-  assertTrue $?
+
+  assertStartPointCreate
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
-  ${exe} start-point create --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+
+  assertStartPointCreate --help
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -45,67 +45,55 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____illegal_name_first_letter()
 {
-  local expected_stderr="FAILED: +bad is an illegal NAME"
-  ${exe} start-point create +bad >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate +bad
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr 'FAILED: +bad is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____illegal_name_second_letter()
 {
-  local expected_stderr="FAILED: b+ad is an illegal NAME"
-  ${exe} start-point create b+ad >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate b+ad
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr 'FAILED: b+ad is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____illegal_name_one_letter_name()
 {
-  local expected_stderr="FAILED: b is an illegal NAME"
-  ${exe} start-point create b >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate b
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr 'FAILED: b is an illegal NAME'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____unknown_arg()
 {
-  local expected_stderr="FAILED: unknown argument [--where]"
-  ${exe} start-point create jj --where=tay >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate jj --where=tay
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr 'FAILED: unknown argument [--where]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____unknown_args()
 {
-  local expected_stderr="FAILED: unknown argument [--where]
-FAILED: unknown argument [--there]"
-  ${exe} start-point create jj --where=tay --there=x >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate jj --where=tay --there=x
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertStderrIncludes 'FAILED: unknown argument [--where]'
+  assertStderrIncludes 'FAILED: unknown argument [--there]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____dir_and_git_args()
 {
-  local expected_stderr="FAILED: specify ONE of --git= / --dir= / --list="
-  ${exe} start-point create jj --dir=where --git=url >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteStartPointCreate jj --dir=where --git=url
   assertNoStdout
-  assertEqualsStderr "${expected_stderr}"
+  assertEqualsStderr 'FAILED: specify ONE of --git= / --dir= / --list='
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
