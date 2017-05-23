@@ -30,7 +30,7 @@ refuteStartPointCreateGit()
 {
   startPointCreateGit $1 $2;
   assertFalse $?;
-  refuteStartPointExists $1
+  #refuteStartPointExists $1
 }
 
 assertStartPointCreateDir()
@@ -44,7 +44,7 @@ refuteStartPointCreateDir()
 {
   startPointCreateDir $1 $2;
   assertFalse $?;
-  refuteStartPointExists $1
+  #refuteStartPointExists $1
 }
 
 assertStartPointCreateList()
@@ -58,7 +58,7 @@ refuteStartPointCreateList()
 {
   startPointCreateList $1 $2;
   assertFalse $?;
-  refuteStartPointExists $1
+  #refuteStartPointExists $1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
