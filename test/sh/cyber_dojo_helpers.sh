@@ -12,8 +12,6 @@ startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
 startPointRm()      { ${exe} start-point rm $1; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-# start point create
-# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointCreate()
 {
@@ -32,8 +30,6 @@ refuteStartPointCreate()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-# start point rm
-# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointRm()
 {
@@ -42,8 +38,6 @@ assertStartPointRm()
   assertTrue $?
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# start point exists
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 startPointExists()
@@ -58,36 +52,17 @@ startPointExists()
 assertStartPointExists() { startPointExists $1; assertTrue  $?; }
 refuteStartPointExists() { startPointExists $1; assertFalse $?; }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# start point inspect
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
 refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# start point latest
-# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointLatest() { startPointLatest $*; assertTrue  $?; }
 refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# up
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
 assertUp() { up $*; assertTrue  $?; }
 refuteUp() { up $*; assertFalse $?; }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# down
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
 assertDown() { down $*; assertTrue  $?; }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-# clean
-# - - - - - - - - - - - - - - - - - - - - - - - - -
+refuteDown() { down $*; assertFalse $?; }
 
 assertClean() { clean $*; assertTrue  $?; }
 refuteClean() { clean $*; assertFalse $?; }

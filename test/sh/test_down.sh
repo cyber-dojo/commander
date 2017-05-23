@@ -16,50 +16,52 @@ test_____help_arg_prints_use_to_stdout()
 Use: cyber-dojo down
 
 Stops and removes docker containers created with 'up'"
-  ${exe} down --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertDown --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____no_args_removes_containers()
+test_____no_args_stops_and_removes_server_containers()
 {
-  ${exe} up >${stdoutF} 2>${stderrF}
-  assertTrue $?
-  ${exe} down >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  ${exe} start-point rm languages
-  ${exe} start-point rm exercises
-  ${exe} start-point rm custom
-  assertTrue ${exit_status}
+  assertUp
+  assertDown
+
+  declare -a services=(
+    collector
+    differ
+    grafana
+    nginx
+    prometheus
+    runner
+    runner-stateless
+    storer
+    web
+    zipper
+  )
+  for service in "${services[@]}"
+  do
+    assertStderrIncludes "Stopping cyber-dojo-${service}"
+    assertStderrIncludes "Removing cyber-dojo-${service}"
+  done
   assertNoStdout
-  # docker-compose down writes to stderr in an odd way
-  # and it appears to be impossible to capture
-  local containers=$(docker ps -a)
-  if [[ "${containers}" == *"cyber-dojo-nginx"* ]]; then
-    fail "cyber-dojo-nginx container still exists"
-  fi
-  if [[ "${containers}" == *"cyber-dojo-web"* ]]; then
-    fail "cyber-dojo-web container still exists"
-  fi
-  if [[ "${containers}" == *"cyber-dojo-differ"* ]]; then
-    fail "cyber-dojo-differ container still exists"
-  fi
+
+  assertStartPointRm languages
+  assertStartPointRm exercises
+  assertStartPointRm custom
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
-test_____unknown_arg()
+test_____extra_arg()
 {
-  local expected_stderr="FAILED: unknown argument [unknown]"
-  ${exe} down unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local arg=extra
+  refuteDown ${arg}
   assertNoStdout
-  assertStderrEquals "${expected_stderr}"
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
