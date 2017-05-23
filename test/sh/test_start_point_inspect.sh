@@ -16,8 +16,7 @@ test_____no_args_prints_use_to_stdout()
 Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
-  ${exe} start-point inspect >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertStartPointInspect
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -30,19 +29,16 @@ test_____help_arg_prints_use_to_stdout()
 Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
-  ${exe} start-point inspect --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertStartPointInspect --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
 test_____custom_start_point_prints_details_to_stdout()
 {
-  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-custom.git
-  ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertStartPointRm ok
-  assertTrue ${exit_status}
+  local name=ok
+  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  assertStartPointInspect ${name}
 
   local stdout="`cat ${stdoutF}`"
   local expected_titles=( 'MAJOR_NAME' 'MINOR_NAME' 'IMAGE_NAME' )
@@ -61,17 +57,16 @@ test_____custom_start_point_prints_details_to_stdout()
   done
 
   assertNoStderr
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____exercises_start_point_prints_details_to_stdout()
 {
-  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-exercises.git
-  ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertStartPointRm ok
-  assertTrue ${exit_status}
+  local name=ok
+  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-exercises.git
+  assertStartPointInspect ${name}
 
   local stdout="`cat ${stdoutF}`"
   local expected_exercises=( 'Fizz\sBuzz' 'Mars\sRover' 'Print\sDiamond' )
@@ -83,6 +78,7 @@ test_____exercises_start_point_prints_details_to_stdout()
   done
 
   assertNoStderr
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,36 +87,35 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____absent_start_point()
 {
-  ${exe} start-point inspect absent >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local name=absent
+  refuteStartPointInspect ${name}
   assertNoStdout
-  assertStderrEquals 'FAILED: absent does not exist.'
+  assertStderrEquals "FAILED: ${name} does not exist."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____present_but_not_a_start_point()
 {
-  docker volume create --name notStartPoint > /dev/null
-  ${exe} start-point inspect notStartPoint >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  docker volume rm notStartPoint > /dev/null
-  assertFalse ${exit_status}
+  local name=notStartPoint
+  docker volume create --name ${name} > /dev/null
+  refuteStartPointInspect ${name}
+  docker volume rm ${name} > /dev/null
   assertNoStdout
-  assertStderrEquals 'FAILED: notStartPoint is not a cyber-dojo start-point.'
+  assertStderrEquals "FAILED: ${name} is not a cyber-dojo start-point."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____extra_arg()
 {
-  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-custom.git
-  ${exe} start-point inspect ok extraArg >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  assertStartPointRm ok
-  assertFalse ${exit_status}
+  local name=pl
+  local extra=wibble
+  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  refuteStartPointInspect ${name} ${extra}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [extraArg]'
+  assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

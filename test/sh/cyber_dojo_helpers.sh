@@ -42,7 +42,7 @@ assertStartPointRm()
 # start point exists
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-start_point_exists()
+startPointExists()
 {
   # don't match a substring
   local start_of_line='^'
@@ -51,19 +51,32 @@ start_point_exists()
   docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
-assertStartPointExists() { start_point_exists $1; assertTrue  $?; }
-refuteStartPointExists() { start_point_exists $1; assertFalse $?; }
+assertStartPointExists() { startPointExists $1; assertTrue  $?; }
+refuteStartPointExists() { startPointExists $1; assertFalse $?; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# start point inspect
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
+
+assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
+refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # up
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertUp() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; assertTrue  $?; }
-refuteUp() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; assertFalse $?; }
+up() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; }
+
+assertUp() { up $*; assertTrue  $?; }
+refuteUp() { up $*; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # down
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertDown() { ${exe} down "$*" >${stdoutF} 2>${stderrF}; assertTrue  $?; }
+down() { ${exe} down "$*" >${stdoutF} 2>${stderrF}; }
+
+assertDown() { down $*; assertTrue  $?; }
 
