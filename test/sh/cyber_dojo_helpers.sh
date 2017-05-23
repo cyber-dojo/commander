@@ -3,14 +3,9 @@ exe=./../../cyber-dojo
 
 github_cyber_dojo='https://github.com/cyber-dojo'
 
-start_point_exists()
-{
-  # don't match a substring
-  local start_of_line='^'
-  local start_point=$1
-  local end_of_line='$'
-  docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
-}
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# start point create
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 start_point_create()
 {
@@ -23,20 +18,6 @@ start_point_create()
 startPointCreateGit()  { start_point_create $1  git $2; }
 startPointCreateDir()  { start_point_create $1  dir $2; }
 startPointCreateList() { start_point_create $1 list $2; }
-
-startPointRm()
-{
-  local name=$1
-  ${exe} start-point rm ${name}
-}
-
-assertStartPointRm()
-{
-  startPointRm $1
-  assertTrue $?
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointCreateGit()
 {
@@ -66,7 +47,6 @@ refuteStartPointCreateDir()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
 assertStartPointCreateList()
 {
   startPointCreateList $1 $2
@@ -80,6 +60,33 @@ refuteStartPointCreateList()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
+# start point rm
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+startPointRm()
+{
+  local name=$1
+  ${exe} start-point rm ${name}
+}
+
+assertStartPointRm()
+{
+  startPointRm $1
+  assertTrue $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# start point exists
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+start_point_exists()
+{
+  # don't match a substring
+  local start_of_line='^'
+  local start_point=$1
+  local end_of_line='$'
+  docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
+}
 
 assertStartPointExists()
 {
@@ -94,3 +101,30 @@ refuteStartPointExists()
   start_point_exists ${name}
   assertFalse $?
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# up
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertUp()
+{
+  ${exe} up "$*" >${stdoutF} 2>${stderrF}
+  assertTrue $?
+}
+
+refuteUp()
+{
+  ${exe} up "$*" >${stdoutF} 2>${stderrF}
+  assertFalse $?
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+# down
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertDown()
+{
+  ${exe} down "$*" >${stdoutF} 2>${stderrF}
+  assertTrue $?
+}
+

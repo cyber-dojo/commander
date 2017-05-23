@@ -2,24 +2,6 @@
 
 . ./cyber_dojo_helpers.sh
 
-assertUp()
-{
-  ${exe} up $1 $2 $3 $4 $5 >${stdoutF} 2>${stderrF}
-  assertTrue $?
-}
-
-refuteUp()
-{
-  ${exe} up $1 $2 $3 $4 $5 >${stdoutF} 2>${stderrF}
-  refuteTrue $?
-}
-
-assertDown()
-{
-  ${exe} down $1 $2 $3 $4 $5 >${stdoutF} 2>${stderrF}
-  assertTrue $?
-}
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_UP() { :; }
@@ -30,8 +12,6 @@ test___SUCCESS_exits_zero() { :; }
 
 test_____no_args_uses_default_start_points_and_creates_containers()
 {
-  #${exe} up >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertUp
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
@@ -74,10 +54,8 @@ Creates and starts the cyber-dojo server using named/default start-points
 
   --port=LISTEN-PORT       Specify port to listen on.
                            Defaults to 80"
-  #${exe} up --help >${stdoutF} 2>${stderrF}
-  #${exe} up --help >${stdoutF} 2>${stderrF}
-  #assertTrue $?
-  assertUp '--help'
+
+  assertUp --help
   assertEqualsStdout "${expected_stdout}"
   assertNoStderr
 }
@@ -86,8 +64,6 @@ Creates and starts the cyber-dojo server using named/default start-points
 
 test_____prints_msg_naming_default_start_points_and_port()
 {
-  #${exe} up >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertUp
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
@@ -103,22 +79,14 @@ test_____custom_start_point_prints_msg_saying_its_being_used()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-custom.git"
-  #${exe} start-point create ${name} --git=${url}
-  #assertTrue $?
   assertStartPointCreateGit ${name} ${url}
-  #${exe} up --custom=${name} >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertUp --custom=${name}
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
   assertStdoutIncludes "Using --custom=${name}"
   assertStdoutIncludes 'Using --port=80'
   assertNoStderr
-  #${exe} down >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertDown
-  #${exe} start-point rm ${name} >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertStartPointRm ${name}
 }
 
@@ -127,15 +95,13 @@ test_____custom_start_point_prints_msg_saying_its_being_used()
 test_____custom_port_prints_msg_saying_its_being_used()
 {
   local port=8462
-  ${exe} up --port=${port} >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertUp --port=${port}
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
   assertStdoutIncludes 'Using --custom=custom'
   assertStdoutIncludes "Using --port=${port}"
   assertNoStderr
-  ${exe} down >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertDown
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -144,8 +110,7 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  ${exe} up salmon >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp salmon
   assertNoStdout
   assertEqualsStderr 'FAILED: unknown argument [salmon]'
 }
@@ -154,8 +119,7 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  ${exe} up --spey=A --tay=B >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --spey=A --tay=B
   assertNoStdout
   assertStderrIncludes 'FAILED: unknown argument [--spey]'
   assertStderrIncludes 'FAILED: unknown argument [--tay]'
@@ -165,8 +129,7 @@ test_____unknown_args()
 
 test_____missing_languages()
 {
-  ${exe} up --languages= >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --languages=
   assertNoStdout
   assertEqualsStderr 'FAILED: missing argument value --languages=[???]'
 }
@@ -175,8 +138,7 @@ test_____missing_languages()
 
 test_____missing_custom()
 {
-  ${exe} up --custom= >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --custom=
   assertNoStdout
   assertEqualsStderr 'FAILED: missing argument value --custom=[???]'
 }
@@ -185,8 +147,7 @@ test_____missing_custom()
 
 test_____missing_exercises()
 {
-  ${exe} up --exercises= >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --exercises=
   assertNoStdout
   assertEqualsStderr 'FAILED: missing argument value --exercises=[???]'
 }
@@ -195,8 +156,7 @@ test_____missing_exercises()
 
 test_____missing_port()
 {
-  ${exe} up --port= >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --port=
   assertNoStdout
   assertEqualsStderr 'FAILED: missing argument value --port=[???]'
 }
@@ -205,8 +165,7 @@ test_____missing_port()
 
 test_____named_languages_does_not_exist()
 {
-  ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --exercises=notExist
   assertNoStdout
   assertEqualsStderr 'FAILED: start-point notExist does not exist'
 }
@@ -215,8 +174,7 @@ test_____named_languages_does_not_exist()
 
 test_____named_custom_does_not_exist()
 {
-  ${exe} up --custom=notExist >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --custom=notExist
   assertNoStdout
   assertEqualsStderr 'FAILED: start-point notExist does not exist'
 }
@@ -225,8 +183,7 @@ test_____named_custom_does_not_exist()
 
 test_____named_exercises_does_not_exist()
 {
-  ${exe} up --exercises=notExist >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  refuteUp --exercises=notExist
   assertNoStdout
   assertEqualsStderr 'FAILED: start-point notExist does not exist'
 }
@@ -236,12 +193,9 @@ test_____named_exercises_does_not_exist()
 test_____named_exercises_is_not_exercise_type()
 {
   local url=https://github.com/cyber-dojo/start-points-custom.git
-  #${exe} start-point create jj --git=${url} >${stdoutF} 2>${stderrF}
   assertStartPointCreateGit jj ${url}
-  ${exe} up --exercises=jj >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  ${exe} start-point rm jj
-  assertFalse ${exit_status}
+  refuteUp --exercises=jj
+  assertStartPointRm jj
   assertNoStdout
   assertEqualsStderr "FAILED: jj is not a exercises start-point (it's type from setup.json is custom)"
 }
