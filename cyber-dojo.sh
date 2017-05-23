@@ -289,10 +289,10 @@ cyber_dojo_up()
     echo "FAILED: start-point ${CYBER_DOJO_START_POINT_CUSTOM} does not exist"
     exit_fail
   fi
-  echo "Using start-point --languages=${CYBER_DOJO_START_POINT_LANGUAGES}"
-  echo "Using start-point --exercises=${CYBER_DOJO_START_POINT_EXERCISES}"
-  echo "Using start-point --custom=${CYBER_DOJO_START_POINT_CUSTOM}"
-  echo "Listening on port ${CYBER_DOJO_NGINX_PORT}"
+  echo "Using --languages=${CYBER_DOJO_START_POINT_LANGUAGES}"
+  echo "Using --exercises=${CYBER_DOJO_START_POINT_EXERCISES}"
+  echo "Using --custom=${CYBER_DOJO_START_POINT_CUSTOM}"
+  echo "Using --port=${CYBER_DOJO_NGINX_PORT}"
 
   # Bring up server with volumes
   # It seems a successful [docker-compose up] writes to stderr !?
