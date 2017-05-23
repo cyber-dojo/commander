@@ -19,61 +19,22 @@ startPointCreateGit()  { start_point_create $1  git $2; }
 startPointCreateDir()  { start_point_create $1  dir $2; }
 startPointCreateList() { start_point_create $1 list $2; }
 
-assertStartPointCreateGit()
-{
-  startPointCreateGit $1 $2
-  assertTrue $?
-}
+assertStartPointCreateGit() { startPointCreateGit $1 $2; assertTrue  $?; }
+refuteStartPointCreateGit() { startPointCreateGit $1 $2; assertFalse $?; }
 
-refuteStartPointCreateGit()
-{
-  startPointCreateGit $1 $2
-  assertFalse $?
-}
+assertStartPointCreateDir() { startPointCreateDir $1 $2; assertTrue  $?; }
+refuteStartPointCreateDir() { startPointCreateDir $1 $2; assertFalse $?; }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-assertStartPointCreateDir()
-{
-  startPointCreateDir $1 $2
-  assertTrue $?
-}
-
-refuteStartPointCreateDir()
-{
-  startPointCreateDir $1 $2
-  assertFalse $?
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-assertStartPointCreateList()
-{
-  startPointCreateList $1 $2
-  assertTrue $?
-}
-
-refuteStartPointCreateList()
-{
-  startPointCreateList $1 $2
-  assertFalse $?
-}
+assertStartPointCreateList() { startPointCreateList $1 $2; assertTrue  $?; }
+refuteStartPointCreateList() { startPointCreateList $1 $2; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point rm
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-startPointRm()
-{
-  local name=$1
-  ${exe} start-point rm ${name}
-}
+startPointRm() { ${exe} start-point rm $1; }
 
-assertStartPointRm()
-{
-  startPointRm $1
-  assertTrue $?
-}
+assertStartPointRm() { startPointRm $1; assertTrue  $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # start point exists
@@ -88,43 +49,19 @@ start_point_exists()
   docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
-assertStartPointExists()
-{
-  local name=$1
-  start_point_exists ${name}
-  assertTrue $?
-}
-
-refuteStartPointExists()
-{
-  local name=$1
-  start_point_exists ${name}
-  assertFalse $?
-}
+assertStartPointExists() { start_point_exists $1; assertTrue  $?; }
+refuteStartPointExists() { start_point_exists $1; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # up
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertUp()
-{
-  ${exe} up "$*" >${stdoutF} 2>${stderrF}
-  assertTrue $?
-}
-
-refuteUp()
-{
-  ${exe} up "$*" >${stdoutF} 2>${stderrF}
-  assertFalse $?
-}
+assertUp() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; assertTrue  $?; }
+refuteUp() { ${exe} up "$*" >${stdoutF} 2>${stderrF}; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # down
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertDown()
-{
-  ${exe} down "$*" >${stdoutF} 2>${stderrF}
-  assertTrue $?
-}
+assertDown() { ${exe} down "$*" >${stdoutF} 2>${stderrF}; assertTrue  $?; }
 
