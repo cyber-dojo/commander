@@ -14,6 +14,7 @@ require_relative 'cyber-dojo-sh'
 require_relative 'cyber-dojo-start-point'
 require_relative 'cyber-dojo-up'
 require_relative 'cyber-dojo-update'
+require_relative 'cyber-dojo-update-images'
 
 $exit_status = 0
 
