@@ -11,17 +11,12 @@ startPointCreate() { ${exe} start-point create $* >${stdoutF} 2>${stderrF}; }
 
 assertStartPointCreate()
 {
-#echo "1"
   refuteStartPointExists $1
-#echo "2"
   startPointCreate $*
-#echo "3"
   assertTrue $?
-#echo "4"
   if [ "$*" != '' ] && [ "$*" != '--help' ]; then
     assertStartPointExists $1
   fi
-#echo "5"
 }
 
 refuteStartPointCreate()
