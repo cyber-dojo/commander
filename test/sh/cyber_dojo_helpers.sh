@@ -64,6 +64,16 @@ assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
 refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
+# start point latest
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+startPointLatest() { ${exe} start-point latest $* >${stdoutF} 2>${stderrF}; }
+
+assertStartPointLatest() { startPointLatest $*; assertTrue  $?; }
+refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 # up
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
