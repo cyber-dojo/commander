@@ -10,7 +10,7 @@ test_UP() { :; }
 
 test___SUCCESS_exits_zero() { :; }
 
-test_____no_args_uses_default_start_points_and_creates_containers()
+test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_containers()
 {
   assertUp
   assertStdoutIncludes 'Using --languages=languages'
@@ -62,24 +62,11 @@ Creates and starts the cyber-dojo server using named/default start-points
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____prints_msg_naming_default_start_points_and_port()
-{
-  assertUp
-  assertStdoutIncludes 'Using --languages=languages'
-  assertStdoutIncludes 'Using --exercises=exercises'
-  assertStdoutIncludes 'Using --custom=custom'
-  assertStdoutIncludes 'Using --port=80'
-  assertNoStderr
-  assertDown
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 test_____custom_start_point_prints_msg_saying_its_being_used()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-custom.git"
-  assertStartPointCreateGit ${name} ${url}
+  assertStartPointCreate ${name} --git=${url}
   assertUp --custom=${name}
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
@@ -193,7 +180,7 @@ test_____named_exercises_does_not_exist()
 test_____named_exercises_is_not_exercise_type()
 {
   local url=https://github.com/cyber-dojo/start-points-custom.git
-  assertStartPointCreateGit jj ${url}
+  assertStartPointCreate jj --git=${url}
   refuteUp --exercises=jj
   assertStartPointRm jj
   assertNoStdout

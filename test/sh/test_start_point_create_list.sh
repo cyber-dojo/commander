@@ -18,8 +18,7 @@ test_____new_name_creates_start_point_prints_each_url()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git-UNUSED_AT_PRESENT"
-  refuteStartPointExists ${name}
-  assertStartPointCreateList ${name} ${url}
+  assertStartPointCreate ${name} --list=${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
   assertNoStderr
@@ -34,9 +33,8 @@ test_____name_already_exists()
 {
   local name=jj
   local url="${github_cyber_dojo}/start-points-exercises.git"
-  refuteStartPointExists ${name}
-  assertStartPointCreateGit ${name} ${url}
-  refuteStartPointCreateList ${name} ${url}
+  assertStartPointCreate ${name} --git=${url}
+  refuteStartPointCreate ${name} --list=${url}
   assertNoStdout
   assertEqualsStderr "FAILED: a start-point called ${name} already exists"
   assertStartPointRm ${name}
