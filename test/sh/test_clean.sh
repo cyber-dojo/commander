@@ -42,11 +42,10 @@ test___FAILURE_prints_msg_to_stderr_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  local expected_stderr="FAILED: unknown argument [unknown]"
   ${exe} clean unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertStderrEquals "${expected_stderr}"
+  assertStderrEquals 'FAILED: unknown argument [unknown]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -38,10 +38,10 @@ Displays details of the named start-point"
 
 test_____custom_start_point_prints_details_to_stdout()
 {
-  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
+  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-custom.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
   local exit_status=$?
-  ${exe} start-point rm ok
+  assertStartPointRm ok
   assertTrue ${exit_status}
 
   local stdout="`cat ${stdoutF}`"
@@ -67,10 +67,10 @@ test_____custom_start_point_prints_details_to_stdout()
 
 test_____exercises_start_point_prints_details_to_stdout()
 {
-  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-exercises.git
+  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-exercises.git
   ${exe} start-point inspect ok >${stdoutF} 2>${stderrF}
   local exit_status=$?
-  ${exe} start-point rm ok
+  assertStartPointRm ok
   assertTrue ${exit_status}
 
   local stdout="`cat ${stdoutF}`"
@@ -114,10 +114,10 @@ test_____present_but_not_a_start_point()
 
 test_____extra_arg()
 {
-  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
+  assertStartPointCreate ok --git=${github_cyber_dojo}/start-points-custom.git
   ${exe} start-point inspect ok extraArg >${stdoutF} 2>${stderrF}
   local exit_status=$?
-  ${exe} start-point rm ok
+  assertStartPointRm ok
   assertFalse ${exit_status}
   assertNoStdout
   assertStderrEquals 'FAILED: unknown argument [extraArg]'
