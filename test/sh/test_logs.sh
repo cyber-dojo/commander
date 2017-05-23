@@ -16,8 +16,7 @@ test_____help_arg_prints_use_to_stdout()
 Use: cyber-dojo logs
 
 Fetches and prints the logs of the web server (if running)"
-  ${exe} logs --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertLogs --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -28,10 +27,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  ${exe} logs unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local extra=salmon
+  refuteLogs ${extra}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [unknown]'
+  assertStderrEquals "FAILED: unknown argument [${extra}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

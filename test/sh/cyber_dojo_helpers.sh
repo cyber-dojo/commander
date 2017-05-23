@@ -6,6 +6,8 @@ exe=./../../cyber-dojo
 up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
 down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
+logs()              { ${exe} logs                $* >${stdoutF} 2>${stderrF}; }
+sh()                { ${exe} sh                  $* >${stdoutF} 2>${stderrF}; }
 startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
 startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
@@ -66,4 +68,10 @@ refuteDown() { down $*; assertFalse $?; }
 
 assertClean() { clean $*; assertTrue  $?; }
 refuteClean() { clean $*; assertFalse $?; }
+
+assertSh() { sh $*; assertTrue  $?; }
+refuteSh() { sh $*; assertFalse $?; }
+
+assertLogs() { logs $*; assertTrue  $?; }
+refuteLogs() { logs $*; assertFalse $?; }
 
