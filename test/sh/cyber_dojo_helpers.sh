@@ -11,6 +11,7 @@ startPoint()        { ${exe} start-point         $* >${stdoutF} 2>${stderrF}; }
 startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
 startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
+startPointLs()      { ${exe} start-point ls      $* >${stdoutF} 2>${stderrF}; }
 startPointRm()      { ${exe} start-point rm      $1; }
 up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
@@ -64,6 +65,9 @@ refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
 assertStartPointLatest() { startPointLatest $*; assertTrue  $?; }
 refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
+
+assertStartPointLs() { startPointLs $*; assertTrue  $?; }
+refuteStartPointLs() { startPointLs $*; assertFalse $?; }
 
 assertUp() { up $*; assertTrue  $?; }
 refuteUp() { up $*; assertFalse $?; }
