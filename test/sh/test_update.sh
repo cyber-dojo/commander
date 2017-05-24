@@ -16,8 +16,7 @@ test_____help_arg_prints_use_to_stdout()
 Use: cyber-dojo update
 
 Updates all cyber-dojo docker images and the cyber-dojo script file"
-  ${exe} update --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertUpdate --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -31,13 +30,13 @@ x_test_____pull_latest_image_for_all_services()
   # image from dockerhub which will overwrite the one created by
   # build.sh and the travis script will repush the old image!
   ${exe} update-images >${stdoutF} 2>${stderrF}
-  assertStdoutIncludes "latest: Pulling from cyberdojo/collector"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/commander"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/differ"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/nginx"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/runner"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/storer"
-  assertStdoutIncludes "latest: Pulling from cyberdojo/web"
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/collector'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/storer'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,10 +45,10 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  ${exe} update unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local arg=salmon
+  refuteUpdate ${arg}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [unknown]'
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

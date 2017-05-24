@@ -26,8 +26,9 @@ Commands:
   rm             Removes a start-point
 
 Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
-  ${exe} start-point >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  #${exe} start-point >${stdoutF} 2>${stderrF}
+  #assertTrue $?
+  assertStartPoint
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
   ${exe} start-point --help >${stdoutF} 2>${stderrF}
@@ -42,10 +43,12 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  ${exe} start-point unknown >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  #${exe} start-point unknown >${stdoutF} 2>${stderrF}
+  #assertFalse $?
+  local arg=parr
+  refuteStartPoint ${arg}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [unknown]'
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
