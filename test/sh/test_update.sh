@@ -44,7 +44,7 @@ x_test_____pull_latest_image_for_all_services()
 
 test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
-test______unknown_arg()
+test_____unknown_arg()
 {
   ${exe} update unknown >${stdoutF} 2>${stderrF}
   assertFalse $?
