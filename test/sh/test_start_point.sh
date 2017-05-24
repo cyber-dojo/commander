@@ -10,7 +10,7 @@ test_START_POINT() { :; }
 
 test___SUCCESS_exits_zero() { :; }
 
-test_____help_arg_prints_use_to_stdout()
+test_____no_arg_and_help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
 Use: cyber-dojo start-point [COMMAND]
@@ -26,13 +26,11 @@ Commands:
   rm             Removes a start-point
 
 Run 'cyber-dojo start-point COMMAND --help' for more information on a command"
-  #${exe} start-point >${stdoutF} 2>${stderrF}
-  #assertTrue $?
   assertStartPoint
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
-  ${exe} start-point --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+
+  assertStartPoint --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -43,8 +41,6 @@ test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
 
 test_____unknown_arg()
 {
-  #${exe} start-point unknown >${stdoutF} 2>${stderrF}
-  #assertFalse $?
   local arg=parr
   refuteStartPoint ${arg}
   assertNoStdout
