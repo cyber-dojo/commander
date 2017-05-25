@@ -18,6 +18,15 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+hash docker 2> /dev/null
+if [ $? != 0 ]; then
+  echo 'docker is not installed'
+  echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
+  exit_fail
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 if [ "$1" == '--debug' ]; then
   debug_on='true'
   shift
@@ -25,11 +34,15 @@ else
   debug_on='false'
 fi
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 if [ "$1" == "up" ]; then
   is_up='true'
 else
   is_up='false'
 fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 debug()
 {
@@ -47,6 +60,8 @@ exit_success()
   exit 0
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 exit_fail()
 {
   if [ "$*" != '' ]; then
@@ -57,16 +72,7 @@ exit_fail()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-hash docker 2> /dev/null
-if [ $? != 0 ]; then
-  echo 'docker is not installed'
-  echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
-  exit_fail
-fi
-
 cyber_dojo_commander=cyberdojo/commander
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander()
 {

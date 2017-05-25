@@ -119,7 +119,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def exit_unless_is_cyber_dojo_volume(vol, command)
-  if !volume_exists? vol
+  unless volume_exists? vol
     STDERR.puts "FAILED: #{vol} does not exist."
     exit failed
   end
@@ -131,6 +131,50 @@ def exit_unless_is_cyber_dojo_volume(vol, command)
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def one_time_creation_of_katas_data_volume
+  # The katas data-volume is not created as a named volume because
+  # it predates that feature.
+  # A previous version of this script detected if /var/www/cyber-dojo/katas
+  # existed on the host in which case it assumed an old cyber-dojo server
+  # was being upgraded and automatically copied it into the new volume.
+  # It doesn't do that any more. If you want to upgrade an older server
+  # have a look at old-notes/copy_katas_into_data_container.sh in
+  # https://github.com/cyber-dojo/cyber-dojo
+  katas_data_container = 'cyber-dojo-katas-DATA-CONTAINER'
+  command = "docker ps --all | grep -s #{katas_data_container} > /dev/null"
+  run(command)
+  if $exit_status != 0
+    context_dir = '.'
+    command = 'cp Dockerignore.katas .dockerignore'
+    run(command)
+
+    tag = 'cyberdojo/katas'
+    # create a katas volume - it is mounted into the web container
+    # using a volumes_from in docker-compose.yml
+    command = [
+      'docker build',
+        '--build-arg=CYBER_DOJO_KATAS_ROOT=/usr/src/cyber-dojo/katas',
+        "--tag=#{tag}",
+        '--file=Dockerfile.katas',
+        "#{context_dir} > /dev/null"
+    ].join(space)
+    run(command)
+
+    run('rm .dockerignore')
+    command = [
+      'docker create',
+        "--name #{katas_data_container}",
+        tag,
+        "echo 'cdfKatasDC' > /dev/null"
+      ].join(space)
+    run(command)
+  end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+one_time_creation_of_katas_data_volume
 
 case ARGV[0]
   when nil             then cyber_dojo_help
