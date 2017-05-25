@@ -45,7 +45,55 @@ def cyber_dojo_up
   exit failed unless up_arg_ok(help, args,    'custom')  # --custom=NAME
   exit failed unless up_arg_int_ok(help, args,  'port')  # --port=PORT
 
-  # cyber-dojo.sh does actual [up]
+  languages = default_languages
+  exercises = default_exercises
+  custom = default_custom
+  port = default_port
+
+  args.each do |arg|
+    name = arg.split('=')[0]
+    value = arg.split('=')[1]
+    languages = value if name == '--languages'
+    exercises = value if name == '--exercises'
+    custom    = value if name == '--custom'
+    port      = value if name == '--port'
+  end
+
+  # create default start-points if necessary
+  github_cyber_dojo = 'https://github.com/cyber-dojo'
+  if languages == default_languages && !volume_exists?(default_languages)
+    url = "#{github_cyber_dojo}/start-points-languages.git"
+    STDOUT.puts "Creating start-point #{default_languages} from #{url}"
+    cyber_dojo_start_point_create_list(default_languages, [ url ])
+  end
+  if exercises == default_exercises && !volume_exists?(default_exercises)
+    url = "#{github_cyber_dojo}/start-points-exercises.git"
+    STDOUT.puts "Creating start-point #{default_exercises} from #{url}"
+    cyber_dojo_start_point_create_list(default_exercises, [ url ])
+  end
+  if custom == default_custom && !volume_exists?(default_custom)
+    url = "#{github_cyber_dojo}/start-points-custom.git"
+    STDOUT.puts "Creating start-point #{default_custom} from #{url}"
+    cyber_dojo_start_point_create_list(default_custom, [ url ])
+  end
+
+  # Bring up server with volumes
+  STDOUT.puts "Using --languages=#{languages}"
+  STDOUT.puts "Using --exercises=#{exercises}"
+  STDOUT.puts "Using --custom=#{custom}"
+  STDOUT.puts "Using --port=#{port}"
+  env_vars = {
+    'CYBER_DOJO_START_POINT_LANGUAGES' => languages,
+    'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
+    'CYBER_DOJO_START_POINT_CUSTOM' => custom,
+    'CYBER_DOJO_NGINX_PORT' => port,
+    'CYBER_DOJO_KATAS_DATA_CONTAINER' => 'cyber-dojo-katas-DATA-CONTAINER'
+  }
+  my_dir = File.dirname(__FILE__)
+  docker_compose_cmd = "docker-compose --file=#{my_dir}/docker-compose.yml"
+  # It seems a successful [docker-compose up] writes to stderr !?
+  # See https://github.com/docker/compose/issues/3267
+  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -78,14 +126,17 @@ def up_arg_ok(help, args, name)
     STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
+
   unless volume_exists?(vol)
     STDERR.puts "FAILED: start-point #{vol} does not exist"
     return false
   end
+
   type = cyber_dojo_type(vol)
   if type != name
     STDERR.puts "FAILED: #{vol} is not a #{name} start-point (it's type from setup.json is #{type})"
     return false
   end
+
   return true
 end

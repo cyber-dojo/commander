@@ -53,6 +53,15 @@ def web_server_running; `docker ps --quiet --filter "name=#{web_container_name}"
 
 def read_only; 'ro'; end
 
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def default_languages; 'languages'; end
+def default_exercises; 'exercises'; end
+def default_custom; 'custom'; end
+def default_port; '80'; end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 def run(command)
   output = `#{command}`
   $exit_status = $?.exitstatus
@@ -63,6 +72,8 @@ def run(command)
   end
   output
 end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def get_arg(name, argv)
   # eg name: --git
