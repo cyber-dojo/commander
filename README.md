@@ -29,7 +29,7 @@ Commands:
     sh           Shells into the server
     start-point  Manages cyber-dojo start-points
     up           Brings up the server
-    update       Updates the server to the latest images
+    update       Updates the server and/or languages to the latest images
 
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
