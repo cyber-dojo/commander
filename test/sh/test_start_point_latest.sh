@@ -8,9 +8,9 @@ test_START_POINT_LATEST() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___SUCCESS_exits_zero_no_stderr_prints_to_stdout() { :; }
 
-test_____no_arg_or_help_prints_use_to_stdout()
+test_____no_arg_or_help_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point latest NAME
@@ -27,7 +27,7 @@ Re-pulls already pulled docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___FAILURE_exits_non_zero_no_stdout_prints_to_stderr() { :; }
 
 test_____absent_start_point()
 {
@@ -59,6 +59,21 @@ test_____extra_arg()
   refuteStartPointLatest ${name} ${extra}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____extra_args()
+{
+  local name=ok
+  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  local extra1=salmon
+  local extra2=parr
+  refuteStartPointLatest ${name} ${extra1} ${extra2}
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${extra1}]"
+  assertStderrIncludes "FAILED: unknown argument [${extra2}]"
   assertStartPointRm ${name}
 }
 
