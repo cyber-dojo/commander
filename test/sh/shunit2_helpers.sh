@@ -36,3 +36,12 @@ oneTimeSetUp()
   mkdirCmd='mkdir'  # save command name in variable to make future changes easy
   testDir="${SHUNIT_TMPDIR}/some_test_dir"
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+absPath()
+{
+  #use like this [ local resolved=`abspath ./../a/b/c` ]
+  cd "$(dirname "$1")"
+  printf "%s/%s\n" "$(pwd)" "$(basename "$1")"
+}

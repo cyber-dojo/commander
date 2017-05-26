@@ -1,5 +1,6 @@
 
 require_relative 'cyber-dojo-start-point-create-list'
+require_relative 'cyber-dojo-start-point-create-dir'
 
 def cyber_dojo_start_point_create
   help = [
@@ -74,7 +75,9 @@ def cyber_dojo_start_point_create
     exit failed
   end
 
-  # [cyber-dojo] does actual [start-point create NAME --dir=DIR]
+  if dir
+    cyber_dojo_start_point_create_dir(vol, dir)
+  end
 
   if git
     cyber_dojo_start_point_create_list(vol, [ git ])

@@ -11,7 +11,7 @@
 #
 #  1) provides an interactive terminal.
 #  2) replaces this script.
-#  3) needs access to DIR.
+#  3) needs to volume mount DIR.
 
 # requires: awk, sed, grep which are in DockerToolbox
 # quickstart terminal.
@@ -29,20 +29,10 @@ fi
 
 if [ "$1" == '--debug' ]; then
   debug_on='true'
+  shift
 else
   debug_on='false'
 fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-debug()
-{
-  if [ "${debug_on}" == 'true' ]; then
-    echo $*
-  else
-    :
-  fi
-}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -70,11 +60,11 @@ delegate_to_commander()
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
   if [ -f ${my_dir}/nginx.env ] && [ "${1}" == 'up' ];  then
-    local nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
+    local volume_nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
   fi
 
   if [ -f ${my_dir}/grafana.env ] && [ "${1}" == 'up' ];  then
-    local grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
+    local volume_grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
   fi
 
   if [ ! -f ${my_dir}/grafana.env ] && [ "${1}" == 'up' ];  then
@@ -85,14 +75,32 @@ delegate_to_commander()
     echo '   2. Re-issue the cyberdojo up command.'
   fi
 
+  # up start-point create --dir=DIR
+  local lhs=$(echo $4 | cut -f1 -s -d=)
+  local dir=$(echo $4 | cut -f2 -s -d=)
+  if [ "$1" == 'start-point' ] && [ "$2" == 'create' ] &&
+     [ "${lhs}" == '--dir' ] && [ "${dir}" != '' ] &&
+     [ "$5" == '' ]; then
+
+     if [ ! -d ${dir} ]; then
+       exit_fail "Dir ${dir} does not exist"
+     fi
+     local volume_start_point_dir="--volume=${dir}:${dir}"
+  fi
+
+  if [ "${debug_on}" == 'true' ]; then
+    local debug_option='--debug'
+  fi
+
   docker run \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    ${grafana_env_file} \
-    ${nginx_env_file} \
-    ${cyber_dojo_commander} \
-    /app/cyber-dojo.rb $*
+    ${volume_grafana_env_file} \
+    ${volume_nginx_env_file} \
+    ${volume_start_point_dir} \
+      ${cyber_dojo_commander} \
+        /app/cyber-dojo.rb ${debug_option} $*
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -148,137 +156,7 @@ replace_myself()
   exit_success
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-g_cid=''      # if this is not '' then clean_up [docker rm]'s the container
-g_vol=''      # if this is not '' then clean_up [docker volume rm]'s the volume
-
-if_start_point_create_dir_then_handle_locally()
-{
-  local name=$3
-  local lhs=$(echo $4 | cut -f1 -s -d=)
-  local dir=$(echo $4 | cut -f2 -s -d=)
-  if [ "$1" = 'start-point' ] &&
-     [ "$2" = 'create' ] &&
-     [ "${lhs}" = '--dir' ] &&
-     [ "${dir}" != '' ]; then
-
-    if start_point_exists ${name}; then
-      exit_fail "A start-point called ${name} already exists"
-    fi
-    if [ ! -d ${dir} ]; then
-      exit_fail "Dir ${dir} does not exist"
-    fi
-
-    # 1. make an empty docker volume with the given name
-    command="docker volume create --name=${name} --label=cyber-dojo-start-point=${dir}"
-    run_quiet "${command}" || clean_up_and_exit_fail '[docker volume create] failed!?'
-    g_vol=${name}
-
-    # 2. mount empty volume inside docker container
-    command="docker create
-                 --interactive
-                 --user=root
-                 --volume=${name}:/data
-                 ${cyber_dojo_commander} sh"
-    g_cid=`${command}`
-    command="docker start ${g_cid}"
-    run_quiet "${command}" || clean_up_and_exit_fail '[docker start] failed!?'
-
-    # 3. fill empty volume from local dir
-    command="docker cp ${dir}/. ${g_cid}:/data"
-    run_quiet "${command}" || clean_up_and_exit_fail '[docker cp] failed!?'
-
-    # 4. ensure cyber-dojo user owns everything in the volume
-    command="docker exec ${g_cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
-    run_quiet "${command}" || clean_up_and_exit_fail '[docker exec chown] failed!?'
-
-    # 5. check the volume is a good start-point
-    command="docker exec ${g_cid} sh -c './start_point_check.rb /data'"
-    run_loud "${command}" || clean_up_and_exit_fail
-
-    # clean up everything used to create the volume, but not the volume itself
-    g_vol=''
-    clean_up
-    exit_success
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-start_point_exists()
-{
-  # don't match a substring
-  local start_of_line='^'
-  local start_point=$1
-  local end_of_line='$'
-  docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
-  return $?
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-run_quiet()
-{
-  local me='run_quiet'
-  local command="$1"
-  debug "${me}: command=${command}"
-  eval ${command} > /dev/null 2>&1
-  local exit_status=$?
-  debug "${me}: exit_status=${exit_status}"
-  return ${exit_status}
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-run_loud()
-{
-  local me='run_loud'
-  local command="$1"
-  debug "${me}: command=${command}"
-  eval ${command} > /dev/null
-  local exit_status=$?
-  debug "${me}: exit_status=${exit_status}"
-  return ${exit_status}
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-clean_up_and_exit_fail()
-{
-  if [ "$*" != '' ]; then
-    echo "FAILED: $*"
-  fi
-  clean_up
-  exit 1
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-clean_up()
-{
-  local me='clean_up'
-  # remove docker container?
-  if [ "${g_cid}" != '' ]; then
-    debug "${me}: doing [docker rm -f ${g_cid}]"
-    docker rm -f ${g_cid} > /dev/null 2>&1
-  else
-    debug "${me}: g_cid='' -> NOT doing [docker rm]"
-  fi
-  # remove docker volume?
-  if [ "${g_vol}" != '' ]; then
-    debug "${me}: doing [docker volume rm ${g_vol}]"
-    # previous [docker rm] command seems to sometimes complete
-    # before it is safe to remove its volume?!
-    sleep 1s
-    docker volume rm ${g_vol} > /dev/null 2>&1
-  else
-    debug "${me}: g_vol='' -> NOT doing [docker volume rm]"
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#==========================================================
 
 if [ "$1" == 'update' ]; then
   if [ "$2" == '' ]; then
@@ -289,12 +167,17 @@ if [ "$1" == 'update' ]; then
   fi
 fi
 
-delegate_to_commander "$*"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+delegate_to_commander $*
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ $? != 0 ]; then
   exit_fail
 fi
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 if_sh_then_handle_locally $*
 if_update_then_handle_locally $*
-if_start_point_create_dir_then_handle_locally $*
