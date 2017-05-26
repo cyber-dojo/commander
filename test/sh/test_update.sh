@@ -13,9 +13,16 @@ test___SUCCESS_exits_zero() { :; }
 test_____help_arg_prints_use_to_stdout()
 {
   local expected_stdout="
-Use: cyber-dojo update
+Use: cyber-dojo update [OPTIONS]
 
-Updates all cyber-dojo docker images and the cyber-dojo script file"
+Updates all cyber-dojo server and language images and the cyber-dojo script file
+
+  server      update the server images and the cyber-dojo script file
+              but not the current languages
+
+  languages   update the current languages but not the
+              server images or the cyber-dojo script file"
+
   assertUpdate --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
@@ -23,20 +30,34 @@ Updates all cyber-dojo docker images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-x_test_____pull_latest_image_for_all_services()
+x_test_____pull_latest_images_for_all_services()
 {
-  # This test turned off.
+  # This test is turned off.
   # If it runs then the update will [docker pull] the commander
   # image from dockerhub which will overwrite the one created by
   # build.sh and the travis script will repush the old image!
-  ${exe} update-images >${stdoutF} 2>${stderrF}
+  ${exe} update >${stdoutF} 2>${stderrF}
   assertStdoutIncludes 'latest: Pulling from cyberdojo/collector'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/grafana'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/prometheus'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/runner'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateless'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/storer'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+x_test_____pull_latest_images_for_all_languages()
+{
+  ${exe} update languages >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertStdoutIncludes 'latest: Pulling from cyberdojofoundation/gcc_assert'
+  assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,16 +74,17 @@ test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____update_images_is_private_function()
+test_____unknown_args()
 {
-  # update-images is only callable indirectly via
-  # ./cyber-dojo update
-  # after the command line arguments have been checked
-  ${exe} update-images >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local arg1=salmon
+  local arg2=parr
+  refuteUpdate ${arg1} ${arg2}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [update-images]'
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

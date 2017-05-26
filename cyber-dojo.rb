@@ -14,7 +14,6 @@ require_relative 'cyber-dojo-sh'
 require_relative 'cyber-dojo-start-point'
 require_relative 'cyber-dojo-up'
 require_relative 'cyber-dojo-update'
-require_relative 'cyber-dojo-update-images'
 
 $exit_status = 0
 
@@ -186,7 +185,6 @@ case ARGV[0]
   when 'start-point'   then cyber_dojo_start_point
   when 'up'            then cyber_dojo_up
   when 'update'        then cyber_dojo_update
-  when 'update-images' then cyber_dojo_update_images
   else
     STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed
