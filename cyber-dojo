@@ -35,14 +35,6 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "$1" == "up" ]; then
-  is_up='true'
-else
-  is_up='false'
-fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 debug()
 {
   if [ "${debug_on}" == 'true' ]; then
@@ -77,15 +69,15 @@ delegate_to_commander()
 {
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
-  if [ -f ${my_dir}/nginx.env ] && [ "${is_up}" == 'true' ];  then
+  if [ -f ${my_dir}/nginx.env ] && [ "${1}" == 'up' ];  then
     local nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
   fi
 
-  if [ -f ${my_dir}/grafana.env ] && [ "${is_up}" == 'true' ];  then
+  if [ -f ${my_dir}/grafana.env ] && [ "${1}" == 'up' ];  then
     local grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
   fi
 
-  if [ ! -f ${my_dir}/grafana.env ] && [ "${is_up}" == 'true' ];  then
+  if [ ! -f ${my_dir}/grafana.env ] && [ "${1}" == 'up' ];  then
     echo 'WARNING: Using default grafana admin password.'
     echo 'To set your own password and remove this warning:'
     echo '   1. Add a file grafana.env with contents GF_SECURITY_ADMIN_PASSWORD=mypassword'
