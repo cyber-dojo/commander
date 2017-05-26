@@ -8,8 +8,8 @@ class StartPointChecker
     @errors = {}
   end
 
-  attr_reader :manifests # [manifest-filename] => json-manifest-object
-  attr_reader :errors    # [manifest-filename] => [ error, ... ]
+  attr_reader :manifests # { manifest-filename => json-manifest-object }
+  attr_reader :errors    # { manifest-filename => [ 'error', ... ] }
 
   # - - - - - - - - - - - - - - - - - - - -
 
@@ -51,7 +51,35 @@ class StartPointChecker
     errors
   end
 
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def known_keys
+    %w( display_name
+        filename_extension
+        highlight_filenames
+        image_name
+        progress_regexs
+        tab_size
+        visible_filenames
+      )
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def required_keys
+    %w( display_name
+        image_name
+        visible_filenames
+      )
+  end
+
   private
+
+  self.new('').known_keys.each do |key|
+    define_method(key.to_sym) { @manifest[key] }
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
 
   def check_setup_json_meets_its_spec(manifest)
     @key = 'type'
@@ -355,54 +383,6 @@ class StartPointChecker
   end
 
   # - - - - - - - - - - - - - - - - - - - -
-
-  def known_keys
-    %w( display_name
-        filename_extension
-        highlight_filenames
-        image_name
-        progress_regexs
-        tab_size
-        visible_filenames
-      )
-  end
-
-  def required_keys
-    %w( display_name
-        image_name
-        visible_filenames
-      )
-  end
-
-  # - - - - - - - - - - - - - - - - - - - -
-
-  def visible_filenames
-    @manifest['visible_filenames']
-  end
-
-  def highlight_filenames
-    @manifest['highlight_filenames']
-  end
-
-  def display_name
-    @manifest['display_name']
-  end
-
-  def image_name
-    @manifest['image_name']
-  end
-
-  def progress_regexs
-    @manifest['progress_regexs']
-  end
-
-  def filename_extension
-    @manifest['filename_extension']
-  end
-
-  def tab_size
-    @manifest['tab_size']
-  end
 
   def error(msg)
     @errors[@manifest_filename] << (@key + ': ' + msg)
