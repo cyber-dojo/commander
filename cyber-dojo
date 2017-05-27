@@ -21,7 +21,7 @@
 exit_fail()
 {
   if [ "$*" != '' ]; then
-    echo "FAILED: $*"
+    >&2 echo "FAILED: $*"
   fi
   exit 1
 }
@@ -56,7 +56,7 @@ delegate_to_commander()
     local dir=$(echo $4 | cut -f2 -s -d=)
     if [ "${lhs}" == '--dir' ] && [ "${dir}" != '' ] && [ "$5" == '' ]; then
       if [ ! -d ${dir} ]; then
-        exit_fail "Dir ${dir} does not exist"
+        exit_fail "dir ${dir} does not exist"
       fi
       local volume_start_point_dir="--volume=${dir}:${dir}"
     fi

@@ -57,40 +57,40 @@ startPointExists()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPoint() { startPoint $*; assertTrue  $?; }
-refuteStartPoint() { startPoint $*; assertFalse $?; }
+assertStartPoint()        { startPoint        $*; assertTrue  $?; }
+refuteStartPoint()        { startPoint        $*; assertFalse $?; }
 
-assertStartPointExists() { startPointExists $1; assertTrue  $?; }
-refuteStartPointExists() { startPointExists $1; assertFalse $?; }
+assertStartPointExists()  { startPointExists  $1; assertTrue  $?; }
+refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
 
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
 refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
-assertStartPointLatest() { startPointLatest $*; assertTrue  $?; }
-refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
+assertStartPointLatest()  { startPointLatest  $*; assertTrue  $?; }
+refuteStartPointLatest()  { startPointLatest  $*; assertFalse $?; }
 
-assertStartPointLs() { startPointLs $*; assertTrue  $?; }
-refuteStartPointLs() { startPointLs $*; assertFalse $?; }
+assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
+refuteStartPointLs()      { startPointLs      $*; assertFalse $?; }
 
-assertStartPointPull() { startPointPull $*; assertTrue  $?; }
-refuteStartPointPull() { startPointPull $*; assertFalse $?; }
+assertStartPointPull()    { startPointPull    $*; assertTrue  $?; }
+refuteStartPointPull()    { startPointPull    $*; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertClean() { clean $*; assertTrue  $?; }
-refuteClean() { clean $*; assertFalse $?; }
+assertClean()  { clean  $*; assertTrue  $?; }
+refuteClean()  { clean  $*; assertFalse $?; }
 
-assertDown() { down $*; assertTrue  $?; }
-refuteDown() { down $*; assertFalse $?; }
+assertDown()   { down   $*; assertTrue  $?; }
+refuteDown()   { down   $*; assertFalse $?; }
 
-assertLogs() { logs $*; assertTrue  $?; }
-refuteLogs() { logs $*; assertFalse $?; }
+assertLogs()   { logs   $*; assertTrue  $?; }
+refuteLogs()   { logs   $*; assertFalse $?; }
 
-assertSh() { sh $*; assertTrue  $?; }
-refuteSh() { sh $*; assertFalse $?; }
+assertSh()     { sh     $*; assertTrue  $?; }
+refuteSh()     { sh     $*; assertFalse $?; }
 
-assertUp() { up $*; assertTrue  $?; }
-refuteUp() { up $*; assertFalse $?; }
+assertUp()     { up     $*; assertTrue  $?; }
+refuteUp()     { up     $*; assertFalse $?; }
 
 assertUpdate() { update $*; assertTrue  $?; }
 refuteUpdate() { update $*; assertFalse $?; }

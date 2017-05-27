@@ -24,6 +24,15 @@ test_____good_dir_with_new_name_creates_start_point_prints_nothing()
 
 test___failure() { :; }
 
+test_____dir_does_not_exist()
+{
+  local name=good
+  local bad_dir=/does/not/exist
+  refuteStartPointCreate ${name} --dir=${bad_dir}
+  assertNoStdout
+  assertStderrIncludes "FAILED: dir ${bad_dir} does not exist"
+}
+
 test_____good_dir_but_name_already_exists()
 {
   local name=good
