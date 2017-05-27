@@ -73,6 +73,15 @@ test_____illegal_name_one_letter_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____dir_and_git_args()
+{
+  refuteStartPointCreate jj --dir=where --git=url
+  assertNoStdout
+  assertStderrEquals 'FAILED: specify ONE of --git= / --dir= / --list='
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_____unknown_arg()
 {
   local arg='--where'
@@ -91,15 +100,6 @@ test_____unknown_args()
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"
   assertStderrIncludes "FAILED: unknown argument [${arg2}]"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____dir_and_git_args()
-{
-  refuteStartPointCreate jj --dir=where --git=url
-  assertNoStdout
-  assertStderrEquals 'FAILED: specify ONE of --git= / --dir= / --list='
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

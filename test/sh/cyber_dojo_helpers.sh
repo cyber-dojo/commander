@@ -13,7 +13,7 @@ startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
 startPointLs()      { ${exe} start-point ls      $* >${stdoutF} 2>${stderrF}; }
 startPointPull()    { ${exe} start-point pull    $* >${stdoutF} 2>${stderrF}; }
-startPointRm()      { ${exe} start-point rm      $1; }
+startPointRm()      { ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; }
 up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 

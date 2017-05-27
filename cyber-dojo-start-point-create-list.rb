@@ -40,8 +40,8 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def start_point_git_sparse_pull(url, index, cid)
-  # The sparse-pull is done not by specifying
-  # what we want don't want. This is because
+  # The sparse-pull is done not by specifying what we
+  # do want but by what we don't want. This is because
   # it has to work for all three start-point types.
   name = url.split('/')[-1]
   dir = "/data/#{index}_#{name}"

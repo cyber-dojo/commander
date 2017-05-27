@@ -36,7 +36,7 @@ test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containe
   local dangling_images=`docker images --quiet --filter='dangling=true'`
   assertEquals "" "${dangling_images}"
   local exited_containers=`docker ps --all --quiet --filter='status=exited'`
-  assertEquals "" "${exited_containers}"
+  assertEquals '' "${exited_containers}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -95,28 +95,6 @@ test_____custom_port_prints_msg_saying_its_being_used()
 
 test___failure() { :; }
 
-test_____unknown_arg()
-{
-  local name=salmon
-  refuteUp ${name}
-  assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${name}]"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____unknown_args()
-{
-  local arg1=--spey
-  local arg2=--tay
-  refuteUp ${arg1}=A ${arg2}=B
-  assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 test_____missing_languages()
 {
   refuteUp --languages=
@@ -189,9 +167,31 @@ test_____named_exercises_is_not_exercise_type()
   local url=https://github.com/cyber-dojo/start-points-custom.git
   assertStartPointCreate ${name} --git=${url}
   refuteUp --exercises=${name}
-  assertStartPointRm ${name}
   assertNoStdout
   assertStderrEquals "FAILED: ${name} is not a exercises start-point (it's type from setup.json is custom)"
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_arg()
+{
+  local name=salmon
+  refuteUp ${name}
+  assertNoStdout
+  assertStderrEquals "FAILED: unknown argument [${name}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_args()
+{
+  local arg1=--spey
+  local arg2=--tay
+  refuteUp ${arg1}=A ${arg2}=B
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
