@@ -10,28 +10,17 @@ test_START_POINT_PULL() { :; }
 
 test___success() { :; }
 
-test_____no_arg_prints_use()
+test_____no_arg_or_help_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
 
 Pulls all the docker images inside the named start-point"
-  ${exe} start-point pull >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertStartPointPull
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
-}
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____help_arg_prints_use()
-{
-  local expected_stdout="
-Use: cyber-dojo start-point pull NAME
-
-Pulls all the docker images inside the named start-point"
-  ${exe} start-point pull --help >${stdoutF} 2>${stderrF}
-  assertTrue $?
+  assertStartPointPull --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -42,36 +31,35 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  ${exe} start-point pull absent >${stdoutF} 2>${stderrF}
-  assertFalse $?
+  local arg='absent'
+  refuteStartPointPull ${arg}
   assertNoStdout
-  assertStderrEquals 'FAILED: absent does not exist.'
+  assertStderrEquals "FAILED: ${arg} does not exist."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____present_but_not_a_start_point()
 {
-  docker volume create --name notStartPoint > /dev/null
-  ${exe} start-point pull notStartPoint >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  docker volume rm notStartPoint > /dev/null
-  assertFalse ${exit_status}
+  local arg='notStartPoint'
+  docker volume create --name ${arg} > /dev/null
+  refuteStartPointPull ${arg}
+  docker volume rm ${arg} > /dev/null
   assertNoStdout
-  assertStderrEquals 'FAILED: notStartPoint is not a cyber-dojo start-point.'
+  assertStderrEquals "FAILED: ${arg} is not a cyber-dojo start-point."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____extra_arg()
 {
-  ${exe} start-point create ok --git=${github_cyber_dojo}/start-points-custom.git
-  ${exe} start-point pull ok extraArg >${stdoutF} 2>${stderrF}
-  local exit_status=$?
-  ${exe} start-point rm ok
-  assertFalse ${exit_status}
+  local name='ok'
+  local extra='salmon'
+  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  refuteStartPointPull ${name} ${extra}
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [extraArg]'
+  assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

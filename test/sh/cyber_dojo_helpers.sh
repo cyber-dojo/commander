@@ -12,6 +12,7 @@ startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
 startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLatest()  { ${exe} start-point latest  $* >${stdoutF} 2>${stderrF}; }
 startPointLs()      { ${exe} start-point ls      $* >${stdoutF} 2>${stderrF}; }
+startPointPull()    { ${exe} start-point pull    $* >${stdoutF} 2>${stderrF}; }
 startPointRm()      { ${exe} start-point rm      $1; }
 up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
@@ -54,6 +55,8 @@ startPointExists()
   docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 assertStartPoint() { startPoint $1; assertTrue  $?; }
 refuteStartPoint() { startPoint $1; assertFalse $?; }
 
@@ -69,20 +72,25 @@ refuteStartPointLatest() { startPointLatest $*; assertFalse $?; }
 assertStartPointLs() { startPointLs $*; assertTrue  $?; }
 refuteStartPointLs() { startPointLs $*; assertFalse $?; }
 
-assertUp() { up $*; assertTrue  $?; }
-refuteUp() { up $*; assertFalse $?; }
+assertStartPointPull() { startPointPull $*; assertTrue  $?; }
+refuteStartPointPull() { startPointPull $*; assertFalse $?; }
 
-assertDown() { down $*; assertTrue  $?; }
-refuteDown() { down $*; assertFalse $?; }
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertClean() { clean $*; assertTrue  $?; }
 refuteClean() { clean $*; assertFalse $?; }
 
-assertSh() { sh $*; assertTrue  $?; }
-refuteSh() { sh $*; assertFalse $?; }
+assertDown() { down $*; assertTrue  $?; }
+refuteDown() { down $*; assertFalse $?; }
 
 assertLogs() { logs $*; assertTrue  $?; }
 refuteLogs() { logs $*; assertFalse $?; }
+
+assertSh() { sh $*; assertTrue  $?; }
+refuteSh() { sh $*; assertFalse $?; }
+
+assertUp() { up $*; assertTrue  $?; }
+refuteUp() { up $*; assertFalse $?; }
 
 assertUpdate() { update $*; assertTrue  $?; }
 refuteUpdate() { update $*; assertFalse $?; }
