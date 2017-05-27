@@ -8,7 +8,7 @@ test_START_POINT_CREATE_DIR() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___succss() { :; }
 
 test_____good_dir_with_new_name_creates_start_point_prints_nothing()
 {
@@ -22,7 +22,7 @@ test_____good_dir_with_new_name_creates_start_point_prints_nothing()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____good_dir_but_name_already_exists()
 {

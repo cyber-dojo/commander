@@ -8,9 +8,9 @@ test_START_POINT_INSPECT() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
-test_____no_args_or_help_prints_use_to_stdout()
+test_____no_args_or_help_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point inspect NAME
@@ -27,7 +27,7 @@ Displays details of the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____custom_start_point_prints_details_to_stdout()
+test_____custom_start_point_prints_details()
 {
   local name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
@@ -43,7 +43,7 @@ test_____custom_start_point_prints_details_to_stdout()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____exercises_start_point_prints_details_to_stdout()
+test_____exercises_start_point_prints_details()
 {
   local name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-exercises.git
@@ -57,7 +57,7 @@ test_____exercises_start_point_prints_details_to_stdout()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____absent_start_point()
 {

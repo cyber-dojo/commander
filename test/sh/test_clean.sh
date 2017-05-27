@@ -4,13 +4,18 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_SUCCESS_exits_zero_no_stderr_prints_to_stdout() { :; }
+test_FAILURE_exits_non_zero_no_stdout_prints_to_stderr() { :; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_CLEAN() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
-test_____help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo clean
@@ -36,7 +41,7 @@ test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containe
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____extra_arg()
 {

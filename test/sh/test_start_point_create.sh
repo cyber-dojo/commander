@@ -12,9 +12,9 @@ test_START_POINT_CREATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
-test_____help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point create NAME --list=FILE
@@ -41,7 +41,7 @@ NAME must be at least two letters long"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____illegal_name_first_letter()
 {

@@ -10,7 +10,7 @@ test_START_POINT_CREATE_GIT() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
 test_____good_git_repo_with_new_name_creates_start_point_prints_url()
 {
@@ -24,7 +24,7 @@ test_____good_git_repo_with_new_name_creates_start_point_prints_url()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____name_already_exists()
 {

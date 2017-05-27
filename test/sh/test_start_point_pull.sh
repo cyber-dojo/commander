@@ -8,9 +8,9 @@ test_START_POINT_PULL() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
-test_____no_arg_prints_use_to_stdout()
+test_____no_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -24,7 +24,7 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo start-point pull NAME
@@ -38,7 +38,7 @@ Pulls all the docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____absent_start_point()
 {

@@ -8,7 +8,7 @@ test_START_POINT_LATEST() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero_no_stderr_prints_to_stdout() { :; }
+test___success() { :; }
 
 test_____no_arg_or_help_prints_use()
 {
@@ -27,7 +27,7 @@ Re-pulls already pulled docker images inside the named start-point"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_exits_non_zero_no_stdout_prints_to_stderr() { :; }
+test___failure() { :; }
 
 test_____absent_start_point()
 {

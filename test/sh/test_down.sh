@@ -8,9 +8,9 @@ test_DOWN() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___SUCCESS_exits_zero() { :; }
+test___success() { :; }
 
-test_____help_arg_prints_use_to_stdout()
+test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo down
@@ -54,7 +54,7 @@ test_____no_args_stops_and_removes_server_containers()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___FAILURE_prints_msg_to_stderr_and_exits_non_zero() { :; }
+test___failure() { :; }
 
 test_____extra_arg()
 {
