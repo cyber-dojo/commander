@@ -53,5 +53,17 @@ test_____extra_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____extra_args()
+{
+  local extra1=salmon
+  local extra2=parr
+  refuteClean ${extra1} ${extra2}
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${extra1}]"
+  assertStderrIncludes "FAILED: unknown argument [${extra2}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 . ./shunit2_helpers.sh
 . ./shunit2

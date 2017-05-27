@@ -31,7 +31,7 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  local arg='absent'
+  local arg=absent
   refuteStartPointPull ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: ${arg} does not exist."
@@ -41,7 +41,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local arg='notStartPoint'
+  local arg=notStartPoint
   docker volume create --name ${arg} > /dev/null
   refuteStartPointPull ${arg}
   docker volume rm ${arg} > /dev/null
@@ -53,8 +53,8 @@ test_____present_but_not_a_start_point()
 
 test_____extra_arg()
 {
-  local name='ok'
-  local extra='salmon'
+  local name=ok
+  local extra=salmon
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   refuteStartPointPull ${name} ${extra}
   assertNoStdout
