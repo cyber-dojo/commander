@@ -26,8 +26,10 @@ def cyber_dojo_start_point_ls
     names.each { |name| puts name }
   else
 
+    ARGV[2..-1].each do |arg|
+      STDERR.puts "FAILED: unknown argument [#{arg}]"
+    end
     unless ARGV[2].nil?
-      STDERR.puts "FAILED: unknown argument [#{ARGV[2]}]"
       exit failed
     end
 

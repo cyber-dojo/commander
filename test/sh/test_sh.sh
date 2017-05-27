@@ -27,10 +27,22 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local extra=wibble
-  refuteSh ${extra}
+  local arg=wibble
+  refuteSh ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_args()
+{
+  local arg1=wibble
+  local arg2=fubar
+  refuteSh ${arg1} ${arg2}
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

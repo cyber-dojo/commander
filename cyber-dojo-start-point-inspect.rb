@@ -15,8 +15,10 @@ def cyber_dojo_start_point_inspect
 
   exit_unless_is_cyber_dojo_volume(vol, 'inspect')
 
+  ARGV[3..-1].each do |arg|
+    STDERR.puts "FAILED: unknown argument [#{arg}]"
+  end
   unless ARGV[3].nil?
-    STDERR.puts "FAILED: unknown argument [#{ARGV[3]}]"
     exit failed
   end
 

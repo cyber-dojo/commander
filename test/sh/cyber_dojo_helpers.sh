@@ -57,8 +57,8 @@ startPointExists()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPoint() { startPoint $1; assertTrue  $?; }
-refuteStartPoint() { startPoint $1; assertFalse $?; }
+assertStartPoint() { startPoint $*; assertTrue  $?; }
+refuteStartPoint() { startPoint $*; assertFalse $?; }
 
 assertStartPointExists() { startPointExists $1; assertTrue  $?; }
 refuteStartPointExists() { startPointExists $1; assertFalse $?; }

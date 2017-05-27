@@ -43,7 +43,7 @@ test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containe
 
 test___failure() { :; }
 
-test_____extra_arg()
+test_____unknown_arg()
 {
   local name=extra
   refuteClean ${name}
@@ -53,7 +53,7 @@ test_____extra_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____extra_args()
+test_____unknown_args()
 {
   local extra1=salmon
   local extra2=parr

@@ -56,9 +56,9 @@ test_____no_args_stops_and_removes_server_containers()
 
 test___failure() { :; }
 
-test_____extra_arg()
+test_____unknown_arg()
 {
-  local arg=extra
+  local arg=salmon
   refuteDown ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
@@ -66,14 +66,14 @@ test_____extra_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____extra_args()
+test_____unknown_args()
 {
-  local extra1=salmon
-  local extra2=parr
-  refuteDown ${extra1} ${extra2}
+  local arg1=salmon
+  local arg2=parr
+  refuteDown ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${extra1}]"
-  assertStderrIncludes "FAILED: unknown argument [${extra2}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

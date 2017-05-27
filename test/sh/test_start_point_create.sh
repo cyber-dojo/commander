@@ -45,46 +45,52 @@ test___failure() { :; }
 
 test_____illegal_name_first_letter()
 {
-  refuteStartPointCreate +bad
+  local arg=+bad
+  refuteStartPointCreate ${arg}
   assertNoStdout
-  assertStderrEquals 'FAILED: +bad is an illegal NAME'
+  assertStderrEquals "FAILED: ${arg} is an illegal NAME"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____illegal_name_second_letter()
 {
-  refuteStartPointCreate b+ad
+  local arg=b+ad
+  refuteStartPointCreate ${arg}
   assertNoStdout
-  assertStderrEquals 'FAILED: b+ad is an illegal NAME'
+  assertStderrEquals "FAILED: ${arg} is an illegal NAME"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____illegal_name_one_letter_name()
 {
-  refuteStartPointCreate b
+  local name=b
+  refuteStartPointCreate ${name}
   assertNoStdout
-  assertStderrEquals 'FAILED: b is an illegal NAME'
+  assertStderrEquals "FAILED: ${name} is an illegal NAME"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____unknown_arg()
 {
-  refuteStartPointCreate jj --where=tay
+  local arg='--where'
+  refuteStartPointCreate jj ${arg}=tay
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [--where]'
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____unknown_args()
 {
-  refuteStartPointCreate jj --where=tay --there=x
+  local arg1='--where'
+  local arg2='--there'
+  refuteStartPointCreate jj ${arg1}=tay ${arg2}=x
   assertNoStdout
-  assertStderrIncludes 'FAILED: unknown argument [--where]'
-  assertStderrIncludes 'FAILED: unknown argument [--there]'
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

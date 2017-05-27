@@ -27,10 +27,22 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local extra=salmon
-  refuteLogs ${extra}
+  local arg=salmon
+  refuteLogs ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_args()
+{
+  local arg1=salmon
+  local arg2=smolt
+  refuteLogs ${arg1} ${arg2}
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

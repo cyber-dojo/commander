@@ -12,8 +12,10 @@ def cyber_dojo_sh
     exit succeeded
   end
 
+  ARGV[1..-1].each do |arg|
+    STDERR.puts "FAILED: unknown argument [#{arg}]"
+  end
   unless ARGV[1].nil?
-    STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
     exit failed
   end
 

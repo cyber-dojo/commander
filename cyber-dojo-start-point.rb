@@ -37,7 +37,9 @@ def cyber_dojo_start_point
     when 'pull'    then cyber_dojo_start_point_pull
     when 'rm'      then cyber_dojo_start_point_rm
     else begin
-      STDERR.puts "FAILED: unknown argument [#{ARGV[1]}]"
+      ARGV[1..-1].each do |arg|
+        STDERR.puts "FAILED: unknown argument [#{arg}]"
+      end
       exit(failed)
     end
   end

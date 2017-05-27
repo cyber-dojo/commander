@@ -49,5 +49,17 @@ test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____unknown_args()
+{
+  local arg1=parr
+  local arg2=egg
+  refuteStartPoint ${arg1} ${arg2}
+  assertNoStdout
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 . ./shunit2_helpers.sh
 . ./shunit2

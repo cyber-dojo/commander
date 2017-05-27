@@ -51,29 +51,29 @@ test_____present_but_not_a_start_point()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____extra_arg()
+test_____unknown_arg()
 {
   local name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  local extra=salmon
-  refuteStartPointLatest ${name} ${extra}
+  local arg=salmon
+  refuteStartPointLatest ${name} ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${extra}]"
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
   assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____extra_args()
+test_____unknown_args()
 {
   local name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  local extra1=salmon
-  local extra2=parr
-  refuteStartPointLatest ${name} ${extra1} ${extra2}
+  local arg1=salmon
+  local arg2=parr
+  refuteStartPointLatest ${name} ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${extra1}]"
-  assertStderrIncludes "FAILED: unknown argument [${extra2}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
+  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
   assertStartPointRm ${name}
 }
 
