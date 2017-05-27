@@ -18,31 +18,6 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-hash docker 2> /dev/null
-if [ $? != 0 ]; then
-  echo 'docker is not installed'
-  echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
-  exit_fail
-fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-if [ "$1" == '--debug' ]; then
-  debug_on='true'
-  shift
-else
-  debug_on='false'
-fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_success()
-{
-  exit 0
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_fail()
 {
   if [ "$*" != '' ]; then
@@ -105,16 +80,13 @@ delegate_to_commander()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_sh_then_handle_locally()
+handle_sh_locally()
 {
-  if [ "$*" = "sh" ]; then
-    local name='cyber-dojo-web'
-    if running_container ${name}; then
-      docker exec --interactive --tty ${name} sh
-      exit_success
-    else
-      exit_fail "${name} is not running"
-    fi
+  local name='cyber-dojo-web'
+  if running_container ${name}; then
+    docker exec --interactive --tty ${name} sh
+  else
+    exit_fail "${name} is not running"
   fi
 }
 
@@ -131,15 +103,13 @@ running_container()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if_update_then_handle_locally()
+handle_update_locally()
 {
-  if [ "$1" == 'update' ]; then
-    if [ "$2" == '' ]; then
-      replace_myself
-    fi
-    if [ "$2" == 'server' ] && [ "$3" == '' ]; then
-      replace_myself
-    fi
+  if [ "$2" == '' ]; then
+    replace_myself
+  fi
+  if [ "$2" == 'server' ] && [ "$3" == '' ]; then
+    replace_myself
   fi
 }
 
@@ -153,10 +123,26 @@ replace_myself()
   chmod +x ${new_me}
   cp ${new_me} $0
   rm ${new_me}
-  exit_success
 }
 
 #==========================================================
+
+if ! hash docker 2> /dev/null; then
+  echo 'docker is not installed'
+  echo 'See http://blog.cyber-dojo.org/2016/08/running-your-own-cyber-dojo-web-server.html'
+  exit_fail
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "$1" == '--debug' ]; then
+  debug_on='true'
+  shift
+else
+  debug_on='false'
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" == 'update' ]; then
   if [ "$2" == '' ]; then
@@ -171,13 +157,13 @@ fi
 
 delegate_to_commander $*
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 if [ $? != 0 ]; then
   exit_fail
 fi
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-if_sh_then_handle_locally $*
-if_update_then_handle_locally $*
+if [ "$*" = "sh" ]; then
+  handle_sh_locally $*
+fi
+if [ "$1" == 'update' ]; then
+  handle_update_locally $*
+fi
