@@ -17,6 +17,7 @@ test_____good_dir_with_new_name_creates_start_point_prints_nothing()
   assertStartPointCreate ${name} --dir=${good_dir}
   assertNoStdout
   assertNoStderr
+  assertStartPointExists ${name}
   assertStartPointRm ${name}
 }
 

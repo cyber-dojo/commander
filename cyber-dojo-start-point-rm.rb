@@ -10,7 +10,7 @@ def cyber_dojo_start_point_rm
   ]
 
   vol = ARGV[2]
-  if [nil,'help'].include? vol
+  if [nil,'--help'].include? vol
     show help
     exit succeeded
   end

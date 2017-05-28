@@ -19,6 +19,7 @@ test_____good_git_repo_with_new_name_creates_start_point_prints_url()
   assertStartPointCreate ${name} --git=${url}
   assertStdoutIncludes ${url}
   assertNoStderr
+  assertStartPointExists ${name}
   assertStartPointRm ${name}
 }
 
