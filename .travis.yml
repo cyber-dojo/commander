@@ -12,7 +12,5 @@ before_script:
 
 script:
     - docker-compose --version
-    - docker --version
-    - docker volume create --help
-    #- ./pipe_build_up_test.sh ${DOCKER_COMPOSE_VERSION} \
-    #    && ./push_and_trigger.sh cyber-dojo/system-tests
+    - ./pipe_build_up_test.sh ${DOCKER_COMPOSE_VERSION} \
+        && ./push_and_trigger.sh cyber-dojo/system-tests

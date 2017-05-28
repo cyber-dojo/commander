@@ -58,7 +58,7 @@ test_____named_start_point_does_not_exist()
 test_____named_start_point_is_not_a_cyber_dojo_volume()
 {
   local name=salmon
-  docker volume create ${name} > /dev/null; assertEquals 0 $?;
+  docker volume create --name ${name} > /dev/null; assertEquals 0 $?;
   refuteStartPointRm ${name}
   docker volume rm ${name} > /dev/null; assertEquals 0 $?;
   assertNoStdout
