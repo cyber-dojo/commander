@@ -43,10 +43,11 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  ${exe} unknown >${stdoutF} 2>${stderrF}
+  local arg=unknown
+  ${exe} ${arg} >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertStderrEquals 'FAILED: unknown argument [unknown]'
+  assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
