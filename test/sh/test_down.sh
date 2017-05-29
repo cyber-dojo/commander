@@ -25,7 +25,14 @@ Stops and removes docker containers created with 'up'"
 
 test_____no_args_stops_and_removes_server_containers()
 {
-  assertUp
+  local c_name=custom_for_down
+  assertStartPointCreate ${c_name} --dir=`absPath ./../rb/example_start_points/custom`
+  local e_name=exercises_for_down
+  assertStartPointCreate ${e_name} --dir=`absPath ./../rb/example_start_points/exercises`
+  local l_name=languages_for_down
+  assertStartPointCreate ${l_name} --dir=`absPath ./../rb/example_start_points/languages`
+  assertUp --custom=${c_name} --exercises=${e_name} --languages=${l_name}
+
   assertDown
 
   declare -a services=(
@@ -47,9 +54,9 @@ test_____no_args_stops_and_removes_server_containers()
   done
   assertNoStdout
 
-  assertStartPointRm languages
-  assertStartPointRm exercises
-  assertStartPointRm custom
+  assertStartPointRm ${l_name}
+  assertStartPointRm ${e_name}
+  assertStartPointRm ${c_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
