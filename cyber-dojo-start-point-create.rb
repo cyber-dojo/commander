@@ -84,11 +84,7 @@ def cyber_dojo_start_point_create
   end
 
   if list
-    # TODO: unfake
-    urls = %w(
-      https://github.com/cyber-dojo-languages/elm-test
-      https://github.com/cyber-dojo-languages/haskell-hunit
-    )
+    urls = IO.read(list).split
     cyber_dojo_start_point_create_list(vol, urls)
   end
 
