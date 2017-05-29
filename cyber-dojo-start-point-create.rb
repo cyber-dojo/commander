@@ -84,7 +84,8 @@ def cyber_dojo_start_point_create
   end
 
   if list
-    urls = IO.read(list).split
+    list = 'file://' + list if list[0] == '/'
+    urls = run("curl -s #{list}").split
     cyber_dojo_start_point_create_list(vol, urls)
   end
 

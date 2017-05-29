@@ -20,9 +20,11 @@ RUN apk add --no-cache curl openssl ca-certificates \
  && apk del curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# [start-point create NAME --git=URL] requires git clone
-
+# [start-point create NAME --git=...] requires git clone
 RUN apk add --update git
+
+# [start-point create NAME --list=...] requires curl
+RUN apk add --update curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source

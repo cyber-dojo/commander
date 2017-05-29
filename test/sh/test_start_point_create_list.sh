@@ -16,7 +16,6 @@ test___success() { :; }
 
 test_____new_name_creates_start_point_prints_each_url()
 {
-  #
   local name=jj
   local url=`absPath ./../rb/example_start_points/languages_list`
   assertStartPointCreate ${name} --list=${url}
