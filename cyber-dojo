@@ -8,10 +8,12 @@
 #  1) ./cyber-dojo sh
 #  2) ./cyber-dojo update
 #  3) ./cyber-dojo start-point create NAME --dir=DIR
+#  4) ./cyber-dojo start-point create NAME --list=FILE
 #
 #  1) provides an interactive terminal.
 #  2) replaces this script.
 #  3) needs to volume mount DIR.
+#  4) needs to volume mount FILE
 
 # requires: awk, sed, grep which are in DockerToolbox
 # quickstart terminal.
@@ -53,12 +55,18 @@ delegate_to_commander()
   # start-point create --dir=DIR
   if [ "$1" == 'start-point' ] && [ "$2" == 'create' ]; then
     local lhs=$(echo $4 | cut -f1 -s -d=)
-    local dir=$(echo $4 | cut -f2 -s -d=)
-    if [ "${lhs}" == '--dir' ] && [ "${dir}" != '' ] && [ "$5" == '' ]; then
-      if [ ! -d ${dir} ]; then
-        exit_fail "dir ${dir} does not exist"
+    local value=$(echo $4 | cut -f2 -s -d=)
+    if [ "${lhs}" == '--dir' ] && [ "${value}" != '' ] && [ "$5" == '' ]; then
+      if [ ! -d ${value} ]; then
+        exit_fail "dir ${value} does not exist"
       fi
-      local volume_start_point_dir="--volume=${dir}:${dir}"
+      local volume_start_point="--volume=${value}:${value}"
+    fi
+    if [ "${lhs}" == '--list' ] && [ "${value:0:1}" == "/" ] && [ "$5" == '' ]; then
+      if [ ! -f ${value} ]; then
+        exit_fail "file ${value} does not exist"
+      fi
+      local volume_start_point="--volume=${value}:${value}"
     fi
   fi
 
@@ -72,7 +80,7 @@ delegate_to_commander()
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \
-    ${volume_start_point_dir} \
+    ${volume_start_point} \
       ${cyber_dojo_commander} \
         /app/cyber-dojo.rb ${debug_option} $*
 }

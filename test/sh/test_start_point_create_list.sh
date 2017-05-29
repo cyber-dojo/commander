@@ -30,6 +30,17 @@ test_____new_name_creates_start_point_prints_each_url()
 
 test___failure() { :; }
 
+test_____file_does_not_exist()
+{
+  local name=jj
+  local file=/does/not/exist
+  refuteStartPointCreate ${name} --list=${file}
+  assertNoStdout
+  assertStderrEquals "FAILED: file ${file} does not exist"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_____name_already_exists()
 {
   local name=jj
