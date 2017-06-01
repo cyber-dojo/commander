@@ -14,11 +14,25 @@ test_START_POINT_CREATE_LIST() { :; }
 
 test___success() { :; }
 
-test_____new_name_creates_start_point_prints_each_url()
+test_____new_name_list_from_path_creates_start_point_prints_each_url()
 {
   local name=jj
   local url=`absPath ./../rb/example_start_points/languages_list`
   assertStartPointCreate ${name} --list=${url}
+  assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
+  assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
+  assertNoStderr
+  assertStartPointExists ${name}
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____new_name_list_from_file_url_creates_start_point_prints_each_url()
+{
+  local name=jj
+  local url=`absPath ./../rb/example_start_points/languages_list`
+  assertStartPointCreate ${name} --list=file://${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
   assertNoStderr

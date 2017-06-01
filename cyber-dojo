@@ -68,6 +68,12 @@ delegate_to_commander()
       fi
       local volume_start_point="--volume=${value}:${value}"
     fi
+    if [ "${lhs}" == '--list' ] && [ "${value:0:7}" == "file://" ] && [ "$5" == '' ]; then
+      if [ ! -f ${value:7} ]; then
+        exit_fail "file ${value:7} does not exist"
+      fi
+      local volume_start_point="--volume=${value:7}:${value:7}"
+    fi
   fi
 
   if [ "${debug_on}" == 'true' ]; then

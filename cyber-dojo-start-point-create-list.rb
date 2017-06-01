@@ -20,7 +20,6 @@ def cyber_dojo_start_point_create_list(name, urls)
   assert_run_loud "docker start #{cid}"
 
   # pull git repos into docker volume
-  # TODO: need to check all setup.json files are same type
   urls.each_with_index do |url,index|
     start_point_git_sparse_pull(url, index, cid)
     STDOUT.puts url
@@ -30,6 +29,8 @@ def cyber_dojo_start_point_create_list(name, urls)
   assert_run_loud "docker exec #{cid} sh -c 'chown -R cyber-dojo:cyber-dojo /data'"
 
   # is the volume a good start-point?
+  # TODO: need to check all setup.json files are same type
+  # TODO: remove last command in [start_point_git_sparse_pull] below
   assert_run_quiet "docker exec #{cid} sh -c './start_point_check.rb /data'"
   vol = '' # yes
 
