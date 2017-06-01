@@ -64,7 +64,7 @@ test_____pathed_file_does_not_exist()
   local file=/does/not/exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
-  assertStderrEquals "FAILED: file ${file} does not exist"
+  assertStderrEquals "FAILED: ${file} does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,18 +75,18 @@ test_____file_url_does_not_exist()
   local file=file:///does/not/exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
-  assertStderrEquals "FAILED: file ${file} does not exist"
+  assertStderrEquals "FAILED: ${file} does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-x_test_____network_url_does_not_exist()
+test_____network_url_does_not_exist()
 {
   local name=jj
   local file=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/does_not_exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
-  assertStderrEquals "FAILED: file ${file} does not exist"
+  assertStderrEquals "FAILED: ${file} does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

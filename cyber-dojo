@@ -69,16 +69,18 @@ delegate_to_commander()
         if [ -f ${value} ]; then
           local volume_start_point="--volume=${value}:${value}"
         else
-          exit_fail "file ${value} does not exist"
+          exit_fail "${value} does not exist"
         fi
       elif [ "${value:0:7}" == "file://" ]; then
         if [ -f ${value:7} ]; then
           local volume_start_point="--volume=${value:7}:${value:7}"
         else
-          exit_fail "file ${value} does not exist"
+          exit_fail "${value} does not exist"
         fi
-      else
-        : #
+      else # network URL
+        if ! curl --output /dev/null --silent --head --fail "${value}"; then
+          exit_fail "${value} does not exist"
+        fi
       fi # --list=file://
     fi # --list
   fi # start-point create
