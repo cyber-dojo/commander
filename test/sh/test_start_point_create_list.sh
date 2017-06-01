@@ -58,6 +58,8 @@ test_____new_name_list_from_network_url_creates_start_point_prints_each_url()
 
 test___failure() { :; }
 
+# test_____urls_types_are_not_all_the_same()
+
 test_____pathed_file_does_not_exist()
 {
   local name=jj

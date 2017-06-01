@@ -58,7 +58,7 @@ def start_point_git_sparse_pull(url, index, cid)
     "cd #{dir} && git pull --depth=1 origin master &> /dev/null",
     "cd #{dir} && rm -rf .git",
     "cd #{dir} && rm -f README.md LICENSE.md",
-    "cd #{dir} && mv setup.json .."
+    "cd #{dir} && cp setup.json .."
   ]
   commands.each do |cmd|
     command = "docker exec #{cid} sh -c '#{cmd}'"
