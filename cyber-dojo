@@ -71,19 +71,17 @@ delegate_to_commander()
         else
           exit_fail "file ${value} does not exist"
         fi
-      fi
-    fi
-
-    if [ "${lhs}" == '--list' ] && [ "$5" == '' ]; then
-      if [ "${value:0:7}" == "file://" ]; then
+      elif [ "${value:0:7}" == "file://" ]; then
         if [ -f ${value:7} ]; then
           local volume_start_point="--volume=${value:7}:${value:7}"
         else
           exit_fail "file ${value} does not exist"
         fi
-      fi
-    fi
-  fi
+      else
+        : #
+      fi # --list=file://
+    fi # --list
+  fi # start-point create
 
   if [ "${debug_on}" == 'true' ]; then
     local debug_option='--debug'
