@@ -32,14 +32,14 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # setup.json
+  # start_point_type.json
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '738',
-  'setup.json missing is an error' do
+  'start_point_type.json missing is an error' do
     copy_good_master do |tmp_dir|
-      setup_filename = "#{tmp_dir}/setup.json"
-      shell "mv #{setup_filename} #{tmp_dir}/setup.json.missing"
+      setup_filename = "#{tmp_dir}/start_point_type.json"
+      shell "mv #{setup_filename} #{tmp_dir}/start_point_type.json.missing"
       check
       assert_error setup_filename, 'is missing'
     end
@@ -48,9 +48,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '2DF',
-  'setup.json with bad json is an error' do
+  'start_point_type.json with bad json is an error' do
     copy_good_master do |tmp_dir|
-      setup_filename = "#{tmp_dir}/setup.json"
+      setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, any_bad_json)
       check
       assert_error setup_filename, 'bad JSON'
@@ -60,9 +60,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '99A',
-  'setup.json with no type is an error' do
+  'start_point_type.json with no type is an error' do
     copy_good_master do |tmp_dir|
-      setup_filename = "#{tmp_dir}/setup.json"
+      setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, '{}')
       check
       assert_error setup_filename, 'type: missing'
@@ -72,9 +72,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '64D',
-  'setup.json with bad type is an error' do
+  'start_point_type.json with bad type is an error' do
     copy_good_master do |tmp_dir|
-      setup_filename = "#{tmp_dir}/setup.json"
+      setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, JSON.unparse({ 'type' => 'salmon' }))
       check
       assert_error setup_filename, 'type: must be [languages|exercises|custom]'
@@ -442,7 +442,7 @@ class StartPointCheckerTest < LibTestBase
   def assert_setup_key_error(bad, expected)
     ['exercises','languages'].each do |type|
       copy_good_master(type) do |tmp_dir|
-        manifest_filename = "#{tmp_dir}/setup.json"
+        manifest_filename = "#{tmp_dir}/start_point_type.json"
         content = IO.read(manifest_filename)
         manifest = JSON.parse(content)
         manifest[@key] = bad

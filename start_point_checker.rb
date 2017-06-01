@@ -362,7 +362,7 @@ class StartPointChecker
   # - - - - - - - - - - - - - - - - - - - -
 
   def setup_filename
-    @path + '/setup.json'
+    @path + '/start_point_type.json'
   end
 
   # - - - - - - - - - - - - - - - - - - - -

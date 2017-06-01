@@ -90,7 +90,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def type
-  content = IO.read("#{path}/setup.json")
+  content = IO.read("#{path}/start_point_type.json")
   JSON.parse(content)['type']
 end
 

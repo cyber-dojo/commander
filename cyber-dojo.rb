@@ -107,7 +107,7 @@ def cyber_dojo_label(vol)
 end
 
 def cyber_dojo_data_manifest(vol)
-  command = quoted "cat /data/setup.json"
+  command = quoted "cat /data/start_point_type.json"
   JSON.parse(run "docker run --rm -v #{vol}:/data #{cyber_dojo_commander} sh -c #{command}")
 end
 
