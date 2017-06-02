@@ -36,7 +36,7 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '738',
-  'start_point_type.json missing is an error' do
+  'root start_point_type.json missing is an error' do
     copy_good_master do |tmp_dir|
       setup_filename = "#{tmp_dir}/start_point_type.json"
       shell "mv #{setup_filename} #{tmp_dir}/start_point_type.json.missing"
@@ -48,7 +48,7 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '2DF',
-  'start_point_type.json with bad json is an error' do
+  'root start_point_type.json with bad json is an error' do
     copy_good_master do |tmp_dir|
       setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, any_bad_json)
@@ -60,7 +60,7 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '99A',
-  'start_point_type.json with no type is an error' do
+  'root start_point_type.json with no type is an error' do
     copy_good_master do |tmp_dir|
       setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, '{}')
@@ -72,12 +72,23 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '64D',
-  'start_point_type.json with bad type is an error' do
+  'root start_point_type.json with bad type is an error' do
     copy_good_master do |tmp_dir|
       setup_filename = "#{tmp_dir}/start_point_type.json"
       IO.write(setup_filename, JSON.unparse({ 'type' => 'salmon' }))
       check
       assert_error setup_filename, 'type: must be [languages|exercises|custom]'
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '807',
+  'start_point_type.json files with different types is an error' do
+    copy_good_masters(['custom','languages']) do |tmp_dir|
+      check
+      setup_filename = "#{tmp_dir}/start_point_type.json"
+      assert_error setup_filename, 'type: different types in start_point_type.json files'
     end
   end
 
@@ -101,7 +112,8 @@ class StartPointCheckerTest < LibTestBase
   test '51C',
   'bad json in a manifest.json file is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       IO.write(junit_manifest_filename, any_bad_json)
       check
       assert_nil @checker.manifests[junit_manifest_filename]
@@ -125,12 +137,13 @@ class StartPointCheckerTest < LibTestBase
   test 'CFC',
   'manifests with the same display_name is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       key = 'display_name'
       junit_display_name = junit_manifest[key]
-      cucumber_manifest_filename = "#{tmp_dir}/Java/Cucumber/manifest.json"
+      cucumber_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/Cucumber/manifest.json"
       content = IO.read(cucumber_manifest_filename)
       cucumber_manifest = JSON.parse(content)
       cucumber_manifest[key] = junit_display_name
@@ -159,7 +172,8 @@ class StartPointCheckerTest < LibTestBase
   'missing required key is an error' do
     missing_require_key = lambda do |key|
       copy_good_master('languages', '243554_'+key+'_') do |tmp_dir|
-        junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+        sub_dir = '1'
+        junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
         content = IO.read(junit_manifest_filename)
         junit_manifest = JSON.parse(content)
         assert junit_manifest.keys.include? key
@@ -315,11 +329,12 @@ class StartPointCheckerTest < LibTestBase
   test 'C31',
   'missing visible file is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       missing_filename = junit_manifest['visible_filenames'][0]
-      File.delete("#{tmp_dir}/Java/JUnit/#{missing_filename}")
+      File.delete("#{tmp_dir}/#{sub_dir}/Java/JUnit/#{missing_filename}")
       check
       assert_error junit_manifest_filename, "visible_filenames: missing '#{missing_filename}'"
     end
@@ -330,7 +345,8 @@ class StartPointCheckerTest < LibTestBase
   test '935',
   'duplicate visible file is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       visible_filenames = junit_manifest['visible_filenames']
@@ -348,7 +364,8 @@ class StartPointCheckerTest < LibTestBase
   test 'CF5',
   'no cyber-dojo.sh in visible_filenames is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       visible_filenames = junit_manifest['visible_filenames']
@@ -366,8 +383,9 @@ class StartPointCheckerTest < LibTestBase
   test '7EA',
   'visible file not world-readable is an error' do
     copy_good_master do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
-      cyber_dojo_sh = "#{tmp_dir}/Java/JUnit/cyber-dojo.sh"
+      sub_dir = '1'
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+      cyber_dojo_sh = "#{tmp_dir}/#{sub_dir}/Java/JUnit/cyber-dojo.sh"
       File.chmod(0111, cyber_dojo_sh)
       check
       assert_error junit_manifest_filename, "visible_filenames: 'cyber-dojo.sh' must be world-readable"
@@ -437,7 +455,7 @@ class StartPointCheckerTest < LibTestBase
     assert_raises(RuntimeError) { shell 'sdsdsdsd' }
   end
 
-  private
+  private # - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def assert_setup_key_error(bad, expected)
     ['exercises','languages'].each do |type|
@@ -456,8 +474,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def assert_key_error(bad, expected)
+    sub_dir = '1'
     copy_good_master('languages') do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       junit_manifest[@key] = bad
@@ -468,8 +487,9 @@ class StartPointCheckerTest < LibTestBase
   end
 
   def refute_key_error(valid)
+    sub_dir = '1'
     copy_good_master('languages') do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/Java/JUnit/manifest.json"
+      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       junit_manifest[@key] = valid
@@ -481,9 +501,25 @@ class StartPointCheckerTest < LibTestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def copy_good_master(type = 'languages', id = test_id)
+  def copy_good_masters(types, id = test_id)
     Dir.mktmpdir('cyber-dojo-' + id + '_') do |tmp_dir|
-      shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}"
+      types.each_with_index do |type,index|
+        shell "mkdir -p #{tmp_dir}/#{index}"
+        shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}/#{index}"
+        shell "cp #{start_points_path}/#{type}/start_point_type.json #{tmp_dir}"
+      end
+      @tmp_dir = tmp_dir
+      yield tmp_dir
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def copy_good_master(type = 'languages', id = test_id, sub_dir = '1')
+    Dir.mktmpdir('cyber-dojo-' + id + '_') do |tmp_dir|
+      shell "mkdir -p #{tmp_dir}/#{sub_dir}"
+      shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}/#{sub_dir}"
+      shell "cp #{start_points_path}/#{type}/start_point_type.json #{tmp_dir}"
       @tmp_dir = tmp_dir
       yield tmp_dir
     end
@@ -520,7 +556,9 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def shell(command)
+    #puts "shell:#{command}"
     `#{command}`
+    #puts "exit_status=:#{$?.exitstatus}:"
   rescue
     raise RuntimeError.new("#{command} returned non-zero (#{$?.exitstatus})")
   end

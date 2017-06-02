@@ -19,10 +19,23 @@ class StartPointChecker
     if manifest.nil?
       return errors
     end
-    check_start_point_type_json_meets_its_spec(manifest)
+
+    if !check_start_point_type_json_meets_its_spec(manifest)
+      return errors
+    end
+
+    # TODO this should go after checking multiple start_point_type.json files
     if manifest['type'] == 'exercises'
       check_at_least_one_instructions
       return errors
+    end
+
+    Dir.glob("#{@path}/**/start_point_type.json").each do |filename|
+      spt = json_manifest(filename)
+      if spt['type'] != manifest['type']
+        setup_error('different types in start_point_type.json files')
+        return errors
+      end
     end
 
     # json-parse all manifest.json files and add to manifests[]
@@ -86,12 +99,13 @@ class StartPointChecker
     type = manifest[@key]
     if type.nil?
       setup_error 'missing'
-      return
+      return false
     end
     unless ['languages','exercises','custom'].include? type
       setup_error 'must be [languages|exercises|custom]'
-      return
+      return false
     end
+    return true
   end
 
   # - - - - - - - - - - - - - - - - - - - -

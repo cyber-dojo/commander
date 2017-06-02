@@ -48,7 +48,7 @@ test_____good_dir_but_name_already_exists()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 # WORK-IN-PROGRESS
-test_____types_are_not_all_the_same()
+x_test_____types_are_not_all_the_same()
 {
   local name=jj
   local url=`absPath ./../rb/example_start_points/bad_mixed_types`
@@ -56,7 +56,6 @@ test_____types_are_not_all_the_same()
   assertNoStdout
   #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
-  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
