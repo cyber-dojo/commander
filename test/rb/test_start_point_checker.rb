@@ -549,9 +549,7 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def shell(command)
-    #puts "shell:#{command}"
     `#{command}`
-    #puts "exit_status=:#{$?.exitstatus}:"
   rescue
     raise RuntimeError.new("#{command} returned non-zero (#{$?.exitstatus})")
   end
