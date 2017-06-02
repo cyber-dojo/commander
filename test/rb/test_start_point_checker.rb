@@ -171,7 +171,7 @@ class StartPointCheckerTest < LibTestBase
   test '554',
   'missing required key is an error' do
     missing_require_key = lambda do |key|
-      copy_good_master('languages', '243554_'+key+'_') do |tmp_dir|
+      copy_good_master('languages') do |tmp_dir|
         sub_dir = '1'
         junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
         content = IO.read(junit_manifest_filename)
@@ -501,8 +501,8 @@ class StartPointCheckerTest < LibTestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def copy_good_masters(types, id = test_id)
-    Dir.mktmpdir('cyber-dojo-' + id + '_') do |tmp_dir|
+  def copy_good_masters(types)
+    Dir.mktmpdir('cyber-dojo-' + test_id + '_') do |tmp_dir|
       types.each_with_index do |type,index|
         shell "mkdir -p #{tmp_dir}/#{index}"
         shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}/#{index}"
@@ -515,8 +515,9 @@ class StartPointCheckerTest < LibTestBase
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  def copy_good_master(type = 'languages', id = test_id, sub_dir = '1')
-    Dir.mktmpdir('cyber-dojo-' + id + '_') do |tmp_dir|
+  def copy_good_master(type = 'languages')
+    sub_dir = '1'
+    Dir.mktmpdir('cyber-dojo-' + test_id + '_') do |tmp_dir|
       shell "mkdir -p #{tmp_dir}/#{sub_dir}"
       shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}/#{sub_dir}"
       shell "cp #{start_points_path}/#{type}/start_point_type.json #{tmp_dir}"
