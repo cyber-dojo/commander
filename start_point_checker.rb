@@ -14,12 +14,12 @@ class StartPointChecker
   # - - - - - - - - - - - - - - - - - - - -
 
   def check
-    # check setup.json is in root but do not add to manifests[]
+    # check start_point_type.json is in root but do not add to manifests[]
     manifest = json_manifest(setup_filename)
     if manifest.nil?
       return errors
     end
-    check_setup_json_meets_its_spec(manifest)
+    check_start_point_type_json_meets_its_spec(manifest)
     if manifest['type'] == 'exercises'
       check_at_least_one_instructions
       return errors
@@ -81,7 +81,7 @@ class StartPointChecker
 
   # - - - - - - - - - - - - - - - - - - - -
 
-  def check_setup_json_meets_its_spec(manifest)
+  def check_start_point_type_json_meets_its_spec(manifest)
     @key = 'type'
     type = manifest[@key]
     if type.nil?
