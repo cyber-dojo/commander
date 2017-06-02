@@ -5,8 +5,8 @@ require_relative 'cyber-dojo-start-point-create-dir'
 def cyber_dojo_start_point_create
   help = [
     '',
-    "Use: #{me} start-point create NAME --list=FILE",
-    'Creates a start-point named NAME from the URLs listed in FILE',
+    "Use: #{me} start-point create NAME --list=URL|FILE",
+    'Creates a start-point named NAME from git-clones of all the URLs listed in URL|FILE',
     '',
     "Use: #{me} start-point create NAME --git=URL",
     'Creates a start-point named NAME from a git clone of URL',

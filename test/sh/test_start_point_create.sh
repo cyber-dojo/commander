@@ -17,8 +17,8 @@ test___success() { :; }
 test_____help_arg_prints_use()
 {
   local expected_stdout="
-Use: cyber-dojo start-point create NAME --list=FILE
-Creates a start-point named NAME from the URLs listed in FILE
+Use: cyber-dojo start-point create NAME --list=URL|FILE
+Creates a start-point named NAME from git-clones of all the URLs listed in URL|FILE
 
 Use: cyber-dojo start-point create NAME --git=URL
 Creates a start-point named NAME from a git clone of URL
@@ -43,7 +43,7 @@ NAME must be at least two letters long"
 
 test___failure() { :; }
 
-test_____illegal_name_first_letter()
+test_____name_first_letter()
 {
   local arg=+bad
   refuteStartPointCreate ${arg}
@@ -53,7 +53,7 @@ test_____illegal_name_first_letter()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____illegal_name_second_letter()
+test_____name_second_letter()
 {
   local arg=b+ad
   refuteStartPointCreate ${arg}
@@ -63,7 +63,7 @@ test_____illegal_name_second_letter()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____illegal_name_one_letter_name()
+test_____name_one_letter_name()
 {
   local name=b
   refuteStartPointCreate ${name}
