@@ -47,7 +47,21 @@ test_____good_dir_but_name_already_exists()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____bad_dir_content()
+# WORK-IN-PROGRESS
+test_____types_are_not_all_the_same()
+{
+  local name=jj
+  local url=`absPath ./../rb/example_start_points/bad_mixed_types`
+  refuteStartPointCreate ${name} --dir=${url}
+  assertNoStdout
+  #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
+  #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____missing_manifest_content()
 {
   local name=bad
   local bad_dir=`absPath ./../rb/example_start_points/bad_custom`
