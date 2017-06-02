@@ -58,7 +58,19 @@ test_____new_name_list_from_network_url_creates_start_point_prints_each_url()
 
 test___failure() { :; }
 
-# test_____urls_types_are_not_all_the_same()
+# WORK-IN-PROGRESS
+x_test_____urls_types_are_not_all_the_same()
+{
+  local name=jj
+  local url=`absPath ./../rb/example_start_points/mixed_types_list`
+  refuteStartPointCreate ${name} --list=${url}
+  assertNoStdout
+  #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
+  #assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____pathed_file_does_not_exist()
 {
