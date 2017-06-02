@@ -111,9 +111,8 @@ class StartPointCheckerTest < LibTestBase
 
   test '51C',
   'bad json in a manifest.json file is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       IO.write(junit_manifest_filename, any_bad_json)
       check
       assert_nil @checker.manifests[junit_manifest_filename]
@@ -136,14 +135,13 @@ class StartPointCheckerTest < LibTestBase
 
   test 'CFC',
   'manifests with the same display_name is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       key = 'display_name'
       junit_display_name = junit_manifest[key]
-      cucumber_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/Cucumber/manifest.json"
+      cucumber_manifest_filename = "#{tmp_sub_dir}/Java/Cucumber/manifest.json"
       content = IO.read(cucumber_manifest_filename)
       cucumber_manifest = JSON.parse(content)
       cucumber_manifest[key] = junit_display_name
@@ -171,9 +169,9 @@ class StartPointCheckerTest < LibTestBase
   test '554',
   'missing required key is an error' do
     missing_require_key = lambda do |key|
-      copy_good_master('languages') do |tmp_dir|
+      copy_good_master('languages') do |_,tmp_sub_dir|
         sub_dir = '1'
-        junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+        junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
         content = IO.read(junit_manifest_filename)
         junit_manifest = JSON.parse(content)
         assert junit_manifest.keys.include? key
@@ -328,13 +326,12 @@ class StartPointCheckerTest < LibTestBase
 
   test 'C31',
   'missing visible file is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       missing_filename = junit_manifest['visible_filenames'][0]
-      File.delete("#{tmp_dir}/#{sub_dir}/Java/JUnit/#{missing_filename}")
+      File.delete("#{tmp_sub_dir}/Java/JUnit/#{missing_filename}")
       check
       assert_error junit_manifest_filename, "visible_filenames: missing '#{missing_filename}'"
     end
@@ -344,9 +341,8 @@ class StartPointCheckerTest < LibTestBase
 
   test '935',
   'duplicate visible file is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       visible_filenames = junit_manifest['visible_filenames']
@@ -363,9 +359,8 @@ class StartPointCheckerTest < LibTestBase
 
   test 'CF5',
   'no cyber-dojo.sh in visible_filenames is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       visible_filenames = junit_manifest['visible_filenames']
@@ -382,10 +377,9 @@ class StartPointCheckerTest < LibTestBase
 
   test '7EA',
   'visible file not world-readable is an error' do
-    copy_good_master do |tmp_dir|
-      sub_dir = '1'
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
-      cyber_dojo_sh = "#{tmp_dir}/#{sub_dir}/Java/JUnit/cyber-dojo.sh"
+    copy_good_master do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
+      cyber_dojo_sh = "#{tmp_sub_dir}/Java/JUnit/cyber-dojo.sh"
       File.chmod(0111, cyber_dojo_sh)
       check
       assert_error junit_manifest_filename, "visible_filenames: 'cyber-dojo.sh' must be world-readable"
@@ -474,9 +468,8 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def assert_key_error(bad, expected)
-    sub_dir = '1'
-    copy_good_master('languages') do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master('languages') do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       junit_manifest[@key] = bad
@@ -487,9 +480,8 @@ class StartPointCheckerTest < LibTestBase
   end
 
   def refute_key_error(valid)
-    sub_dir = '1'
-    copy_good_master('languages') do |tmp_dir|
-      junit_manifest_filename = "#{tmp_dir}/#{sub_dir}/Java/JUnit/manifest.json"
+    copy_good_master('languages') do |_,tmp_sub_dir|
+      junit_manifest_filename = "#{tmp_sub_dir}/Java/JUnit/manifest.json"
       content = IO.read(junit_manifest_filename)
       junit_manifest = JSON.parse(content)
       junit_manifest[@key] = valid
@@ -516,13 +508,13 @@ class StartPointCheckerTest < LibTestBase
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   def copy_good_master(type = 'languages')
-    sub_dir = '1'
     Dir.mktmpdir('cyber-dojo-' + test_id + '_') do |tmp_dir|
-      shell "mkdir -p #{tmp_dir}/#{sub_dir}"
-      shell "cp -r #{start_points_path}/#{type}/* #{tmp_dir}/#{sub_dir}"
+      sub_dir = "#{tmp_dir}/1"
+      shell "mkdir -p #{sub_dir}"
+      shell "cp -r #{start_points_path}/#{type}/* #{sub_dir}"
       shell "cp #{start_points_path}/#{type}/start_point_type.json #{tmp_dir}"
       @tmp_dir = tmp_dir
-      yield tmp_dir
+      yield tmp_dir, sub_dir
     end
   end
 
