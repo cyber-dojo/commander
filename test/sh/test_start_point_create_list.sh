@@ -45,7 +45,7 @@ test_____new_name_list_from_file_url_creates_start_point_prints_each_url()
 test_____new_name_list_from_network_url_creates_start_point_prints_each_url()
 {
   local name=jj
-  local url=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list
+  local url=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list_test
   assertStartPointCreate ${name} --list=${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
