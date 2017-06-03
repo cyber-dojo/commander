@@ -62,9 +62,10 @@ def cyber_dojo_up
   # create default start-points if necessary
   github_cyber_dojo = 'https://github.com/cyber-dojo'
   if languages == default_languages && !volume_exists?(default_languages)
-    url = "#{github_cyber_dojo}/start-points-languages.git"
+    url='https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list'
+    url_list = run("curl -s #{url}").split
     STDOUT.puts "Creating start-point #{default_languages} from #{url}"
-    cyber_dojo_start_point_create_list(default_languages, [ url ])
+    cyber_dojo_start_point_create_list(default_languages, url_list)
   end
   if exercises == default_exercises && !volume_exists?(default_exercises)
     url = "#{github_cyber_dojo}/start-points-exercises.git"
