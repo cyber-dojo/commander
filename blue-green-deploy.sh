@@ -15,17 +15,21 @@ ${CMD} clean
 
 REPO='https://github.com/cyber-dojo/start-points'
 
+LANGUAGE_LIST='https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list'
+EXERCISES_GIT=${REPO}-exercises
+CUSTOM_GIT=${REPO}-custom
+
 if ${LS} | grep -q 'green_languages'; then
   echo "===Switching from green to blue"
   echo "===Preparing new blue"
   echo "===Creating languages"
-  ${CREATE} blue_languages --git=${REPO}-languages
+  ${CREATE} blue_languages --list=${LANGUAGE_LIST}
   echo "===Creating exercises"
-  ${CREATE} blue_exercises --git=${REPO}-exercises
+  ${CREATE} blue_exercises --git=${EXERCISES_GIT}
   echo "===Creating custom"
-  ${CREATE} blue_custom    --git=${REPO}-custom
+  ${CREATE} blue_custom    --git=${CUSTOM_GIT}
   echo "===Updating server and language images"
-  ${UPDATE}
+  ${UPDATE} server
   echo "===Switching to blue"
   ${UP} --languages=blue_languages --exercises=blue_exercises --custom=blue_custom
   echo "===Deleting old green"
@@ -36,13 +40,13 @@ else
   echo "===Switching from blue to green"
   echo "===Preparing new green"
   echo "===Creating languages"
-  ${CREATE} green_languages --git=${REPO}-languages
+  ${CREATE} green_languages --list=${LANGUAGE_LIST}
   echo "===Creating exercises"
-  ${CREATE} green_exercises --git=${REPO}-exercises
+  ${CREATE} green_exercises --git=${EXERCISES_GIT}
   echo "===Creating custom"
-  ${CREATE} green_custom    --git=${REPO}-custom
+  ${CREATE} green_custom    --git=${CUSTOM_GIT}
   echo "===Updating server and language images"
-  ${UPDATE}
+  ${UPDATE} server
   echo "===Switching to green"
   ${UP} --languages=green_languages --exercises=green_exercises --custom=green_custom
   echo "===Deleting old blue"
