@@ -10,14 +10,16 @@ CREATE="${CMD} start-point create"
     UP="${CMD} up"
 UPDATE="${CMD} update"
 
-echo "===Cleaning out old images/volumes/containers"
-${CMD} clean
-
 REPO='https://github.com/cyber-dojo/start-points'
 
 LANGUAGE_LIST='https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list'
 EXERCISES_GIT=${REPO}-exercises
 CUSTOM_GIT=${REPO}-custom
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+echo "===Cleaning out old images/volumes/containers"
+${CMD} clean
 
 if ${LS} | grep -q 'green_languages'; then
   echo "===Switching from green to blue"
