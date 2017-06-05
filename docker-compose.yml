@@ -2,6 +2,7 @@
 version: '2'
 
 volumes:
+  # external start-points
   languages:
     external:
       name: ${CYBER_DOJO_START_POINT_LANGUAGES}
@@ -11,11 +12,15 @@ volumes:
   custom:
     external:
       name: ${CYBER_DOJO_START_POINT_CUSTOM}
+  # monitoring
   grafana_data: {}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 services:
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # multi-threaded front-end with http caching
 
   nginx:
     user: root
@@ -31,6 +36,9 @@ services:
       - /app/nginx.env
     ports:
       - ${CYBER_DOJO_NGINX_PORT}:80
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # main server (rails)
 
   web:
     user: root
@@ -53,6 +61,9 @@ services:
       - exercises:${CYBER_DOJO_HOME}/start_points/exercises:ro
       - custom:${CYBER_DOJO_HOME}/start_points/custom:ro
 
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # runs (statefully) code and tests written in browser
+
   runner:
     user: root
     image: cyberdojo/runner
@@ -68,6 +79,9 @@ services:
     depends_on:
       - prometheus
 
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # runs (statelessly) code and tests written in browser
+
   runner_stateless:
     user: root
     image: cyberdojo/runner_stateless
@@ -82,6 +96,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - prometheus
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # stores code+tests for every test event
 
   storer:
     user: cyber-dojo
@@ -100,6 +117,9 @@ services:
     depends_on:
       - prometheus
 
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # diffs all the files in two test events
+
   differ:
     user: nobody
     image: cyberdojo/differ
@@ -113,6 +133,9 @@ services:
     depends_on:
       - prometheus
 
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # collects old volumes used by runner
+
   collector:
     user: root
     image: cyberdojo/collector
@@ -123,6 +146,9 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # provides tgz files of kata sessions
 
   zipper:
     user: zipper
@@ -138,6 +164,7 @@ services:
       - storer
 
   # - - - - - - - - - - - - - - - - - - - - - - -
+  # monitoring
 
   prometheus:
     image: cyberdojo/prometheus
