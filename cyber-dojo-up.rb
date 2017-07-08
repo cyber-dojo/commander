@@ -6,20 +6,20 @@ def cyber_dojo_up
     '',
     'Creates and starts the cyber-dojo server using named/default start-points',
     '',
-    minitab + '--languages=START-POINT  Specify the languages start-point.',
-    minitab + "                         Defaults to a start-point named 'languages' created from",
-    minitab + '                         https://github.com/cyber-dojo/start-points-languages.git',
+    minitab + '--languages=START-POINTS  Specify the languages start-points.',
+    minitab + "                          Defaults to the start-points named 'languages' created from",
+    minitab + '                          https://github.com/cyber-dojo/start-points-languages.git',
     '',
-    minitab + '--exercises=START-POINT  Specify the exercises start-point.',
-    minitab + "                         Defaults to a start-point named 'exercises' created from",
-    minitab + '                         https://github.com/cyber-dojo/start-points-exercises.git',
+    minitab + '--exercises=START-POINTS  Specify the exercises start-points.',
+    minitab + "                          Defaults to the start-points named 'exercises' created from",
+    minitab + '                          https://github.com/cyber-dojo/start-points-exercises.git',
     '',
-    minitab + '--custom=START-POINT     Specify the custom start-point.',
-    minitab + "                         Defaults to a start-point named 'custom' created from",
-    minitab + '                         https://github.com/cyber-dojo/start-points-custom.git',
+    minitab + '--custom=START-POINTS     Specify the custom start-points.',
+    minitab + "                          Defaults to the start-points named 'custom' created from",
+    minitab + '                          https://github.com/cyber-dojo/start-points-custom.git',
     '',
-    minitab + '--port=LISTEN-PORT       Specify port to listen on.',
-    minitab + "                         Defaults to 80"
+    minitab + '--port=LISTEN-PORT        Specify port to listen on.',
+    minitab + "                          Defaults to 80"
   ]
 
   if ARGV[1] == '--help'

@@ -21,8 +21,8 @@ def cyber_dojo_start_point_create_list(name, urls)
 
   # pull git repos into docker volume
   urls.each_with_index do |url,index|
-    start_point_git_sparse_pull(url, index, cid)
     STDOUT.puts url
+    start_point_git_sparse_pull(url, index, cid)
   end
 
   # ensure cyber-dojo user owns everything in the volume

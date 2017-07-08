@@ -40,20 +40,20 @@ Use: cyber-dojo up [OPTIONS]
 
 Creates and starts the cyber-dojo server using named/default start-points
 
-  --languages=START-POINT  Specify the languages start-point.
-                           Defaults to a start-point named 'languages' created from
-                           https://github.com/cyber-dojo/start-points-languages.git
+  --languages=START-POINTS  Specify the languages start-points.
+                            Defaults to the start-points named 'languages' created from
+                            https://github.com/cyber-dojo/start-points-languages.git
 
-  --exercises=START-POINT  Specify the exercises start-point.
-                           Defaults to a start-point named 'exercises' created from
-                           https://github.com/cyber-dojo/start-points-exercises.git
+  --exercises=START-POINTS  Specify the exercises start-points.
+                            Defaults to the start-points named 'exercises' created from
+                            https://github.com/cyber-dojo/start-points-exercises.git
 
-  --custom=START-POINT     Specify the custom start-point.
-                           Defaults to a start-point named 'custom' created from
-                           https://github.com/cyber-dojo/start-points-custom.git
+  --custom=START-POINTS     Specify the custom start-points.
+                            Defaults to the start-points named 'custom' created from
+                            https://github.com/cyber-dojo/start-points-custom.git
 
-  --port=LISTEN-PORT       Specify port to listen on.
-                           Defaults to 80"
+  --port=LISTEN-PORT        Specify port to listen on.
+                            Defaults to 80"
 
   assertUp --help
   assertStdoutEquals "${expected_stdout}"
