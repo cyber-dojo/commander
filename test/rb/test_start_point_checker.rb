@@ -443,6 +443,16 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # optional-key: stateful:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '30D',
+  'invalid stateful is an error' do
+    @key = 'stateful'
+    assert_key_error 'sd', "must be true or false"
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test 'E46',
   'bad shell command raises' do

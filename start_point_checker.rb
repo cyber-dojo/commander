@@ -60,6 +60,7 @@ class StartPointChecker
       check_filename_extension_is_valid
       check_tab_size_is_valid
       check_highlight_filenames_is_valid
+      check_stateful_is_valid
     end
     errors
   end
@@ -74,6 +75,7 @@ class StartPointChecker
         progress_regexs
         tab_size
         visible_filenames
+        stateful
       )
   end
 
@@ -230,6 +232,16 @@ class StartPointChecker
       unless highlight_filenames.count(filename) == 1
         error "duplicate '#{filename}'"
       end
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def check_stateful_is_valid
+    @key = 'stateful'
+    return if stateful.nil? # it's optional
+    unless [true,false].include? stateful
+      error "must be true or false"
     end
   end
 

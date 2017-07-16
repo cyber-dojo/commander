@@ -12,5 +12,7 @@
 
   "display_name": "Java, Cucumber",
 
-  "image_name": "cyberdojofoundation/java_cucumber"
+  "image_name": "cyberdojofoundation/java_cucumber",
+
+  "stateful": true
 }
