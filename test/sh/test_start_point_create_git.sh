@@ -49,8 +49,8 @@ test_____bad_git_content()
   refuteStartPointCreate ${name} --git=${url}
   assertStdoutIncludes ${url}
   assertStderrIncludes "FAILED..."
-  assertStderrIncludes "${repo}/manifest.json: Ximage_name: unknown key"
-  assertStderrIncludes "${repo}/manifest.json: image_name: missing"
+  assertStderrIncludes "${repo}/start_point/manifest.json: Ximage_name: unknown key"
+  assertStderrIncludes "${repo}/start_point/manifest.json: image_name: missing"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
