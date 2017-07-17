@@ -443,13 +443,14 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # optional-key: stateful:
+  # optional-key: run:
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   test '30D',
-  'invalid stateful is an error' do
-    @key = 'stateful'
-    assert_key_error 'sd', "must be true or false"
+  'invalid run is an error' do
+    @key = 'run'
+    assert_key_error 42,   'must be a String'
+    assert_key_error 'sd', 'must be "statefully" or "statelessly"'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

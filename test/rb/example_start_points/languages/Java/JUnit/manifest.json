@@ -17,5 +17,5 @@
     "OK \\((\\d)+ test(s)?\\)"
   ],
 
-  "stateful": false
+  "run":"statefully"
 }

@@ -60,7 +60,7 @@ class StartPointChecker
       check_filename_extension_is_valid
       check_tab_size_is_valid
       check_highlight_filenames_is_valid
-      check_stateful_is_valid
+      check_run_is_valid
     end
     errors
   end
@@ -75,7 +75,7 @@ class StartPointChecker
         progress_regexs
         tab_size
         visible_filenames
-        stateful
+        run
       )
   end
 
@@ -237,11 +237,15 @@ class StartPointChecker
 
   # - - - - - - - - - - - - - - - - - - - -
 
-  def check_stateful_is_valid
-    @key = 'stateful'
-    return if stateful.nil? # it's optional
-    unless [true,false].include? stateful
-      error "must be true or false"
+  def check_run_is_valid
+    @key = 'run'
+    return if run.nil? # it's optional
+    unless run.is_a? String
+      error 'must be a String'
+      return
+    end
+    unless ['statefully','statelessly'].include? run
+      error 'must be "statefully" or "statelessly"'
     end
   end
 
