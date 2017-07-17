@@ -17,5 +17,5 @@
     "OK \\((\\d)+ test(s)?\\)"
   ],
 
-  "run":"statefully"
+  "runner_choice":"stateful"
 }

@@ -14,5 +14,5 @@
 
   "image_name": "cyberdojofoundation/java_cucumber",
 
-  "run":"statelessly"
+  "runner_choice":"stateless"
 }
