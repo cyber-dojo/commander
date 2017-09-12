@@ -1,5 +1,7 @@
 
 {
+  "display_name": "Java, Mockito",
+
   "visible_filenames": [
     "HikerTest.java",
     "Hiker.java",
@@ -7,9 +9,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".java",
+  "image_name": "cyberdojofoundation/java_mockito",
 
-  "display_name": "Java, Mockito",
+  "runner_choice": "stateless",
 
-  "image_name": "cyberdojofoundation/java_mockito"
+  "filename_extension" : ".java"
 }

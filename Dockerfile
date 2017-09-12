@@ -1,5 +1,5 @@
-FROM cyberdojo/docker
-MAINTAINER Jon Jagger <jon@jaggersoft.com>
+FROM  cyberdojo/docker
+LABEL maintainer=jon@jaggersoft.com
 
 ARG  DOCKER_COMPOSE_VERSION
 

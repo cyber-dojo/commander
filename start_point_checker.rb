@@ -55,12 +55,12 @@ class StartPointChecker
       check_visible_filenames_is_valid
       check_display_name_is_valid
       check_image_name_is_valid
+      check_runner_choice_is_valid
       # optional
       check_progress_regexs_is_valid
       check_filename_extension_is_valid
       check_tab_size_is_valid
       check_highlight_filenames_is_valid
-      check_runner_choice_is_valid
     end
     errors
   end
@@ -69,13 +69,13 @@ class StartPointChecker
 
   def known_keys
     %w( display_name
+        visible_filenames
+        image_name
+        runner_choice
         filename_extension
         highlight_filenames
-        image_name
         progress_regexs
         tab_size
-        visible_filenames
-        runner_choice
       )
   end
 
@@ -83,8 +83,9 @@ class StartPointChecker
 
   def required_keys
     %w( display_name
-        image_name
         visible_filenames
+        image_name
+        runner_choice
       )
   end
 
@@ -239,7 +240,7 @@ class StartPointChecker
 
   def check_runner_choice_is_valid
     @key = 'runner_choice'
-    return if runner_choice.nil? # it's optional
+    return if runner_choice.nil? # required-key different check
     unless runner_choice.is_a? String
       error 'must be a String'
       return

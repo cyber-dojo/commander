@@ -1,4 +1,6 @@
 {
+  "display_name": "Yahtzee refactoring, Python unitttest",
+
   "visible_filenames": [
     "test_yahtzee.py",
     "yahtzee.py",
@@ -6,9 +8,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".py",
+  "runner_choice": "stateless",
 
-  "display_name": "Yahtzee refactoring, Python unitttest",
+  "image_name": "cyberdojofoundation/python_unittest",
 
-  "image_name": "cyberdojofoundation/python_unittest"
+  "filename_extension" : ".py"
 }

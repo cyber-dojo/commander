@@ -1,4 +1,6 @@
 {
+  "display_name": "Yahtzee refactoring, C# NUnit",
+
   "visible_filenames": [
     "YahtzeeTest.cs",
     "Yahtzee.cs",
@@ -6,9 +8,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".cs",
+  "image_name": "cyberdojofoundation/csharp_nunit",
 
-  "display_name": "Yahtzee refactoring, C# NUnit",
+  "runner_choice": "stateless",
 
-  "image_name": "cyberdojofoundation/csharp_nunit"
+  "filename_extension" : ".cs"
 }

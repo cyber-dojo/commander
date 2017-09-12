@@ -1,4 +1,6 @@
 {
+  "display_name": "Yahtzee refactoring, C++ (g++) assert",
+
   "visible_filenames": [
     "yahtzee.hpp",
     "yahtzee.cpp",
@@ -8,9 +10,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".cpp",
+  "runner_choice": "stateless",
 
-  "display_name": "Yahtzee refactoring, C++ (g++) assert",
+  "image_name": "cyberdojofoundation/gpp_assert",
 
-  "image_name": "cyberdojofoundation/gpp_assert"
+  "filename_extension" : ".cpp"
 }

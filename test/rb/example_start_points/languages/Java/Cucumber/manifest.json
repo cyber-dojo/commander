@@ -1,5 +1,7 @@
 
 {
+  "display_name": "Java, Cucumber",
+
   "visible_filenames": [
     "Hiker.feature",
     "Hiker.java",
@@ -8,11 +10,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".java",
-
-  "display_name": "Java, Cucumber",
-
   "image_name": "cyberdojofoundation/java_cucumber",
 
-  "runner_choice":"stateless"
+  "runner_choice":"stateless",
+
+  "filename_extension" : ".java"
 }

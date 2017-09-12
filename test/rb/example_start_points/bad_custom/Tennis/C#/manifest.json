@@ -1,4 +1,6 @@
 {
+  "Xdisplay_name": "Tennis refactoring, C# NUnit",
+
   "visible_filenames": [
     "TennisGame.cs",
     "TennisGame1.cs",
@@ -9,9 +11,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".cs",
+  "runner_choice": "stateless",
 
-  "Xdisplay_name": "Tennis refactoring, C# NUnit",
+  "image_name": "cyberdojofoundation/csharp_nunit",
 
-  "image_name": "cyberdojofoundation/csharp_nunit"
+  "filename_extension" : ".cs"
 }

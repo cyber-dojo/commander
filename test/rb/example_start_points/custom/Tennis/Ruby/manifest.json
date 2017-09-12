@@ -1,4 +1,6 @@
 {
+  "display_name": "Tennis refactoring, Ruby Test::Unit",
+
   "visible_filenames": [
     "tennis_test.rb",
     "tennis.rb",
@@ -6,9 +8,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension" : ".rb",
+  "runner_choice": "stateless",
 
-  "display_name": "Tennis refactoring, Ruby Test::Unit",
+  "image_name": "cyberdojofoundation/ruby_test_unit",
 
-  "image_name": "cyberdojofoundation/ruby_test_unit"
+  "filename_extension" : ".rb"
 }

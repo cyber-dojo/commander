@@ -1,5 +1,7 @@
 
 {
+  "display_name": "Java, JMock",
+
   "visible_filenames": [
     "DeepThoughtTest.java",
     "DeepThought.java",
@@ -7,9 +9,9 @@
     "cyber-dojo.sh"
   ],
 
-  "filename_extension": ".java",
+  "image_name": "cyberdojofoundation/java_jmock",
 
-  "display_name": "Java, JMock",
+  "runner_choice": "stateless",
 
-  "image_name": "cyberdojofoundation/java_jmock"
+  "filename_extension": ".java"
 }

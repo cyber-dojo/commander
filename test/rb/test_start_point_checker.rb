@@ -7,6 +7,11 @@ class StartPointCheckerTest < LibTestBase
     '0C1' + suffix
   end
 
+  test 'E46',
+  'bad shell command raises' do
+    assert_raises(RuntimeError) { shell 'sdsdsdsd' }
+  end
+
   test 'F2F',
   'test_data/languages master has no errors' do
     checker = StartPointChecker.new(start_points_path + '/languages')
@@ -182,8 +187,9 @@ class StartPointCheckerTest < LibTestBase
       end
     end
     required_keys = %w( display_name
-                        image_name
                         visible_filenames
+                        image_name
+                        runner_choice
                       )
     required_keys.each { |key| missing_require_key.call(key) }
   end
@@ -387,6 +393,17 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # required-key: runner_choice:
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '30D',
+  'invalid runner_choice is an error' do
+    @key = 'runner_choice'
+    assert_key_error 42,   'must be a String'
+    assert_key_error 'sd', 'must be "stateful" or "stateless"'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # optional-key: progress_regexs
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -440,24 +457,6 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error []    , 'must be an int'
     assert_key_error 0     , 'must be an int > 0'
     assert_key_error 9     , 'must be an int <= 8'
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # optional-key: runner_choice:
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '30D',
-  'invalid runner_choice is an error' do
-    @key = 'runner_choice'
-    assert_key_error 42,   'must be a String'
-    assert_key_error 'sd', 'must be "stateful" or "stateless"'
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test 'E46',
-  'bad shell command raises' do
-    assert_raises(RuntimeError) { shell 'sdsdsdsd' }
   end
 
   private # - - - - - - - - - - - - - - - - - - - - - - - - - -
