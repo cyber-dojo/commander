@@ -55,8 +55,8 @@ class StartPointChecker
       check_visible_filenames_is_valid
       check_display_name_is_valid
       check_image_name_is_valid
-      check_runner_choice_is_valid
       # optional
+      check_runner_choice_is_valid
       check_progress_regexs_is_valid
       check_filename_extension_is_valid
       check_tab_size_is_valid
@@ -85,7 +85,6 @@ class StartPointChecker
     %w( display_name
         visible_filenames
         image_name
-        runner_choice
       )
   end
 
@@ -240,7 +239,7 @@ class StartPointChecker
 
   def check_runner_choice_is_valid
     @key = 'runner_choice'
-    return if runner_choice.nil? # required-key different check
+    return if runner_choice.nil? # it's optional
     unless runner_choice.is_a? String
       error 'must be a String'
       return

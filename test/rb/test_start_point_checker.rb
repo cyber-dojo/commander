@@ -189,7 +189,6 @@ class StartPointCheckerTest < LibTestBase
     required_keys = %w( display_name
                         visible_filenames
                         image_name
-                        runner_choice
                       )
     required_keys.each { |key| missing_require_key.call(key) }
   end
