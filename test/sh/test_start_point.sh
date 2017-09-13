@@ -20,7 +20,7 @@ Manage cyber-dojo start-points
 Commands:
   create         Creates a new start-point
   inspect        Displays details of a start-point
-  latest         Updates docker images named inside a start-point
+  latest         Updates pulled docker images named inside a start-point
   ls             Lists the names of all start-points
   pull           Pulls all the docker images named inside a start-point
   rm             Removes a start-point

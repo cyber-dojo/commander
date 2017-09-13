@@ -16,7 +16,7 @@ def cyber_dojo_start_point
     'Commands:',
     minitab + 'create         Creates a new start-point',
     minitab + 'inspect        Displays details of a start-point',
-    minitab + 'latest         Updates docker images named inside a start-point',
+    minitab + 'latest         Updates pulled docker images named inside a start-point',
     minitab + 'ls             Lists the names of all start-points',
     minitab + 'pull           Pulls all the docker images named inside a start-point',
     minitab + 'rm             Removes a start-point',
