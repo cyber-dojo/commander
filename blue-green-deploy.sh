@@ -18,46 +18,39 @@ readonly CUSTOM_GIT=${REPO}-custom
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+from_to()
+{
+  readonly from=$1
+  readonly to=$2
+  echo "===Switching from ${from} to ${to}"
+  echo "===Preparing new ${to}"
+  echo "===Creating ${to} languages"
+  ${CREATE} ${to}_languages --list=${LANGUAGE_LIST}
+  echo "===Creating ${to} exercises"
+  ${CREATE} ${to}_exercises --git=${EXERCISES_GIT}
+  echo "===Creating ${to} custom"
+  ${CREATE} ${to}_custom    --git=${CUSTOM_GIT}
+  echo "===Getting latest ${to} test-framework language images"
+  ${LATEST} ${to}_languages
+  echo "===Getting latest ${to} test-framework custom images"
+  ${LATEST} ${to}_custom
+  echo "===Switching to ${to}"
+  ${UP} --languages=${to}_languages --exercises=${to}_exercises --custom=${to}_custom
+  echo "===Deleting old ${from}"
+  ${RM} ${from}_languages &>/dev/null
+  ${RM} ${from}_exercises &>/dev/null
+  ${RM} ${from}_custom    &>/dev/null
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 echo "===Cleaning out old images/volumes/containers"
 ${CMD} clean
-
 echo "===Updating server images"
 ${UPDATE} server
 
 if ${LS} | grep -q 'green_languages'; then
-  echo "===Switching from green to blue"
-  echo "===Preparing new blue"
-  echo "===Creating blue languages"
-  ${CREATE} blue_languages --list=${LANGUAGE_LIST}
-  echo "===Creating blue exercises"
-  ${CREATE} blue_exercises --git=${EXERCISES_GIT}
-  echo "===Creating blue custom"
-  ${CREATE} blue_custom    --git=${CUSTOM_GIT}
-  echo "===Getting latest blue test-framework images"
-  ${LATEST} blue_languages
-  ${LATEST} blue_custom
-  echo "===Switching to blue"
-  ${UP} --languages=blue_languages --exercises=blue_exercises --custom=blue_custom
-  echo "===Deleting old green"
-  ${RM} green_languages &>/dev/null
-  ${RM} green_exercises &>/dev/null
-  ${RM} green_custom    &>/dev/null
+  from_to 'green' 'blue'
 else
-  echo "===Switching from blue to green"
-  echo "===Preparing new green"
-  echo "===Creating green languages"
-  ${CREATE} green_languages --list=${LANGUAGE_LIST}
-  echo "===Creating green exercises"
-  ${CREATE} green_exercises --git=${EXERCISES_GIT}
-  echo "===Creating green custom"
-  ${CREATE} green_custom    --git=${CUSTOM_GIT}
-  echo "===Getting latest green test-framework images"
-  ${LATEST} green_languages
-  ${LATEST} green_custom
-  echo "===Switching to green"
-  ${UP} --languages=green_languages --exercises=green_exercises --custom=green_custom
-  echo "===Deleting old blue"
-  ${RM} blue_languages &>/dev/null
-  ${RM} blue_exercises &>/dev/null
-  ${RM} blue_custom    &>/dev/null
+  from_to 'blue' 'green'
 fi
