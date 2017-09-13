@@ -27,15 +27,17 @@ ${UPDATE} server
 if ${LS} | grep -q 'green_languages'; then
   echo "===Switching from green to blue"
   echo "===Preparing new blue"
-  echo "===Creating languages"
+  echo "===Creating blue languages"
   ${CREATE} blue_languages --list=${LANGUAGE_LIST}
-  echo "===Creating exercises"
+  echo "===Creating blue exercises"
   ${CREATE} blue_exercises --git=${EXERCISES_GIT}
-  echo "===Creating custom"
+  echo "===Creating blue custom"
   ${CREATE} blue_custom    --git=${CUSTOM_GIT}
+  echo "===Getting latest blue test-framework images"
+  ${LATEST} blue_languages
+  ${LATEST} blue_custom
   echo "===Switching to blue"
   ${UP} --languages=blue_languages --exercises=blue_exercises --custom=blue_custom
-  ${LATEST} blue_languages
   echo "===Deleting old green"
   ${RM} green_languages &>/dev/null
   ${RM} green_exercises &>/dev/null
@@ -43,15 +45,17 @@ if ${LS} | grep -q 'green_languages'; then
 else
   echo "===Switching from blue to green"
   echo "===Preparing new green"
-  echo "===Creating languages"
+  echo "===Creating green languages"
   ${CREATE} green_languages --list=${LANGUAGE_LIST}
-  echo "===Creating exercises"
+  echo "===Creating green exercises"
   ${CREATE} green_exercises --git=${EXERCISES_GIT}
-  echo "===Creating custom"
+  echo "===Creating green custom"
   ${CREATE} green_custom    --git=${CUSTOM_GIT}
+  echo "===Getting latest green test-framework images"
+  ${LATEST} green_languages
+  ${LATEST} green_custom
   echo "===Switching to green"
   ${UP} --languages=green_languages --exercises=green_exercises --custom=green_custom
-  ${LATEST} green_languages
   echo "===Deleting old blue"
   ${RM} blue_languages &>/dev/null
   ${RM} blue_exercises &>/dev/null
