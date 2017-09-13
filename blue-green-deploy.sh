@@ -6,6 +6,7 @@ readonly CMD='./cyber-dojo'
 readonly     LS="${CMD} start-point ls --quiet"
 readonly CREATE="${CMD} start-point create"
 readonly     RM="${CMD} start-point rm"
+readonly LATEST="${CMD} start-point latest"
 readonly     UP="${CMD} up"
 readonly UPDATE="${CMD} update"
 
@@ -34,6 +35,7 @@ if ${LS} | grep -q 'green_languages'; then
   ${CREATE} blue_custom    --git=${CUSTOM_GIT}
   echo "===Switching to blue"
   ${UP} --languages=blue_languages --exercises=blue_exercises --custom=blue_custom
+  ${LATEST} blue_languages
   echo "===Deleting old green"
   ${RM} green_languages &>/dev/null
   ${RM} green_exercises &>/dev/null
@@ -49,6 +51,7 @@ else
   ${CREATE} green_custom    --git=${CUSTOM_GIT}
   echo "===Switching to green"
   ${UP} --languages=green_languages --exercises=green_exercises --custom=green_custom
+  ${LATEST} green_languages
   echo "===Deleting old blue"
   ${RM} blue_languages &>/dev/null
   ${RM} blue_exercises &>/dev/null
