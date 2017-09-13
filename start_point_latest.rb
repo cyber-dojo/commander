@@ -41,7 +41,7 @@ if !File.directory?(path)
 end
 
 image_names = `docker images --format {{.Repository}}`.split - ['<none>']
-manifests_image_names.sort.each do |image_name|
+manifests_image_names.sort.uniq.each do |image_name|
   if image_names.include? image_name
     puts "PULLING #{image_name}:latest"
     system("docker pull #{image_name}:latest")
