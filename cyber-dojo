@@ -104,11 +104,12 @@ delegate_to_commander()
 
 handle_sh_locally()
 {
-  local name='cyber-dojo-web'
+  local name=${2:-cyber-dojo-web}
   if running_container ${name}; then
+    echo "shelling into ${name}"
     docker exec --interactive --tty ${name} sh
-  else
-    exit_fail "${name} is not running"
+  elif [ "${name}" != '--help' ] && [ "$3" == '' ]; then
+    exit_fail "${name} is not a running container"
   fi
 }
 
@@ -183,7 +184,7 @@ if [ $? != 0 ]; then
   exit_fail
 fi
 
-if [ "$*" = "sh" ]; then
+if [ "$1" = "sh" ]; then
   handle_sh_locally $*
 fi
 if [ "$1" == 'update' ]; then
