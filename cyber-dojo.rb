@@ -149,7 +149,7 @@ def one_time_creation_of_katas_data_volume
     run(command)
 
     tag = 'cyberdojo/katas'
-    # create a katas volume - it is mounted into the web container
+    # create a katas volume - it is mounted into the storer container
     # using a volumes_from in docker-compose.yml
     command = [
       'docker build',
