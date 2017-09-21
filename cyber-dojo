@@ -3,21 +3,27 @@
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
 # the cyber-dojo commander container.
-# However, three commands have to be handled locally. Viz:
+# However, four commands have to be handled locally. Viz:
 #
 #  1) ./cyber-dojo sh
 #  2) ./cyber-dojo update
 #  3) ./cyber-dojo start-point create NAME --dir=DIR
-#  4) ./cyber-dojo start-point create NAME --list=URL|FILE
+#  4) ./cyber-dojo start-point create NAME --list=FILE
 #
 #  1) provides an interactive terminal.
-#  2) replaces this script.
-#  3) needs to volume mount local DIR.
-#  4) needs to volume mount local URL|FILE
+#  2) ends by replacing this script.
+#  3) needs to volume mount DIR.
+#  4) needs to volume mount FILE
 
 # requires: awk, curl, sed, grep which are in DockerToolbox
 # quickstart terminal.
 
+# Re 3,4: If you're running Docker-Toolbox and are in the quickstart-terminal
+# it will check the DIR/FILE __locally__ (eg on the Mac) but the volume-mount
+# will of course take place where the docker-daemon is running, which will
+# be on the default VM (thanks to the DOCKER_HOST et al env-vars).
+# In this case make sure the DIR/FILE is under /Users so that it will be
+# shared in the default VM and the volume mount will work.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_fail()
