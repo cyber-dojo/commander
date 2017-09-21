@@ -43,6 +43,7 @@ delegate_to_commander()
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
   if [ "${1}" == 'up' ];  then
+    local volume_message_file="--volume=${my_dir}/web.env:/app/web.env"
     if [ -f ${my_dir}/nginx.env ];  then
       local volume_nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
     fi
@@ -99,6 +100,7 @@ delegate_to_commander()
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
+    ${volume_message_file} \
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \
     ${volume_start_point} \

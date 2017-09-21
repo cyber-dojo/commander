@@ -55,6 +55,8 @@ services:
       - storer
       - differ
       - zipper
+    env_file:
+      - /app/web.env
     volumes:
       - languages:${CYBER_DOJO_HOME}/start_points/languages:ro
       - exercises:${CYBER_DOJO_HOME}/start_points/exercises:ro

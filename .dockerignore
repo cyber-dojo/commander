@@ -13,6 +13,7 @@
 !docker-compose.yml
 !grafana.env
 !nginx.env
+!web.env
 
 !start_point_*.rb
 
