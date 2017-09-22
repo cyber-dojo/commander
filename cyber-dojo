@@ -43,19 +43,32 @@ delegate_to_commander()
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
   if [ "${1}" == 'up' ];  then
-    local volume_message_file="--volume=${my_dir}/web.env:/app/web.env"
-    if [ -f ${my_dir}/nginx.env ];  then
-      local volume_nginx_env_file="--volume=${my_dir}/nginx.env:/app/nginx.env"
+    # env_file: for web in docker-compose.yml
+    local web_env='web.env'
+    local from="${my_dir}/${web_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${web_env}"
+      local volume_web_env_file="--volume=${from}:${to}"
     fi
-    if [ -f ${my_dir}/grafana.env ];  then
-      local volume_grafana_env_file="--volume=${my_dir}/grafana.env:/app/grafana.env"
+    # env_file: for nginx in docker-compose.yml
+    local nginx_env='nginx.env'
+    local from="${my_dir}/${nginx_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${nginx_env}"
+      local volume_nginx_env_file="--volume=${from}:${to}"
     fi
-    if [ ! -f ${my_dir}/grafana.env ];  then
+    # env_file: for grafana in docker-compose.yml
+    local grafana_env='grafana.env'
+    local from="${my_dir}/${grafana_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${grafana_env}"
+      local volume_grafana_env_file="--volume=${from}:${to}"
+    else
       echo 'WARNING: Using default grafana admin password.'
       echo 'To set your own password and remove this warning:'
-      echo '   1. Add a file grafana.env with contents GF_SECURITY_ADMIN_PASSWORD=mypassword'
+      echo "   1. Add a file ${grafana_env} with contents GF_SECURITY_ADMIN_PASSWORD=mypassword"
       echo '      in the same directory as the cyber-dojo script.'
-      echo '   2. Re-issue the cyberdojo up command.'
+      echo '   2. Re-issue the command [cyberdojo up]'
     fi
   fi
 
@@ -68,19 +81,19 @@ delegate_to_commander()
       if [ ! -d ${value} ]; then
         exit_fail "dir ${value} does not exist"
       fi
-      local volume_start_point="--volume=${value}:${value}"
+      local volume_start_point_create="--volume=${value}:${value}"
     fi
 
     if [ "${lhs}" == '--list' ] && [ "$5" == '' ]; then
       if [ "${value:0:1}" == "/" ]; then
         if [ -f ${value} ]; then
-          local volume_start_point="--volume=${value}:${value}"
+          local volume_start_point_create="--volume=${value}:${value}"
         else
           exit_fail "${value} does not exist"
         fi
       elif [ "${value:0:7}" == "file://" ]; then
         if [ -f ${value:7} ]; then
-          local volume_start_point="--volume=${value:7}:${value:7}"
+          local volume_start_point_create="--volume=${value:7}:${value:7}"
         else
           exit_fail "${value} does not exist"
         fi
@@ -100,10 +113,10 @@ delegate_to_commander()
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    ${volume_message_file} \
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \
-    ${volume_start_point} \
+    ${volume_web_env_file} \
+    ${volume_start_point_create} \
       ${cyber_dojo_commander} \
         /app/cyber-dojo.rb ${debug_option} $*
 }
