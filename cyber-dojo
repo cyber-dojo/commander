@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
@@ -42,7 +42,7 @@ delegate_to_commander()
 {
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
-  if [ "${1}" == 'up' ];  then
+  if [ "${1}" = 'up' ];  then
     # env_file: for web in docker-compose.yml
     local web_env='web.env'
     local from="${my_dir}/${web_env}"
@@ -73,25 +73,25 @@ delegate_to_commander()
   fi
 
   # start-point create --dir=DIR
-  if [ "$1" == 'start-point' ] && [ "$2" == 'create' ]; then
+  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
     local lhs=$(echo $4 | cut -f1 -s -d=)
     local value=$(echo $4 | cut -f2 -s -d=)
 
-    if [ "${lhs}" == '--dir' ] && [ "${value}" != '' ] && [ "$5" == '' ]; then
+    if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
       if [ ! -d ${value} ]; then
         exit_fail "dir ${value} does not exist"
       fi
       local volume_start_point_create="--volume=${value}:${value}"
     fi
 
-    if [ "${lhs}" == '--list' ] && [ "$5" == '' ]; then
-      if [ "${value:0:1}" == "/" ]; then
+    if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
+      if [ "${value:0:1}" = "/" ]; then
         if [ -f ${value} ]; then
           local volume_start_point_create="--volume=${value}:${value}"
         else
           exit_fail "${value} does not exist"
         fi
-      elif [ "${value:0:7}" == "file://" ]; then
+      elif [ "${value:0:7}" = "file://" ]; then
         if [ -f ${value:7} ]; then
           local volume_start_point_create="--volume=${value:7}:${value:7}"
         else
@@ -105,7 +105,7 @@ delegate_to_commander()
     fi # --list
   fi # start-point create
 
-  if [ "${debug_on}" == 'true' ]; then
+  if [ "${debug_on}" = 'true' ]; then
     local debug_option='--debug'
   fi
 
@@ -151,10 +151,10 @@ running_container()
 
 handle_update_locally()
 {
-  if [ "$2" == '' ]; then
+  if [ "$2" = '' ]; then
     replace_myself
   fi
-  if [ "$2" == 'server' ] && [ "$3" == '' ]; then
+  if [ "$2" = 'server' ] && [ "$3" = '' ]; then
     replace_myself
   fi
 }
@@ -181,7 +181,7 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "$1" == '--debug' ]; then
+if [ "$1" = '--debug' ]; then
   debug_on='true'
   shift
 else
@@ -190,11 +190,11 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "$1" == 'update' ]; then
-  if [ "$2" == '' ]; then
+if [ "$1" = 'update' ]; then
+  if [ "$2" = '' ]; then
     docker pull ${cyber_dojo_commander}
   fi
-  if [ "$2" == 'server' ] && [ "$3" == '' ]; then
+  if [ "$2" = 'server' ] && [ "$3" = '' ]; then
     docker pull ${cyber_dojo_commander}
   fi
 fi
@@ -210,6 +210,6 @@ fi
 if [ "$1" = "sh" ]; then
   handle_sh_locally $*
 fi
-if [ "$1" == 'update' ]; then
+if [ "$1" = 'update' ]; then
   handle_update_locally $*
 fi
