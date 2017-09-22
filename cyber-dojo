@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
@@ -85,15 +85,24 @@ delegate_to_commander()
     fi
 
     if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
-      if [ "${value:0:1}" = "/" ]; then
+      local first_letter=$(printf %.1s $value)
+      local file_prefix=$(printf %.7s $value)
+      local file_suffix=${value#???????}
+
+      #echo "value=:${value}:"
+      #echo "first_letter=:${first_letter}:"
+      #echo "file_prefix=:${file_prefix}:"
+      #echo "file_suffix=:${file_suffix}:"
+
+      if [ "${first_letter}" = "/" ]; then
         if [ -f ${value} ]; then
           local volume_start_point_create="--volume=${value}:${value}"
         else
           exit_fail "${value} does not exist"
         fi
-      elif [ "${value:0:7}" = "file://" ]; then
-        if [ -f ${value:7} ]; then
-          local volume_start_point_create="--volume=${value:7}:${value:7}"
+      elif [ "${file_prefix}" = "file://" ]; then
+        if [ -f ${file_suffix} ]; then
+          local volume_start_point_create="--volume=${file_suffix}:${file_suffix}"
         else
           exit_fail "${value} does not exist"
         fi
