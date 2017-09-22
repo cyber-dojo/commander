@@ -6,19 +6,29 @@
 
 test_SH() { :; }
 
+readonly help_text="
+Use: cyber-dojo sh SERVICE
+
+Shells into a service container
+Example: cyber-dojo sh web
+Example: cyber-dojo sh storer
+Example: cyber-dojo sh runner"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test___success() { :; }
 
+test_____no_arg_prints_use()
+{
+  assertSh
+  assertStdoutEquals "${help_text}"
+  assertNoStderr
+}
+
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
-Use: cyber-dojo sh [CONTAINER]
-
-Shells into the named cyber-dojo docker container
-Defaults to shelling into cyber-dojo-web container"
   assertSh --help
-  assertStdoutEquals "${expected_stdout}"
+  assertStdoutEquals "${help_text}"
   assertNoStderr
 }
 
@@ -31,19 +41,13 @@ test_____arg_is_not_a_running_container()
   local arg=wibble
   refuteSh ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: ${arg} is not a running container"
+  assertStderrEquals "FAILED: cyber-dojo-${arg} is not a running container"
 }
 
 test_____more_than_one_arg_prints_use()
 {
-  local expected_stdout="
-Use: cyber-dojo sh [CONTAINER]
-
-Shells into the named cyber-dojo docker container
-Defaults to shelling into cyber-dojo-web container"
-
   refuteSh wibble fubar
-  assertStdoutEquals "${expected_stdout}"
+  assertStdoutEquals "${help_text}"
   assertNoStderr
 }
 

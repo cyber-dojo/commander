@@ -2,14 +2,16 @@
 def cyber_dojo_sh
   help = [
     '',
-    "Use: #{me} sh [CONTAINER]",
+    "Use: #{me} sh SERVICE",
     '',
-    'Shells into the named cyber-dojo docker container',
-    'Defaults to shelling into cyber-dojo-web container'
-
+    'Shells into a service container',
+    "Example: #{me} sh web",
+    "Example: #{me} sh storer",
+    "Example: #{me} sh runner"
   ]
 
-  if ARGV[1] == '--help'
+  service = ARGV[1]
+  if [nil,'--help'].include? service
     show help
     exit succeeded
   end
@@ -19,5 +21,5 @@ def cyber_dojo_sh
     exit failed
   end
 
-  # cyber-dojo.sh does actual [sh]
+  # [cyber-dojo] script does the actual [sh]
 end
