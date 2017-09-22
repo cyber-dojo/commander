@@ -19,8 +19,8 @@ Use: cyber-dojo [--debug] COMMAND
 Commands:
     clean        Removes old images/volumes/containers
     down         Brings down the server
-    logs         Prints the logs from the server
-    sh           Shells into the server
+    logs         Prints the logs from a service container
+    sh           Shells into a service container
     start-point  Manages cyber-dojo start-points
     up           Brings up the server
     update       Updates the server and/or languages to the latest images
