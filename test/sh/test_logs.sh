@@ -6,18 +6,29 @@
 
 test_LOGS() { :; }
 
+readonly help_text="
+Use: cyber-dojo logs SERVICE
+
+Prints the logs from a service container
+Example: cyber-dojo logs web
+Example: cyber-dojo logs storer
+Example: cyber-dojo logs runner"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test___sucess() { :; }
 
+test_____no_arg_prints_use()
+{
+  assertLogs
+  assertStdoutEquals "${help_text}"
+  assertNoStderr
+}
+
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
-Use: cyber-dojo logs
-
-Fetches and prints the logs of the web server (if running)"
   assertLogs --help
-  assertStdoutEquals "${expected_stdout}"
+  assertStdoutEquals "${help_text}"
   assertNoStderr
 }
 
@@ -30,19 +41,16 @@ test_____unknown_arg()
   local arg=salmon
   refuteLogs ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "FAILED: cyber-dojo-${arg} is not a running container"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____unknown_args()
+test_____more_than_one_arg_prints_use()
 {
-  local arg1=salmon
-  local arg2=smolt
-  refuteLogs ${arg1} ${arg2}
-  assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  refuteLogs wibble fubar
+  assertStdoutEquals "${help_text}"
+  assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

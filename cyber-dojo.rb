@@ -46,11 +46,13 @@ def quoted(s); '"' + s + '"'; end
 
 def cyber_dojo_commander; "cyberdojo/commander"; end
 
-def web_container_name; 'cyber-dojo-web'; end
-
-def web_server_running; `docker ps --quiet --filter "name=#{web_container_name}"` != ''; end
-
 def read_only; 'ro'; end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def service_running(name)
+  `docker ps --quiet --filter "name=#{name}"` != ''
+end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 

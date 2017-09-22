@@ -2,26 +2,30 @@
 def cyber_dojo_logs
   help = [
     '',
-    "Use: #{me} logs",
+    "Use: #{me} logs SERVICE",
     '',
-    "Fetches and prints the logs of the web server (if running)",
+    'Prints the logs from a service container',
+    "Example: #{me} logs web",
+    "Example: #{me} logs storer",
+    "Example: #{me} logs runner"
   ]
-  if ARGV[1] == '--help'
+
+  service = ARGV[1]
+  if [nil,'--help'].include? service
     show help
     exit succeeded
   end
 
-  ARGV[1..-1].each do |arg|
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
-  end
-  unless ARGV[1].nil?
+  if ARGV.size > 2
+    show help
     exit failed
   end
 
-  unless web_server_running
-    puts "FAILED: cannot show logs - the web server is not running"
+  name = 'cyber-dojo-' + service
+  unless service_running(name)
+    STDERR.puts "FAILED: #{name} is not a running container"
     exit failed
   else
-    puts `docker logs #{web_container_name}`
+    puts `docker logs #{name}`
   end
 end
