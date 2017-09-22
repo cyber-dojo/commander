@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
