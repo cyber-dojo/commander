@@ -127,8 +127,6 @@ services:
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
-    depends_on:
-      - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # garbage collects old volumes used by runner
