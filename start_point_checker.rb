@@ -375,7 +375,7 @@ class StartPointChecker
   def check_tab_size_is_valid
     @key = 'tab_size'
     return if tab_size.nil? # it's optional
-    unless tab_size.is_a? Fixnum
+    unless tab_size.is_a? Integer
       error 'must be an int'
       return
     end

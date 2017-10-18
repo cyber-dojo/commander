@@ -4,6 +4,8 @@
 
 #-----!Except these
 
+!Gemfile
+
 !cyber-dojo*
 
 !Dockerfile.katas
