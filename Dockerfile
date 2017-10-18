@@ -84,6 +84,7 @@ RUN apk --update add curl \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install docker-compose
+# - - - - - - - - - - - - - - - - - - - - - -
 
 ARG DOCKER_COMPOSE_VERSION
 ARG DOCKER_COMPOSE_BINARY=/usr/bin/docker-compose
