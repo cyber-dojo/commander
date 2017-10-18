@@ -50,7 +50,7 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - runner
+      - runner_stateful
       - runner_stateless
       - storer
       - differ
@@ -63,12 +63,11 @@ services:
       - custom:${CYBER_DOJO_HOME}/start_points/custom:ro
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runs (statefully) code and tests written in browser
 
-  runner:
+  runner_stateful:
     user: root
-    image: cyberdojo/runner
-    container_name: cyber-dojo-runner
+    image: cyberdojo/runner_stateful
+    container_name: cyber-dojo-runner-stateful
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
@@ -79,7 +78,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runs (statelessly) code and tests written in browser
 
   runner_stateless:
     user: root
@@ -129,7 +127,7 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # garbage collects old volumes used by runner
+  # garbage collects old volumes used by runner_stateful
 
   collector:
     user: root
