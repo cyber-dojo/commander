@@ -2,6 +2,7 @@ FROM  alpine:latest
 LABEL maintainer=jon@jaggersoft.com
 
 USER root
+RUN adduser -D -H -u 19661 cyber-dojo
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install ruby
