@@ -8,7 +8,7 @@ test_START_POINT_CREATE_DIR() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___succss() { :; }
+test___success() { :; }
 
 test_____good_dir_with_new_name_creates_start_point_prints_nothing()
 {
