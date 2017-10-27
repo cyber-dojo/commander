@@ -1,8 +1,7 @@
 FROM  alpine:latest
 LABEL maintainer=jon@jaggersoft.com
 
-USER root
-RUN adduser -D -H -u 19661 cyber-dojo
+#USER root
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install ruby
@@ -22,9 +21,13 @@ COPY Gemfile /app/
 WORKDIR /app
 
 RUN apk --update add --virtual build-dependencies build-base \
-  && bundle install && gem clean \
+  && bundle config --global silence_root_warning 1 \
+  && bundle install \
+  && gem clean \
   && apk del build-dependencies \
   && rm -vrf /var/cache/apk/*
+
+RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install tini (for pid 1 zombie reaping)
@@ -108,6 +111,8 @@ RUN apk add --update curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
+
+RUN adduser -D -H -u 19661 cyber-dojo
 
 ARG HOME_DIR=/app
 COPY . ${HOME_DIR}
