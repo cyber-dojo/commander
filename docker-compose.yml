@@ -50,8 +50,8 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - runner_stateful
       - runner_stateless
+      - runner_stateful
       - storer
       - differ
       - zipper
@@ -64,11 +64,11 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
 
-  runner_stateful:
+  runner_stateless:
     user: root
-    image: cyberdojo/runner_stateful
-    container_name: cyber-dojo-runner-stateful
-    cpu_shares: 1024
+    image: cyberdojo/runner_stateless
+    container_name: cyber-dojo-runner-stateless
+    cpu_shares:  1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
@@ -79,11 +79,11 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
 
-  runner_stateless:
+  runner_stateful:
     user: root
-    image: cyberdojo/runner_stateless
-    container_name: cyber-dojo-runner-stateless
-    cpu_shares:  1024
+    image: cyberdojo/runner_stateful
+    container_name: cyber-dojo-runner-stateful
+    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
