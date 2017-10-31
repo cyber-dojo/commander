@@ -85,6 +85,7 @@ class StartPointChecker
     %w( display_name
         visible_filenames
         image_name
+        runner_choice
       )
   end
 
@@ -239,13 +240,13 @@ class StartPointChecker
 
   def check_runner_choice_is_valid
     @key = 'runner_choice'
-    return if runner_choice.nil? # it's optional
+    return if runner_choice.nil? # required-key different check
     unless runner_choice.is_a? String
       error 'must be a String'
       return
     end
-    unless ['stateful','stateless'].include? runner_choice
-      error 'must be "stateful" or "stateless"'
+    unless ['stateful','stateless','processful'].include? runner_choice
+      error 'must be "stateful" or "stateless" or "processful"'
     end
   end
 

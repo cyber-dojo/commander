@@ -399,7 +399,7 @@ class StartPointCheckerTest < LibTestBase
   'invalid runner_choice is an error' do
     @key = 'runner_choice'
     assert_key_error 42,   'must be a String'
-    assert_key_error 'sd', 'must be "stateful" or "stateless"'
+    assert_key_error 'sd', 'must be "stateful" or "stateless" or "processful"'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
