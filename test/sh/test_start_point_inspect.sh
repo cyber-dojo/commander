@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -109,5 +111,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2
