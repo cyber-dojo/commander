@@ -43,8 +43,9 @@ x_test_____pull_latest_images_for_all_services()
   assertStdoutIncludes 'latest: Pulling from cyberdojo/grafana'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/prometheus'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateful'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateless'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateful'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-processful'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/storer'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
   assertNoStderr

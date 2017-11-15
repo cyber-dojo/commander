@@ -46,8 +46,9 @@ def cyber_dojo_update_server
   service_images = %w(
     nginx
     web
-    runner_stateful
     runner_stateless
+    runner_stateful
+    runner_processful
     storer
     differ
     collector

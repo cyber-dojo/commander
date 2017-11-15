@@ -26,6 +26,8 @@ test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_conta
   assertStdoutIncludes 'Creating cyber-dojo-nginx'
   assertStdoutIncludes 'Creating cyber-dojo-runner'
   assertStdoutIncludes 'Creating cyber-dojo-runner-stateless'
+  assertStdoutIncludes 'Creating cyber-dojo-runner-stateful'
+  assertStdoutIncludes 'Creating cyber-dojo-runner-processful'
   assertStdoutIncludes 'Creating cyber-dojo-storer'
   assertStdoutIncludes 'Creating cyber-dojo-web'
   assertStdoutIncludes 'Creating cyber-dojo-zipper'

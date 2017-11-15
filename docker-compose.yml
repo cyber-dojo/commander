@@ -54,6 +54,7 @@ services:
     depends_on:
       - runner_stateless
       - runner_stateful
+      - runner_processful
       - storer
       - differ
       - zipper
@@ -87,6 +88,21 @@ services:
     image: cyberdojo/runner_stateful
     init: true
     container_name: cyber-dojo-runner-stateful
+    cpu_shares: 1024
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 2G
+    memswap_limit: 2G
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  runner_processful:
+    user: root
+    image: cyberdojo/runner_processful
+    init: true
+    container_name: cyber-dojo-runner-processful
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
