@@ -42,6 +42,18 @@ refuteStartPointPull()    { startPointPull    $*; assertFalse $?; }
 assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
 refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
 
+assertTruth()
+{
+  if [ "$1" != "0" ]; then
+    echo "<stdout>"
+    cat ${stdoutF}
+    echo "</stdout>"
+    echo "<stderr>"
+    cat ${stderrF}
+    echo "</stderr>"
+  fi
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertClean()  { clean  $*; assertTrue  $?; }
