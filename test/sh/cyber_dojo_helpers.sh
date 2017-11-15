@@ -1,7 +1,9 @@
 
-github_cyber_dojo='https://github.com/cyber-dojo'
+MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-exe=./../../cyber-dojo
+readonly github_cyber_dojo='https://github.com/cyber-dojo'
+
+readonly exe="${MY_DIR}/../../cyber-dojo"
 
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
 down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }

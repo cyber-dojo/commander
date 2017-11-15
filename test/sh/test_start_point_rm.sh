@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -30,7 +32,7 @@ Removes a start-point created with the [cyber-dojo start-point create] command"
 test_____removes_previously_created_start_point()
 {
   local name=good
-  local good_dir=`absPath ./../rb/example_start_points/custom`
+  local good_dir=`absPath ${MY_DIR}/../rb/example_start_points/custom`
   assertStartPointCreate ${name} --dir=${good_dir}
   assertStartPointExists ${name}
   assertStartPointRm ${name}
@@ -67,5 +69,5 @@ test_____named_start_point_is_not_a_cyber_dojo_volume()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

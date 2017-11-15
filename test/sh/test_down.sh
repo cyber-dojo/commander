@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,11 +28,11 @@ Stops and removes docker containers created with 'up'"
 test_____no_args_stops_and_removes_server_containers()
 {
   local c_name=custom_for_down
-  assertStartPointCreate ${c_name} --dir=`absPath ./../rb/example_start_points/custom`
+  assertStartPointCreate ${c_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/custom`
   local e_name=exercises_for_down
-  assertStartPointCreate ${e_name} --dir=`absPath ./../rb/example_start_points/exercises`
+  assertStartPointCreate ${e_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/exercises`
   local l_name=languages_for_down
-  assertStartPointCreate ${l_name} --dir=`absPath ./../rb/example_start_points/languages`
+  assertStartPointCreate ${l_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/languages`
   assertUp --custom=${c_name} --exercises=${e_name} --languages=${l_name}
 
   assertDown
@@ -85,5 +87,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2
