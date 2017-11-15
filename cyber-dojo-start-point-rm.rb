@@ -22,7 +22,7 @@ def cyber_dojo_start_point_rm
     exit failed
   end
 
-  run "docker volume rm #{vol} 2>&1 /dev/null"
+  run "docker volume rm #{vol} &> /dev/null"
   if $exit_status != 0
     puts "FAILED cannot remove start-point #{vol}. Is it in use?"
     exit failed
