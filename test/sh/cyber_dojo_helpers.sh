@@ -1,5 +1,5 @@
 
-MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 readonly github_cyber_dojo='https://github.com/cyber-dojo'
 
@@ -42,18 +42,6 @@ refuteStartPointPull()    { startPointPull    $*; assertFalse $?; }
 assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
 refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
 
-assertTruth()
-{
-  if [ "$1" != "0" ]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    echo "<stderr>"
-    cat ${stderrF}
-    echo "</stderr>"
-  fi
-}
-
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertClean()  { clean  $*; assertTrue  $?; }
@@ -80,11 +68,37 @@ refuteUpdate() { update $*; assertFalse $?; }
 startPointExists()
 {
   # don't match a substring
-  local start_of_line='^'
-  local start_point=$1
-  local end_of_line='$'
+  local readonly start_of_line='^'
+  local readonly start_point=$1
+  local readonly end_of_line='$'
   docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
 }
 
 assertStartPointExists()  { startPointExists  $1; assertTrue  $?; }
 refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+assertTruth() # assert?
+{
+  if [ "$1" != "0" ]; then
+    echo "<stdout>"
+    cat ${stdoutF}
+    echo "</stdout>"
+    echo "<stderr>"
+    cat ${stderrF}
+    echo "</stderr>"
+  fi
+}
+
+refuteTruth() # refute?
+{
+  if [ "$1" == "0" ]; then
+    echo "<stdout>"
+    cat ${stdoutF}
+    echo "</stdout>"
+    echo "<stderr>"
+    cat ${stderrF}
+    echo "</stderr>"
+  fi
+}

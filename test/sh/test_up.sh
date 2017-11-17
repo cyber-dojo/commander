@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 . ${MY_DIR}/cyber_dojo_helpers.sh
 
@@ -39,7 +39,7 @@ test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_conta
 
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo up [OPTIONS]
 
 Creates and starts the cyber-dojo server using named/default start-points
@@ -68,8 +68,8 @@ Creates and starts the cyber-dojo server using named/default start-points
 
 test_____custom_start_point_prints_msg_saying_its_being_used()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-custom.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-custom.git"
   assertStartPointCreate ${name} --git=${url}
   assertUp --custom=${name}
   assertStdoutIncludes 'Using --languages=languages'
@@ -85,7 +85,7 @@ test_____custom_start_point_prints_msg_saying_its_being_used()
 
 test_____custom_port_prints_msg_saying_its_being_used()
 {
-  local port=8462
+  local readonly port=8462
   assertUp --port=${port}
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
@@ -137,7 +137,7 @@ test_____missing_port()
 
 test_____named_languages_does_not_exist()
 {
-  local name=notExist
+  local readonly name=notExist
   refuteUp --languages=${name}
   assertNoStdout
   assertStderrEquals "FAILED: start-point ${name} does not exist"
@@ -147,7 +147,7 @@ test_____named_languages_does_not_exist()
 
 test_____named_custom_does_not_exist()
 {
-  local name=notExist
+  local readonly name=notExist
   refuteUp --custom=${name}
   assertNoStdout
   assertStderrEquals "FAILED: start-point ${name} does not exist"
@@ -157,7 +157,7 @@ test_____named_custom_does_not_exist()
 
 test_____named_exercises_does_not_exist()
 {
-  local name=notExist
+  local readonly name=notExist
   refuteUp --exercises=${name}
   assertNoStdout
   assertStderrEquals "FAILED: start-point ${name} does not exist"
@@ -167,7 +167,7 @@ test_____named_exercises_does_not_exist()
 
 test_____named_exercises_is_not_exercise_type()
 {
-  local name=jj
+  local readonly name=jj
   local url=https://github.com/cyber-dojo/start-points-custom.git
   assertStartPointCreate ${name} --git=${url}
   refuteUp --exercises=${name}
@@ -180,7 +180,7 @@ test_____named_exercises_is_not_exercise_type()
 
 test_____unknown_arg()
 {
-  local name=salmon
+  local readonly name=salmon
   refuteUp ${name}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${name}]"
@@ -190,8 +190,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local arg1=--spey
-  local arg2=--tay
+  local readonly arg1=--spey
+  local readonly arg2=--tay
   refuteUp ${arg1}=A ${arg2}=B
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"
