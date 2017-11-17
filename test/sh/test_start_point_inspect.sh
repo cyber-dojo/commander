@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 . ${MY_DIR}/cyber_dojo_helpers.sh
 
@@ -14,7 +14,7 @@ test___success() { :; }
 
 test_____no_args_or_help_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo start-point inspect NAME
 
 Displays details of the named start-point"
@@ -31,7 +31,7 @@ Displays details of the named start-point"
 
 test_____custom_start_point_prints_details()
 {
-  local name=ok
+  local readonly name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   assertStartPointInspect ${name}
   assertStdoutIncludes 'MAJOR_NAME'
@@ -47,7 +47,7 @@ test_____custom_start_point_prints_details()
 
 test_____exercises_start_point_prints_details()
 {
-  local name=ok
+  local readonly name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-exercises.git
   assertStartPointInspect ${name}
   assertStdoutIncludes 'Fizz Buzz'
@@ -63,7 +63,7 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  local name=absent
+  local readonly name=absent
   refuteStartPointInspect ${name}
   assertNoStdout
   assertStderrEquals "FAILED: ${name} does not exist."
@@ -73,7 +73,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local name=notStartPoint
+  local readonly name=notStartPoint
   docker volume create --name ${name} > /dev/null
   refuteStartPointInspect ${name}
   docker volume rm ${name} > /dev/null
@@ -85,8 +85,8 @@ test_____present_but_not_a_start_point()
 
 test_____unknown_arg()
 {
-  local name=ok
-  local arg=wibble
+  local readonly name=ok
+  local readonly arg=wibble
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   refuteStartPointInspect ${name} ${arg}
   assertNoStdout
@@ -98,9 +98,9 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local name=ok
-  local arg1=springer
-  local arg2=salmon
+  local readonly name=ok
+  local readonly arg1=springer
+  local readonly arg2=salmon
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   refuteStartPointInspect ${name} ${arg1} ${arg2}
   assertNoStdout

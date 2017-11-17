@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +14,7 @@ test___success() { :; }
 
 test_____no_arg_or_help_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo start-point latest NAME
 
 Re-pulls already pulled docker images inside the named start-point"
@@ -31,7 +33,7 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  local name=absent
+  local readonly name=absent
   refuteStartPointLatest ${name}
   assertNoStdout
   assertStderrEquals "FAILED: ${name} does not exist."
@@ -41,7 +43,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local name=notStartPoint
+  local readonly name=notStartPoint
   docker volume create --name ${name} > /dev/null
   refuteStartPointLatest ${name}
   assertNoStdout
@@ -53,9 +55,9 @@ test_____present_but_not_a_start_point()
 
 test_____unknown_arg()
 {
-  local name=ok
+  local readonly name=ok
+  local readonly arg=salmon
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  local arg=salmon
   refuteStartPointLatest ${name} ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
@@ -66,10 +68,10 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local name=ok
+  local readonly name=ok
+  local readonly arg1=salmon
+  local readonly arg2=parr
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  local arg1=salmon
-  local arg2=parr
   refuteStartPointLatest ${name} ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"
@@ -79,5 +81,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

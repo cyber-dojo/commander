@@ -4,7 +4,9 @@
 #   o) if you do not have a network connection
 #   o) if github is down
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 test_START_POINT_CREATE_GIT() { :; }
 
@@ -14,8 +16,8 @@ test___success() { :; }
 
 test_____good_git_repo_with_new_name_creates_start_point_prints_url()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
   assertStartPointCreate ${name} --git=${url}
   assertStdoutIncludes ${url}
   assertNoStderr
@@ -29,8 +31,8 @@ test___failure() { :; }
 
 test_____name_already_exists()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
   assertStartPointCreate ${name} --git=${url}
   refuteStartPointCreate ${name} --git=${url}
   assertNoStdout
@@ -42,9 +44,9 @@ test_____name_already_exists()
 
 test_____bad_git_content()
 {
-  local name=bad
-  local repo='elm-test-bad-manifest-for-testing'
-  local url="https://github.com/cyber-dojo-languages/${repo}"
+  local readonly name=bad
+  local readonly repo='elm-test-bad-manifest-for-testing'
+  local readonly url="https://github.com/cyber-dojo-languages/${repo}"
   refuteStartPointExists ${name}
   refuteStartPointCreate ${name} --git=${url}
   assertStdoutIncludes ${url}
@@ -55,5 +57,5 @@ test_____bad_git_content()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

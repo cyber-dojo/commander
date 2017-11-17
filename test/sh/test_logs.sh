@@ -1,12 +1,14 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_LOGS() { :; }
 
-readonly help_text="
+readonly readonly help_text="
 Use: cyber-dojo logs SERVICE
 
 Prints the logs from a service container
@@ -38,7 +40,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local arg=salmon
+  local readonly arg=salmon
   refuteLogs ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: cyber-dojo-${arg} is not a running container"
@@ -55,5 +57,5 @@ test_____more_than_one_arg_prints_use()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

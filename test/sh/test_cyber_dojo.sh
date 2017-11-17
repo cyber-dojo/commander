@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +14,7 @@ test___success() { :; }
 
 test_____no_args_or_help_arg_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
@@ -43,14 +45,16 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local arg=unknown
+  local readonly arg=unknown
   ${exe} ${arg} >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
 }
 
+#TODO unknown args (plural)
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

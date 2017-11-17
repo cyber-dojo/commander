@@ -24,7 +24,7 @@ update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 assertStartPointCreate() { startPointCreate   $*; assertTrue  $?; }
 refuteStartPointCreate() { startPointCreate   $*; assertFalse $?; }
 
-assertStartPoint()        { startPoint        $*; assertTrue  $?; }
+assertStartPoint()        { startPoint        $*; assert  $?; }
 refuteStartPoint()        { startPoint        $*; assertFalse $?; }
 
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
@@ -79,19 +79,7 @@ refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertTruth() # assert?
-{
-  if [ "$1" != "0" ]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    echo "<stderr>"
-    cat ${stderrF}
-    echo "</stderr>"
-  fi
-}
-
-refuteTruth() # refute?
+assert()
 {
   if [ "$1" == "0" ]; then
     echo "<stdout>"
@@ -100,5 +88,21 @@ refuteTruth() # refute?
     echo "<stderr>"
     cat ${stderrF}
     echo "</stderr>"
+    #TODO: print 'original' arguments
+    assertTrue 1
+  fi
+}
+
+refute()
+{
+  if [ "$1" == "0" ]; then
+    echo "<stdout>"
+    cat ${stdoutF}
+    echo "</stdout>"
+    echo "<stderr>"
+    cat ${stderrF}
+    echo "</stderr>"
+    #TODO: print 'original' arguments
+    assertFalse 0
   fi
 }

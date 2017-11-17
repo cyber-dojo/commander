@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -38,7 +40,7 @@ test___failure() { :; }
 
 test_____arg_is_not_a_running_container()
 {
-  local arg=wibble
+  local readonly arg=wibble
   refuteSh ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: cyber-dojo-${arg} is not a running container"
@@ -53,5 +55,5 @@ test_____more_than_one_arg_prints_use()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

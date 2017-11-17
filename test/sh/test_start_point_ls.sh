@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -12,7 +14,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo start-point [OPTIONS] ls
 
 Lists the name, type, and source of all cyber-dojo start-points
@@ -43,8 +45,8 @@ test_____quiet_arg_prints_nothing_when_no_volumes()
 
 test_____quiet_arg_prints_just_names_when_volumes_exist()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
   assertStartPointCreate ${name} --git=${url}
   assertStartPointLs --quiet
   assertStdoutEquals 'jj'
@@ -57,8 +59,8 @@ test_____quiet_arg_prints_just_names_when_volumes_exist()
 
 test_____no_arg_prints_heading_and_names_types_sources()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
   assertStartPointCreate ${name} --git=${url}
   assertStartPointLs
   assertStdoutIncludes 'NAME   TYPE        SRC'
@@ -76,7 +78,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local arg=salmo
+  local readonly arg=salmo
   refuteStartPointLs ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
@@ -86,8 +88,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local arg1=salmon
-  local arg2=spey
+  local readonly arg1=salmon
+  local readonly arg2=spey
   refuteStartPointLs ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"
@@ -96,5 +98,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

@@ -4,7 +4,9 @@
 #   o) if you do not have a network connection
 #   o) if github is down
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,8 +18,8 @@ test___success() { :; }
 
 test_____new_name_list_from_path_creates_start_point_prints_each_url()
 {
-  local name=jj
-  local url=`absPath ./../rb/example_start_points/languages_list`
+  local readonly name=jj
+  local readonly url=`absPath ${MY_DIR}/../rb/example_start_points/languages_list`
   assertStartPointCreate ${name} --list=${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
@@ -30,8 +32,8 @@ test_____new_name_list_from_path_creates_start_point_prints_each_url()
 
 test_____new_name_list_from_file_url_creates_start_point_prints_each_url()
 {
-  local name=jj
-  local url=`absPath ./../rb/example_start_points/languages_list`
+  local readonly name=jj
+  local readonly url=`absPath ${MY_DIR}/../rb/example_start_points/languages_list`
   assertStartPointCreate ${name} --list=file://${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
@@ -44,8 +46,8 @@ test_____new_name_list_from_file_url_creates_start_point_prints_each_url()
 
 test_____new_name_list_from_network_url_creates_start_point_prints_each_url()
 {
-  local name=jj
-  local url=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list_test
+  local readonly name=jj
+  local readonly url=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list_test
   assertStartPointCreate ${name} --list=${url}
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/elm-test'
   assertStdoutIncludes 'https://github.com/cyber-dojo-languages/haskell-hunit'
@@ -60,8 +62,8 @@ test___failure() { :; }
 
 test_____pathed_file_does_not_exist()
 {
-  local name=jj
-  local file=/does/not/exist
+  local readonly name=jj
+  local readonly file=/does/not/exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
   assertStderrEquals "FAILED: ${file} does not exist"
@@ -71,8 +73,8 @@ test_____pathed_file_does_not_exist()
 
 test_____file_url_does_not_exist()
 {
-  local name=jj
-  local file=file:///does/not/exist
+  local readonly name=jj
+  local readonly file=file:///does/not/exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
   assertStderrEquals "FAILED: ${file} does not exist"
@@ -82,8 +84,8 @@ test_____file_url_does_not_exist()
 
 test_____network_url_does_not_exist()
 {
-  local name=jj
-  local file=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/does_not_exist
+  local readonly name=jj
+  local readonly file=https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/does_not_exist
   refuteStartPointCreate ${name} --list=${file}
   assertNoStdout
   assertStderrEquals "FAILED: ${file} does not exist"
@@ -93,8 +95,8 @@ test_____network_url_does_not_exist()
 
 test_____name_already_exists()
 {
-  local name=jj
-  local url="${github_cyber_dojo}/start-points-exercises.git"
+  local readonly name=jj
+  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
   assertStartPointCreate ${name} --git=${url}
   refuteStartPointCreate ${name} --list=${url}
   assertNoStdout
@@ -105,5 +107,5 @@ test_____name_already_exists()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

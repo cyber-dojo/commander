@@ -1,6 +1,8 @@
 #!/bin/bash
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,7 +19,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo clean
 
 Removes dangling docker images/volumes and exited containers"
@@ -30,12 +32,12 @@ Removes dangling docker images/volumes and exited containers"
 
 test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers()
 {
+  local readonly dangling_images=`docker images --quiet --filter='dangling=true'`
+  local readonly exited_containers=`docker ps --all --quiet --filter='status=exited'`
   assertClean
   assertNoStdout
   assertNoStderr
-  local dangling_images=`docker images --quiet --filter='dangling=true'`
   assertEquals "" "${dangling_images}"
-  local exited_containers=`docker ps --all --quiet --filter='status=exited'`
   assertEquals '' "${exited_containers}"
 }
 
@@ -45,7 +47,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local name=extra
+  local readonly name=extra
   refuteClean ${name}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${name}]"
@@ -55,8 +57,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local extra1=salmon
-  local extra2=parr
+  local readonly extra1=salmon
+  local readonly extra2=parr
   refuteClean ${extra1} ${extra2}
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${extra1}]"
@@ -65,5 +67,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2

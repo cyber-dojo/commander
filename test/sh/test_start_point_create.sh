@@ -4,7 +4,9 @@
 #   o) if you do not have a network connection
 #   o) if github is down
 
-. ./cyber_dojo_helpers.sh
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+
+. ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -16,7 +18,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
+  local readonly expected_stdout="
 Use: cyber-dojo start-point create NAME --list=URL|FILE
 Creates a start-point named NAME from git-clones of all the URLs listed in URL|FILE
 
@@ -45,7 +47,7 @@ test___failure() { :; }
 
 test_____name_first_letter()
 {
-  local arg=+bad
+  local readonly arg=+bad
   refuteStartPointCreate ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: ${arg} is an illegal NAME"
@@ -55,7 +57,7 @@ test_____name_first_letter()
 
 test_____name_second_letter()
 {
-  local arg=b+ad
+  local readonly arg=b+ad
   refuteStartPointCreate ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: ${arg} is an illegal NAME"
@@ -65,7 +67,7 @@ test_____name_second_letter()
 
 test_____name_one_letter_name()
 {
-  local name=b
+  local readonly name=b
   refuteStartPointCreate ${name}
   assertNoStdout
   assertStderrEquals "FAILED: ${name} is an illegal NAME"
@@ -84,7 +86,7 @@ test_____dir_and_git_args()
 
 test_____unknown_arg()
 {
-  local arg='--where'
+  local readonly arg='--where'
   refuteStartPointCreate jj ${arg}=tay
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
@@ -94,8 +96,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local arg1='--where'
-  local arg2='--there'
+  local readonly arg1='--where'
+  local readonly arg2='--there'
   refuteStartPointCreate jj ${arg1}=tay ${arg2}=x
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"
@@ -104,5 +106,5 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-. ./shunit2_helpers.sh
-. ./shunit2
+. ${MY_DIR}/shunit2_helpers.sh
+. ${MY_DIR}/shunit2
