@@ -24,7 +24,7 @@ update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 assertStartPointCreate() { startPointCreate   $*; assertTrue  $?; }
 refuteStartPointCreate() { startPointCreate   $*; assertFalse $?; }
 
-assertStartPoint()        { startPoint        $*; assert  $?; }
+assertStartPoint()        { startPoint        $*; assertTrue  $?; }
 refuteStartPoint()        { startPoint        $*; assertFalse $?; }
 
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
