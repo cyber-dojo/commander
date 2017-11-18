@@ -142,6 +142,11 @@ def one_time_creation_of_katas_data_volume
   # It doesn't do that any more. If you want to upgrade an older server
   # have a look at old-notes/copy_katas_into_data_container.sh in
   # https://github.com/cyber-dojo/cyber-dojo
+  #
+  # This one-time-creation could happen inside the storer-service.
+  # However, this would couple the storer service to docker so I
+  # choose to do it here in commander and keep storer loosely coupled.
+
   katas_data_container = 'cyber-dojo-katas-DATA-CONTAINER'
   command = "docker ps --all | grep -s #{katas_data_container} > /dev/null"
   run(command)
