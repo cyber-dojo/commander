@@ -41,3 +41,14 @@ main cyber-dojo server's
 [docker-compose.yml](https://github.com/cyber-dojo/commander/blob/master/docker-compose.yml)
 file.
 
+# env files
+
+- nginx.env
+- grafana.env
+- web.env
+This holds environment variables for the web service.
+To add a message to the UI footer-info-bar
+MESSAGE=your-message-here
+
+
+
