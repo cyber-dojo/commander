@@ -13,8 +13,7 @@ Use: cyber-dojo logs SERVICE
 
 Prints the logs from a service container
 Example: cyber-dojo logs web
-Example: cyber-dojo logs storer
-Example: cyber-dojo logs runner"
+Example: cyber-dojo logs storer"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -6,8 +6,7 @@ def cyber_dojo_logs
     '',
     'Prints the logs from a service container',
     "Example: #{me} logs web",
-    "Example: #{me} logs storer",
-    "Example: #{me} logs runner"
+    "Example: #{me} logs storer"
   ]
 
   service = ARGV[1]

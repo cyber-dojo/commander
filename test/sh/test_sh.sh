@@ -13,8 +13,7 @@ Use: cyber-dojo sh SERVICE
 
 Shells into a service container
 Example: cyber-dojo sh web
-Example: cyber-dojo sh storer
-Example: cyber-dojo sh runner"
+Example: cyber-dojo sh storer"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
