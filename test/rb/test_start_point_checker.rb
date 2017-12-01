@@ -403,6 +403,20 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # optional-key: max_seconds
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '982',
+  'invalid max_seconds is an error' do
+    @key = 'max_seconds'
+    assert_key_error 's'   , 'must be an int'
+    assert_key_error []    , 'must be an int'
+    assert_key_error -2    , 'must be an int > 0'
+    assert_key_error 0     , 'must be an int > 0'
+    assert_key_error 21    , 'must be an int <= 20'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # optional-key: progress_regexs
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -454,6 +468,7 @@ class StartPointCheckerTest < LibTestBase
     @key = 'tab_size'
     assert_key_error 's'   , 'must be an int'
     assert_key_error []    , 'must be an int'
+    assert_key_error -2    , 'must be an int > 0'
     assert_key_error 0     , 'must be an int > 0'
     assert_key_error 9     , 'must be an int <= 8'
   end

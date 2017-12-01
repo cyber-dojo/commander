@@ -61,6 +61,7 @@ class StartPointChecker
       check_filename_extension_is_valid
       check_tab_size_is_valid
       check_highlight_filenames_is_valid
+      check_max_seconds_is_valid
     end
     errors
   end
@@ -76,6 +77,7 @@ class StartPointChecker
         highlight_filenames
         progress_regexs
         tab_size
+        max_seconds
       )
   end
 
@@ -373,6 +375,25 @@ class StartPointChecker
 
   # - - - - - - - - - - - - - - - - - - - -
 
+  def check_max_seconds_is_valid
+    @key = 'max_seconds'
+    return if max_seconds.nil? # it's optional
+    unless max_seconds.is_a? Integer
+      error 'must be an int'
+      return
+    end
+    if max_seconds.to_i <= 0
+      error 'must be an int > 0'
+      return
+    end
+    if max_seconds.to_i > 20
+      error 'must be an int <= 20'
+      return
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
+
   def check_tab_size_is_valid
     @key = 'tab_size'
     return if tab_size.nil? # it's optional
@@ -380,7 +401,7 @@ class StartPointChecker
       error 'must be an int'
       return
     end
-    if tab_size.to_i == 0
+    if tab_size.to_i <= 0
       error 'must be an int > 0'
       return
     end
