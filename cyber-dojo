@@ -51,25 +51,19 @@ delegate_to_commander()
 
   if [ "${1}" = 'up' ];  then
     # env_file: for web in docker-compose.yml
-    local web_env='web.env'
-    local from="${my_dir}/${web_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${web_env}"
-      local volume_web_env_file="--volume=${from}:${to}"
+    local web_env="${my_dir}/web.env"
+    if [ -f ${web_env} ];  then
+      local volume_web_env_file="--volume=${web_env}:${web_env}:ro"
     fi
     # env_file: for nginx in docker-compose.yml
-    local nginx_env='nginx.env'
-    local from="${my_dir}/${nginx_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${nginx_env}"
-      local volume_nginx_env_file="--volume=${from}:${to}"
+    local nginx_env="${my_dir}/nginx.env"
+    if [ -f ${nginx_env} ];  then
+      local volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
     fi
     # env_file: for grafana in docker-compose.yml
-    local grafana_env='grafana.env'
-    local from="${my_dir}/${grafana_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${grafana_env}"
-      local volume_grafana_env_file="--volume=${from}:${to}"
+    local grafana_env="${my_dir}/grafana.env"
+    if [ -f ${grafana_env} ];  then
+      local volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
     fi
   fi
 
@@ -122,11 +116,11 @@ delegate_to_commander()
     local debug_option='--debug'
   fi
 
-  # the env_file volume mounts are for files.
-  # the start-point volume mount is for a dir.
-  # Don't collapse the multiple env file volume mounts into a single
-  # dir volume mount. If you do that the env dir and the start-point
-  # dir could co-incide and you'd get a [Duplicate mount point]
+  # The *.env file volume mounts are for files.
+  # The start-point volume mount is for a dir.
+  # Don't collapse the multiple *.env file volume mounts into a single
+  # dir volume mount. Do that and the *.env dir and the start-point
+  # dir could coincide and you'd get a [Duplicate mount point]
   # error from the docker daemon.
 
   docker run \
