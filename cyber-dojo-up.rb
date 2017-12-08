@@ -27,7 +27,7 @@ def cyber_dojo_up
     exit succeeded
   end
 
-  # unknown arguments?
+  # Unknown arguments?
   args = ARGV[1..-1]
   knowns = ['languages','exercises','custom','port']
   unknowns = args.select do |arg|
@@ -39,7 +39,7 @@ def cyber_dojo_up
   end
   exit failed unless unknowns == []
 
-  # explicit start-points?
+  # Explicit start-points?
   exit failed unless up_arg_ok(help, args, 'languages')  # --languages=NAME
   exit failed unless up_arg_ok(help, args, 'exercises')  # --exercises=NAME
   exit failed unless up_arg_ok(help, args,    'custom')  # --custom=NAME
@@ -59,7 +59,7 @@ def cyber_dojo_up
     port      = value if name == '--port'
   end
 
-  # create default start-points if necessary
+  # Create default start-points if necessary
   github_cyber_dojo = 'https://github.com/cyber-dojo'
   if languages == default_languages && !volume_exists?(default_languages)
     url='https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list'
@@ -78,12 +78,38 @@ def cyber_dojo_up
     cyber_dojo_start_point_create_list(default_custom, [ url ])
   end
 
+  sh_root = ENV['CYBER_DOJO_SH_ROOT']
+  env_root = ENV['CYBER_DOJO_ENV_ROOT']
+
+  # Write .env files to where docker-compose.yml expects them to be
+  unless File.exist?("#{sh_root}/grafana.env")
+    puts 'WARNING: Using default grafana admin password.'
+    puts 'To set your own password and remove this warning:'
+    puts '   1. Create a file grafana.env with contents'
+    puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
+    puts '      in the same directory as the cyber-dojo script.'
+    puts '   2. Re-issue the command [cyberdojo up ...]'
+  end
+
+  %w( grafana nginx web ).each do |name|
+    from = "#{sh_root}/#{name}.env"
+    to = "#{env_root}/#{name}.env"
+    if File.exist?(from)
+      puts "Using custom #{name}.env"
+      content = IO.read(from)
+      File.open(to, 'w') { |file| file.write(content) }
+    else
+      puts "Using default #{name}.env"
+    end
+  end
+
   # Bring up server with volumes
   STDOUT.puts "Using --languages=#{languages}"
   STDOUT.puts "Using --exercises=#{exercises}"
   STDOUT.puts "Using --custom=#{custom}"
   STDOUT.puts "Using --port=#{port}"
   env_vars = {
+    'CYBER_DOJO_ENV_ROOT' => env_root,
     'CYBER_DOJO_START_POINT_LANGUAGES' => languages,
     'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
     'CYBER_DOJO_START_POINT_CUSTOM' => custom,

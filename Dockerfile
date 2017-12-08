@@ -60,8 +60,7 @@ RUN set -x && \
     docker-compose version && \
     \
     # Clean-up
-apk del .deps
-
+    apk del .deps
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --git=...] requires git clone
@@ -78,6 +77,11 @@ RUN adduser -D -H -u 19661 cyber-dojo
 ARG HOME_DIR=/app
 COPY . ${HOME_DIR}
 WORKDIR ${HOME_DIR}
+# make sure default .env files can be overwritten
+ARG CYBER_DOJO_ENV_ROOT=/tmp/app
+RUN mkdir ${CYBER_DOJO_ENV_ROOT} \
+  && cp -r ${HOME_DIR}/defaults.env/* ${CYBER_DOJO_ENV_ROOT} \
+  && chmod -R a+w ${CYBER_DOJO_ENV_ROOT}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # install tini (for pid 1 zombie reaping)

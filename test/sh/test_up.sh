@@ -15,6 +15,9 @@ test___success() { :; }
 test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_containers()
 {
   assertUp
+  assertStdoutIncludes 'Using default grafana.env'
+  assertStdoutIncludes 'Using default nginx.env'
+  assertStdoutIncludes 'Using default web.env'
   assertStdoutIncludes 'Using --languages=languages'
   assertStdoutIncludes 'Using --exercises=exercises'
   assertStdoutIncludes 'Using --custom=custom'

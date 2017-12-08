@@ -20,15 +20,6 @@ def cyber_dojo_sh
     exit failed
   end
 
-  name = "cyber-dojo-#{service}"
-  unless service_running(name)
-    STDERR.puts "FAILED: #{name} is not a running container"
-    exit failed
-  end
-
-  puts "shelling into #{name}"
-  cmd = "export PS1='[cyber-dojo sh #{service}] \\w $ ';sh"
-  docker_cmd = "docker exec --interactive --tty #{name} sh -c \"#{cmd}\""
-  system(docker_cmd)
+  # [cyber-dojo] script does the actual [sh]
 
 end

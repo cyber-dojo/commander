@@ -132,7 +132,6 @@ def exit_unless_is_cyber_dojo_volume(vol, command)
     STDERR.puts "FAILED: #{vol} does not exist."
     exit failed
   end
-
   unless cyber_dojo_volume? vol
     STDERR.puts "FAILED: #{vol} is not a cyber-dojo start-point."
     exit failed

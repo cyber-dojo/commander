@@ -5,28 +5,31 @@
 # the cyber-dojo commander container.
 # However, four commands have to be handled locally. Viz:
 #
-#  1) ./cyber-dojo update
-#  2) ./cyber-dojo start-point create NAME --dir=DIR
-#  3) ./cyber-dojo start-point create NAME --list=FILE
+#  1) ./cyber-dojo sh
+#  2) ./cyber-dojo update
+#  3) ./cyber-dojo start-point create NAME --dir=DIR
+#  4) ./cyber-dojo start-point create NAME --list=FILE
 #
-#  1) ends by replacing this script.
-#  2) needs to volume mount DIR.
-#  3) needs to volume mount FILE
-
+#  1) provides an interactive terminal.
+#  2) ends by replacing this script.
+#  3) needs to volume mount DIR.
+#  4) needs to volume mount FILE
+#
 # requires: awk, curl, sed, grep which are
 # all in DockerToolbox Quickstart Terminal.
-
-# Re 2,3: If you're running Docker-Toolbox and are in the terminal
+#
+# Re 1: the docker run command could take --interactive --tty
+# options which should enable the sh command to be handled
+# by the commander container. Trying this out briefly shows
+# that it effects the captured output (trailing \r \n) which
+# breaks the sh tests.
+#
+# Re 3,4: If you're running Docker-Toolbox and are in the terminal
 # it will check the DIR/FILE __locally__ (eg on the Mac) but the volume-mount
 # will of course take place where the docker-daemon is running, which will
 # be on the default VM (thanks to the DOCKER_HOST et al env-vars).
 # In this case make sure the DIR/FILE is under /Users so that it will be
 # shared in the default VM and the volume mount will work.
-# These could be moved inside commander.
-
-# Re the .env file volume-mounts.
-# These too could be moved inside commander.
-# I would have to pass ${my_dir}.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -45,36 +48,6 @@ cyber_dojo_commander=cyberdojo/commander
 delegate_to_commander()
 {
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
-
-  if [ "${1}" = 'up' ];  then
-    # .env file for web?
-    local web_env='web.env'
-    local from="${my_dir}/${web_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${web_env}"
-      local volume_web_env_file="--volume=${from}:${to}"
-    fi
-    # .env file for nginx?
-    local nginx_env='nginx.env'
-    local from="${my_dir}/${nginx_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${nginx_env}"
-      local volume_nginx_env_file="--volume=${from}:${to}"
-    fi
-    # .env file for grafana?
-    local grafana_env='grafana.env'
-    local from="${my_dir}/${grafana_env}"
-    if [ -f ${from} ];  then
-      local to="/app/${grafana_env}"
-      local volume_grafana_env_file="--volume=${from}:${to}"
-    else
-      echo 'WARNING: Using default grafana admin password.'
-      echo 'To set your own password and remove this warning:'
-      echo "   1. Add a file ${grafana_env} with contents GF_SECURITY_ADMIN_PASSWORD=mypassword"
-      echo '      in the same directory as the cyber-dojo script.'
-      echo '   2. Re-issue the command [cyber-dojo up]'
-    fi
-  fi
 
   # start-point create
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
@@ -124,21 +97,42 @@ delegate_to_commander()
     local debug_option='--debug'
   fi
 
-  if [ "${1}" == 'sh' ]; then
-    local tty='--tty'
-  fi
-
   docker run \
     --rm \
-    --interactive \
-    ${tty} \
-    --env CYBER_DOJO_SH_ROOT=${my_dir} \
     --user=root \
+    --env CYBER_DOJO_SH_ROOT=${my_dir} \
+    --env CYBER_DOJO_ENV_ROOT=/tmp/app/ \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --volume=${my_dir}:${my_dir}:ro \
     ${volume_start_point_create} \
       ${cyber_dojo_commander} \
         /app/cyber-dojo.rb ${debug_option} $*
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+handle_sh_locally()
+{
+  local arg=${2}
+  local name=cyber-dojo-${arg}
+  if running_container ${name}; then
+    echo "shelling into ${name}"
+    local cmd="export PS1='[cyber-dojo sh ${arg}] \w $ ';sh"
+    docker exec --interactive --tty ${name} sh -c "${cmd}"
+  elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
+    exit_fail "${name} is not a running container"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+running_container()
+{
+  local space='\s'
+  local name=$1
+  local end_of_line='$'
+  docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
+  return $?
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -152,6 +146,8 @@ handle_update_locally()
     replace_myself
   fi
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 replace_myself()
 {
@@ -201,6 +197,9 @@ if [ $? != 0 ]; then
   exit_fail
 fi
 
+if [ "$1" = "sh" ]; then
+  handle_sh_locally $*
+fi
 if [ "$1" = 'update' ]; then
   handle_update_locally $*
 fi
