@@ -51,6 +51,14 @@ def read_only; 'ro'; end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def service_running(name)
+  # TODO: suppose a service name is a prefix of another.
+  # Do more accurate check. Shell did this...
+  # local space='\s'
+  # local name=$1
+  # local end_of_line='$'
+  # docker ps --filter "name=${name}" | \
+  #   grep "${space}${name}${end_of_line}" > /dev/null
+
   `docker ps --quiet --filter "name=#{name}"` != ''
 end
 

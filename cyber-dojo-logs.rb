@@ -20,11 +20,12 @@ def cyber_dojo_logs
     exit failed
   end
 
-  name = 'cyber-dojo-' + service
+  name = "cyber-dojo-#{service}"
   unless service_running(name)
     STDERR.puts "FAILED: #{name} is not a running container"
     exit failed
-  else
-    puts `docker logs #{name}`
   end
+
+  `docker logs #{name}`
+
 end
