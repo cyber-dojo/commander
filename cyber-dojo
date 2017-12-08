@@ -49,6 +49,30 @@ delegate_to_commander()
 {
   local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
 
+  if [ "${1}" = 'up' ];  then
+    # env_file: for web in docker-compose.yml
+    local web_env='web.env'
+    local from="${my_dir}/${web_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${web_env}"
+      local volume_web_env_file="--volume=${from}:${to}"
+    fi
+    # env_file: for nginx in docker-compose.yml
+    local nginx_env='nginx.env'
+    local from="${my_dir}/${nginx_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${nginx_env}"
+      local volume_nginx_env_file="--volume=${from}:${to}"
+    fi
+    # env_file: for grafana in docker-compose.yml
+    local grafana_env='grafana.env'
+    local from="${my_dir}/${grafana_env}"
+    if [ -f ${from} ];  then
+      local to="/app/${grafana_env}"
+      local volume_grafana_env_file="--volume=${from}:${to}"
+    fi
+  fi
+
   # start-point create
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
     local lhs=$(echo $4 | cut -f1 -s -d=)
@@ -56,10 +80,11 @@ delegate_to_commander()
 
     # --dir=DIR
     if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
-      if [ ! -d ${value} ]; then
+      if [ -d ${value} ]; then
+        local volume_start_point_create="--volume=${value}:${value}"
+      else
         exit_fail "dir ${value} does not exist"
       fi
-      local volume_start_point_create="--volume=${value}:${value}"
     fi
 
     # --list=LIST
@@ -97,13 +122,22 @@ delegate_to_commander()
     local debug_option='--debug'
   fi
 
+  # the env_file volume mounts are for files.
+  # the start-point volume mount is for a dir.
+  # Don't collapse the multiple env file volume mounts into a single
+  # dir volume mount. If you do that the env dir and the start-point
+  # dir could co-incide and you'd get a [Duplicate mount point]
+  # error from the docker daemon.
+
   docker run \
     --rm \
     --user=root \
     --env CYBER_DOJO_SH_ROOT=${my_dir} \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app/ \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    --volume=${my_dir}:${my_dir}:ro \
+    ${volume_grafana_env_file} \
+    ${volume_nginx_env_file} \
+    ${volume_web_env_file} \
     ${volume_start_point_create} \
       ${cyber_dojo_commander} \
         /app/cyber-dojo.rb ${debug_option} $*
