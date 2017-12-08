@@ -2,15 +2,11 @@ sudo: false
 services: docker
 language: node_js
 
-env:
-    global:
-        - DOCKER_COMPOSE_VERSION=1.8.1
-
 before_script:
     - curl -O https://raw.githubusercontent.com/cyber-dojo/cyber-dojo/master/shared/push_and_trigger.sh
     - chmod +x push_and_trigger.sh
 
 script:
     - docker-compose --version
-    - ./pipe_build_up_test.sh ${DOCKER_COMPOSE_VERSION} \
+    - ./pipe_build_up_test.sh \
         && ./push_and_trigger.sh cyber-dojo/system-tests
