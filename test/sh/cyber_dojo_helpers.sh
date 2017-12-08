@@ -1,5 +1,5 @@
 
-readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 readonly github_cyber_dojo='https://github.com/cyber-dojo'
 
