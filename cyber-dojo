@@ -109,7 +109,7 @@ set_start_point_create_volume()
   # --dir=DIR
   if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
     if [ -d ${value} ]; then
-      volume_start_point_create="--volume=${value}:${value}"
+      volume_start_point_create="--volume=${value}:${value}:ro"
     else
       exit_fail "dir ${value} does not exist"
     fi
@@ -123,13 +123,13 @@ set_start_point_create_volume()
 
     if [ "${first_letter}" = "/" ]; then
       if [ -f ${value} ]; then
-        volume_start_point_create="--volume=${value}:${value}"
+        volume_start_point_create="--volume=${value}:${value}:ro"
       else
         exit_fail "${value} does not exist"
       fi
     elif [ "${file_prefix}" = "file://" ]; then
       if [ -f ${file_suffix} ]; then
-        volume_start_point_create="--volume=${file_suffix}:${file_suffix}"
+        volume_start_point_create="--volume=${file_suffix}:${file_suffix}:ro"
       else
         exit_fail "${value} does not exist"
       fi
