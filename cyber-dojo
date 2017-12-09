@@ -87,11 +87,6 @@ delegate_to_commander()
       local file_prefix=$(printf %.7s $value)
       local file_suffix=${value#???????}
 
-      #echo "value=:${value}:"
-      #echo "first_letter=:${first_letter}:"
-      #echo "file_prefix=:${file_prefix}:"
-      #echo "file_suffix=:${file_suffix}:"
-
       if [ "${first_letter}" = "/" ]; then
         if [ -f ${value} ]; then
           local volume_start_point_create="--volume=${value}:${value}"
@@ -120,7 +115,7 @@ delegate_to_commander()
   # The start-point volume mount is for a dir.
   # Don't collapse the multiple *.env file volume mounts into a single
   # dir volume mount. Do that and the *.env dir and the start-point
-  # dir could coincide and you'd get a [Duplicate mount point]
+  # dir could coincide and you get a [Duplicate mount point]
   # error from the docker daemon.
 
   docker run \
