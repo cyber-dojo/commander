@@ -33,6 +33,11 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+readonly my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+readonly cyber_dojo_commander=cyberdojo/commander
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 exit_fail()
 {
   if [ "$*" != '' ]; then
@@ -43,80 +48,21 @@ exit_fail()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-cyber_dojo_commander=cyberdojo/commander
-
 delegate_to_commander()
 {
-  local my_dir="$( cd "$( dirname "${0}" )" && pwd )"
-
-  if [ "${1}" = 'up' ];  then
-    # env_file: for web in docker-compose.yml
-    local web_env="${my_dir}/web.env"
-    if [ -f ${web_env} ];  then
-      local volume_web_env_file="--volume=${web_env}:${web_env}:ro"
-    fi
-    # env_file: for nginx in docker-compose.yml
-    local nginx_env="${my_dir}/nginx.env"
-    if [ -f ${nginx_env} ];  then
-      local volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
-    fi
-    # env_file: for grafana in docker-compose.yml
-    local grafana_env="${my_dir}/grafana.env"
-    if [ -f ${grafana_env} ];  then
-      local volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
-    fi
-  fi
-
-  # start-point create
-  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-    local lhs=$(echo $4 | cut -f1 -s -d=)
-    local value=$(echo $4 | cut -f2 -s -d=)
-
-    # --dir=DIR
-    if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
-      if [ -d ${value} ]; then
-        local volume_start_point_create="--volume=${value}:${value}"
-      else
-        exit_fail "dir ${value} does not exist"
-      fi
-    fi
-
-    # --list=LIST
-    if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
-      local first_letter=$(printf %.1s $value)
-      local file_prefix=$(printf %.7s $value)
-      local file_suffix=${value#???????}
-
-      if [ "${first_letter}" = "/" ]; then
-        if [ -f ${value} ]; then
-          local volume_start_point_create="--volume=${value}:${value}"
-        else
-          exit_fail "${value} does not exist"
-        fi
-      elif [ "${file_prefix}" = "file://" ]; then
-        if [ -f ${file_suffix} ]; then
-          local volume_start_point_create="--volume=${file_suffix}:${file_suffix}"
-        else
-          exit_fail "${value} does not exist"
-        fi
-      else # network URL
-        if ! curl --output /dev/null --silent --head --fail "${value}"; then
-          exit_fail "${value} does not exist"
-        fi
-      fi # --list=file://
-    fi # --list
-  fi # start-point create
-
-  if [ "${debug_on}" = 'true' ]; then
-    local debug_option='--debug'
-  fi
-
   # The *.env file volume mounts are for files.
   # The start-point volume mount is for a dir.
   # Don't collapse the multiple *.env file volume mounts into a single
   # dir volume mount. Do that and the *.env dir and the start-point
   # dir could coincide and you get a [Duplicate mount point]
   # error from the docker daemon.
+
+  if [ "${1}" = 'up' ];  then
+    set_env_file_volumes
+  fi
+  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
+    set_start_point_create_volume $*
+  fi
 
   docker run \
     --rm \
@@ -130,6 +76,69 @@ delegate_to_commander()
     ${volume_start_point_create} \
       ${cyber_dojo_commander} \
         /app/cyber-dojo.rb ${debug_option} $*
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+set_env_file_volumes()
+{
+  # web:env_file: in docker-compose.yml
+  local web_env="${my_dir}/web.env"
+  if [ -f ${web_env} ];  then
+    volume_web_env_file="--volume=${web_env}:${web_env}:ro"
+  fi
+  # nginx:env_file: in docker-compose.yml
+  local nginx_env="${my_dir}/nginx.env"
+  if [ -f ${nginx_env} ];  then
+    volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
+  fi
+  # grafana:env_file: in docker-compose.yml
+  local grafana_env="${my_dir}/grafana.env"
+  if [ -f ${grafana_env} ];  then
+    volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+set_start_point_create_volume()
+{
+  local lhs=$(echo $4 | cut -f1 -s -d=)
+  local value=$(echo $4 | cut -f2 -s -d=)
+
+  # --dir=DIR
+  if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
+    if [ -d ${value} ]; then
+      volume_start_point_create="--volume=${value}:${value}"
+    else
+      exit_fail "dir ${value} does not exist"
+    fi
+  fi
+
+  # --list=LIST
+  if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
+    local first_letter=$(printf %.1s $value)
+    local file_prefix=$(printf %.7s $value)
+    local file_suffix=${value#???????}
+
+    if [ "${first_letter}" = "/" ]; then
+      if [ -f ${value} ]; then
+        volume_start_point_create="--volume=${value}:${value}"
+      else
+        exit_fail "${value} does not exist"
+      fi
+    elif [ "${file_prefix}" = "file://" ]; then
+      if [ -f ${file_suffix} ]; then
+        volume_start_point_create="--volume=${file_suffix}:${file_suffix}"
+      else
+        exit_fail "${value} does not exist"
+      fi
+    else # network URL
+      if ! curl --output /dev/null --silent --head --fail "${value}"; then
+        exit_fail "${value} does not exist"
+      fi
+    fi # --list=file://
+  fi # --list
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -195,10 +204,8 @@ fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" = '--debug' ]; then
-  debug_on='true'
+  debug_option='--debug'
   shift
-else
-  debug_on='false'
 fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
