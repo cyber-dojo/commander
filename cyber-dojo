@@ -5,8 +5,8 @@
 # the cyber-dojo commander container.
 # However, four commands have to be handled locally. Viz:
 #
-#  1) ./cyber-dojo sh
-#  2) ./cyber-dojo update
+#  1) ./cyber-dojo sh ...
+#  2) ./cyber-dojo update ...
 #  3) ./cyber-dojo start-point create NAME --dir=DIR
 #  4) ./cyber-dojo start-point create NAME --list=FILE
 #
@@ -22,7 +22,7 @@
 # options which should enable the sh command to be handled
 # by the commander container. Trying this out briefly shows
 # that it effects the captured output (trailing \r \n) which
-# breaks the sh tests.
+# breaks the sh tests. Maybe --attach to STDIN STDERR?
 #
 # Re 3,4: If you're running Docker-Toolbox and are in the terminal
 # it will check the DIR/FILE __locally__ (eg on the Mac) but the volume-mount
@@ -33,7 +33,7 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-readonly my_dir="$( cd "$( dirname "${0}" )" && pwd )"
+readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
 readonly cyber_dojo_commander=cyberdojo/commander
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,7 +57,7 @@ delegate_to_commander()
   # dir could coincide and you get a [Duplicate mount point]
   # error from the docker daemon.
 
-  if [ "${1}" = 'up' ];  then
+  if [ "$1" = 'up' ];  then
     set_env_file_volumes
   fi
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
@@ -145,7 +145,7 @@ set_start_point_create_volume()
 
 handle_sh_locally()
 {
-  local arg=${2}
+  local arg=$2
   local name=cyber-dojo-${arg}
   if running_container ${name}; then
     echo "shelling into ${name}"
