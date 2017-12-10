@@ -1,5 +1,10 @@
 #!/bin/sh
 
+# TODO: try --attach to STDIN STDERR and see if [cyber-dojo sh] can
+# be delegated.
+# TODO: drop tini install in comamnder's Dockerfile and add
+# --init to [docker run] in this file.
+
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
 # the cyber-dojo commander container.
@@ -22,7 +27,7 @@
 # options which should enable the sh command to be handled
 # by the commander container. Trying this out briefly shows
 # that it effects the captured output (trailing \r \n) which
-# breaks the sh tests. Maybe --attach to STDIN STDERR?
+# breaks the sh tests.
 #
 # Re 3,4: If you're running Docker-Toolbox and are in the terminal
 # it will check the DIR/FILE __locally__ (eg on the Mac) but the volume-mount
