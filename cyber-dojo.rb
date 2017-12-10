@@ -150,9 +150,11 @@ def one_time_creation_of_katas_data_volume
   # have a look at old-notes/copy_katas_into_data_container.sh in
   # https://github.com/cyber-dojo/cyber-dojo
   #
-  # This one-time-creation could happen inside the storer-service.
-  # However, this would couple the storer service to docker so I
-  # choose to do it here in commander and keep storer loosely coupled.
+  # This one-time-creation happens before the storer-service is started
+  # since the volume has to be mounted into the storer service.
+  # Viz, the storer-service cannot create its own volume. Or rather,
+  # it can create a volume, but it cannot then mount it into its own
+  # file-system.
 
   katas_data_container = 'cyber-dojo-katas-DATA-CONTAINER'
   command = "docker ps --all | grep -s #{katas_data_container} > /dev/null"
