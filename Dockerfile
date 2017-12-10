@@ -83,10 +83,3 @@ RUN mkdir ${CYBER_DOJO_ENV_ROOT} \
   && cp -r ${HOME_DIR}/defaults.env/* ${CYBER_DOJO_ENV_ROOT} \
   && chmod -R a+w ${CYBER_DOJO_ENV_ROOT}
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# install tini (for pid 1 zombie reaping)
-# https://github.com/krallin/tini
-
-RUN apk add --update --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ tini
-
-ENTRYPOINT [ "/sbin/tini", "--" ]

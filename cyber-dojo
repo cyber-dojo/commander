@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# TODO: drop tini install in comamnder's Dockerfile and add
-# --init to [docker run] in this file.
-
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
 # the cyber-dojo commander container.
@@ -68,6 +65,7 @@ delegate_to_commander()
   fi
 
   docker run \
+    --init \
     --rm \
     --user=root \
     --env CYBER_DOJO_SH_ROOT=${my_dir} \
