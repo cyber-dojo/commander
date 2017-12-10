@@ -73,7 +73,6 @@ delegate_to_commander()
     --rm \
     --user=root \
     --env CYBER_DOJO_SH_ROOT=${my_dir} \
-    --env CYBER_DOJO_ENV_ROOT=/tmp/app/ \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \

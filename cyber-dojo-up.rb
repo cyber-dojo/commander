@@ -79,7 +79,6 @@ def cyber_dojo_up
   end
 
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
-  env_root = ENV['CYBER_DOJO_ENV_ROOT']
 
   # Write .env files to where docker-compose.yml expects them to be
   unless File.exist?("#{sh_root}/grafana.env")
@@ -109,7 +108,7 @@ def cyber_dojo_up
   STDOUT.puts "Using --custom=#{custom}"
   STDOUT.puts "Using --port=#{port}"
   env_vars = {
-    'CYBER_DOJO_ENV_ROOT' => env_root,
+    'CYBER_DOJO_ENV_ROOT' => '/tmp/app', # must match in Dockerfile
     'CYBER_DOJO_START_POINT_LANGUAGES' => languages,
     'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
     'CYBER_DOJO_START_POINT_CUSTOM' => custom,
