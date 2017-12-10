@@ -149,6 +149,10 @@ set_start_point_create_volume()
 
 handle_sh_locally()
 {
+  if [ "$1" != "sh" ]; then
+    return
+  fi
+
   local arg=$2
   local name=cyber-dojo-${arg}
   if running_container ${name}; then
@@ -175,6 +179,10 @@ running_container()
 
 handle_update_locally()
 {
+  if [ "$1" != 'update' ]; then
+    return
+  fi
+
   if [ "$2" = '' ]; then
     replace_myself
   fi
@@ -226,14 +234,9 @@ fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander $*
-
 if [ $? != 0 ]; then
   exit_fail
 fi
 
-if [ "$1" = "sh" ]; then
-  handle_sh_locally $*
-fi
-if [ "$1" = 'update' ]; then
-  handle_update_locally $*
-fi
+handle_sh_locally $*
+handle_update_locally $*
