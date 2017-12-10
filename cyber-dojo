@@ -25,11 +25,12 @@
 # breaks the sh tests.
 #
 # Re 3,4: If you're running Docker-Toolbox and are in the terminal
-# it will check the DIR/FILE __locally__ (eg on the Mac) but the volume-mount
-# will of course take place where the docker-daemon is running, which will
-# be on the default VM (thanks to the DOCKER_HOST et al env-vars).
-# In this case make sure the DIR/FILE is under /Users so that it will be
-# shared in the default VM and the volume mount will work.
+# it will check the DIR/FILE __locally__ (eg on the Mac) but the
+# volume-mount will of course take place where the docker-daemon
+# is running, which will be on the default VM
+# (thanks to the DOCKER_HOST et al env-vars).
+# In this case ensure the DIR/FILE is under /Users/<user> so it
+# will be in the default VM so the volume mount will work.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
