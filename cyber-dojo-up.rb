@@ -89,7 +89,7 @@ def cyber_dojo_up
     puts '   2. Re-issue the command [cyberdojo up ...]'
   end
 
-  env_root = '/tmp/app' # must match Dockerfile
+  env_root = ENV['CYBER_DOJO_ENV_ROOT']
   %w( grafana nginx web ).each do |name|
     from = "#{sh_root}/#{name}.env"
     to = "#{env_root}/#{name}.env"

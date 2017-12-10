@@ -65,11 +65,13 @@ delegate_to_commander()
     set_start_point_create_volume $*
   fi
 
+  # CYBER_DOJO_ENV_ROOT must match Dockerfile
   docker run \
     --init \
     --rm \
     --user=root \
     --env CYBER_DOJO_SH_ROOT=${my_dir} \
+    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \

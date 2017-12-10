@@ -20,6 +20,7 @@ def cyber_dojo_down
   end
 
   env_vars = {
+    'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT'],
     'CYBER_DOJO_START_POINT_LANGUAGES' => default_languages,
     'CYBER_DOJO_START_POINT_EXERCISES' => default_exercises,
     'CYBER_DOJO_START_POINT_CUSTOM' => default_custom,
