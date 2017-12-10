@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# TODO: try --attach to STDIN STDERR and see if [cyber-dojo sh] can
-# be delegated.
 # TODO: drop tini install in comamnder's Dockerfile and add
 # --init to [docker run] in this file.
 
