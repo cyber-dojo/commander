@@ -49,6 +49,7 @@ def cyber_dojo_update_server
     runner_stateless
     runner_stateful
     runner_processful
+    starter
     storer
     differ
     collector

@@ -52,11 +52,12 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
+      - differ
       - runner_stateless
       - runner_stateful
       - runner_processful
+      - starter
       - storer
-      - differ
       - zipper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
@@ -64,6 +65,22 @@ services:
       - languages:${CYBER_DOJO_HOME}/start_points/languages:ro
       - exercises:${CYBER_DOJO_HOME}/start_points/exercises:ro
       - custom:${CYBER_DOJO_HOME}/start_points/custom:ro
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+
+  starter:
+    user: nobody
+    image: cyberdojo/starter
+    init: true
+    container_name: cyber-dojo-starter
+    read_only: true
+    tmpfs: /tmp
+    environment:
+      - CYBER_DOJO_START_POINTS_ROOT=${CYBER_DOJO_START_POINTS_ROOT}
+    volumes:
+      - languages:${CYBER_DOJO_START_POINTS_ROOT}/languages:ro
+      - exercises:${CYBER_DOJO_START_POINTS_ROOT}/exercises:ro
+      - custom:${CYBER_DOJO_START_POINTS_ROOT}/custom:ro
 
   # - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -98,6 +115,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
+
   runner_processful:
     user: root
     image: cyberdojo/runner_processful
