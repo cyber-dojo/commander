@@ -41,7 +41,7 @@ services:
   # main server (rails)
 
   web:
-    user: root
+    user: nobody
     image: cyberdojo/web
     init: true
     container_name: cyber-dojo-web
