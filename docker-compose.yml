@@ -70,6 +70,7 @@ services:
     image: cyberdojo/starter
     init: true
     container_name: cyber-dojo-starter
+    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     environment:
@@ -184,7 +185,7 @@ services:
   # provides tgz files of kata sessions
 
   zipper:
-    user: zipper
+    user: nobody
     image: cyberdojo/zipper
     init: true
     container_name: cyber-dojo-zipper
