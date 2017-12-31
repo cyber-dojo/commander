@@ -133,7 +133,7 @@ services:
   # stores code+tests for every test event
 
   storer:
-    user: cyber-dojo
+    user: storer
     image: cyberdojo/storer
     init: true
     container_name: cyber-dojo-storer
