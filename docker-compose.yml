@@ -73,6 +73,8 @@ services:
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
     environment:
       - CYBER_DOJO_START_POINTS_ROOT=${CYBER_DOJO_START_POINTS_ROOT}
     volumes:
