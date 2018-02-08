@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+# TODO: Needs an interrupt trap so that temp volumes can be deleted if
+#       there is a failure before the switch-over.
+
 readonly CMD='./cyber-dojo'
 
 readonly     LS="${CMD} start-point ls --quiet"
