@@ -90,7 +90,7 @@ def cyber_dojo_up
   end
 
   env_root = ENV['CYBER_DOJO_ENV_ROOT']
-  %w( grafana nginx web ).each do |name|
+  %w( grafana nginx web zipper ).each do |name|
     from = "#{sh_root}/#{name}.env"
     to = "#{env_root}/#{name}.env"
     if File.exist?(from)

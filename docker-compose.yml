@@ -199,6 +199,8 @@ services:
     restart: on-failure
     depends_on:
       - storer
+    env_file:
+      - ${CYBER_DOJO_ENV_ROOT}/zipper.env
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
