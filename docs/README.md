@@ -38,6 +38,7 @@ file.
 
 - nginx.env
 - grafana.env
+- zipper.env
 - web.env
 This holds environment variables for the web service.
 To add a message to the UI footer-info-bar
