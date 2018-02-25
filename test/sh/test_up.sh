@@ -21,7 +21,7 @@ test_____small_prints_two_start_points_and_port_and_creates_containers()
 
   assertUp --languages=small --port=${port}
 
-  assertStdoutIncludes 'checking images in languages all exist...'
+  assertStdoutIncludes "checking images in ${name} all exist..."
   assertStdoutIncludes '>>checking cyberdojofoundation/gcc_assert:latest'
   assertStdoutIncludes '>>checking cyberdojofoundation/python_unittest:latest'
 
