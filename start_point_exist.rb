@@ -43,12 +43,12 @@ end
 
 image_names = `docker images --format {{.Repository}}`.split - ['<none>']
 manifests_image_names.sort.uniq.each do |image_name|
-  puts ">>checking #{image_name}:latest"
+  STDOUT.puts ">>checking #{image_name}:latest"
   if image_names.include? image_name
-    puts ">>exists #{image_name}:latest"
+    STDOUT.puts ">>exists #{image_name}:latest"
   else
-    puts ">>!exists #{image_name}:latest"
-    puts ">>pulling #{image_name}:latest"
+    STDOUT.puts ">>!exists #{image_name}:latest"
+    STDOUT.puts ">>pulling #{image_name}:latest"
     system("docker pull #{image_name}:latest")
   end
 end
