@@ -17,9 +17,9 @@ test_____small_prints_two_start_points_and_port_and_creates_containers()
   local readonly port=8462
   local readonly name=small
   local readonly url=`absPath ${MY_DIR}/../rb/example_start_points/languages_list_small`
-  assertStartPointCreate ${name} --list=${url} --port=${port}
+  assertStartPointCreate ${name} --list=${url}
 
-  assertUp --languages=small
+  assertUp --languages=small --port=${port}
 
   assertStdoutIncludes 'checking images in languages all exist...'
   assertStdoutIncludes '>>checking cyberdojofoundation/gcc_assert:latest'
