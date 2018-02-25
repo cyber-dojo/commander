@@ -12,16 +12,36 @@ test_UP() { :; }
 
 test___success() { :; }
 
-test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_containers()
+test_____small_prints_two_start_points_and_port_and_creates_containers()
 {
-  assertUp
+  local readonly port=8462
+  local readonly name=small
+  local readonly url=`absPath ${MY_DIR}/../rb/example_start_points/languages_list_small`
+  assertStartPointCreate ${name} --list=${url} --port=${port}
+
+  assertUp --languages=small
+
+  assertStdoutIncludes 'checking images in languages all exist...'
+  assertStdoutIncludes '>>checking cyberdojofoundation/gcc_assert:latest'
+  assertStdoutIncludes '>>checking cyberdojofoundation/python_unittest:latest'
+
+  assertStdoutIncludes 'checking images in custom all exist...'
+  assertStdoutIncludes '>>checking cyberdojofoundation/csharp_nunit:latest'
+  assertStdoutIncludes '>>checking cyberdojofoundation/gpp_assert:latest'
+  assertStdoutIncludes '>>checking cyberdojofoundation/java_junit:latest'
+  assertStdoutIncludes '>>checking cyberdojofoundation/python_unittest:latest'
+  assertStdoutIncludes '>>checking cyberdojofoundation/ruby_test_unit:latest'
+
   assertStdoutIncludes 'Using default grafana.env'
   assertStdoutIncludes 'Using default nginx.env'
   assertStdoutIncludes 'Using default web.env'
-  assertStdoutIncludes 'Using --languages=languages'
+  assertStdoutIncludes 'Using default zipper.env'
+
+  assertStdoutIncludes "Using --languages=${name}"
   assertStdoutIncludes 'Using --exercises=exercises'
   assertStdoutIncludes 'Using --custom=custom'
-  assertStdoutIncludes 'Using --port=80'
+  assertStdoutIncludes "Using --port=${port}"
+
   assertStdoutIncludes 'Creating cyber-dojo-collector'
   assertStdoutIncludes 'Creating cyber-dojo-differ'
   assertStdoutIncludes 'Creating cyber-dojo-grafana'
@@ -37,6 +57,7 @@ test_____no_args_uses_and_prints_default_start_points_and_port_and_creates_conta
   assertStdoutIncludes 'Creating cyber-dojo-zipper'
   assertNoStderr
   assertDown
+  assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -66,37 +87,6 @@ Creates and starts the cyber-dojo server using named/default start-points
   assertUp --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____custom_start_point_prints_msg_saying_its_being_used()
-{
-  local readonly name=jj
-  local readonly url="${github_cyber_dojo}/start-points-custom.git"
-  assertStartPointCreate ${name} --git=${url}
-  assertUp --custom=${name}
-  assertStdoutIncludes 'Using --languages=languages'
-  assertStdoutIncludes 'Using --exercises=exercises'
-  assertStdoutIncludes "Using --custom=${name}"
-  assertStdoutIncludes 'Using --port=80'
-  assertNoStderr
-  assertDown
-  assertStartPointRm ${name}
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____custom_port_prints_msg_saying_its_being_used()
-{
-  local readonly port=8462
-  assertUp --port=${port}
-  assertStdoutIncludes 'Using --languages=languages'
-  assertStdoutIncludes 'Using --exercises=exercises'
-  assertStdoutIncludes 'Using --custom=custom'
-  assertStdoutIncludes "Using --port=${port}"
-  assertNoStderr
-  assertDown
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
