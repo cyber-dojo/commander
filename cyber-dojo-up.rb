@@ -78,6 +78,11 @@ def cyber_dojo_up
     cyber_dojo_start_point_create_list(default_custom, [ url ])
   end
 
+  # Ensure all docker images named in start-points
+  # exists (there is no image-pull on-demand).
+  cyber_dojo_start_point_exist(languages)
+  cyber_dojo_start_point_exist(custom)
+
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
   # Write .env files to where docker-compose.yml expects them to be
   unless File.exist?("#{sh_root}/grafana.env")
@@ -120,6 +125,24 @@ def cyber_dojo_up
   # It seems a successful [docker-compose up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def cyber_dojo_start_point_exist(vol)
+  command =
+  [
+    'docker run',
+    '--rm',
+    '--tty',
+    "--user=root",
+    "--volume=#{vol}:/data:#{read_only}",
+    '--volume=/var/run/docker.sock:/var/run/docker.sock',
+    "#{cyber_dojo_commander}",
+    "sh -c './start_point_exist.rb /data'"
+  ].join(space=' ')
+  STDOUT.puts "checking images in start-point [#{vol}] all exist..."
+  system(command)
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
