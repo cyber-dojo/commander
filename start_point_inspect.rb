@@ -6,13 +6,11 @@
 
 require 'json'
 
-major_name = 'MAJOR_NAME'
-minor_name = 'MINOR_NAME'
-image_name = 'IMAGE_NAME'
+display_name_title = 'DISPLAY_NAME'
+image_name_title   = 'IMAGE_NAME'
 
-$max_major = major_name
-$max_minor = minor_name
-$max_image = image_name
+$longest_display_name = display_name_title
+$longest_image_name = image_name_title
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -32,15 +30,13 @@ def spacer(longest, name)
   ' ' * (longest.size - name.size)
 end
 
-def inspect_line(major, minor, image, pulled)
-  major_spacer = spacer($max_major, major)
-  minor_spacer = spacer($max_minor, minor)
-  image_spacer = spacer($max_image, image)
+def inspect_line(display_name, image_name, pulled)
+  display_name_spacer = spacer($longest_display_name, display_name)
+  image_name_spacer = spacer($longest_image_name, image_name)
   gap = ' ' * 3
   line = ''
-  line += major + major_spacer + gap
-  line += minor + minor_spacer + gap
-  line += image + image_spacer + gap
+  line += display_name + display_name_spacer + gap
+  line += image_name + image_name_spacer + gap
   line += pulled
 end
 
@@ -73,13 +69,11 @@ def manifests_hash
   Dir.glob("#{path}/**/manifest.json").each do |filename|
     content = IO.read(filename)
     manifest = JSON.parse(content)
-    major, minor = manifest['display_name'].split(',').map { |s| s.strip }
+    display_name = manifest['display_name']
     image_name = manifest['image_name']
-    $max_major = max_size($max_major, major)
-    $max_minor = max_size($max_minor, minor)
-    $max_image = max_size($max_image, image_name)
-    hash[major] ||= {}
-    hash[major][minor] = {
+    $longest_display_name = max_size($longest_display_name, display_name)
+    $longest_image_name = max_size($longest_image_name, image_name)
+    hash[display_name] = {
       'image_name' => image_name,
       'pulled' => pulled.include?(image_name) ? 'yes' : 'no'
     }
@@ -112,10 +106,8 @@ if type == 'exercises'
   end
 else
   hash = manifests_hash
-  puts inspect_line(major_name, minor_name, image_name, 'PULLED?')
-  hash.sort.each do |major,minors|
-    minors.sort.each do |minor, hash|
-      puts inspect_line(major, minor, hash['image_name'], hash['pulled'])
-    end
+  puts inspect_line(display_name_title, image_name_title, 'PULLED?')
+  hash.sort.each do |display_name, property|
+    puts inspect_line(display_name, property['image_name'], property['pulled'])
   end
 end

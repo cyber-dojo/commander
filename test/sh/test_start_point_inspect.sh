@@ -34,11 +34,9 @@ test_____custom_start_point_prints_details()
   local readonly name=ok
   assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
   assertStartPointInspect ${name}
-  assertStdoutIncludes 'MAJOR_NAME'
-  assertStdoutIncludes 'MINOR_NAME'
+  assertStdoutIncludes 'DISPLAY_NAME'
   assertStdoutIncludes 'IMAGE_NAME'
-  assertStdoutIncludes 'Tennis refactoring'
-  assertStdoutIncludes 'C# NUnit'
+  assertStdoutIncludes 'Tennis refactoring, C# NUnit'
   assertNoStderr
   assertStartPointRm ${name}
 }
