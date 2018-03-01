@@ -8,7 +8,7 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 test_LOGS() { :; }
 
-readonly readonly help_text="
+readonly help_text="
 Use: cyber-dojo logs SERVICE
 
 Prints the logs from a service container
