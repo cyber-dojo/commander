@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck disable=SC2039  # In POSIX sh, 'local' is undefined.
 
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to
@@ -62,7 +63,7 @@ delegate_to_commander()
     set_env_file_volumes
   fi
   if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-    set_start_point_create_volume $*
+    set_start_point_create_volume "$@"
   fi
 
   # CYBER_DOJO_ENV_ROOT must match Dockerfile
@@ -70,16 +71,16 @@ delegate_to_commander()
     --init \
     --rm \
     --user=root \
-    --env CYBER_DOJO_SH_ROOT=${my_dir} \
+    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    ${volume_grafana_env_file} \
-    ${volume_nginx_env_file} \
-    ${volume_web_env_file} \
-    ${volume_zipper_env_file} \
-    ${volume_start_point_create} \
-      ${cyber_dojo_commander} \
-        /app/cyber-dojo.rb ${debug_option} $*
+    "${volume_grafana_env_file}" \
+    "${volume_nginx_env_file}" \
+    "${volume_web_env_file}" \
+    "${volume_zipper_env_file}" \
+    "${volume_start_point_create}" \
+      "${cyber_dojo_commander}" \
+        /app/cyber-dojo.rb "${debug_option}" "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,22 +89,22 @@ set_env_file_volumes()
 {
   # web:env_file: in docker-compose.yml
   local web_env="${my_dir}/web.env"
-  if [ -f ${web_env} ];  then
+  if [ -f "${web_env}" ];  then
     volume_web_env_file="--volume=${web_env}:${web_env}:ro"
   fi
   # nginx:env_file: in docker-compose.yml
   local nginx_env="${my_dir}/nginx.env"
-  if [ -f ${nginx_env} ];  then
+  if [ -f "${nginx_env}" ];  then
     volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
   fi
   # grafana:env_file: in docker-compose.yml
   local grafana_env="${my_dir}/grafana.env"
-  if [ -f ${grafana_env} ];  then
+  if [ -f "${grafana_env}" ];  then
     volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
   fi
   # zipper:env_file: in docker-compose.yml
   local zipper_env="${my_dir}/zipper.env"
-  if [ -f ${zipper_env} ];  then
+  if [ -f "${zipper_env}" ];  then
     volume_zipper_env_file="--volume=${zipper_env}:${zipper_env}:ro"
   fi
 }
@@ -112,12 +113,14 @@ set_env_file_volumes()
 
 set_start_point_create_volume()
 {
-  local lhs=$(echo $4 | cut -f1 -s -d=)
-  local value=$(echo $4 | cut -f2 -s -d=)
+  local lhs
+  local value
+  lhs=$(echo "$4" | cut -f1 -s -d=)
+  value=$(echo "$4" | cut -f2 -s -d=)
 
   # --dir=DIR
   if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
-    if [ -d ${value} ]; then
+    if [ -d "${value}" ]; then
       volume_start_point_create="--volume=${value}:${value}:ro"
     else
       exit_fail "dir ${value} does not exist"
@@ -126,18 +129,21 @@ set_start_point_create_volume()
 
   # --list=LIST
   if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
-    local first_letter=$(printf %.1s $value)
-    local file_prefix=$(printf %.7s $value)
-    local file_suffix=${value#???????}
+    local first_letter
+    local file_prefix
+    local file_suffix
+    first_letter=$(printf %.1s "$value")
+    file_prefix=$(printf %.7s "$value")
+    file_suffix=${value#???????}
 
     if [ "${first_letter}" = "/" ]; then
-      if [ -f ${value} ]; then
+      if [ -f "${value}" ]; then
         volume_start_point_create="--volume=${value}:${value}:ro"
       else
         exit_fail "${value} does not exist"
       fi
     elif [ "${file_prefix}" = "file://" ]; then
-      if [ -f ${file_suffix} ]; then
+      if [ -f "${file_suffix}" ]; then
         volume_start_point_create="--volume=${file_suffix}:${file_suffix}:ro"
       else
         exit_fail "${value} does not exist"
@@ -160,10 +166,10 @@ handle_sh_locally()
 
   local arg=$2
   local name=cyber-dojo-${arg}
-  if running_container ${name}; then
+  if running_container "${name}"; then
     echo "shelling into ${name}"
     local cmd="export PS1='[cyber-dojo sh ${arg}] \w $ ';sh"
-    docker exec --interactive --tty ${name} sh -c "${cmd}"
+    docker exec --interactive --tty "${name}" sh -c "${cmd}"
   elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
     exit_fail "${name} is not a running container"
   fi
@@ -201,12 +207,13 @@ handle_update_locally()
 replace_myself()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive ${cyber_dojo_commander} sh)
-  docker cp ${cid}:/app/cyber-dojo /tmp
-  docker rm ${cid} > /dev/null
+  local cid
+  cid=$(docker create --interactive ${cyber_dojo_commander} sh)
+  docker cp "${cid}":/app/cyber-dojo /tmp
+  docker rm "${cid}" > /dev/null
   local new_me=/tmp/cyber-dojo
   chmod +x ${new_me}
-  cp ${new_me} $0
+  cp ${new_me} "$0"
   rm ${new_me}
 }
 
@@ -238,10 +245,10 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-delegate_to_commander $*
+delegate_to_commander "$@"
 if [ $? != 0 ]; then
   exit_fail
 fi
 
-handle_sh_locally $*
-handle_update_locally $*
+handle_sh_locally "$@"
+handle_update_locally "$@"
