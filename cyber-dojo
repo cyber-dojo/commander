@@ -66,6 +66,8 @@ delegate_to_commander()
     set_start_point_create_volume "$@"
   fi
 
+  # shellcheck disable=SC2086
+  # 2086 == Double quote to prevent globbing and word splitting.
   # CYBER_DOJO_ENV_ROOT must match Dockerfile
   docker run \
     --init \
@@ -74,13 +76,13 @@ delegate_to_commander()
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    "${volume_grafana_env_file}" \
-    "${volume_nginx_env_file}" \
-    "${volume_web_env_file}" \
-    "${volume_zipper_env_file}" \
-    "${volume_start_point_create}" \
+    ${volume_grafana_env_file} \
+    ${volume_nginx_env_file} \
+    ${volume_web_env_file} \
+    ${volume_zipper_env_file} \
+    ${volume_start_point_create} \
       "${cyber_dojo_commander}" \
-        /app/cyber-dojo.rb "${debug_option}" "$@"
+        /app/cyber-dojo.rb ${debug_option} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -168,7 +170,7 @@ handle_sh_locally()
   local name=cyber-dojo-${arg}
   if running_container "${name}"; then
     echo "shelling into ${name}"
-    local cmd="export PS1='[cyber-dojo sh ${arg}] \w $ ';sh"
+    local cmd="export PS1='[cyber-dojo sh ${arg}] \\w $ ';sh"
     docker exec --interactive --tty "${name}" sh -c "${cmd}"
   elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
     exit_fail "${name} is not a running container"
@@ -245,8 +247,7 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-delegate_to_commander "$@"
-if [ $? != 0 ]; then
+if ! delegate_to_commander "$@"; then
   exit_fail
 fi
 
