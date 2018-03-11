@@ -150,7 +150,6 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - starter
       - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - -
