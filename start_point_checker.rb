@@ -20,7 +20,7 @@ class StartPointChecker
       return errors
     end
 
-    if !check_start_point_type_json_meets_its_spec(manifest)
+    unless check_start_point_type_json_meets_its_spec(manifest)
       return errors
     end
 
