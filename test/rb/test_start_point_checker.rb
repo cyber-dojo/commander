@@ -438,11 +438,13 @@ class StartPointCheckerTest < LibTestBase
   test '363',
   'invalid filename_extension is an error' do
     @key = 'filename_extension'
-    assert_key_error 1    , must_be_a_String
-    assert_key_error []   , must_be_a_String
+    assert_key_error 1    , must_be_a_String_or_Array_of_Strings
+    assert_key_error []   , must_be_a_String_or_Array_of_Strings
     assert_key_error ''   , is_empty
+    assert_key_error [''] , is_empty
     assert_key_error 'cs' , 'must start with a dot'
-    assert_key_error '.'  , 'must be more than just a dot'
+    assert_key_error ['cs'], 'must start with a dot'
+    assert_key_error ['.'] , 'must be more than just a dot'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -597,6 +599,10 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  def must_be_a_String_or_Array_of_Strings
+    'must be a String or Array of Strings'
+  end
 
   def is_empty
     'is empty'

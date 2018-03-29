@@ -355,20 +355,38 @@ class StartPointChecker
   def check_filename_extension_is_valid
     @key = 'filename_extension'
     return if filename_extension.nil? # it's optional
-    unless filename_extension.is_a? String
-      error 'must be a String'
+
+    target = filename_extension
+    if target.is_a?(String)
+      target = [ target ]
+    end
+
+    unless target.is_a? Array
+      error 'must be a String or Array of Strings'
       return
     end
-    if filename_extension == ''
+    unless target.size > 0
+      error 'must be a String or Array of Strings'
+      return
+    end
+    unless target.all? { |item| item.is_a?(String) }
+      error 'must be a String or Array of Strings'
+      return
+    end
+    if target.any? { |item| item == '' }
       error 'is empty'
       return
     end
-    if filename_extension[0] != '.'
+    if target.any? { |item| item[0] != '.' }
       error 'must start with a dot'
       return
     end
-    if filename_extension == '.'
+    if target.any? { |item| item == '.' }
       error 'must be more than just a dot'
+      return
+    end
+    if target.sort.uniq.size != target.size
+      error 'contains duplicate'
       return
     end
   end
