@@ -189,6 +189,8 @@ class StartPointCheckerTest < LibTestBase
     required_keys = %w( display_name
                         visible_filenames
                         image_name
+                        runner_choice
+                        filename_extension
                       )
     required_keys.each { |key| missing_require_key.call(key) }
   end
@@ -403,6 +405,23 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # required-key: filename_extension
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '363',
+  'invalid filename_extension is an error' do
+    @key = 'filename_extension'
+    assert_key_error 1    , must_be_a_String_or_Array_of_Strings
+    assert_key_error []   , must_be_a_String_or_Array_of_Strings
+    assert_key_error ''   , is_empty
+    assert_key_error [''] , is_empty
+    assert_key_error 'cs' , 'must start with a dot'
+    assert_key_error ['cs'], 'must start with a dot'
+    assert_key_error ['.'] , 'must be more than just a dot'
+    assert_key_error ['.h','.h'] , 'contains duplicates'
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # optional-key: max_seconds
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -429,22 +448,6 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error [1,2]           , 'must be an Array of 2 Strings'
     assert_key_error [bad_regex,'ok'], "cannot create regex from #{bad_regex}"
     assert_key_error ['ok',bad_regex], "cannot create regex from #{bad_regex}"
-  end
-
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  # optional-key: filename_extension
-  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  test '363',
-  'invalid filename_extension is an error' do
-    @key = 'filename_extension'
-    assert_key_error 1    , must_be_a_String_or_Array_of_Strings
-    assert_key_error []   , must_be_a_String_or_Array_of_Strings
-    assert_key_error ''   , is_empty
-    assert_key_error [''] , is_empty
-    assert_key_error 'cs' , 'must start with a dot'
-    assert_key_error ['cs'], 'must start with a dot'
-    assert_key_error ['.'] , 'must be more than just a dot'
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

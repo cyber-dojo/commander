@@ -88,6 +88,7 @@ class StartPointChecker
         visible_filenames
         image_name
         runner_choice
+        filename_extension
       )
   end
 
@@ -173,6 +174,8 @@ class StartPointChecker
   end
 
   # - - - - - - - - - - - - - - - - - - - -
+  # required keys
+  # - - - - - - - - - - - - - - - - - - - -
 
   def check_visible_filenames_is_valid
     @key = 'visible_filenames'
@@ -212,34 +215,6 @@ class StartPointChecker
 
   # - - - - - - - - - - - - - - - - - - - -
 
-  def check_highlight_filenames_is_valid
-    @key = 'highlight_filenames'
-    return if highlight_filenames.nil? # it's optional
-    # check its form
-    unless highlight_filenames.is_a? Array
-      error 'must be an Array of Strings'
-      return
-    end
-    unless highlight_filenames.all?{ |item| item.is_a? String }
-      error 'must be an Array of Strings'
-      return
-    end
-    # check all are visible
-    highlight_filenames.each do |h_filename|
-      if visible_filenames.none? {|v_filename| v_filename == h_filename }
-        error "'#{h_filename}' must be in visible_filenames"
-      end
-    end
-    # check no duplicates
-    highlight_filenames.uniq.each do |filename|
-      unless highlight_filenames.count(filename) == 1
-        error "duplicate '#{filename}'"
-      end
-    end
-  end
-
-  # - - - - - - - - - - - - - - - - - - - -
-
   def check_runner_choice_is_valid
     @key = 'runner_choice'
     return if runner_choice.nil? # required-key different check
@@ -268,6 +243,47 @@ class StartPointChecker
     end
     if parts[0].include?('-')
       error "'major,minor' major cannot contain hyphens(-)"
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def check_filename_extension_is_valid
+    @key = 'filename_extension'
+    return if filename_extension.nil? # required-key different check
+
+    target = filename_extension
+    if target.is_a?(String)
+      target = [ target ]
+    end
+
+    unless target.is_a? Array
+      error 'must be a String or Array of Strings'
+      return
+    end
+    unless target.size > 0
+      error 'must be a String or Array of Strings'
+      return
+    end
+    unless target.all? { |item| item.is_a?(String) }
+      error 'must be a String or Array of Strings'
+      return
+    end
+    if target.any? { |item| item == '' }
+      error 'is empty'
+      return
+    end
+    if target.any? { |item| item[0] != '.' }
+      error 'must start with a dot'
+      return
+    end
+    if target.any? { |item| item == '.' }
+      error 'must be more than just a dot'
+      return
+    end
+    if target.sort.uniq.size != target.size
+      error 'contains duplicates'
+      return
     end
   end
 
@@ -325,6 +341,36 @@ class StartPointChecker
   end
 
   # - - - - - - - - - - - - - - - - - - - -
+  # optional keys
+  # - - - - - - - - - - - - - - - - - - - -
+
+  def check_highlight_filenames_is_valid
+    @key = 'highlight_filenames'
+    return if highlight_filenames.nil? # it's optional
+    # check its form
+    unless highlight_filenames.is_a? Array
+      error 'must be an Array of Strings'
+      return
+    end
+    unless highlight_filenames.all?{ |item| item.is_a? String }
+      error 'must be an Array of Strings'
+      return
+    end
+    # check all are visible
+    highlight_filenames.each do |h_filename|
+      if visible_filenames.none? {|v_filename| v_filename == h_filename }
+        error "'#{h_filename}' must be in visible_filenames"
+      end
+    end
+    # check no duplicates
+    highlight_filenames.uniq.each do |filename|
+      unless highlight_filenames.count(filename) == 1
+        error "duplicate '#{filename}'"
+      end
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
 
   def check_progress_regexs_is_valid
     @key = 'progress_regexs'
@@ -347,47 +393,6 @@ class StartPointChecker
       rescue
         error "cannot create regex from #{s}"
       end
-    end
-  end
-
-  # - - - - - - - - - - - - - - - - - - - -
-
-  def check_filename_extension_is_valid
-    @key = 'filename_extension'
-    return if filename_extension.nil? # it's optional
-
-    target = filename_extension
-    if target.is_a?(String)
-      target = [ target ]
-    end
-
-    unless target.is_a? Array
-      error 'must be a String or Array of Strings'
-      return
-    end
-    unless target.size > 0
-      error 'must be a String or Array of Strings'
-      return
-    end
-    unless target.all? { |item| item.is_a?(String) }
-      error 'must be a String or Array of Strings'
-      return
-    end
-    if target.any? { |item| item == '' }
-      error 'is empty'
-      return
-    end
-    if target.any? { |item| item[0] != '.' }
-      error 'must start with a dot'
-      return
-    end
-    if target.any? { |item| item == '.' }
-      error 'must be more than just a dot'
-      return
-    end
-    if target.sort.uniq.size != target.size
-      error 'contains duplicate'
-      return
     end
   end
 
