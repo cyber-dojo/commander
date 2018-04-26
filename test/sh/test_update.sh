@@ -15,15 +15,9 @@ test___success() { :; }
 test_____help_arg_prints_use()
 {
   local readonly expected_stdout="
-Use: cyber-dojo update [OPTIONS]
+Use: cyber-dojo update
 
-Updates all cyber-dojo server and language images and the cyber-dojo script file
-
-  server      update the server images and the cyber-dojo script file
-              but not the current languages
-
-  languages   update the current languages but not the
-              server images or the cyber-dojo script file"
+Updates all cyber-dojo server and language images and the cyber-dojo script file"
 
   assertUpdate --help
   assertStdoutEquals "${expected_stdout}"

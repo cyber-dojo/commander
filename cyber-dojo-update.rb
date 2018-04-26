@@ -2,15 +2,9 @@
 def cyber_dojo_update
   help = [
     '',
-    "Use: #{me} update [OPTIONS]",
+    "Use: #{me} update",
     '',
     'Updates all cyber-dojo server and language images and the cyber-dojo script file',
-    '',
-    minitab + 'server      update the server images and the cyber-dojo script file',
-    minitab + '            but not the current languages',
-    '',
-    minitab + 'languages   update the current languages but not the',
-    minitab + '            server images or the cyber-dojo script file'
   ]
 
   if ARGV[1] == '--help'
@@ -20,21 +14,13 @@ def cyber_dojo_update
 
   # unknown arguments?
   args = ARGV[1..-1]
-  knowns = ['server','languages']
-  unknowns = args.select do |arg|
-    knowns.none? { |known| arg == known }
-  end
-  unknowns.each do |arg|
+  args.each do |arg|
     STDERR.puts "FAILED: unknown argument [#{arg}]"
   end
-  exit failed unless unknowns == []
+  exit failed unless args == []
 
-  if ARGV[1].nil? || ARGV[1] == 'server'
-    cyber_dojo_update_server
-  end
-  if ARGV[1].nil? || ARGV[1] == 'languages'
-    cyber_dojo_update_languages
-  end
+  cyber_dojo_update_server
+  cyber_dojo_update_languages
   # cyber-dojo script updates itself
 end
 
@@ -48,7 +34,6 @@ def cyber_dojo_update_server
     web
     runner_stateless
     runner_stateful
-    runner_processful
     starter
     storer
     differ
