@@ -33,7 +33,6 @@ def cyber_dojo_update_server
     nginx
     web
     runner-stateless
-    runner_stateful
     runner-stateful
     starter
     storer
