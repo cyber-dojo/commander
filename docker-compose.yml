@@ -53,7 +53,7 @@ services:
     restart: on-failure
     depends_on:
       - differ
-      - runner_stateless
+      - runner-stateless
       - runner_stateful
       - runner_processful
       - starter
@@ -85,9 +85,9 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - -
   # runners
 
-  runner_stateless:
+  runner-stateless:
     user: root
-    image: cyberdojo/runner_stateless
+    image: cyberdojo/runner-stateless
     init: true
     container_name: cyber-dojo-runner-stateless
     cpu_shares:  1024
