@@ -183,7 +183,7 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # garbage collects old volumes used by runner_stateful
+  # garbage collects old volumes used by runner-stateful
 
   collector:
     user: root
