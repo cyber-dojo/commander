@@ -38,7 +38,7 @@ RUN set -x && \
     # Install glibc on Alpine (required by docker-compose) from
     # https://github.com/sgerrand/alpine-pkg-glibc
     # See also https://github.com/gliderlabs/docker-alpine/issues/11
-    GLIBC_VERSION='2.23-r3' && \
+    GLIBC_VERSION='2.27-r0' && \
     curl -Lo /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
     curl -Lo glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-$GLIBC_VERSION.apk && \
     curl -Lo glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-bin-$GLIBC_VERSION.apk && \
