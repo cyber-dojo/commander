@@ -50,7 +50,7 @@ from_to()
 echo "===Cleaning out old images/volumes/containers"
 ${CMD} clean
 echo "===Updating server images"
-${UPDATE} server
+${UPDATE}
 
 if ${LS} | grep -q 'green_languages'; then
   from_to 'green' 'blue'
