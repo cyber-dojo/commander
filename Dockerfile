@@ -66,20 +66,30 @@ RUN set -x && \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --git=...] requires git clone
+# - - - - - - - - - - - - - - - - - - - - - -
+
 RUN apk add --update git
 
+# - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --list=...] requires curl
+# - - - - - - - - - - - - - - - - - - - - - -
+
 RUN apk add --update curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
+# - - - - - - - - - - - - - - - - - - - - - -
 
 RUN adduser -D -H -u 19661 cyber-dojo
 
 ARG HOME_DIR=/app
 COPY . ${HOME_DIR}
 WORKDIR ${HOME_DIR}
+
+# - - - - - - - - - - - - - - - - - - - - - -
 # make sure default .env files can be overwritten
+# - - - - - - - - - - - - - - - - - - - - - -
+
 ARG CYBER_DOJO_ENV_ROOT=/tmp/app
 RUN mkdir ${CYBER_DOJO_ENV_ROOT} \
   && cp -r ${HOME_DIR}/defaults.env/* ${CYBER_DOJO_ENV_ROOT} \
