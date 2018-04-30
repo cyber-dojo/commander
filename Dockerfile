@@ -54,7 +54,7 @@ RUN set -x && \
     apk add --no-cache -t .deps ca-certificates curl && \
     # Install docker-compose
     # https://docs.docker.com/compose/install/
-    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.18.0/docker-compose-Linux-x86_64 && \
+    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 && \
     curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
     chmod a+rx /usr/local/bin/docker-compose && \
     \
