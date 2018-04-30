@@ -66,15 +66,10 @@ RUN set -x && \
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --git=...] requires git clone
-# - - - - - - - - - - - - - - - - - - - - - -
-
-RUN apk add --update git
-
-# - - - - - - - - - - - - - - - - - - - - - -
 # [start-point create NAME --list=...] requires curl
 # - - - - - - - - - - - - - - - - - - - - - -
 
-RUN apk add --update curl
+RUN apk add --update git curl
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
