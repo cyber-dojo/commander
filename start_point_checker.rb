@@ -56,6 +56,7 @@ class StartPointChecker
       check_display_name_is_valid
       check_image_name_is_valid
       # optional
+      check_hidden_filenames_is_valid
       check_runner_choice_is_valid
       check_progress_regexs_is_valid
       check_filename_extension_is_valid
@@ -71,6 +72,7 @@ class StartPointChecker
   def known_keys
     %w( display_name
         visible_filenames
+        hidden_filenames
         image_name
         runner_choice
         filename_extension
@@ -344,6 +346,35 @@ class StartPointChecker
   # optional keys
   # - - - - - - - - - - - - - - - - - - - -
 
+  def check_hidden_filenames_is_valid
+    @key = 'hidden_filenames'
+    return if hidden_filenames.nil? # it's optional
+    # check its form
+    unless hidden_filenames.is_a? Array
+      error 'must be an Array of Strings'
+      return
+    end
+    unless hidden_filenames.all?{ |item| item.is_a? String }
+      error 'must be an Array of Strings'
+      return
+    end
+    hidden_filenames.each do |s|
+      begin
+        Regexp.new(s)
+      rescue
+        error "cannot create regex from '#{s}'"
+      end
+    end
+    # check no duplicates
+    hidden_filenames.uniq.each do |filename|
+      unless hidden_filenames.count(filename) == 1
+        error "duplicate '#{filename}'"
+      end
+    end
+  end
+
+  # - - - - - - - - - - - - - - - - - - - -
+
   def check_highlight_filenames_is_valid
     @key = 'highlight_filenames'
     return if highlight_filenames.nil? # it's optional
@@ -391,7 +422,7 @@ class StartPointChecker
       begin
         Regexp.new(s)
       rescue
-        error "cannot create regex from #{s}"
+        error "cannot create regex from '#{s}'"
       end
     end
   end

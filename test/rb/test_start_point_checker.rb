@@ -163,7 +163,7 @@ class StartPointCheckerTest < LibTestBase
 
   test 'CC7',
   'unknown key is an error' do
-    @key = 'salmon'
+    @key = 'spectacles'
     assert_key_error 1, 'unknown key'
   end
 
@@ -422,6 +422,22 @@ class StartPointCheckerTest < LibTestBase
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  # optional-key: hidden_filenames
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  test '981',
+  'invalid hidden_filenames is an error' do
+    @key = 'hidden_filenames'
+    assert_key_error 's'   , must_be_an_Array_of_Strings
+    assert_key_error [ 1 ] , must_be_an_Array_of_Strings
+    assert_key_error -2    , must_be_an_Array_of_Strings
+    assert_key_error 0     , must_be_an_Array_of_Strings
+    assert_key_error 21    , must_be_an_Array_of_Strings
+    assert_key_error ['s','s'], "duplicate 's'"
+    assert_key_error ['*'], "cannot create regex from '*'"
+  end
+
+  # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   # optional-key: max_seconds
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -446,8 +462,8 @@ class StartPointCheckerTest < LibTestBase
     assert_key_error 1               , 'must be an Array of 2 Strings'
     assert_key_error []              , 'must be an Array of 2 Strings'
     assert_key_error [1,2]           , 'must be an Array of 2 Strings'
-    assert_key_error [bad_regex,'ok'], "cannot create regex from #{bad_regex}"
-    assert_key_error ['ok',bad_regex], "cannot create regex from #{bad_regex}"
+    assert_key_error [bad_regex,'ok'], "cannot create regex from '#{bad_regex}'"
+    assert_key_error ['ok',bad_regex], "cannot create regex from '#{bad_regex}'"
   end
 
   # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
