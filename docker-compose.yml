@@ -70,17 +70,19 @@ services:
     image: cyberdojo/starter
     init: true
     container_name: cyber-dojo-starter
+    expose: [ "${STARTER_SERVICE_PORT}" ]
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
     memswap_limit: 50M
     environment:
-      - CYBER_DOJO_START_POINTS_ROOT=${CYBER_DOJO_START_POINTS_ROOT}
+      - STARTER_SERVICE_PORT
+      - START_POINTS_ROOT
     volumes:
-      - languages:${CYBER_DOJO_START_POINTS_ROOT}/languages:ro
-      - exercises:${CYBER_DOJO_START_POINTS_ROOT}/exercises:ro
-      - custom:${CYBER_DOJO_START_POINTS_ROOT}/custom:ro
+      - languages:${START_POINTS_ROOT}/languages:ro
+      - exercises:${START_POINTS_ROOT}/exercises:ro
+      - custom:${START_POINTS_ROOT}/custom:ro
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # runners
