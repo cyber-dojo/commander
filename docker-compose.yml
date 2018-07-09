@@ -49,6 +49,10 @@ services:
     environment:
       - DIFFER_SERVICE_NAME=differ
       - DIFFER_SERVICE_PORT
+      - RUNNER_STATEFUL_SERVICE_NAME=runner-stateful
+      - RUNNER_STATEFUL_SERVICE_PORT
+      - RUNNER_STATELESS_SERVICE_NAME=runner-stateless
+      - RUNNER_STATELESS_SERVICE_PORT
       - STARTER_SERVICE_NAME=starter
       - STARTER_SERVICE_PORT
       - STORER_SERVICE_NAME=storer
@@ -61,8 +65,8 @@ services:
     restart: on-failure
     depends_on:
       - differ
-      - runner-stateless
       - runner-stateful
+      - runner-stateless
       - starter
       - storer
       - zipper
@@ -99,12 +103,15 @@ services:
     image: cyberdojo/runner-stateless
     init: true
     container_name: cyber-dojo-runner-stateless
+    expose: [ "${RUNNER_STATELESS_SERVICE_PORT}" ]
     cpu_shares:  1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
+    environment:
+      - RUNNER_STATELESS_SERVICE_PORT
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -115,12 +122,15 @@ services:
     image: cyberdojo/runner-stateful
     init: true
     container_name: cyber-dojo-runner-stateful
+    expose: [ "${RUNNER_STATEFUL_SERVICE_PORT}" ]
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
+    environment:
+      - RUNNER_STATEFUL_SERVICE_PORT
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
