@@ -29,17 +29,15 @@ RUN apk --update add --virtual build-dependencies build-base \
 RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# install docker-compose
-# https://github.com/wernight/docker-compose/blob/master/Dockerfile
+# Install glibc on Alpine (required by docker-compose) from
+# https://github.com/sgerrand/alpine-pkg-glibc
+# See also https://github.com/gliderlabs/docker-alpine/issues/11
 # - - - - - - - - - - - - - - - - - - - - - -
 
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates curl && \
-    # Install glibc on Alpine (required by docker-compose) from
-    # https://github.com/sgerrand/alpine-pkg-glibc
-    # See also https://github.com/gliderlabs/docker-alpine/issues/11
-    GLIBC_VERSION='2.27-r0' && \
-    curl -Lo /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sgerrand/alpine-pkg-glibc/master/sgerrand.rsa.pub && \
+    GLIBC_VERSION='2.28-r0' && \
+    curl -Lo /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
     curl -Lo glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-$GLIBC_VERSION.apk && \
     curl -Lo glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-bin-$GLIBC_VERSION.apk && \
     apk update && \
@@ -50,11 +48,15 @@ RUN set -x && \
     # Clean-up
     apk del .deps
 
+# - - - - - - - - - - - - - - - - - - - - - -
+# install docker-compose
+# https://docs.docker.com/compose/install/
+# https://github.com/wernight/docker-compose/blob/master/Dockerfile
+# - - - - - - - - - - - - - - - - - - - - - -
+
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates curl && \
-    # Install docker-compose
-    # https://docs.docker.com/compose/install/
-    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.21.0/docker-compose-Linux-x86_64 && \
+    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64 && \
     curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
     chmod a+rx /usr/local/bin/docker-compose && \
     \
