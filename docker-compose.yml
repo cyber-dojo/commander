@@ -46,20 +46,6 @@ services:
     init: true
     container_name: cyber-dojo-web
     cpu_shares: 1024
-    environment:
-      - DIFFER_SERVICE_NAME=differ
-      - DIFFER_SERVICE_PORT
-      - RUNNER_STATEFUL_SERVICE_NAME=runner-stateful
-      - RUNNER_STATEFUL_SERVICE_PORT
-      - RUNNER_STATELESS_SERVICE_NAME=runner-stateless
-      - RUNNER_STATELESS_SERVICE_PORT
-      - STARTER_SERVICE_NAME=starter
-      - STARTER_SERVICE_PORT
-      - STORER_SERVICE_NAME=storer
-      - STORER_SERVICE_PORT
-      - ZIPPER_SERVICE_NAME=zipper
-      - ZIPPER_SERVICE_PORT
-      - WEB_HOME
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
@@ -81,15 +67,11 @@ services:
     image: cyberdojo/starter
     init: true
     container_name: cyber-dojo-starter
-    expose: [ "${STARTER_SERVICE_PORT}" ]
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
     memswap_limit: 50M
-    environment:
-      - STARTER_SERVICE_PORT
-      - START_POINTS_ROOT
     volumes:
       - languages:${START_POINTS_ROOT}/languages:ro
       - exercises:${START_POINTS_ROOT}/exercises:ro
@@ -103,15 +85,12 @@ services:
     image: cyberdojo/runner-stateless
     init: true
     container_name: cyber-dojo-runner-stateless
-    expose: [ "${RUNNER_STATELESS_SERVICE_PORT}" ]
     cpu_shares:  1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
-    environment:
-      - RUNNER_STATELESS_SERVICE_PORT
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -122,15 +101,12 @@ services:
     image: cyberdojo/runner-stateful
     init: true
     container_name: cyber-dojo-runner-stateful
-    expose: [ "${RUNNER_STATEFUL_SERVICE_PORT}" ]
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
-    environment:
-      - RUNNER_STATEFUL_SERVICE_PORT
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
@@ -142,13 +118,9 @@ services:
     image: cyberdojo/storer
     init: true
     container_name: cyber-dojo-storer
-    expose: [ "${STORER_SERVICE_PORT}" ]
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
-    environment:
-      - STORER_SERVICE_PORT
-      - CYBER_DOJO_KATAS_ROOT
     volumes_from:
       - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
     mem_limit: 2G
@@ -165,15 +137,12 @@ services:
     image: cyberdojo/differ
     init: true
     container_name: cyber-dojo-differ
-    expose: [ "${DIFFER_SERVICE_PORT}" ]
     cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 1G
     memswap_limit: 1G
     restart: on-failure
-    environment:
-      - DIFFER_SERVICE_PORT
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # garbage collects old volumes used by runner-stateful
@@ -198,7 +167,6 @@ services:
     image: cyberdojo/zipper
     init: true
     container_name: cyber-dojo-zipper
-    expose: [ "${ZIPPER_SERVICE_PORT}" ]
     cpu_shares: 256
     read_only: true
     tmpfs: /tmp
@@ -207,9 +175,6 @@ services:
     restart: on-failure
     depends_on:
       - storer
-    environment:
-      - ZIPPER_SERVICE_PORT
-      - STORER_SERVICE_PORT
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/zipper.env
 
