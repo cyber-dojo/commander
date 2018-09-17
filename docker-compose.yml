@@ -55,6 +55,7 @@ services:
       - runner-stateless
       - starter
       - storer
+      - singler
       - zipper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
@@ -113,6 +114,17 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - -
   # stores code+tests for every test event
 
+  singler:
+    user: singler
+    image: cyberdojo/singler
+    init: true
+    container_name: cyber-dojo-singler
+    read_only: true
+    tmpfs: /tmp
+    restart: 'no'
+    volumes:
+      - /tmp/persistent-dir/ids:/persistent-dir/ids
+
   storer:
     user: storer
     image: cyberdojo/storer
@@ -123,6 +135,8 @@ services:
     tmpfs: /tmp
     volumes_from:
       - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+    #volumes:
+    #  - /persistent-dir/katas:/usr/src/cyber-dojo/katas:rw
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
