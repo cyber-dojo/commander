@@ -124,7 +124,7 @@ services:
     tmpfs: /tmp
     restart: 'no'
     volumes:
-      - /tmp/grouper/persistent-dir/ids:/persistent-dir/ids:rw
+      - /tmp/grouper/ids:/grouper/ids:rw
 
   singler:
     user: singler
@@ -135,7 +135,7 @@ services:
     tmpfs: /tmp
     restart: 'no'
     volumes:
-      - /tmp/singler/persistent-dir/ids:/persistent-dir/ids:rw
+      - /tmp/singler/ids:/singler/ids:rw
 
   storer:
     user: storer
