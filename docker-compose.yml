@@ -123,6 +123,8 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: 'no'
+    depends_on:
+      - prometheus
     volumes:
       - /tmp/grouper/ids:/grouper/ids:rw
 
@@ -134,6 +136,8 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: 'no'
+    depends_on:
+      - prometheus
     volumes:
       - /tmp/singler/ids:/singler/ids:rw
 
