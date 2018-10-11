@@ -126,7 +126,7 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - /tmp/grouper/ids:/grouper/ids:rw
+      - /tmp/groups:/groups:rw
 
   singler:
     user: singler
@@ -139,7 +139,7 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - /tmp/singler/ids:/singler/ids:rw
+      - /tmp/katas:/katas:rw
 
   storer:
     user: storer
