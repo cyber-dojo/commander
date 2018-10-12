@@ -56,7 +56,6 @@ services:
       - starter
       - storer
       - grouper
-      - singler
       - zipper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
@@ -113,7 +112,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # stores code+tests for every test event
+  # stores groups/katas and code+tests for every test event
 
   grouper:
     user: grouper
@@ -127,18 +126,6 @@ services:
       - prometheus
     volumes:
       - /tmp/groups:/groups:rw
-
-  singler:
-    user: singler
-    image: cyberdojo/singler
-    init: true
-    container_name: cyber-dojo-singler
-    read_only: true
-    tmpfs: /tmp
-    restart: 'no'
-    depends_on:
-      - prometheus
-    volumes:
       - /tmp/katas:/katas:rw
 
   storer:
