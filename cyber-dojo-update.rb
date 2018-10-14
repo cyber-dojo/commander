@@ -35,6 +35,7 @@ def cyber_dojo_update_server
     runner-stateless
     runner-stateful
     starter
+    saver
     storer
     differ
     collector

@@ -50,12 +50,11 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - differ
+      - starter
       - runner-stateful
       - runner-stateless
-      - starter
-      - storer
-      - grouper
+      - saver
+      - differ
       - zipper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
@@ -95,8 +94,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # - - - - - - - - - - - - - - - - - - - - - - -
-
   runner-stateful:
     user: root
     image: cyberdojo/runner-stateful
@@ -111,14 +108,26 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
 
+  collector:
+    user: root
+    image: cyberdojo/collector
+    init: true
+    container_name: cyber-dojo-collector
+    cpu_shares: 256
+    mem_limit: 1G
+    memswap_limit: 1G
+    restart: on-failure
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
   # - - - - - - - - - - - - - - - - - - - - - - -
   # stores groups/katas and code+tests for every test event
 
-  grouper:
-    user: grouper
-    image: cyberdojo/grouper
+  saver:
+    user: saver
+    image: cyberdojo/saver
     init: true
-    container_name: cyber-dojo-grouper
+    container_name: cyber-dojo-saver
     read_only: true
     tmpfs: /tmp
     restart: 'no'
@@ -127,24 +136,6 @@ services:
     volumes:
       - /tmp/groups:/groups:rw
       - /tmp/katas:/katas:rw
-
-  storer:
-    user: storer
-    image: cyberdojo/storer
-    init: true
-    container_name: cyber-dojo-storer
-    cpu_shares: 1024
-    read_only: true
-    tmpfs: /tmp
-    volumes_from:
-      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
-    #volumes:
-    #  - /persistent-dir/katas:/usr/src/cyber-dojo/katas:rw
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
-    depends_on:
-      - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # diffs all the files in two test events
@@ -162,21 +153,6 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # garbage collects old volumes used by runner-stateful
-
-  collector:
-    user: root
-    image: cyberdojo/collector
-    init: true
-    container_name: cyber-dojo-collector
-    cpu_shares: 256
-    mem_limit: 1G
-    memswap_limit: 1G
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
   # provides tgz files of kata sessions
 
   zipper:
@@ -191,7 +167,7 @@ services:
     memswap_limit: 50M
     restart: on-failure
     depends_on:
-      - storer
+      - saver
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/zipper.env
 
@@ -217,3 +193,25 @@ services:
       - ${CYBER_DOJO_ENV_ROOT}/grafana.env
     ports:
       - '3000:3000'
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # old saver
+  # Will be needed by porter
+
+  storer:
+    user: storer
+    image: cyberdojo/storer
+    init: true
+    container_name: cyber-dojo-storer
+    cpu_shares: 1024
+    read_only: true
+    tmpfs: /tmp
+    volumes_from:
+      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+    #volumes:
+    #  - /persistent-dir/katas:/usr/src/cyber-dojo/katas:rw
+    mem_limit: 2G
+    memswap_limit: 2G
+    restart: on-failure
+    depends_on:
+      - prometheus
