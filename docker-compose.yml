@@ -56,6 +56,7 @@ services:
       - saver
       - differ
       - zipper
+      - porter
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
 
@@ -153,7 +154,7 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # provides tgz files of kata sessions
+  # provides tgz files of practice sessions
 
   zipper:
     user: nobody
@@ -170,6 +171,24 @@ services:
       - saver
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/zipper.env
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # ports old-style katas (from storer) into saver
+
+  porter:
+    user: porter
+    image: cyberdojo/porter
+    init: true
+    container_name: cyber-dojo-porter
+    cpu_shares: 256
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
+    restart: on-failure
+    depends_on:
+      - saver
+      - storer
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
@@ -195,8 +214,6 @@ services:
       - '3000:3000'
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # old saver
-  # Will be needed by porter
 
   storer:
     user: storer
@@ -208,8 +225,6 @@ services:
     tmpfs: /tmp
     volumes_from:
       - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
-    #volumes:
-    #  - /persistent-dir/katas:/usr/src/cyber-dojo/katas:rw
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure

@@ -36,6 +36,7 @@ def cyber_dojo_update_server
     runner-stateful
     starter
     saver
+    porter
     storer
     differ
     collector
