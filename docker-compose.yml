@@ -186,6 +186,8 @@ services:
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
+    volumes:
+      - /tmp/id-map:/id-map:rw    
     depends_on:
       - saver
       - storer
