@@ -41,17 +41,17 @@ test_____no_args_stops_and_removes_server_containers()
   assertDown
 
   declare -a services=(
-    collector
     differ
     grafana
     nginx
     prometheus
-    runner-stateful
     runner-stateless
     starter
     storer
     web
     zipper
+    porter
+    saver
   )
   for service in "${services[@]}"
   do

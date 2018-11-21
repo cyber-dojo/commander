@@ -33,18 +33,18 @@ x_test_____pull_latest_images_for_all_services()
   # image from dockerhub which will overwrite the one created by
   # build.sh and the travis script will repush the old image!
   ${exe} update >${stdoutF} 2>${stderrF}
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/collector'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/grafana'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/prometheus'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateless'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-stateful'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/runner-processful'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/starter'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/storer'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/porter'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/saver'  
   assertNoStderr
 }
 

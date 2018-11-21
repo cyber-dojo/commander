@@ -42,18 +42,17 @@ test_____small_prints_two_start_points_and_port_and_creates_containers()
   assertStdoutIncludes 'Using --custom=custom'
   assertStdoutIncludes "Using --port=${port}"
 
-  assertStdoutIncludes 'Creating cyber-dojo-collector'
   assertStdoutIncludes 'Creating cyber-dojo-differ'
   assertStdoutIncludes 'Creating cyber-dojo-grafana'
   assertStdoutIncludes 'Creating cyber-dojo-prometheus'
   assertStdoutIncludes 'Creating cyber-dojo-nginx'
-  assertStdoutIncludes 'Creating cyber-dojo-runner'
   assertStdoutIncludes 'Creating cyber-dojo-runner-stateless'
-  assertStdoutIncludes 'Creating cyber-dojo-runner-stateful'
   assertStdoutIncludes 'Creating cyber-dojo-starter'
   assertStdoutIncludes 'Creating cyber-dojo-storer'
   assertStdoutIncludes 'Creating cyber-dojo-web'
   assertStdoutIncludes 'Creating cyber-dojo-zipper'
+  assertStdoutIncludes 'Creating cyber-dojo-saver'
+  assertStdoutIncludes 'Creating cyber-dojo-porter'
   assertNoStderr
   assertDown
   assertStartPointRm ${name}
@@ -195,4 +194,3 @@ test_____unknown_args()
 
 . ${MY_DIR}/shunit2_helpers.sh
 . ${MY_DIR}/shunit2
-

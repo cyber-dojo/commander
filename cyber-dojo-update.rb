@@ -33,13 +33,11 @@ def cyber_dojo_update_server
     nginx
     web
     runner-stateless
-    runner-stateful
     starter
     saver
     porter
     storer
     differ
-    collector
     zipper
     prometheus
     grafana

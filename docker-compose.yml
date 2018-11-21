@@ -51,7 +51,6 @@ services:
     restart: on-failure
     depends_on:
       - starter
-      - runner-stateful
       - runner-stateless
       - saver
       - differ
@@ -91,32 +90,6 @@ services:
     tmpfs: /tmp
     mem_limit: 2G
     memswap_limit: 2G
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  runner-stateful:
-    user: root
-    image: cyberdojo/runner-stateful
-    init: true
-    container_name: cyber-dojo-runner-stateful
-    cpu_shares: 1024
-    read_only: true
-    tmpfs: /tmp
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-
-  collector:
-    user: root
-    image: cyberdojo/collector
-    init: true
-    container_name: cyber-dojo-collector
-    cpu_shares: 256
-    mem_limit: 1G
-    memswap_limit: 1G
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -187,10 +160,29 @@ services:
     memswap_limit: 50M
     restart: on-failure
     volumes:
-      - /tmp/id-map:/id-map:rw    
+      - /tmp/id-map:/id-map:rw
     depends_on:
       - saver
       - storer
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # old katas
+
+  storer:
+    user: storer
+    image: cyberdojo/storer
+    init: true
+    container_name: cyber-dojo-storer
+    cpu_shares: 1024
+    read_only: true
+    tmpfs: /tmp
+    volumes_from:
+      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+    mem_limit: 2G
+    memswap_limit: 2G
+    restart: on-failure
+    depends_on:
+      - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
@@ -214,21 +206,3 @@ services:
       - ${CYBER_DOJO_ENV_ROOT}/grafana.env
     ports:
       - '3000:3000'
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-
-  storer:
-    user: storer
-    image: cyberdojo/storer
-    init: true
-    container_name: cyber-dojo-storer
-    cpu_shares: 1024
-    read_only: true
-    tmpfs: /tmp
-    volumes_from:
-      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
-    depends_on:
-      - prometheus
