@@ -45,7 +45,7 @@ test_____no_args_stops_and_removes_server_containers()
     grafana
     nginx
     prometheus
-    runner-stateless
+    runner
     starter
     storer
     web

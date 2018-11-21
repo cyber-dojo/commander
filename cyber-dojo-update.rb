@@ -32,13 +32,13 @@ def cyber_dojo_update_server
   service_images = %w(
     nginx
     web
-    runner-stateless
+    runner
     starter
     saver
-    porter
-    storer
     differ
     zipper
+    porter
+    storer
     prometheus
     grafana
   )

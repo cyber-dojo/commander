@@ -51,7 +51,7 @@ services:
     restart: on-failure
     depends_on:
       - starter
-      - runner-stateless
+      - runner
       - saver
       - differ
       - zipper
@@ -78,13 +78,13 @@ services:
       - custom:${START_POINTS_ROOT}/custom:ro
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runners
+  # runs tests in time-boxed container
 
-  runner-stateless:
+  runner:
     user: root
     image: cyberdojo/runner-stateless
     init: true
-    container_name: cyber-dojo-runner-stateless
+    container_name: cyber-dojo-runner
     cpu_shares:  1024
     read_only: true
     tmpfs: /tmp

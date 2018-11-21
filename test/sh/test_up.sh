@@ -46,7 +46,7 @@ test_____small_prints_two_start_points_and_port_and_creates_containers()
   assertStdoutIncludes 'Creating cyber-dojo-grafana'
   assertStdoutIncludes 'Creating cyber-dojo-prometheus'
   assertStdoutIncludes 'Creating cyber-dojo-nginx'
-  assertStdoutIncludes 'Creating cyber-dojo-runner-stateless'
+  assertStdoutIncludes 'Creating cyber-dojo-runner'
   assertStdoutIncludes 'Creating cyber-dojo-starter'
   assertStdoutIncludes 'Creating cyber-dojo-storer'
   assertStdoutIncludes 'Creating cyber-dojo-web'
