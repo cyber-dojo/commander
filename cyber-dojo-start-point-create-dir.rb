@@ -33,4 +33,3 @@ def cyber_dojo_start_point_create_dir(name, dir)
 ensure
   clean_up(cid, vol)
 end
-

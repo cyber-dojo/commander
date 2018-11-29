@@ -2,9 +2,10 @@
 # shellcheck disable=SC2039  # In POSIX sh, 'local' is undefined.
 
 # Controls a cyber-dojo web server.
-# The aim is for all commands to forward to
+# The aim is for all commands to forward to and run inside
 # the cyber-dojo commander container.
-# However, four commands have to be handled locally. Viz:
+# However, four commands have to be handled locally,
+# on the host server, outside of the container, viz:
 #
 #  1) ./cyber-dojo sh ...
 #  2) ./cyber-dojo update ...
@@ -22,7 +23,7 @@
 # Re 1: the docker run command could take --interactive --tty
 # options which should enable the sh command to be handled
 # by the commander container. Trying this out briefly shows
-# that it effects the captured output (trailing \r \n) which
+# that it affects the captured output (trailing \r \n) which
 # breaks the sh tests.
 #
 # Re 3,4: If you're running Docker-Toolbox and are in the terminal
