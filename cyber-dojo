@@ -235,7 +235,7 @@ check_host_volume_mount_permissions()
     echo "  The ${service} service (uid=${uid}) requires ownership of /cyber-dojo/${dir}/"
     echo '  Please run this command:'
     echo "  $ sudo chown -R ${uid}:${uid} /cyber-dojo/${dir}"
-    if [[ ! -z ${DOCKER_MACHINE_NAME} ]]; then
+    if [ ! -z ${DOCKER_MACHINE_NAME} ]; then
       echo '  You appear to be running Docker ToolBox.'
       echo '  If so, make sure you run this command on the VM.'
       echo '  For example:'
