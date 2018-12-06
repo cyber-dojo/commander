@@ -108,8 +108,8 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - /tmp/groups:/groups:rw
-      - /tmp/katas:/katas:rw
+      - /cyber-dojo/groups:/groups:rw
+      - /cyber-dojo/katas:/katas:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # diffs all the files in two test events
@@ -160,7 +160,7 @@ services:
     memswap_limit: 50M
     restart: on-failure
     volumes:
-      - /tmp/id-map:/id-map:rw
+      - /cyber-dojo/id-map:/id-map:rw
     depends_on:
       - saver
       - storer

@@ -248,6 +248,8 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#check_host_volume_mount_permissions
+
 if ! delegate_to_commander "$@"; then
   exit_fail
 fi
