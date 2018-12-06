@@ -22,7 +22,7 @@ Commands:
     sh           Shells into a service container
     start-point  Manages cyber-dojo start-points
     up           Brings up the server
-    update       Updates the server and/or languages to the latest images
+    update       Updates the server and languages to the latest images
 
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
@@ -50,4 +50,3 @@ MESSAGE=your-message-here
 * [Take me to http://cyber-dojo.org](http://cyber-dojo.org).
 
 ![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/master/shared/home_page_snapshot.png)
-
