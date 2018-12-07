@@ -25,7 +25,7 @@ Commands:
     sh           Shells into a service container
     start-point  Manages cyber-dojo start-points
     up           Brings up the server
-    update       Updates the server and/or languages to the latest images
+    update       Updates the server and languages to the latest images
 
 Run 'cyber-dojo COMMAND --help' for more information on a command."
   ${exe} >${stdoutF} 2>${stderrF}
