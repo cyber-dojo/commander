@@ -189,8 +189,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#DONT DO THIS. NO LONGER USING data-container
-#one_time_creation_of_katas_data_volume
+one_time_creation_of_katas_data_volume
 
 case ARGV[0]
   when nil             then cyber_dojo_help
