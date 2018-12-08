@@ -240,9 +240,9 @@ check_host_volume_mount_permissions()
       echo '  If so, make sure you run this command on the VM.'
       echo '  For example:'
       echo "  $ docker-machine ssh default 'sudo chown -R ${uid}:${uid} /cyber-dojo/${dir}'"
-      exit_fail
     fi
     echo
+    exit_fail
   else
     # tidy up by removing owner-probe file
     docker run \
