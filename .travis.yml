@@ -8,5 +8,11 @@ before_script:
 
 script:
     - docker-compose --version
+    - sudo mkdir -p /cyber-dojo/id-map
+    - sudo chown -R 19664 /cyber-dojo/id-map
+    - sudo mkdir -p /cyber-dojo/groups
+    - sudo chown -R 19663 /cyber-dojo/groups
+    - sudo mkdir -p /cyber-dojo/katas
+    - sudo chown -R 19663 /cyber-dojo/katas
     - travis_retry ./pipe_build_up_test.sh
     - travis_retry ./push_and_trigger.sh cyber-dojo/system-tests
