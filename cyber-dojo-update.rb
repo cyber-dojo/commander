@@ -12,6 +12,9 @@ def cyber_dojo_update
     exit succeeded
   end
 
+  STDERR.puts("Sorry. Update is currently disabled")
+  exit succeeded
+
   # unknown arguments?
   args = ARGV[1..-1]
   args.each do |arg|
