@@ -190,6 +190,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #one_time_creation_of_katas_data_volume
+#Note: turned off because porter will be a separate service.
 
 case ARGV[0]
   when nil             then cyber_dojo_help

@@ -261,8 +261,8 @@ check_host_volume_mount_permissions()
     echo
     exit_fail
   else
-    # The docker-run probe successfully created the
-    # probe-file. So now remove it.
+    # The docker-run-probe successfully created the
+    # probe-file. So remove it.
     docker run \
       --rm \
       --user=${uid} \
@@ -305,6 +305,12 @@ fi
 check_host_volume_mount_permissions saver  19663 katas
 check_host_volume_mount_permissions saver  19663 groups
 check_host_volume_mount_permissions porter 19664 id-map
+# Note: porter is (will be) a separated service, and when
+# it runs it will populate /cyber-dojo/id-map/ with the ids
+# of katas  whose ids changed when being ported (eg because
+# their id was not unique in its first 6 characters).
+# Ask for the /cyber-dojo/id-map/ chown now, rather than
+# delaying it, to get all 3 chowns done in one go.
 
 if ! delegate_to_commander "$@"; then
   exit_fail
