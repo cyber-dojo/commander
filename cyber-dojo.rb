@@ -201,7 +201,7 @@ case ARGV[0]
   when 'sh'            then cyber_dojo_sh
   when 'start-point'   then cyber_dojo_start_point
   when 'up'            then cyber_dojo_up
-  #when 'update'        then cyber_dojo_update
+  when 'update'        then cyber_dojo_update
   else
     STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed

@@ -47,10 +47,8 @@ test_____no_args_stops_and_removes_server_containers()
     prometheus
     runner
     starter
-    storer
     web
     zipper
-    porter
     saver
   )
   for service in "${services[@]}"

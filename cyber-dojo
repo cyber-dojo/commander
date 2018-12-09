@@ -290,8 +290,6 @@ fi
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" = 'update' ]; then
-  echo "Sorry. Update is currently disabled"
-  exit_fail
   if [ "$2" = '' ]; then
     docker pull ${cyber_dojo_commander}
   fi
