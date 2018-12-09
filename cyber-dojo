@@ -232,6 +232,7 @@ check_host_volume_mount_permissions()
 
   result=$?
   if [ "${result}" != "0" ]; then
+    echo
     echo "  The ${service} service (uid=${uid}) requires ownership of /cyber-dojo/${dir}/"
     echo '  Please run this command:'
     echo "  $ sudo chown -R ${uid}:${uid} /cyber-dojo/${dir}"
@@ -284,9 +285,9 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check_host_volume_mount_permissions "saver"  "19663" "katas"
-check_host_volume_mount_permissions "saver"  "19663" "groups"
-check_host_volume_mount_permissions "porter" "19664" "id-map"
+check_host_volume_mount_permissions saver  19663 katas
+check_host_volume_mount_permissions saver  19663 groups
+check_host_volume_mount_permissions porter 19664 id-map
 
 if ! delegate_to_commander "$@"; then
   exit_fail
