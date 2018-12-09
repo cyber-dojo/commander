@@ -55,7 +55,7 @@ services:
       - saver
       - differ
       - zipper
-      - porter
+      #- porter
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
 
@@ -148,41 +148,41 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - -
   # ports old-style katas (from storer) into saver
 
-  porter:
-    user: porter
-    image: cyberdojo/porter
-    init: true
-    container_name: cyber-dojo-porter
-    cpu_shares: 256
-    read_only: true
-    tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
-    restart: on-failure
-    volumes:
-      - /cyber-dojo/id-map:/id-map:rw
-    depends_on:
-      - saver
-      - storer
+  #porter:
+  #  user: porter
+  #  image: cyberdojo/porter
+  #  init: true
+  #  container_name: cyber-dojo-porter
+  #  cpu_shares: 256
+  #  read_only: true
+  #  tmpfs: /tmp
+  #  mem_limit: 50M
+  #  memswap_limit: 50M
+  #  restart: on-failure
+  #  volumes:
+  #    - /cyber-dojo/id-map:/id-map:rw
+  #  depends_on:
+  #    - saver
+  #    - storer
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # old katas
 
-  storer:
-    user: storer
-    image: cyberdojo/storer
-    init: true
-    container_name: cyber-dojo-storer
-    cpu_shares: 1024
-    read_only: true
-    tmpfs: /tmp
-    volumes_from:
-      - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
-    mem_limit: 2G
-    memswap_limit: 2G
-    restart: on-failure
-    depends_on:
-      - prometheus
+  #storer:
+  #  user: storer
+  #  image: cyberdojo/storer
+  #  init: true
+  #  container_name: cyber-dojo-storer
+  #  cpu_shares: 1024
+  #  read_only: true
+  #  tmpfs: /tmp
+  #  volumes_from:
+  #    - container:${CYBER_DOJO_KATAS_DATA_CONTAINER}:rw
+  #  mem_limit: 2G
+  #  memswap_limit: 2G
+  #  restart: on-failure
+  #  depends_on:
+  #    - prometheus
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
