@@ -219,7 +219,6 @@ check_host_volume_mount_permissions()
 {
   local service=$1
   local uid=$2
-  local dir=$3
   local filename="owner-probe.txt"
   # We could be on Docker-ToolBox, in which case
   # the check must run on the VM and _not_ locally.
@@ -236,28 +235,28 @@ check_host_volume_mount_permissions()
   docker run \
     --rm \
     --user=${uid} \
-    --volume /cyber-dojo/${dir}:/cyber-dojo/${dir}:rw \
+    --volume /cyber-dojo:/cyber-dojo:rw \
     cyberdojo/${service} \
-    sh -c "touch /cyber-dojo/${dir}/${filename} >& /dev/null"
+    sh -c "touch /cyber-dojo/${filename} >& /dev/null"
 
   result=$?
   if [ "${result}" != "0" ]; then
     echo
-    echo "  The ${service} service (uid=${uid}) requires ownership of /cyber-dojo/${dir}/"
+    echo "  The ${service} service (uid=${uid}) requires ownership of /cyber-dojo"
     echo
     echo "  If you are running on Docker-ToolBox"
     if [ ! -z ${DOCKER_MACHINE_NAME} ]; then
       echo "  (and it looks like you are)"
     fi
     echo "  please run this command:"
-    echo "    $ docker-machine ssh default 'sudo chown -R ${uid}:${uid} /cyber-dojo/${dir}'"
+    echo "    $ docker-machine ssh default 'sudo chown -R ${uid}:${uid} /cyber-dojo'"
     echo
     echo "  If you are NOT running on Docker-ToolBox"
     if [ -z ${DOCKER_MACHINE_NAME} ]; then
       echo "  (and it looks like you are not)"
     fi
     echo "  please run this command:"
-    echo "    $ sudo chown -R ${uid}:${uid} /cyber-dojo/${dir}"
+    echo "    $ sudo chown -R ${uid}:${uid} /cyber-dojo"
     echo
     exit_fail
   else
@@ -266,9 +265,9 @@ check_host_volume_mount_permissions()
     docker run \
       --rm \
       --user=${uid} \
-      --volume /cyber-dojo/${dir}:/cyber-dojo/${dir}:rw \
+      --volume /cyber-dojo:/cyber-dojo:rw \
       cyberdojo/${service} \
-      sh -c "rm /cyber-dojo/${dir}/${filename}"
+      sh -c "rm /cyber-dojo/${filename}"
   fi
 }
 
@@ -300,15 +299,7 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check_host_volume_mount_permissions saver  19663 katas
-check_host_volume_mount_permissions saver  19663 groups
-check_host_volume_mount_permissions porter 19664 id-map
-# Note: porter is (will be) a separated service, and when
-# it runs it will populate /cyber-dojo/id-map/ with the ids
-# of katas  whose ids changed when being ported (eg because
-# their id was not unique in its first 6 characters).
-# Ask for the /cyber-dojo/id-map/ chown now, rather than
-# delaying it, to get all 3 chowns done in one go.
+check_host_volume_mount_permissions saver  19663
 
 if ! delegate_to_commander "$@"; then
   exit_fail

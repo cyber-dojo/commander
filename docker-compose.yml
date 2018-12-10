@@ -107,8 +107,7 @@ services:
     depends_on:
       - prometheus
     volumes:
-      - /cyber-dojo/groups:/groups:rw
-      - /cyber-dojo/katas:/katas:rw
+      - /cyber-dojo:/cyber-dojo:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # diffs all the files in two test events
