@@ -26,7 +26,7 @@ assertStderrIncludes()
   if [[ "${stderr}" != *"${1}"* ]]; then
     echo "<stderr>"
     cat ${stderrF}
-    echo "</stderr>"    
+    echo "</stderr>"
     fail "expected stderr to include ${1}"
   fi
 }
