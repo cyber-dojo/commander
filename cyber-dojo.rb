@@ -148,7 +148,7 @@ def one_time_creation_of_katas_data_volume
   # was being upgraded and automatically copied it into the new volume.
   # It doesn't do that any more. If you want to upgrade an older server
   # have a look at old-notes/copy_katas_into_data_container.sh in
-  # https://github.com/cyber-dojo/cyber-dojo
+  # https://github.com/cyber-dojo/cyber-dojo/docs
   #
   # This one-time-creation happens before the storer-service is started
   # since the volume has to be mounted into the storer service.
