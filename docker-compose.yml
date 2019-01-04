@@ -71,13 +71,16 @@ services:
     tmpfs: /tmp
     mem_limit: 50M
     memswap_limit: 50M
+    restart: on-failure
+    depends_on:
+      - ported
     volumes:
       - languages:${START_POINTS_ROOT}/languages:ro
       - exercises:${START_POINTS_ROOT}/exercises:ro
       - custom:${START_POINTS_ROOT}/custom:ro
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runs tests in time-boxed container
+  # runner: runs tests in time-boxed container
 
   runner:
     user: root
@@ -94,7 +97,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # stores groups/katas and code+tests for every test event
+  # saver: stores groups/katas and code+tests for every test event
 
   saver:
     user: saver
@@ -103,14 +106,32 @@ services:
     container_name: cyber-dojo-saver
     read_only: true
     tmpfs: /tmp
-    restart: 'no'
+    restart: on-failure
     depends_on:
+      - ported
       - prometheus
     volumes:
       - /cyber-dojo:/cyber-dojo:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # diffs all the files in two test events
+  # ported: holds storer->saver id mappings
+
+  ported:
+    user: nobody
+    image: cyberdojo/ported
+    init: true
+    container_name: cyber-dojo-ported
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 32M
+    memswap_limit: 32M
+    restart: on-failure
+    volumes:
+      - /porter:/porter:ro
+
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # differ: diffs all the files in two test events
 
   differ:
     user: nobody
