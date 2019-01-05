@@ -72,8 +72,6 @@ services:
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
-    depends_on:
-      - ported
     volumes:
       - languages:${START_POINTS_ROOT}/languages:ro
       - exercises:${START_POINTS_ROOT}/exercises:ro
@@ -108,19 +106,19 @@ services:
     tmpfs: /tmp
     restart: on-failure
     depends_on:
-      - ported
+      - mapper
       - prometheus
     volumes:
       - /cyber-dojo:/cyber-dojo:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # ported: holds storer->saver id mappings
+  # mapper: holds storer->saver id mappings created by porter
 
-  ported:
+  mapper:
     user: nobody
-    image: cyberdojo/ported
+    image: cyberdojo/mapper
     init: true
-    container_name: cyber-dojo-ported
+    container_name: cyber-dojo-mapper
     read_only: true
     tmpfs: /tmp
     mem_limit: 32M
