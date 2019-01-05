@@ -50,6 +50,7 @@ test_____no_args_stops_and_removes_server_containers()
     web
     zipper
     saver
+    ported
   )
   for service in "${services[@]}"
   do

@@ -35,6 +35,7 @@ def cyber_dojo_update_server
     runner
     starter
     saver
+    ported
     differ
     zipper
     prometheus

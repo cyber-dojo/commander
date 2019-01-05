@@ -42,6 +42,7 @@ x_test_____pull_latest_images_for_all_services()
   assertStdoutIncludes 'latest: Pulling from cyberdojo/starter'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/saver'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/ported'  
   assertNoStderr
 }
 
