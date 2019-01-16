@@ -55,6 +55,7 @@ services:
       - saver
       - differ
       - zipper
+      - mapper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
 
