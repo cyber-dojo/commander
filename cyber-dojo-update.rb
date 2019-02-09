@@ -32,7 +32,7 @@ def cyber_dojo_update_server
   service_images = %w(
     nginx
     web
-    runner
+    runner-stateless
     starter
     saver
     mapper
