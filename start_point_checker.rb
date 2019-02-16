@@ -89,7 +89,6 @@ class StartPointChecker
     %w( display_name
         visible_filenames
         image_name
-        runner_choice
         filename_extension
       )
   end
