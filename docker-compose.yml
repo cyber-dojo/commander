@@ -64,7 +64,7 @@ services:
 
   starter:
     user: nobody
-    image: cyberdojo/starter
+    image: ${CYBER_DOJO_START_POINTS_IMAGE}
     init: true
     container_name: cyber-dojo-starter
     cpu_shares: 1024

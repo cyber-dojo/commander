@@ -118,7 +118,9 @@ def cyber_dojo_up
     'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
     'CYBER_DOJO_START_POINT_CUSTOM' => custom,
     'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_KATAS_DATA_CONTAINER' => 'cyber-dojo-katas-DATA-CONTAINER'
+    'CYBER_DOJO_KATAS_DATA_CONTAINER' => 'cyber-dojo-katas-DATA-CONTAINER',
+    'CYBER_DOJO_START_POINTS_IMAGE' => 'cyberdojo/starter'
+
   }
   my_dir = File.dirname(__FILE__)
   docker_compose_cmd = "docker-compose --file=#{my_dir}/docker-compose.yml"
