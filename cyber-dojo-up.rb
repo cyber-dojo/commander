@@ -175,12 +175,19 @@ def up_arg_img_ok(help, args, name)
   if img.nil? || img == name # handled in cyber-dojo.sh
     return true
   end
-  #unless image_exists?(img)...
   if img == ''
     STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
+  unless image_exists?(img)
+    STDERR.puts "FAILED: image #{img} does not exist"
+    return false
+  end
   return true
+end
+
+def image_exists?(name)
+  run("docker images --quiet #{name}") != ''
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -190,22 +197,18 @@ def up_arg_vol_ok(help, args, name)
   if vol.nil? || vol == name # handled in cyber-dojo.sh
     return true
   end
-
   if vol == ''
     STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
-
   unless volume_exists?(vol)
     STDERR.puts "FAILED: start-point #{vol} does not exist"
     return false
   end
-
   type = cyber_dojo_type(vol)
   if type != name
     STDERR.puts "FAILED: #{vol} is not a #{name} start-point (it's type from setup.json is #{type})"
     return false
   end
-
   return true
 end
