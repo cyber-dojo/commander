@@ -29,7 +29,7 @@ def cyber_dojo_up
 
   # Unknown arguments?
   args = ARGV[1..-1]
-  knowns = ['languages','exercises','custom','port']
+  knowns = %w( starter languages exercises custom port )
   unknowns = args.select do |arg|
     knowns.none? { |known| arg.start_with?('--' + known + '=') }
   end
@@ -40,11 +40,13 @@ def cyber_dojo_up
   exit failed unless unknowns == []
 
   # Explicit start-points?
-  exit failed unless up_arg_ok(help, args, 'languages')  # --languages=NAME
-  exit failed unless up_arg_ok(help, args, 'exercises')  # --exercises=NAME
-  exit failed unless up_arg_ok(help, args,    'custom')  # --custom=NAME
-  exit failed unless up_arg_int_ok(help, args,  'port')  # --port=PORT
+  exit failed unless up_arg_img_ok(help, args,   'starter')  # --starter=NAME
+  exit failed unless up_arg_vol_ok(help, args, 'languages')  # --languages=NAME
+  exit failed unless up_arg_vol_ok(help, args, 'exercises')  # --exercises=NAME
+  exit failed unless up_arg_vol_ok(help, args,    'custom')  # --custom=NAME
+  exit failed unless up_arg_int_ok(help, args,      'port')  # --port=PORT
 
+  starter_image = default_starter_image
   languages = default_languages
   exercises = default_exercises
   custom = default_custom
@@ -53,10 +55,11 @@ def cyber_dojo_up
   args.each do |arg|
     name = arg.split('=')[0]
     value = arg.split('=')[1]
-    languages = value if name == '--languages'
-    exercises = value if name == '--exercises'
-    custom    = value if name == '--custom'
-    port      = value if name == '--port'
+    starter_image = value if name == '--starter'
+    languages     = value if name == '--languages'
+    exercises     = value if name == '--exercises'
+    custom        = value if name == '--custom'
+    port          = value if name == '--port'
   end
 
   # Create default start-points if necessary
@@ -114,12 +117,12 @@ def cyber_dojo_up
   STDOUT.puts "Using --port=#{port}"
   env_vars = {
     'CYBER_DOJO_ENV_ROOT' => env_root,
+    'CYBER_DOJO_START_POINTS_IMAGE' => starter_image,
     'CYBER_DOJO_START_POINT_LANGUAGES' => languages,
     'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
     'CYBER_DOJO_START_POINT_CUSTOM' => custom,
     'CYBER_DOJO_NGINX_PORT' => port,
     'CYBER_DOJO_KATAS_DATA_CONTAINER' => 'cyber-dojo-katas-DATA-CONTAINER',
-    'CYBER_DOJO_START_POINTS_IMAGE' => 'cyberdojo/starter'
 
   }
   my_dir = File.dirname(__FILE__)
@@ -167,7 +170,22 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def up_arg_ok(help, args, name)
+def up_arg_img_ok(help, args, name)
+  img = get_arg("--#{name}", args)
+  if img.nil? || img == name # handled in cyber-dojo.sh
+    return true
+  end
+  #unless image_exists?(img)...
+  if img == ''
+    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
+    return false
+  end
+  return true
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def up_arg_vol_ok(help, args, name)
   vol = get_arg("--#{name}", args)
   if vol.nil? || vol == name # handled in cyber-dojo.sh
     return true

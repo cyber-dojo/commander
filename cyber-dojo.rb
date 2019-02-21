@@ -64,6 +64,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def default_starter_image; 'cyberdojo/starter'; end
 def default_languages; 'languages'; end
 def default_exercises; 'exercises'; end
 def default_custom; 'custom'; end
