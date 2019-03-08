@@ -213,65 +213,6 @@ replace_myself()
   rm ${new_me}
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-check_host_volume_mount_permissions()
-{
-  local service=${1}
-  local uid=${2}
-  local gid=${3}
-  local filename="owner-probe.txt"
-  # We could be on Docker-ToolBox, in which case
-  # the check must run on the VM and _not_ locally.
-  # So checking via a docker-run with a volume-mount.
-  #
-  # Note: the docker run with the volume-mount will
-  # create the named directory if it does not exist.
-  #
-  # Note: we could do the chown something like this...
-  #   $ docker exec --user root cyber-dojo-${service} \
-  #        sh -c "chown -R ${gid}:${gid} ${dir}'
-  # but it would take longer and longer and longer
-  # to run as the dir filled up...
-  docker run \
-    --rm \
-    --user=${uid} \
-    --volume /cyber-dojo:/cyber-dojo:rw \
-    cyberdojo/${service} \
-    sh -c "touch /cyber-dojo/${filename} >& /dev/null"
-
-  result=$?
-  if [ "${result}" != "0" ]; then
-    echo
-    echo "  The ${service} service (uid=${uid}, gid=${gid}) requires ownership of /cyber-dojo"
-    echo
-    echo "  If you are running on Docker-ToolBox"
-    if [ ! -z ${DOCKER_MACHINE_NAME} ]; then
-      echo "  (and it looks like you are)"
-    fi
-    echo "  please run this command:"
-    echo "    $ docker-machine ssh default 'sudo chown -R ${uid}:${gid} /cyber-dojo'"
-    echo
-    echo "  If you are NOT running on Docker-ToolBox"
-    if [ -z ${DOCKER_MACHINE_NAME} ]; then
-      echo "  (and it looks like you are not)"
-    fi
-    echo "  please run this command:"
-    echo "    $ sudo chown -R ${uid}:${gid} /cyber-dojo"
-    echo
-    exit_fail
-  else
-    # The docker-run-probe successfully created the
-    # probe-file. So remove it.
-    docker run \
-      --rm \
-      --user=${uid} \
-      --volume /cyber-dojo:/cyber-dojo:rw \
-      cyberdojo/${service} \
-      sh -c "rm /cyber-dojo/${filename}"
-  fi
-}
-
 #==========================================================
 
 if ! hash docker 2> /dev/null; then
@@ -299,8 +240,6 @@ if [ "$1" = 'update' ]; then
 fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-check_host_volume_mount_permissions saver 19663 65533
 
 if ! delegate_to_commander "$@"; then
   exit_fail
