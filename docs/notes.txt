@@ -1,0 +1,41 @@
+
+Considering whether to keep commander.
+Alternative is a minikube based local installation.
+Starting to think this will be overkill.
+If starter becomes 3 images how much simpler will
+the cyber-dojo script and the scripts it delegates to become?
+
+I can lose some files now
+Dockerfile.katas
+Dockerignore.katas
+
+Some will go with 3 starter images...
+start_point_check.rb
+start_point_checker.rb
+
+Dockerfile can lose these lines...
+# - - - - - - - - - - - - - - - - - - - - - -
+# [start-point create NAME --git=...] requires git clone
+# [start-point create NAME --list=...] requires curl
+# - - - - - - - - - - - - - - - - - - - - - -
+RUN apk add --update git curl
+
+docker-compose.yml can lose the languages/exercises/custom volumes.
+
+cyber-dojo main script can drop handling of
+#  3) ./cyber-dojo start-point create NAME --dir=DIR
+#  4) ./cyber-dojo start-point create NAME --list=FILE
+So set_start_point_create_volume() can be deleted.
+Lines 117-154
+Main script will be simpler. But start-point creation will
+be handled in alternative script... That does not make sense.
+Better for there to be a single script for individual users
+and on CircleCI I can curl the cyber-dojo script just so I can
+use its start-point commands... that script is 360 lines.
+Should be a few less when starter is split into 3 images...
+
+
+What about :latest ?
+I'd like to drop that.
+Is there some way the SHAs in production-values.yaml could be
+harvested and used in a [cyber-dojo update] command?
