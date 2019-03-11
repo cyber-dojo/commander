@@ -52,6 +52,8 @@ services:
     depends_on:
       - starter
       - custom
+      - exercises
+      - languages
       - runner
       - saver
       - differ
@@ -82,11 +84,37 @@ services:
 
   custom:
     user: nobody
-    image: acme/spl
+    image: acme/spc
     #image: ${CYBER_DOJO_START_POINTS_CUSTOM_IMAGE}
     init: true
     container_name: cyber-dojo-custom
-    cpu_shares: 1024
+    cpu_shares: 512
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
+    restart: on-failure
+
+  exercises:
+    user: nobody
+    image: acme/spe
+    #image: ${CYBER_DOJO_START_POINTS_EXERCISES_IMAGE}
+    init: true
+    container_name: cyber-dojo-exercises
+    cpu_shares: 512
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
+    restart: on-failure
+
+  languages:
+    user: nobody
+    image: acme/spl
+    #image: ${CYBER_DOJO_START_POINTS_LANGUAGES_IMAGE}
+    init: true
+    container_name: cyber-dojo-languages
+    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
@@ -118,6 +146,7 @@ services:
     image: cyberdojo/saver
     init: true
     container_name: cyber-dojo-saver
+    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -135,6 +164,7 @@ services:
     image: cyberdojo/mapper
     init: true
     container_name: cyber-dojo-mapper
+    cpu_shares: 128
     read_only: true
     tmpfs: /tmp
     mem_limit: 32M
