@@ -1,0 +1,62 @@
+
+$ minikube start
+$ brew install kubernetes-helm
+$ helm init
+wait a short while...
+$ helm list
+Now does not give an error
+
+helm install X where X is the dir containing the Chart.yaml file
+
+$ kubectl config use-context minikube
+
+$ helm install /Users/jonjagger/repos/cyber-dojo/orbit-helm-charts/cyber-dojo \
+    --version 0.2.0 \
+    --name cyberdojo \
+    --set persistence.storageClassName=standard \
+    --set persistence.saverVolumeSize=10G \
+    --set persistence.mapperVolumeSize=5G
+
+
+$ kubectl get pods -w
+
+NAME                                            READY   STATUS              RESTARTS   AGE
+cyberdojo-cyber-dojo-differ-8889ff9c5-996rb     0/1     ContainerCreating   0          3m25s
+cyberdojo-cyber-dojo-mapper-77565ddc46-pgsx5    0/1     ContainerCreating   0          3m25s
+cyberdojo-cyber-dojo-nginx-77cfdc7595-jvx9w     0/1     ContainerCreating   0          3m25s
+cyberdojo-cyber-dojo-runner-75c7d66986-w4jjl    0/1     ContainerCreating   0          3m24s
+cyberdojo-cyber-dojo-saver-589dc58456-p7hzc     0/1     ContainerCreating   0          3m24s
+cyberdojo-cyber-dojo-starter-6c54c6f4c8-6qd6n   1/1     Running             0          3m24s
+cyberdojo-cyber-dojo-web-666f69774d-4bwb8       1/1     Running             0          3m24s
+
+When web is running...
+
+$ kubectl port-forward svc/web 3000
+
+Visit localhost:3000
+
+It's up (nginx not serving images without traefik)
+Create individual session
+Hit [test]
+Error:
+  "class": "RunnerStatelessService",
+  "message": "Read-only file system @ dir_s_mkdir - /app/d20190302-14-dt12be",
+  "backtrace": [
+    "/usr/lib/ruby/2.5.0/tmpdir.rb:86:in `mkdir'",
+    "/usr/lib/ruby/2.5.0/tmpdir.rb:86:in `block in mktmpdir'",
+
+Looks like Dir.mktmpdir is based off /app instead of /tmp
+Think I need something like this (twice)
+src_tmp_dir = Dir.mktmpdir(id, '/tmp')
+...
+
+Didn't work. But nearer. New error from Dir.mktmpdir is
+"parent directory is world writable but not sticky"
+Had to add a [chmod 1777 /tmp] to runner's up.sh to set sticky bit on /tmp
+Now switched back to a RAM /tmp with sizeLimit
+
+To try out a change:
+$ kubectl config use-context minikube
+$ helm delete cyberdojo --purge
+Then repeat helm install command
+Then repeat the port-forward

@@ -51,6 +51,7 @@ services:
     restart: on-failure
     depends_on:
       - starter
+      - custom
       - runner
       - saver
       - differ
@@ -77,6 +78,20 @@ services:
       - languages:${START_POINTS_ROOT}/languages:ro
       - exercises:${START_POINTS_ROOT}/exercises:ro
       - custom:${START_POINTS_ROOT}/custom:ro
+
+
+  custom:
+    user: nobody
+    image: acme/spl
+    #image: ${CYBER_DOJO_START_POINTS_CUSTOM_IMAGE}
+    init: true
+    container_name: cyber-dojo-custom
+    cpu_shares: 1024
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 50M
+    memswap_limit: 50M
+    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # runner: runs tests in time-boxed container
