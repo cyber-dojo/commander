@@ -6,15 +6,15 @@ def cyber_dojo_up
     '',
     'Creates and starts the cyber-dojo server using named/default start-points',
     '',
-    minitab + '--languages=START-POINTS  Specify the languages start-points.',
+    minitab + '--languages=IMAGE_NAME    Specify the languages start-points image.',
     minitab + "                          Defaults to the start-points named 'languages' created from",
     minitab + '                          https://github.com/cyber-dojo/start-points-languages.git',
     '',
-    minitab + '--exercises=START-POINTS  Specify the exercises start-points.',
+    minitab + '--exercises=IMAGE_NAME    Specify the exercises start-points image.',
     minitab + "                          Defaults to the start-points named 'exercises' created from",
     minitab + '                          https://github.com/cyber-dojo/start-points-exercises.git',
     '',
-    minitab + '--custom=START-POINTS     Specify the custom start-points.',
+    minitab + '--custom=IMAGE_NAME       Specify the custom start-points image.',
     minitab + "                          Defaults to the start-points named 'custom' created from",
     minitab + '                          https://github.com/cyber-dojo/start-points-custom.git',
     '',
@@ -29,7 +29,7 @@ def cyber_dojo_up
 
   # Unknown arguments?
   args = ARGV[1..-1]
-  knowns = %w( starter languages exercises custom port )
+  knowns = %w( languages exercises custom port )
   unknowns = args.select do |arg|
     knowns.none? { |known| arg.start_with?('--' + known + '=') }
   end
@@ -40,13 +40,11 @@ def cyber_dojo_up
   exit failed unless unknowns == []
 
   # Explicit start-points?
-  exit failed unless up_arg_img_ok(help, args,   'starter')  # --starter=NAME
-  exit failed unless up_arg_vol_ok(help, args, 'languages')  # --languages=NAME
-  exit failed unless up_arg_vol_ok(help, args, 'exercises')  # --exercises=NAME
-  exit failed unless up_arg_vol_ok(help, args,    'custom')  # --custom=NAME
+  exit failed unless up_arg_img_ok(help, args, 'languages')  # --languages=IMAGE_NAME
+  exit failed unless up_arg_img_ok(help, args, 'exercises')  # --exercises=IMAGE_NAME
+  exit failed unless up_arg_img_ok(help, args,    'custom')  # --custom=IMAGE_NAME
   exit failed unless up_arg_int_ok(help, args,      'port')  # --port=PORT
 
-  starter_image = default_starter_image
   languages = default_languages
   exercises = default_exercises
   custom = default_custom
@@ -55,36 +53,19 @@ def cyber_dojo_up
   args.each do |arg|
     name = arg.split('=')[0]
     value = arg.split('=')[1]
-    starter_image = value if name == '--starter'
     languages     = value if name == '--languages'
     exercises     = value if name == '--exercises'
     custom        = value if name == '--custom'
     port          = value if name == '--port'
   end
 
-  # Create default start-points if necessary
-  github_cyber_dojo = 'https://github.com/cyber-dojo'
-  if languages == default_languages && !volume_exists?(default_languages)
-    url='https://raw.githubusercontent.com/cyber-dojo/start-points-languages/master/languages_list'
-    url_list = run("curl -s #{url}").split
-    STDOUT.puts "Creating start-point #{default_languages} from #{url}"
-    cyber_dojo_start_point_create_list(default_languages, url_list)
-  end
-  if exercises == default_exercises && !volume_exists?(default_exercises)
-    url = "#{github_cyber_dojo}/start-points-exercises.git"
-    STDOUT.puts "Creating start-point #{default_exercises} from #{url}"
-    cyber_dojo_start_point_create_list(default_exercises, [ url ])
-  end
-  if custom == default_custom && !volume_exists?(default_custom)
-    url = "#{github_cyber_dojo}/start-points-custom.git"
-    STDOUT.puts "Creating start-point #{default_custom} from #{url}"
-    cyber_dojo_start_point_create_list(default_custom, [ url ])
-  end
-
   # Ensure all docker images named in start-points
   # exists (there is no image-pull on-demand).
-  cyber_dojo_start_point_exist(languages)
-  cyber_dojo_start_point_exist(custom)
+
+  # TODO:
+  #cyber_dojo_start_point_exist(custom)
+  #cyber_dojo_start_point_exist(exercises)
+  #cyber_dojo_start_point_exist(languages)
 
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
   # Write .env files to where docker-compose.yml expects them to be
@@ -110,20 +91,17 @@ def cyber_dojo_up
     end
   end
 
-  # Bring up server with volumes
+  # Bring up server
   STDOUT.puts "Using --languages=#{languages}"
   STDOUT.puts "Using --exercises=#{exercises}"
   STDOUT.puts "Using --custom=#{custom}"
   STDOUT.puts "Using --port=#{port}"
   env_vars = {
     'CYBER_DOJO_ENV_ROOT' => env_root,
-    'CYBER_DOJO_START_POINTS_IMAGE' => starter_image,
-    'CYBER_DOJO_START_POINT_LANGUAGES' => languages,
-    'CYBER_DOJO_START_POINT_EXERCISES' => exercises,
-    'CYBER_DOJO_START_POINT_CUSTOM' => custom,
-    'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_KATAS_DATA_CONTAINER' => 'cyber-dojo-katas-DATA-CONTAINER',
-
+    'CYBER_DOJO_START_POINTS_CUSTOM_IMAGE'    => custom,
+    'CYBER_DOJO_START_POINTS_EXERCISES_IMAGE' => exercises,
+    'CYBER_DOJO_START_POINTS_LANGUAGES_IMAGE' => languages,
+    'CYBER_DOJO_NGINX_PORT' => port
   }
   my_dir = File.dirname(__FILE__)
   docker_compose_cmd = "docker-compose --file=#{my_dir}/docker-compose.yml"
@@ -188,27 +166,4 @@ end
 
 def image_exists?(name)
   run("docker images --quiet #{name}") != ''
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def up_arg_vol_ok(help, args, name)
-  vol = get_arg("--#{name}", args)
-  if vol.nil? || vol == name # handled in cyber-dojo.sh
-    return true
-  end
-  if vol == ''
-    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
-    return false
-  end
-  unless volume_exists?(vol)
-    STDERR.puts "FAILED: start-point #{vol} does not exist"
-    return false
-  end
-  type = cyber_dojo_type(vol)
-  if type != name
-    STDERR.puts "FAILED: #{vol} is not a #{name} start-point (it's type from setup.json is #{type})"
-    return false
-  end
-  return true
 end

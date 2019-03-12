@@ -54,7 +54,6 @@ exit_fail()
 delegate_to_commander()
 {
   # The *.env file volume mounts are for files.
-  # The start-point volume mount is for a dir.
   # Don't collapse the multiple *.env file volume mounts into a single
   # dir volume mount. Do that and the *.env dir and the start-point
   # dir could coincide and you get a [Duplicate mount point]
@@ -62,9 +61,6 @@ delegate_to_commander()
 
   if [ "$1" = 'up' ];  then
     set_env_file_volumes
-  fi
-  if [ "$1" = 'start-point' ] && [ "$2" = 'create' ]; then
-    set_start_point_create_volume "$@"
   fi
 
   # shellcheck disable=SC2086
@@ -110,47 +106,6 @@ set_env_file_volumes()
   if [ -f "${zipper_env}" ];  then
     volume_zipper_env_file="--volume=${zipper_env}:${zipper_env}:ro"
   fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-set_start_point_create_volume()
-{
-  local lhs=$(echo "$4" | cut -f1 -s -d=)
-  local value=$(echo "$4" | cut -f2 -s -d=)
-
-  # --dir=DIR
-  if [ "${lhs}" = '--dir' ] && [ "${value}" != '' ] && [ "$5" = '' ]; then
-    if [ -d "${value}" ]; then
-      volume_start_point_create="--volume=${value}:${value}:ro"
-    else
-      exit_fail "dir ${value} does not exist"
-    fi
-  fi
-
-  # --list=LIST
-  if [ "${lhs}" = '--list' ] && [ "$5" = '' ]; then
-    local first_letter=$(printf %.1s "$value")
-    local file_prefix=$(printf %.7s "$value")
-    local file_suffix=${value#???????}
-    if [ "${first_letter}" = "/" ]; then
-      if [ -f "${value}" ]; then
-        volume_start_point_create="--volume=${value}:${value}:ro"
-      else
-        exit_fail "${value} does not exist"
-      fi
-    elif [ "${file_prefix}" = "file://" ]; then
-      if [ -f "${file_suffix}" ]; then
-        volume_start_point_create="--volume=${file_suffix}:${file_suffix}:ro"
-      else
-        exit_fail "${value} does not exist"
-      fi
-    else # network URL
-      if ! curl --output /dev/null --silent --head --fail "${value}"; then
-        exit_fail "${value} does not exist"
-      fi
-    fi # --list=file://
-  fi # --list
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

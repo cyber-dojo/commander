@@ -64,10 +64,10 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def default_starter_image; 'cyberdojo/starter'; end
-def default_languages; 'languages'; end
-def default_exercises; 'exercises'; end
-def default_custom; 'custom'; end
+def default_languages; 'acme/spl'; end
+def default_exercises; 'acme/spe'; end
+def default_custom   ; 'acme/spc'; end
+
 def default_port; '80'; end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
