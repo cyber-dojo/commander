@@ -2,15 +2,6 @@
 version: '2.2'
 
 volumes:
-  languages:
-    external:
-      name: ${CYBER_DOJO_START_POINT_LANGUAGES}
-  exercises:
-    external:
-      name: ${CYBER_DOJO_START_POINT_EXERCISES}
-  custom:
-    external:
-      name: ${CYBER_DOJO_START_POINT_CUSTOM}
   # monitoring
   grafana_data: {}
 
@@ -50,7 +41,6 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
-      - starter
       - custom
       - exercises
       - languages
@@ -63,24 +53,7 @@ services:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # provides setup start-points
-
-  starter:
-    user: nobody
-    image: ${CYBER_DOJO_START_POINTS_IMAGE}
-    init: true
-    container_name: cyber-dojo-starter
-    cpu_shares: 1024
-    read_only: true
-    tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
-    restart: on-failure
-    volumes:
-      - languages:${START_POINTS_ROOT}/languages:ro
-      - exercises:${START_POINTS_ROOT}/exercises:ro
-      - custom:${START_POINTS_ROOT}/custom:ro
-
+  # start-points
 
   custom:
     user: nobody
