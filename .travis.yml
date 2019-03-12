@@ -4,6 +4,10 @@ git:
   depth: 1
   quiet: true
 
+branches:
+  only:
+    - master
+
 before_script:
     - curl -O https://raw.githubusercontent.com/cyber-dojo/cyber-dojo/master/shared/push_and_trigger.sh
     - chmod +x push_and_trigger.sh
