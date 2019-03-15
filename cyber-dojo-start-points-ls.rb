@@ -1,27 +1,33 @@
 
-def cyber_dojo_start_point_ls
+def cyber_dojo_start_points_ls
   help = [
     '',
-    "Use: #{me} start-point [OPTIONS] ls",
+    "Use: #{me} start-points [OPTIONS] ls",
     '',
-    'Lists the name, type, and source of all cyber-dojo start-points',
+    'Lists the name, type, and git-repo-url source of all cyber-dojo start-points images',
     '',
-    minitab + '--quiet     Only display start-point names'
+    minitab + '--quiet     Only display start-points image names'
   ]
 
-  if ARGV[2] == '--help'
+  if ARGV[2] == '-h' || ARGV[2] == '--help'
     show help
     exit succeeded
   end
 
-  # As of docker 1.12.0 there is no [--filter label=LABEL]
-  # option on the [docker volume ls] command.
-  # So I have to inspect all volumes.
-  # Could be slow for lots of volumes.
+  types = ['custom','exercises','languages']
+  types.each do |type|
+    cmd = 'docker image ls'
+    cmd += " --filter 'label=org.cyber-dojo.start-point=#{type}'"
+    cmd += " --format '{{.Repository}}:{{.Tag}}'"
+    run(cmd).split.each do |name|
+      puts "--#{type}\t#{name}"
+    end
+  end
 
-  names = run("docker volume ls --quiet").split
-  names = names.select{ |name| cyber_dojo_volume?(name) }
+  # TODO: non-quiet
+  # names = names.select{ |name| cyber_dojo_volume?(name) }
 
+=begin
   if ARGV[2] == '--quiet'
     names.each { |name| puts name }
   else
@@ -58,4 +64,5 @@ def cyber_dojo_start_point_ls
       puts name + type + url
     end
   end
+=end
 end

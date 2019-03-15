@@ -1,8 +1,8 @@
 
-require_relative 'cyber-dojo-start-point-create-list'
-require_relative 'cyber-dojo-start-point-create-dir'
+#require_relative 'cyber-dojo-start-point-create-list'
+#require_relative 'cyber-dojo-start-point-create-dir'
 
-def cyber_dojo_start_point_create
+def cyber_dojo_start_points_create
   help = [
     '',
     "Use: #{me} start-point create NAME --list=URL|FILE",
@@ -19,7 +19,7 @@ def cyber_dojo_start_point_create
     "NAME must be at least two letters long"
   ]
 
-  if [nil,'--help'].include? ARGV[2]
+  if [nil,'-h','--help'].include? ARGV[2]
     show help
     exit succeeded
   end

@@ -1,19 +1,19 @@
 
-def cyber_dojo_start_point_pull
+def cyber_dojo_start_points_latest
   help = [
     '',
-    "Use: #{me} start-point pull NAME",
+    "Use: #{me} start-points latest IMAGE_NAME",
     '',
-    'Pulls all the docker images inside the named start-point'
+    'Re-pulls already pulled docker images inside the named start-points image'
   ]
 
-  vol = ARGV[2]
-  if [nil,'--help'].include? vol
+  image_name = ARGV[2]
+  if [nil,'-h','--help'].include?(image_name)
     show help
     exit succeeded
   end
 
-  exit_unless_is_cyber_dojo_volume(vol, 'pull')
+  exit_unless_start_point_image(image_name)
 
   ARGV[3..-1].each do |arg|
     STDERR.puts "FAILED: unknown argument [#{arg}]"
@@ -28,12 +28,11 @@ def cyber_dojo_start_point_pull
     '--rm',
     '--tty',
     "--user=root",
-    "--volume=#{vol}:/data:#{read_only}",
+    # "--volume=#{vol}:/data:#{read_only}",
     '--volume=/var/run/docker.sock:/var/run/docker.sock',
     "#{cyber_dojo_commander}",
-    "sh -c './start_point_pull.rb /data'"
+    "sh -c './start_point_latest.rb /data'"
   ].join(space=' ')
 
   system(command)
 end
-

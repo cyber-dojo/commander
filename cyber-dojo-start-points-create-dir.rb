@@ -1,5 +1,5 @@
 
-def cyber_dojo_start_point_create_dir(name, dir)
+def cyber_dojo_start_points_create_dir(name, dir)
   cid = ''
   vol = ''
 

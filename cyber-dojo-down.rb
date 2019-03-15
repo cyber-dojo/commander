@@ -7,7 +7,7 @@ def cyber_dojo_down
     "Stops and removes docker containers created with 'up'",
   ]
 
-  if ARGV[1] == '--help'
+  if ARGV[1] == '-h' || ARGV[1] == '--help'
     show help
     exit succeeded
   end
@@ -26,7 +26,7 @@ def cyber_dojo_down
     'CYBER_DOJO_START_POINTS_LANGUAGES_IMAGE' => default_languages,
     'CYBER_DOJO_NGINX_PORT' => default_port
   }
-  my_dir = my_dir = File.dirname(__FILE__)
+  my_dir = File.dirname(__FILE__)
   docker_compose_cmd = "docker-compose --file=#{my_dir}/docker-compose.yml"
   system(env_vars, "#{docker_compose_cmd} down")
 
