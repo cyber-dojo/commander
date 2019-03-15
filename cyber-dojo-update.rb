@@ -7,7 +7,7 @@ def cyber_dojo_update
     'Updates all cyber-dojo server and language images and the cyber-dojo script file',
   ]
 
-  if ARGV[1] == '--help'
+  if ARGV[1] == '-h' || ARGV[1] == '--help'
     show help
     exit succeeded
   end
