@@ -33,7 +33,6 @@ def cyber_dojo_update_server
     nginx
     web
     runner-stateless
-    starter
     saver
     mapper
     differ
@@ -41,6 +40,9 @@ def cyber_dojo_update_server
     prometheus
     grafana
   )
+  #How to update these 3?
+  #custom exercises languages
+
   service_images.each do |name|
     # use system() so pulls are visible in terminal
     system "docker pull cyberdojo/#{name}:latest"
