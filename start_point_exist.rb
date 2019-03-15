@@ -41,7 +41,7 @@ if !File.directory?(path)
   exit failed
 end
 
-image_names = `docker images --format {{.Repository}}`.split - ['<none>']
+image_names = `docker image ls --format {{.Repository}}`.split - ['<none>']
 manifests_image_names.sort.uniq.each do |image_name|
   STDOUT.puts ">>checking #{image_name}:latest"
   if image_names.include? image_name

@@ -165,5 +165,5 @@ def up_arg_img_ok(help, args, name)
 end
 
 def image_exists?(name)
-  run("docker images --quiet #{name}") != ''
+  run("docker image ls --quiet #{name}") != ''
 end

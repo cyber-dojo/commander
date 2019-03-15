@@ -43,7 +43,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def docker_images_pulled
-  `docker images`.split("\n").drop(1).map{ |line| line.split[0] }.sort - ['<none>']
+  `docker image ls`.split("\n").drop(1).map{ |line| line.split[0] }.sort - ['<none>']
   # eg
   # REPOSITORY                               TAG     IMAGE ID     CREATED      SIZE
   # cyberdojofoundation/visual-basic_nunit   latest  eb5f54114fe6 4 months ago 497.4 MB
