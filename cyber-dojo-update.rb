@@ -52,7 +52,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def cyber_dojo_update_languages
-  cmd = "docker images --format '{{.Repository}}' | grep cyberdojofoundation"
+  cmd = "docker image ls --format '{{.Repository}}' | grep cyberdojofoundation"
   stdout = `#{cmd}`
   language_images = stdout.split("\n")
   language_images.each do |name|
