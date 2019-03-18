@@ -64,9 +64,9 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def default_languages; 'cyberdojo/start-points-custom:latest'; end
-def default_exercises; 'cyberdojo/start-points-exercises:latest'; end
-def default_custom   ; 'cyberdojo/start-points-languages:latest'; end
+def default_exercises; 'cyberdojo/exercises:latest'; end
+def default_custom   ; 'cyberdojo/custom:latest'   ; end
+def default_languages; 'cyberdojo/languages:latest'; end
 
 def default_port; '80'; end
 
