@@ -63,9 +63,9 @@ def cyber_dojo_up
   # exists (there is no image-pull on-demand).
 
   # TODO:
-  #cyber_dojo_start_point_exist(custom)
-  #cyber_dojo_start_point_exist(exercises)
-  #cyber_dojo_start_point_exist(languages)
+  #cyber_dojo_start_point_exist('custom', custom)
+  #cyber_dojo_start_point_exist('exercises', exercises)
+  #cyber_dojo_start_point_exist('languages', languages)
 
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
   # Write .env files to where docker-compose.yml expects them to be
@@ -112,7 +112,22 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def cyber_dojo_start_point_exist(vol)
+def image_exists?(name)
+  run("docker image ls --quiet #{name}") != ''
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def cyber_dojo_start_point_exist(type, image_name)
+  unless image_exists?(image_name)
+    STDERR.puts "FAILED: cannot find #{image_name}"
+    exit failed
+  end
+
+  #command = "docker inspect --format='{{json .ContainerConfig.Labels}}' #{image_name}"
+  # returns eg {"maintainer":"jon@jaggersoft.com","org.cyber-dojo.start-points":"custom"}
+  # returns eg {"maintainer":"jon@jaggersoft.com"}
+
   command =
   [
     'docker run',
@@ -162,8 +177,4 @@ def up_arg_img_ok(help, args, name)
     return false
   end
   return true
-end
-
-def image_exists?(name)
-  run("docker image ls --quiet #{name}") != ''
 end
