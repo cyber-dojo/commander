@@ -61,11 +61,9 @@ def cyber_dojo_up
 
   # Ensure all docker images named in start-points
   # exists (there is no image-pull on-demand).
-
-  # TODO:
-  #cyber_dojo_start_point_exist('custom', custom)
-  #cyber_dojo_start_point_exist('exercises', exercises)
-  #cyber_dojo_start_point_exist('languages', languages)
+  check_cyber_dojo_start_point_exists('custom', custom)
+  check_cyber_dojo_start_point_exists('exercises', exercises)
+  check_cyber_dojo_start_point_exists('languages', languages)
 
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
   # Write .env files to where docker-compose.yml expects them to be
@@ -118,16 +116,27 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def cyber_dojo_start_point_exist(type, image_name)
+def check_cyber_dojo_start_point_exists(type, image_name)
   unless image_exists?(image_name)
     STDERR.puts "FAILED: cannot find #{image_name}"
     exit failed
   end
 
-  #command = "docker inspect --format='{{json .ContainerConfig.Labels}}' #{image_name}"
+  command = "docker inspect --format='{{json .ContainerConfig.Labels}}' #{image_name}"
   # returns eg {"maintainer":"jon@jaggersoft.com","org.cyber-dojo.start-points":"custom"}
-  # returns eg {"maintainer":"jon@jaggersoft.com"}
+  json = JSON.parse(run(command))
+  unless json.has_key?('org.cyber-dojo.start-points')
+    STDERR.puts "FAILED: #{image_name} was not created using [cyber-dojo start-point create]"
+    exit failed
+  end
 
+  image_type = json['org.cyber-dojo.start-points']
+  unless image_type == type
+    STDERR.puts "FAILED: the type of #{image_name} is #{image_type} (not #{type})"
+    exit failed
+  end
+
+=begin
   command =
   [
     'docker run',
@@ -141,6 +150,7 @@ def cyber_dojo_start_point_exist(type, image_name)
   ].join(space=' ')
   STDOUT.puts "checking images in start-point [#{vol}] all exist..."
   system(command)
+=end
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
