@@ -17,7 +17,7 @@ def cyber_dojo_start_points_ls
   types = ['custom','exercises','languages']
   types.each do |type|
     cmd = 'docker image ls'
-    cmd += " --filter 'label=org.cyber-dojo.start-point=#{type}'"
+    cmd += " --filter 'label=org.cyber-dojo.start-points=#{type}'"
     cmd += " --format '{{.Repository}}:{{.Tag}}'"
     run(cmd).split.each do |name|
       puts "--#{type}\t#{name}"
