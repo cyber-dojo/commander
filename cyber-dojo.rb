@@ -66,7 +66,7 @@ end
 
 def default_exercises; 'cyberdojo/exercises:latest'; end
 def default_custom   ; 'cyberdojo/custom:latest'   ; end
-def default_languages; 'cyberdojo/languages:latest'; end
+def default_languages; 'cyberdojo/languages-common:latest'; end
 
 def default_port; '80'; end
 
