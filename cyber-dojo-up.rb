@@ -15,7 +15,7 @@ def cyber_dojo_up
     minitab + '$ ./cyber-dojo start-point create \\',
     minitab + '    cyberdojo/languages-common \\',
     minitab + '      --languages \\',
-    minitab + '        "$(curl --silent https://github.com/cyber-dojo/languages/blob/master/url_list/common)"',
+    minitab + '        "$(curl --silent https://github.com/cyber-dojo/languages/master/url_list/common)"',
     '',
     minitab + "--exercises defaults to cyberdojo/exercises created via",
     minitab + '$ ./cyber-dojo start-point create \\',

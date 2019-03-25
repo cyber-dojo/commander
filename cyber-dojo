@@ -4,18 +4,16 @@
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to and run inside
 # the cyber-dojo commander container.
-# However, four commands have to be handled locally,
+# However, three commands have to be handled locally,
 # on the host server, outside of the container, viz:
 #
 #  1) ./cyber-dojo sh ...
 #  2) ./cyber-dojo update ...
-#  3) ./cyber-dojo start-point create NAME --dir=DIR
-#  4) ./cyber-dojo start-point create NAME --list=FILE
+#  3) ./cyber-dojo start-point create ...
 #
 #  1) provides an interactive terminal.
 #  2) ends by replacing this script.
-#  3) needs to volume mount DIR.
-#  4) needs to volume mount FILE
+#  3) volumes mounts DIRs.
 #
 # requires: awk, curl, sed, grep which are
 # all in DockerToolbox Quickstart Terminal.
@@ -26,12 +24,12 @@
 # that it affects the captured output (trailing \r \n) which
 # breaks the sh tests.
 #
-# Re 3,4: If you're running Docker-Toolbox and are in the terminal
-# it will check the DIR/FILE __locally__ (eg on the Mac) but the
+# Re 3: If you're running Docker-Toolbox and are in the terminal
+# it will check the DIR __locally__ (eg on the Mac) but the
 # volume-mount will of course take place where the docker-daemon
 # is running, which will be on the default VM
 # (thanks to the DOCKER_HOST et al env-vars).
-# In this case ensure the DIR/FILE is under /Users/<user> so it
+# In this case ensure the DIR is under /Users/<user> so it
 # will be in the default VM so the volume mount will work.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -53,12 +51,6 @@ exit_fail()
 
 delegate_to_commander()
 {
-  # The *.env file volume mounts are for files.
-  # Don't collapse the multiple *.env file volume mounts into a single
-  # dir volume mount. Do that and the *.env dir and the start-point
-  # dir could coincide and you get a [Duplicate mount point]
-  # error from the docker daemon.
-
   if [ "$1" = 'up' ];  then
     set_env_file_volumes
   fi
@@ -132,7 +124,7 @@ handle_sh_locally()
 running_container()
 {
   local space='\s'
-  local name=$1
+  local name="$1"
   local end_of_line='$'
   docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
   return $?
@@ -145,7 +137,6 @@ handle_update_locally()
   if [ "$1" != 'update' ]; then
     return
   fi
-
   if [ "$2" = '' ]; then
     replace_myself
   fi
@@ -159,13 +150,13 @@ handle_update_locally()
 replace_myself()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive ${cyber_dojo_commander} sh)
+  local cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
   local new_me=/tmp/cyber-dojo
-  chmod +x ${new_me}
-  cp ${new_me} "$0"
-  rm ${new_me}
+  chmod +x "${new_me}"
+  cp "${new_me}" "$0"
+  rm "${new_me}"
 }
 
 #==========================================================
