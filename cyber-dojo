@@ -1,5 +1,4 @@
 #!/bin/sh
-# shellcheck disable=SC2039  # In POSIX sh, 'local' is undefined.
 
 # Controls a cyber-dojo web server.
 # The aim is for all commands to forward to and run inside
@@ -69,7 +68,6 @@ delegate_to_commander()
     ${volume_nginx_env_file} \
     ${volume_web_env_file} \
     ${volume_zipper_env_file} \
-    ${volume_start_point_create} \
       "${cyber_dojo_commander}" \
         /app/cyber-dojo.rb ${debug_option} "$@"
 }
@@ -79,22 +77,22 @@ delegate_to_commander()
 set_env_file_volumes()
 {
   # web:env_file: in docker-compose.yml
-  local web_env="${my_dir}/web.env"
+  declare web_env="${my_dir}/web.env"
   if [ -f "${web_env}" ];  then
     volume_web_env_file="--volume=${web_env}:${web_env}:ro"
   fi
   # nginx:env_file: in docker-compose.yml
-  local nginx_env="${my_dir}/nginx.env"
+  declare nginx_env="${my_dir}/nginx.env"
   if [ -f "${nginx_env}" ];  then
     volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
   fi
   # grafana:env_file: in docker-compose.yml
-  local grafana_env="${my_dir}/grafana.env"
+  declare grafana_env="${my_dir}/grafana.env"
   if [ -f "${grafana_env}" ];  then
     volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
   fi
   # zipper:env_file: in docker-compose.yml
-  local zipper_env="${my_dir}/zipper.env"
+  declare zipper_env="${my_dir}/zipper.env"
   if [ -f "${zipper_env}" ];  then
     volume_zipper_env_file="--volume=${zipper_env}:${zipper_env}:ro"
   fi
@@ -108,11 +106,11 @@ handle_sh_locally()
     return
   fi
 
-  local arg=$2
-  local name=cyber-dojo-${arg}
+  declare arg="$2"
+  declare name="cyber-dojo-${arg}"
   if running_container "${name}"; then
     echo "shelling into ${name}"
-    local cmd="export PS1='[cyber-dojo sh ${arg}] \\w $ ';sh"
+    declare cmd="export PS1='[cyber-dojo sh ${arg}] \\w $ ';sh"
     docker exec --interactive --tty "${name}" sh -c "${cmd}"
   elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
     exit_fail "${name} is not a running container"
@@ -123,9 +121,9 @@ handle_sh_locally()
 
 running_container()
 {
-  local space='\s'
-  local name="$1"
-  local end_of_line='$'
+  declare space='\s'
+  declare name="$1"
+  declare end_of_line='$'
   docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
   return $?
 }
@@ -150,10 +148,10 @@ handle_update_locally()
 replace_myself()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
+  declare cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
-  local new_me=/tmp/cyber-dojo
+  declare new_me=/tmp/cyber-dojo
   chmod +x "${new_me}"
   cp "${new_me}" "$0"
   rm "${new_me}"
