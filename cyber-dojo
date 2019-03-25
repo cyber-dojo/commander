@@ -1,10 +1,12 @@
 #!/bin/sh
 
 # Controls a cyber-dojo web server.
-# The aim is for all commands to forward to and run inside
-# the cyber-dojo commander container.
-# However, three commands have to be handled locally,
-# on the host server, outside of the container, viz:
+# requires: awk, curl, sed, grep which are
+# all in DockerToolbox Quickstart Terminal.
+#
+# Most commands forward to, and run inside, the cyber-dojo
+# commander container. However, a few commands are handled
+# locally, on the host server, outside of the container, viz:
 #
 #  1) ./cyber-dojo sh ...
 #  2) ./cyber-dojo update ...
@@ -13,9 +15,6 @@
 #  1) provides an interactive terminal.
 #  2) ends by replacing this script.
 #  3) volumes mounts DIRs.
-#
-# requires: awk, curl, sed, grep which are
-# all in DockerToolbox Quickstart Terminal.
 #
 # Re 1: the docker run command could take --interactive --tty
 # options which should enable the sh command to be handled
