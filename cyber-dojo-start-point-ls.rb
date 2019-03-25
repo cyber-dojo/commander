@@ -1,12 +1,12 @@
 
-def cyber_dojo_start_points_ls
+def cyber_dojo_start_point_ls
   help = [
     '',
-    "Use: #{me} start-points [OPTIONS] ls",
+    "Use: #{me} start-point [OPTIONS] ls",
     '',
-    'Lists the name, type, and git-repo-url source of all cyber-dojo start-points images',
+    'Lists the name, type, and git-repo-url source of all cyber-dojo start-point images',
     '',
-    minitab + '--quiet     Only display start-points image names'
+    minitab + '--quiet     Only display start-point image names'
   ]
 
   if ARGV[2] == '-h' || ARGV[2] == '--help'
@@ -17,7 +17,7 @@ def cyber_dojo_start_points_ls
   types = ['custom','exercises','languages']
   types.each do |type|
     cmd = 'docker image ls'
-    cmd += " --filter 'label=org.cyber-dojo.start-points=#{type}'"
+    cmd += " --filter 'label=org.cyber-dojo.start-point=#{type}'"
     cmd += " --format '{{.Repository}}:{{.Tag}}'"
     run(cmd).split.each do |name|
       puts "--#{type}\t#{name}"

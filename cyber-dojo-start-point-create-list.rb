@@ -1,5 +1,5 @@
 
-def cyber_dojo_start_points_create_list(name, urls)
+def cyber_dojo_start_point_create_list(name, urls)
   cid = ''
   vol = ''
 

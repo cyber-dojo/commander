@@ -1,10 +1,10 @@
 
-def cyber_dojo_start_points_latest
+def cyber_dojo_start_point_latest
   help = [
     '',
-    "Use: #{me} start-points latest IMAGE_NAME",
+    "Use: #{me} start-point latest IMAGE_NAME",
     '',
-    'Re-pulls already pulled docker images inside the named start-points image'
+    'Re-pulls already pulled docker images inside the named start-point image'
   ]
 
   image_name = ARGV[2]

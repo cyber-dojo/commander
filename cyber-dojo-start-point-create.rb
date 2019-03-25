@@ -2,7 +2,7 @@
 #require_relative 'cyber-dojo-start-point-create-list'
 #require_relative 'cyber-dojo-start-point-create-dir'
 
-def cyber_dojo_start_points_create
+def cyber_dojo_start_point_create
   help = [
     '',
     "Use: #{me} start-point create NAME --list=URL|FILE",

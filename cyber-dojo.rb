@@ -11,7 +11,7 @@ require_relative 'cyber-dojo-down'
 require_relative 'cyber-dojo-help'
 require_relative 'cyber-dojo-logs'
 require_relative 'cyber-dojo-sh'
-require_relative 'cyber-dojo-start-points'
+require_relative 'cyber-dojo-start-point'
 require_relative 'cyber-dojo-up'
 require_relative 'cyber-dojo-update'
 
@@ -120,19 +120,27 @@ def start_point_image?(image_name)
   run(cmd).split.include?(image_name)
 end
 
+def start_point_type(image_name)
+  command = "docker inspect --format='{{json .ContainerConfig.Labels}}' #{image_name}"
+  labels = run(command)
+  # returns eg {"maintainer":"jon@jaggersoft.com","org.cyber-dojo.start-points":"custom"}
+  json = JSON.parse(labels)
+  json['org.cyber-dojo.start-point']
+end
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 case ARGV[0]
-  when nil             then cyber_dojo_help
-  when '-h'            then cyber_dojo_help
-  when '--help'        then cyber_dojo_help
-  when 'clean'         then cyber_dojo_clean
-  when 'down'          then cyber_dojo_down
-  when 'logs'          then cyber_dojo_logs
-  when 'sh'            then cyber_dojo_sh
-  when 'start-points'  then cyber_dojo_start_points
-  when 'up'            then cyber_dojo_up
-  when 'update'        then cyber_dojo_update
+  when nil            then cyber_dojo_help
+  when '-h'           then cyber_dojo_help
+  when '--help'       then cyber_dojo_help
+  when 'clean'        then cyber_dojo_clean
+  when 'down'         then cyber_dojo_down
+  when 'logs'         then cyber_dojo_logs
+  when 'sh'           then cyber_dojo_sh
+  when 'start-point'  then cyber_dojo_start_point
+  when 'up'           then cyber_dojo_up
+  when 'update'       then cyber_dojo_update
   else
     STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed

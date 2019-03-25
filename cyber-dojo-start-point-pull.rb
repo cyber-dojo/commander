@@ -1,10 +1,10 @@
 
-def cyber_dojo_start_points_pull
+def cyber_dojo_start_point_pull
   help = [
     '',
-    "Use: #{me} start-points pull IMAGE_NAME",
+    "Use: #{me} start-point pull IMAGE_NAME",
     '',
-    'Pulls all the docker images inside the named start-points image'
+    'Pulls all the docker images inside the named start-point image'
   ]
 
   image_name = ARGV[2]

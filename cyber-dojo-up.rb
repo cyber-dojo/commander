@@ -6,29 +6,29 @@ def cyber_dojo_up
     '',
     'Creates and starts the cyber-dojo server using named/default start-points',
     '',
-    minitab + '--languages=IMAGE_NAME    Specify the languages start-points image.',
-    minitab + "                          Defaults to cyberdojo/languages-common created via",
-    minitab + '                            ./cyber-dojo start-points create \\',
-    minitab + '                              cyberdojo/languages-common \\',
-    minitab + '                                --languages \\',
-    minitab + '                                  "$(curl --silent https://github.com/cyber-dojo/languages/blob/master/url_list/common)"',
+    minitab + '--languages=NAME    Specify the languages start-point image name.',
+    minitab + "                    Defaults to cyberdojo/languages-common created via",
+    minitab + '                      ./cyber-dojo start-point create \\',
+    minitab + '                        cyberdojo/languages-common \\',
+    minitab + '                          --languages \\',
+    minitab + '                            "$(curl --silent https://github.com/cyber-dojo/languages/blob/master/url_list/common)"',
     '',
-    minitab + '--exercises=IMAGE_NAME    Specify the exercises start-points image.',
-    minitab + "                          Defaults to cyberdojo/exercises created via",
-    minitab + '                            ./cyber-dojo start-points create \\',
-    minitab + '                              cyberdojo/exercises \\',
-    minitab + '                                --exercises \\',
-    minitab + '                                  https://github.com/cyber-dojo/exercises.git',
+    minitab + '--exercises=NAME    Specify the exercises start-point image name.',
+    minitab + "                    Defaults to cyberdojo/exercises created via",
+    minitab + '                      ./cyber-dojo start-point create \\',
+    minitab + '                        cyberdojo/exercises \\',
+    minitab + '                          --exercises \\',
+    minitab + '                            https://github.com/cyber-dojo/exercises.git',
     '',
-    minitab + '--custom=IMAGE_NAME       Specify the custom start-points image.',
-    minitab + "                          Defaults to cyberdojo/custom created via",
-    minitab + '                            ./cyber-dojo start-points create \\',
-    minitab + '                              cyberdojo/custom \\',
-    minitab + '                                --custom \\',
-    minitab + '                                  https://github.com/cyber-dojo/custom.git',
+    minitab + '--custom=NAME       Specify the custom start-point image name.',
+    minitab + "                    Defaults to cyberdojo/custom created via",
+    minitab + '                      ./cyber-dojo start-point create \\',
+    minitab + '                        cyberdojo/custom \\',
+    minitab + '                          --custom \\',
+    minitab + '                            https://github.com/cyber-dojo/custom.git',
     '',
-    minitab + '--port=LISTEN-PORT        Specify port to listen on.',
-    minitab + "                          Defaults to 80"
+    minitab + '--port=PORT         Specify the port number to listen on.',
+    minitab + "                    Defaults to 80"
   ]
 
   if ARGV[1] == '--help'
@@ -49,9 +49,9 @@ def cyber_dojo_up
   exit failed unless unknowns == []
 
   # Explicit start-points?
-  exit failed unless up_arg_img_ok(help, args, 'languages')  # --languages=IMAGE_NAME
-  exit failed unless up_arg_img_ok(help, args, 'exercises')  # --exercises=IMAGE_NAME
-  exit failed unless up_arg_img_ok(help, args,    'custom')  # --custom=IMAGE_NAME
+  exit failed unless up_arg_img_ok(help, args, 'languages')  # --languages=NAME
+  exit failed unless up_arg_img_ok(help, args, 'exercises')  # --exercises=NAME
+  exit failed unless up_arg_img_ok(help, args,    'custom')  # --custom=NAME
   exit failed unless up_arg_int_ok(help, args,      'port')  # --port=PORT
 
   languages = default_languages
@@ -119,27 +119,16 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def image_exists?(name)
-  run("docker image ls --quiet #{name}") != ''
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
 def check_cyber_dojo_start_point_exists(type, image_name)
   unless image_exists?(image_name)
     STDERR.puts "FAILED: cannot find #{image_name}"
     exit failed
   end
-
-  command = "docker inspect --format='{{json .ContainerConfig.Labels}}' #{image_name}"
-  # returns eg {"maintainer":"jon@jaggersoft.com","org.cyber-dojo.start-points":"custom"}
-  json = JSON.parse(run(command))
-  unless json.has_key?('org.cyber-dojo.start-points')
+  unless start_point_image?(image_name)
     STDERR.puts "FAILED: #{image_name} was not created using [cyber-dojo start-point create]"
     exit failed
   end
-
-  image_type = json['org.cyber-dojo.start-points']
+  image_type = start_point_type(image_name)
   unless image_type == type
     STDERR.puts "FAILED: the type of #{image_name} is #{image_type} (not #{type})"
     exit failed

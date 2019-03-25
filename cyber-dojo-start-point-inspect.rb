@@ -1,10 +1,10 @@
 
-def cyber_dojo_start_points_inspect
+def cyber_dojo_start_point_inspect
   help = [
     '',
-    "Use: #{me} start-points inspect IMAGE_NAME",
+    "Use: #{me} start-point inspect IMAGE_NAME",
     '',
-    'Displays details of the named start-points image',
+    'Displays details of the named start-point image',
   ]
 
   image_name = ARGV[2]

@@ -1,10 +1,10 @@
 
-def cyber_dojo_start_points_rm
+def cyber_dojo_start_point_rm
   help = [
     '',
-    "Use: #{me} start-points rm IMAGE_NAME",
+    "Use: #{me} start-point rm IMAGE_NAME",
     '',
-    "Removes a start-points image created with the [#{me} start-points create] command"
+    "Removes a start-point image created with the [#{me} start-point create] command"
   ]
 
   image_name = ARGV[2]
