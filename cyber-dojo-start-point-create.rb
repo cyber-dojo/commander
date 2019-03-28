@@ -3,6 +3,8 @@
 #require_relative 'cyber-dojo-start-point-create-dir'
 
 def cyber_dojo_start_point_create
+  return 0 # Now handled in main shell script
+
   help = [
     '',
     "Use: #{me} start-point create NAME --list=URL|FILE",
