@@ -10,7 +10,7 @@ def cyber_dojo_logs
   ]
 
   service = ARGV[1]
-  if [nil,'--help'].include? service
+  if [nil,'-h','--help'].include?(service)
     show help
     exit succeeded
   end
@@ -27,5 +27,4 @@ def cyber_dojo_logs
   end
 
   `docker logs #{name}`
-
 end

@@ -9,7 +9,7 @@ def cyber_dojo_start_point_ls
     minitab + '--quiet     Only display start-point image names'
   ]
 
-  if ARGV[2] == '-h' || ARGV[2] == '--help'
+  if ['-h','--help'].include?(ARGV[2])
     show help
     exit succeeded
   end

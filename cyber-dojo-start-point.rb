@@ -14,12 +14,12 @@ def cyber_dojo_start_point
     'Manage cyber-dojo start-point images',
     '',
     'Commands:',
-    minitab + 'create         Creates a new start-points image',
-    minitab + 'inspect        Displays details of a start-points image',
+    minitab + 'create         Creates a new start-point image',
+    minitab + 'inspect        Displays details of a start-point image',
     minitab + 'latest         Updates pulled docker images named inside a start-point',
-    minitab + 'ls             Lists the names of all start-points images',
-    minitab + 'pull           Pulls all the docker images named inside a start-points image',
-    minitab + 'rm             Removes a start-points image',
+    minitab + 'ls             Lists the names of all start-point images',
+    minitab + 'pull           Pulls all the docker images named inside a start-point image',
+    minitab + 'rm             Removes a start-point image',
     '',
     "Run '#{me} start-point COMMAND --help' for more information on a command",
   ]
@@ -40,7 +40,7 @@ def cyber_dojo_start_point
       ARGV[1..-1].each do |arg|
         STDERR.puts "FAILED: unknown argument [#{arg}]"
       end
-      exit(failed)
+      exit failed
     end
   end
 end

@@ -7,7 +7,7 @@ def cyber_dojo_update
     'Updates all cyber-dojo server and language images and the cyber-dojo script file',
   ]
 
-  if ARGV[1] == '-h' || ARGV[1] == '--help'
+  if ['-h','--help'].include?(ARGV[1])
     show help
     exit succeeded
   end
@@ -40,8 +40,9 @@ def cyber_dojo_update_server
     prometheus
     grafana
   )
-  #How to update these 3?
-  #custom exercises languages
+
+  #TODO: How to update these 3?
+  # custom exercises languages
 
   service_images.each do |name|
     # use system() so pulls are visible in terminal

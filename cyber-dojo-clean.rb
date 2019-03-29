@@ -7,7 +7,7 @@ def cyber_dojo_clean
     'Removes dangling docker images/volumes and exited containers',
   ]
 
-  if ARGV[1] == '-h' || ARGV[1] == '--help'
+  if ['-h','--help'].include?(ARGV[1])
     show help
     exit succeeded
   end

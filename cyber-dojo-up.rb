@@ -6,9 +6,9 @@ def cyber_dojo_up
     '',
     'Creates and starts the cyber-dojo server using named/default start-points.',
     '',
-    minitab + '--languages=NAME    Specify the languages start-point image name.',
-    minitab + '--exercises=NAME    Specify the exercises start-point image name.',
-    minitab + '--custom=NAME       Specify the custom start-point image name.',
+    minitab + '--languages=NAME    Specify the languages start-point name.',
+    minitab + '--exercises=NAME    Specify the exercises start-point name.',
+    minitab + '--custom=NAME       Specify the custom start-point name.',
     minitab + '--port=PORT         Specify the port number.',
     '',
     minitab + "--languages defaults to cyberdojo/languages-common created via",
@@ -32,7 +32,7 @@ def cyber_dojo_up
     minitab + "--port defaults to 80"
   ]
 
-  if ARGV[1] == '--help'
+  if ['-h','--help'].include?(ARGV[1])
     show help
     exit succeeded
   end

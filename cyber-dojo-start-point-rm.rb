@@ -25,5 +25,4 @@ def cyber_dojo_start_point_rm
     puts "FAILED cannot remove start-point #{image_name}"
     exit failed
   end
-
 end
