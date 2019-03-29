@@ -14,7 +14,7 @@
 #
 #  1) provides an interactive terminal.
 #  2) ends by replacing this script.
-#  3) volumes mounts DIRs.
+#  3) may access local DIRs.
 #
 # Re 1: the docker run command could take --interactive --tty
 # options which should enable the sh command to be handled
@@ -32,8 +32,8 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
-readonly cyber_dojo_commander=cyberdojo/commander
+declare -r my_dir="$( cd "$( dirname "$0" )" && pwd )"
+declare -r cyber_dojo_commander=cyberdojo/commander
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,7 +47,7 @@ error()
 
 exit_non_zero_unless_git_installed()
 {
-  local -r git="${GIT_PROGRAM:-git}"
+  declare -r git="${GIT_PROGRAM:-git}"
   if ! hash "${git}" 2> /dev/null; then
     error 1 'git is not installed!'
   fi
@@ -57,7 +57,7 @@ exit_non_zero_unless_git_installed()
 
 exit_non_zero_unless_docker_installed()
 {
-  local -r docker="${DOCKER_PROGRAM:-docker}"
+  declare -r docker="${DOCKER_PROGRAM:-docker}"
   if ! hash "${docker}" 2> /dev/null; then
     error 2 'docker is not installed!'
   fi
@@ -203,11 +203,11 @@ EOF
 
 exit_non_zero_if_bad_args()
 {
-  local -r args="${@:3}"
+  declare -r args="${@:3}"
   set +e
   docker container run --rm $(base_image_name) \
     /app/src/from_script/bad_args.rb ${args}
-  local -r status=$?
+  declare -r status=$?
   set -e
   if [ "${status}" != '0' ]; then
     exit "${status}"
@@ -250,19 +250,19 @@ git_clone_one_url_into_context_dir()
   # context dir before running [docker image build].
   # Viz, run [git clone] on the host rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
-  local -r url="${1}"
+  declare -r url="${1}"
   cd "${CONTEXT_DIR}"
-  local stderr
+  declare stderr
   if ! stderr="$(git clone --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
-    local -r newline=$'\n'
-    local msg="BAD git clone <git-repo-url>${newline}"
+    declare -r newline=$'\n'
+    declare msg="BAD git clone <git-repo-url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
     msg+="${stderr}"
     error 3 "${msg}"
   fi
 
   chmod -R +rX "${URL_INDEX}"
-  local sha
+  declare sha
   sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
   echo "${IMAGE_TYPE} \t ${url}"
   echo "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
@@ -295,7 +295,7 @@ build_image_from_context_dir()
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
-  local output
+  declare output
   if ! output=$(docker image build \
         --quiet                    \
         --tag "${IMAGE_NAME}"      \
@@ -324,8 +324,8 @@ build_image_from_context_dir()
       | grep --invert-match 'Removing intermediate container'  \
       | >&2 grep --invert-match "The command '/bin/sh -c"      \
       || :
-    local -r last_line="${output##*$'\n'}"
-    local -r last_word="${last_line##* }"
+    declare -r last_line="${output##*$'\n'}"
+    declare -r last_word="${last_line##* }"
     exit "${last_word}" # eg 16
   else
     echo "Successfully built ${IMAGE_NAME}"
