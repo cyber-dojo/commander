@@ -161,34 +161,41 @@ show_use()
   Its base image will be cyberdojo/start-points-base.
   It will contain git clones of all the specified <git-repo-url>s.
 
-  Example 1: local <git-repo-url>s
+  Example 1: local <git-repo-url>
 
   \$ ./${MY_NAME} \\
-        acme/first-start-point \\
+        eg/first \\
           --custom \\
             file:///.../yahtzee
 
-  Example 2: non-local <git-repo-url>s
+  Example 2: non-local <git-repo-url>
 
   \$ ./${MY_NAME} \\
-        acme/second-start-point \\
+        eg/second \\
           --exercises \\
             https://github.com/.../my-exercises.git
 
   Example 3: multiple <git-repo-url>s
 
   \$ ./${MY_NAME} \\
-        acme/third-start-point \\
+        eg/third \\
           --languages \\
             file:///.../asm-assert \\
             https://github.com/.../my-exercises.git
 
-  Example 4: read <git-repo-url>s from a file
+  Example 4: read <git-repo-url>s from a curl'd file
 
   \$ ./${MY_NAME} \\
-        acme/sixth-start-point \\
+        eg/fourth \\
           --languages \\
-            "\$(< my-language-selection.txt)"
+            \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/all)
+
+  Example 5: read <git-repo-url>s from a local file
+
+  \$ ./${MY_NAME} \\
+        eg/fifth \\
+          --languages \\
+            \$(< my-language-selection.txt)
 
   \$ cat my-language-selection.txt
   https://github.com/.../java-junit.git
