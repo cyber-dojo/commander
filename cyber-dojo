@@ -163,21 +163,21 @@ show_use()
 
   Example 1: local <git-repo-url>
 
-  \$ ./${MY_NAME} \\
+  \$ ./${MY_NAME} start-point create \\
         eg/first \\
           --custom \\
             file:///.../yahtzee
 
   Example 2: non-local <git-repo-url>
 
-  \$ ./${MY_NAME} \\
+  \$ ./${MY_NAME} start-point create \\
         eg/second \\
           --exercises \\
             https://github.com/.../my-exercises.git
 
   Example 3: multiple <git-repo-url>s
 
-  \$ ./${MY_NAME} \\
+  \$ ./${MY_NAME} start-point create \\
         eg/third \\
           --languages \\
             file:///.../asm-assert \\
@@ -185,14 +185,14 @@ show_use()
 
   Example 4: read <git-repo-url>s from a curl'd file
 
-  \$ ./${MY_NAME} \\
+  \$ ./${MY_NAME} start-point create \\
         eg/fourth \\
           --languages \\
             \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
   Example 5: read <git-repo-url>s from a local file
 
-  \$ ./${MY_NAME} \\
+  \$ ./${MY_NAME} start-point create \\
         eg/fifth \\
           --languages \\
             \$(< my-language-selection.txt)
