@@ -14,15 +14,17 @@ def cyber_dojo_start_point_ls
     exit succeeded
   end
 
-  types = ['custom','exercises','languages']
-  types.each do |type|
+  json = {}
+  ['custom','exercises','languages'].each do |type|
     cmd = 'docker image ls'
     cmd += " --filter 'label=org.cyber-dojo.start-point=#{type}'"
     cmd += " --format '{{.Repository}}:{{.Tag}}'"
-    run(cmd).split.each do |name|
-      puts "--#{type}\t#{name}"
+    image_names = run(cmd).split
+    if image_names != []
+      json[type] = image_names
     end
   end
+  puts JSON.pretty_generate(json)
 
   # TODO: non-quiet
   # names = names.select{ |name| cyber_dojo_volume?(name) }

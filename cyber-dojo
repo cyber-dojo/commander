@@ -77,6 +77,8 @@ delegate_to_commander()
   docker run \
     --init \
     --rm \
+    --interactive \
+    --tty \
     --user=root \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \

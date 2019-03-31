@@ -26,11 +26,9 @@ def cyber_dojo_start_point_inspect
   [
     'docker run',
     '--rm',
-    "--user=root",
-    # "--volume=#{vol}:/data:#{read_only}",
-    '--volume=/var/run/docker.sock:/var/run/docker.sock',
-    "#{cyber_dojo_commander}",
-    "sh -c './start_point_inspect.rb /data'"
-  ].join(space=' ')
-  print run(command)
+    '--interactive',
+    image_name,
+    "sh -c 'ruby /app/repos/inspect.rb'"
+  ].join(' ')
+  puts run(command)
 end
