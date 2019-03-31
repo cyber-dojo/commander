@@ -280,9 +280,9 @@ git_clone_one_url_into_context_dir()
 build_image_from_context_dir()
 {
   case "$(image_type)" in
-       'custom') PORT=4527;;
-    'exercises') PORT=4526;;
-    'languages') PORT=4525;;
+       'custom') PORT=4526;;
+    'exercises') PORT=4525;;
+    'languages') PORT=4524;;
   esac
 
   {
