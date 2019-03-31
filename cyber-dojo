@@ -157,9 +157,9 @@ show_use()
   \$ ./${MY_NAME} start-point create <image-name> --exercises <git-repo-url>...
   \$ ./${MY_NAME} start-point create <image-name> --languages <git-repo-url>...
 
-  Creates a cyber-dojo start-point docker image named <image-name>.
-  Its base image will be cyberdojo/start-points-base.
-  It will contain git clones of all the specified <git-repo-url>s.
+  Creates a cyber-dojo start-point docker image named <image-name>
+  Its base image will be cyberdojo/start-points-base
+  It will contain git clones of all the specified <git-repo-url>s
 
   Example 1: local <git-repo-url>
 
@@ -181,14 +181,14 @@ show_use()
         eg/third \\
           --languages \\
             file:///.../asm-assert \\
-            https://github.com/.../my-exercises.git
+            https://github.com/.../my-languages.git
 
   Example 4: read <git-repo-url>s from a curl'd file
 
   \$ ./${MY_NAME} \\
         eg/fourth \\
           --languages \\
-            \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/all)
+            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
   Example 5: read <git-repo-url>s from a local file
 
@@ -312,7 +312,6 @@ build_image_from_context_dir()
     # but we do not want the output from the [docker build] itself.
     # Hence the --quiet option.
     # On a Macbook using Docker-Toolbox stderr looks like this:
-    # (On CircleCI, stderr is similar so the grep patterns are a little loose.)
     #
     #   1 Sending build context to Docker daemon  185.9kB
     #   2 Step 1/N : FROM cyberdojo/start-points-base:latest
@@ -323,6 +322,7 @@ build_image_from_context_dir()
     #   7 The command '/bin/sh -c ...' returned a non-zero code: 16
     #
     # We want only lines 5,6
+    # On CircleCI, stderr is not identical so the grep patterns are a little loose.
 
     echo "${output}" \
       | grep --invert-match 'Sending build context to Docker'  \
