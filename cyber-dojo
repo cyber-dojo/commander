@@ -292,12 +292,16 @@ build_image_from_context_dir()
     'languages') PORT=4524;;
   esac
 
+  local env_vars="PORT=${PORT}"
+  if [ -n "${SHA}" ]; then
+    env_vars="${env_vars} SHA=${SHA}"
+  fi
   {
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
     echo "RUN /app/src/from_script/check_all.rb /app/repos $(image_type)"
-    echo "ENV PORT=${PORT}"
+    echo "ENV ${env_vars}"
     echo "EXPOSE ${PORT}"
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
