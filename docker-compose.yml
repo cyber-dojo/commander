@@ -119,6 +119,8 @@ services:
     cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
+    mem_limit: 256M
+    memswap_limit: 256M    
     restart: on-failure
     depends_on:
       - mapper
