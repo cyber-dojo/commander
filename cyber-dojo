@@ -371,7 +371,7 @@ handle_sh_locally()
   declare name="cyber-dojo-${arg}"
   if running_container "${name}"; then
     echo "shelling into ${name}"
-    declare cmd="export PS1='[cyber-dojo sh ${arg}] \\w $ ';sh"
+    declare cmd="export PS1='[${arg}] \\w $ ';sh"
     docker exec --interactive --tty "${name}" sh -c "${cmd}"
   elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
     error 4 "${name} is not a running container"
