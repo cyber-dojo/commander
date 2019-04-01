@@ -181,16 +181,18 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def up_arg_img_ok(args, name)
-  img = get_arg("--#{name}", args)
-  if img.nil? || img == name # handled in cyber-dojo.sh
+  image_name = get_arg("--#{name}", args)
+  if image_name.nil?
     return true
   end
-  if img == ''
+
+  if image_name == ''
     STDERR.puts "FAILED: missing argument value --#{name}=[???]"
     return false
   end
-  unless image_exists?(img)
-    STDERR.puts "FAILED: image #{img} does not exist"
+
+  unless image_exists?(image_name)
+    STDERR.puts "FAILED: image #{image_name} does not exist"
     return false
   end
   return true
