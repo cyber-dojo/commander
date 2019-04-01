@@ -32,8 +32,8 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-declare -r my_dir="$( cd "$( dirname "$0" )" && pwd )"
-declare -r cyber_dojo_commander=cyberdojo/commander
+readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
+readonly cyber_dojo_commander=cyberdojo/commander
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -47,7 +47,7 @@ error()
 
 exit_non_zero_unless_git_installed()
 {
-  declare -r git="${GIT_PROGRAM:-git}"
+  local git="${GIT_PROGRAM:-git}"
   if ! hash "${git}" 2> /dev/null; then
     error 1 'git is not installed!'
   fi
@@ -57,7 +57,7 @@ exit_non_zero_unless_git_installed()
 
 exit_non_zero_unless_docker_installed()
 {
-  declare -r docker="${DOCKER_PROGRAM:-docker}"
+  local docker="${DOCKER_PROGRAM:-docker}"
   if ! hash "${docker}" 2> /dev/null; then
     error 2 'docker is not installed!'
   fi
@@ -70,7 +70,6 @@ delegate_to_commander()
   if [ "$1" = 'up' ];  then
     set_env_file_volumes
   fi
-
   # shellcheck disable=SC2086
   # 2086 == Double quote to prevent globbing and word splitting.
   # CYBER_DOJO_ENV_ROOT must match Dockerfile
@@ -78,7 +77,6 @@ delegate_to_commander()
     --init \
     --rm \
     --interactive \
-    --tty \
     --user=root \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
@@ -95,17 +93,17 @@ delegate_to_commander()
 set_env_file_volumes()
 {
   # web:env_file: in docker-compose.yml
-  declare web_env="${my_dir}/web.env"
+  local web_env="${my_dir}/web.env"
   if [ -f "${web_env}" ];  then
     volume_web_env_file="--volume=${web_env}:${web_env}:ro"
   fi
   # nginx:env_file: in docker-compose.yml
-  declare nginx_env="${my_dir}/nginx.env"
+  local nginx_env="${my_dir}/nginx.env"
   if [ -f "${nginx_env}" ];  then
     volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
   fi
   # grafana:env_file: in docker-compose.yml
-  declare grafana_env="${my_dir}/grafana.env"
+  local grafana_env="${my_dir}/grafana.env"
   if [ -f "${grafana_env}" ];  then
     volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
   fi
@@ -114,10 +112,10 @@ set_env_file_volumes()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-declare -r MY_NAME=$(basename "${0}")
-declare -r IMAGE_NAME="${3}"
-declare -r IMAGE_TYPE="${4}"
-declare -ar GIT_REPO_URLS="(${@:5})"
+readonly MY_NAME=$(basename "${0}")
+readonly IMAGE_NAME="${3}"
+readonly IMAGE_TYPE="${4}"
+readonly GIT_REPO_URLS="(${@:5})"
 
 handle_start_point_create_locally()
 {
@@ -206,11 +204,11 @@ EOF
 
 exit_non_zero_if_bad_args()
 {
-  declare -r args="${@:3}"
+  local args="${@:3}"
   set +e
   docker container run --rm $(base_image_name) \
     /app/src/from_script/bad_args.rb ${args}
-  declare -r status=$?
+  local status=$?
   set -e
   if [ "${status}" != '0' ]; then
     exit "${status}"
@@ -219,7 +217,7 @@ exit_non_zero_if_bad_args()
 
 # - - - - - - - - - - - -
 
-declare CONTEXT_DIR
+CONTEXT_DIR=''
 
 prepare_context_dir()
 {
@@ -245,7 +243,7 @@ git_clone_urls_into_context_dir()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-declare -i URL_INDEX=0
+URL_INDEX=0
 
 git_clone_one_url_into_context_dir()
 {
@@ -253,19 +251,19 @@ git_clone_one_url_into_context_dir()
   # context dir before running [docker image build].
   # Viz, run [git clone] on the host rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
-  declare -r url="${1}"
+  local url="${1}"
   cd "${CONTEXT_DIR}"
-  declare stderr
+  local stderr
   if ! stderr="$(git clone --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
-    declare -r newline=$'\n'
-    declare msg="BAD git clone <git-repo-url>${newline}"
+    local newline=$'\n'
+    local msg="BAD git clone <git-repo-url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
     msg+="${stderr}"
     error 3 "${msg}"
   fi
 
   chmod -R +rX "${URL_INDEX}"
-  declare sha
+  local sha
   sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
   echo "${IMAGE_TYPE} \t ${url}"
   echo "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
@@ -302,7 +300,7 @@ build_image_from_context_dir()
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
-  declare output
+  local output
   if ! output=$(docker image build \
         --quiet                    \
         --tag "${IMAGE_NAME}"      \
@@ -331,8 +329,8 @@ build_image_from_context_dir()
       | grep --invert-match 'Removing intermediate container'  \
       | >&2 grep --invert-match "The command '/bin/sh -c"      \
       || :
-    declare -r last_line="${output##*$'\n'}"
-    declare -r last_word="${last_line##* }"
+    local last_line="${output##*$'\n'}"
+    local last_word="${last_line##* }"
     exit "${last_word}" # eg 16
   else
     echo "Successfully built ${IMAGE_NAME}"
@@ -361,11 +359,11 @@ handle_sh_locally()
     return
   fi
 
-  declare arg="$2"
-  declare name="cyber-dojo-${arg}"
+  local arg="$2"
+  local name="cyber-dojo-${arg}"
   if running_container "${name}"; then
     echo "shelling into ${name}"
-    declare cmd="export PS1='[${arg}] \\w $ ';sh"
+    local cmd="export PS1='[${arg}] \\w $ ';sh"
     docker exec --interactive --tty "${name}" sh -c "${cmd}"
   elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
     error 4 "${name} is not a running container"
@@ -376,9 +374,9 @@ handle_sh_locally()
 
 running_container()
 {
-  declare space='\s'
-  declare name="$1"
-  declare end_of_line='$'
+  local space='\s'
+  local name="$1"
+  local end_of_line='$'
   docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
   return $?
 }
@@ -404,10 +402,10 @@ handle_update_locally()
 replace_myself()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  declare cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
+  local cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
-  declare new_me=/tmp/cyber-dojo
+  local new_me=/tmp/cyber-dojo
   chmod +x "${new_me}"
   cp "${new_me}" "$0"
   rm "${new_me}"
