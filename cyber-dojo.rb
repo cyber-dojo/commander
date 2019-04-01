@@ -6,14 +6,10 @@
 require 'json'
 require 'tempfile'
 
-require_relative 'cyber-dojo-clean'
-require_relative 'cyber-dojo-down'
 require_relative 'cyber-dojo-help'
-require_relative 'cyber-dojo-logs'
-require_relative 'cyber-dojo-sh'
-require_relative 'cyber-dojo-start-point'
-require_relative 'cyber-dojo-up'
-require_relative 'cyber-dojo-update'
+require_relative 'cmd-start-point/all'
+require_relative 'cmd-server/all'
+require_relative 'cmd-service/all'
 
 $exit_status = 0
 

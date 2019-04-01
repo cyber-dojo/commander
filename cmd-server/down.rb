@@ -27,6 +27,6 @@ def cyber_dojo_down
     'CYBER_DOJO_NGINX_PORT' => default_port
   }
   my_dir = File.dirname(__FILE__)
-  docker_compose_cmd = "docker-compose --file=#{my_dir}/docker-compose.yml"
+  docker_compose_cmd = "docker-compose --file=#{my_dir}/../docker-compose.yml"
   system(env_vars, "#{docker_compose_cmd} down")
 end

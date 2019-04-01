@@ -1,10 +1,10 @@
 
-require_relative 'start-point/create'
-require_relative 'start-point/inspect'
-require_relative 'start-point/latest'
-require_relative 'start-point/ls'
-require_relative 'start-point/pull'
-require_relative 'start-point/rm'
+require_relative 'create'
+require_relative 'inspect'
+require_relative 'latest'
+require_relative 'ls'
+require_relative 'pull'
+require_relative 'rm'
 
 def cyber_dojo_start_point
   help = [
