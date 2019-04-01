@@ -18,12 +18,7 @@ def cyber_dojo_up
   end
   exit failed unless unknowns == []
 
-  # Explicit start-points?
-  exit failed unless up_arg_img_ok(args,    'custom')  # --custom=NAME
-  exit failed unless up_arg_img_ok(args, 'exercises')  # --exercises=NAME
-  exit failed unless up_arg_img_ok(args, 'languages')  # --languages=NAME
-  exit failed unless up_arg_int_ok(args,      'port')  # --port=PORT
-
+  # Process arguments
      custom = default_custom
   exercises = default_exercises
   languages = default_languages
@@ -32,6 +27,10 @@ def cyber_dojo_up
   args.each do |arg|
     name  = arg.split('=')[0]
     value = arg.split('=')[1]
+    if value.nil?
+      STDERR.puts "FAILED: missing argument value #{name}=[???]"
+      exit failed
+    end
        custom = value if name == '--custom'
     exercises = value if name == '--exercises'
     languages = value if name == '--languages'
@@ -130,7 +129,7 @@ end
 
 def check_cyber_dojo_start_point_exists(type, image_name)
   unless image_exists?(image_name)
-    STDERR.puts "FAILED: cannot find #{image_name}"
+    STDERR.puts "FAILED: cannot find a start-point called #{image_name}"
     exit failed
   end
   unless start_point_image?(image_name)
@@ -158,42 +157,4 @@ def check_cyber_dojo_start_point_exists(type, image_name)
   STDOUT.puts "checking images in start-point [#{vol}] all exist..."
   system(command)
 =end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def up_arg_int_ok(args, name)
-  int_value = get_arg("--#{name}", args)
-  if int_value.nil?
-    return true
-  end
-
-  if int_value == ''
-    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
-    return false
-  end
-
-  # TODO: validate that it's an int?
-
-  return true
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def up_arg_img_ok(args, name)
-  image_name = get_arg("--#{name}", args)
-  if image_name.nil?
-    return true
-  end
-
-  if image_name == ''
-    STDERR.puts "FAILED: missing argument value --#{name}=[???]"
-    return false
-  end
-
-  unless image_exists?(image_name)
-    STDERR.puts "FAILED: image #{image_name} does not exist"
-    return false
-  end
-  return true
 end
