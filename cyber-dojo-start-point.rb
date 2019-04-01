@@ -1,10 +1,10 @@
 
-require_relative 'cyber-dojo-start-point-create'
-require_relative 'cyber-dojo-start-point-inspect'
-require_relative 'cyber-dojo-start-point-latest'
-require_relative 'cyber-dojo-start-point-ls'
-require_relative 'cyber-dojo-start-point-pull'
-require_relative 'cyber-dojo-start-point-rm'
+require_relative 'start-point/create'
+require_relative 'start-point/inspect'
+require_relative 'start-point/latest'
+require_relative 'start-point/ls'
+require_relative 'start-point/pull'
+require_relative 'start-point/rm'
 
 def cyber_dojo_start_point
   help = [
@@ -14,12 +14,12 @@ def cyber_dojo_start_point
     'Manage cyber-dojo start-point images',
     '',
     'Commands:',
-    minitab + 'create         Creates a new start-point image',
-    minitab + 'inspect        Displays details of a start-point image',
+    minitab + 'create         Creates a new start-point',
+    minitab + 'inspect        Displays details of a start-point',
     minitab + 'latest         Updates pulled docker images named inside a start-point',
-    minitab + 'ls             Lists the names of all start-point images',
-    minitab + 'pull           Pulls all the docker images named inside a start-point image',
-    minitab + 'rm             Removes a start-point image',
+    minitab + 'ls             Lists the names of all start-points',
+    minitab + 'pull           Pulls all the docker images named inside a start-point',
+    minitab + 'rm             Removes a start-point',
     '',
     "Run '#{me} start-point COMMAND --help' for more information on a command",
   ]

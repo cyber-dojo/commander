@@ -6,7 +6,7 @@ def cyber_dojo_start_point_ls
     '',
     'Lists the name, type, and git-repo-url source of all cyber-dojo start-point images',
     '',
-    minitab + '--quiet     Only display start-point image names'
+    minitab + '--quiet     Only display start-point names'
   ]
 
   if ['-h','--help'].include?(ARGV[2])
