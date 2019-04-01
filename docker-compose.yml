@@ -57,7 +57,7 @@ services:
 
   custom:
     user: nobody
-    image: ${CYBER_DOJO_START_POINTS_CUSTOM_IMAGE}
+    image: ${CYBER_DOJO_START_POINT_CUSTOM_IMAGE}
     init: true
     container_name: cyber-dojo-custom
     cpu_shares: 512
@@ -69,7 +69,7 @@ services:
 
   exercises:
     user: nobody
-    image: ${CYBER_DOJO_START_POINTS_EXERCISES_IMAGE}
+    image: ${CYBER_DOJO_START_POINT_EXERCISES_IMAGE}
     init: true
     container_name: cyber-dojo-exercises
     cpu_shares: 512
@@ -81,7 +81,7 @@ services:
 
   languages:
     user: nobody
-    image: ${CYBER_DOJO_START_POINTS_LANGUAGES_IMAGE}
+    image: ${CYBER_DOJO_START_POINT_LANGUAGES_IMAGE}
     init: true
     container_name: cyber-dojo-languages
     cpu_shares: 512

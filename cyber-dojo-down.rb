@@ -21,9 +21,9 @@ def cyber_dojo_down
 
   env_vars = {
     'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT'],
-    'CYBER_DOJO_START_POINTS_CUSTOM_IMAGE'    => default_custom,
-    'CYBER_DOJO_START_POINTS_EXERCISES_IMAGE' => default_exercises,
-    'CYBER_DOJO_START_POINTS_LANGUAGES_IMAGE' => default_languages,
+    'CYBER_DOJO_START_POINT_CUSTOM_IMAGE'    => default_custom,
+    'CYBER_DOJO_START_POINT_EXERCISES_IMAGE' => default_exercises,
+    'CYBER_DOJO_START_POINT_LANGUAGES_IMAGE' => default_languages,
     'CYBER_DOJO_NGINX_PORT' => default_port
   }
   my_dir = File.dirname(__FILE__)
