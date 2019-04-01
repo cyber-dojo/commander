@@ -9,6 +9,7 @@ def cyber_dojo_up
   languages = default_languages
        port = default_port
 
+  args = ARGV[1..-1]     
   args.each do |arg|
     name  = arg.split('=')[0]
     value = arg.split('=')[1]
