@@ -1,22 +1,7 @@
 
 def cyber_dojo_up
-  help = cyber_dojo_server_up_help_text
-  if ['-h','--help'].include?(ARGV[1])
-    show help
-    exit succeeded
-  end
-
-  # Unknown arguments?
-  args = ARGV[1..-1]
-  knowns = %w( custom exercises languages port )
-  unknowns = args.select do |arg|
-    knowns.none? { |known| arg.start_with?('--' + known + '=') }
-  end
-  unknowns.each do |unknown|
-    arg = unknown.split('=')[0]
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
-  end
-  exit failed unless unknowns == []
+  exit_success_if_show_up_help
+  exit_failure_if_unknown_arguments
 
   # Process arguments
      custom = default_custom
@@ -88,8 +73,8 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def cyber_dojo_server_up_help_text
-  [
+def exit_success_if_show_up_help
+  help = [
     '',
     "Use: #{me} up [OPTIONS]",
     '',
@@ -123,6 +108,25 @@ def cyber_dojo_server_up_help_text
     minitab + '      --languages \\',
     minitab + '        $(curl --silent https://github.com/cyber-dojo/languages/master/url_list/common)',
   ]
+  if ['-h','--help'].include?(ARGV[1])
+    show help
+    exit succeeded
+  end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def exit_failure_if_unknown_arguments
+  args = ARGV[1..-1]
+  knowns = %w( custom exercises languages port )
+  unknowns = args.select do |arg|
+    knowns.none? { |known| arg.start_with?('--' + known + '=') }
+  end
+  unknowns.each do |unknown|
+    arg = unknown.split('=')[0]
+    STDERR.puts "FAILED: unknown argument [#{arg}]"
+  end
+  exit failed unless unknowns == []
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
