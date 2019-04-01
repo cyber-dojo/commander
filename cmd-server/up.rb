@@ -1,7 +1,7 @@
 
 def cyber_dojo_up
   exit_success_if_show_up_help
-  exit_failure_if_unknown_arguments
+  exit_failure_if_up_unknown_arguments
 
   # Process arguments
      custom = default_custom
@@ -117,7 +117,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def exit_failure_if_unknown_arguments
+def exit_failure_if_up_unknown_arguments
   args = ARGV[1..-1]
   knowns = %w( custom exercises languages port )
   unknowns = args.select do |arg|
