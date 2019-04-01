@@ -6,7 +6,7 @@ def cyber_dojo_sh
     '',
     'Shells into a service container',
     "Example: #{me} sh web",
-    "Example: #{me} sh storer"
+    "Example: #{me} sh saver"
   ]
 
   service = ARGV[1]
