@@ -155,29 +155,29 @@ show_use()
   cat <<- EOF
 
   Use:
-  \$ ./${MY_NAME} start-point create <image-name> --custom    <git-repo-url>...
-  \$ ./${MY_NAME} start-point create <image-name> --exercises <git-repo-url>...
-  \$ ./${MY_NAME} start-point create <image-name> --languages <git-repo-url>...
+  \$ ./${MY_NAME} start-point create <name> --custom    <url>...
+  \$ ./${MY_NAME} start-point create <name> --exercises <url>...
+  \$ ./${MY_NAME} start-point create <name> --languages <url>...
 
-  Creates a cyber-dojo start-point docker image named <image-name>
+  Creates a cyber-dojo start-point image named <name>
   Its base image will be cyberdojo/start-points-base
-  It will contain git clones of all the specified <git-repo-url>s
+  It will contain git clones of all the specified git-repo <url>s
 
-  Example 1: local <git-repo-url>
+  Example 1: local git-repo url
 
   \$ ./${MY_NAME} start-point create \\
         eg/first \\
           --custom \\
             file:///.../yahtzee
 
-  Example 2: non-local <git-repo-url>
+  Example 2: non-local git-repo <url>
 
   \$ ./${MY_NAME} start-point create \\
         eg/second \\
           --exercises \\
             https://github.com/.../my-exercises.git
 
-  Example 3: multiple <git-repo-url>s
+  Example 3: multiple git-repo <url>s
 
   \$ ./${MY_NAME} start-point create \\
         eg/third \\
@@ -185,14 +185,14 @@ show_use()
             file:///.../asm-assert \\
             https://github.com/.../my-languages.git
 
-  Example 4: read <git-repo-url>s from a curl'd file
+  Example 4: read git-repo <url>s from a curl'd file
 
   \$ ./${MY_NAME} start-point create \\
         eg/fourth \\
           --languages \\
             \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
-  Example 5: read <git-repo-url>s from a local file
+  Example 5: read git-repo <url>s from a local file
 
   \$ ./${MY_NAME} start-point create \\
         eg/fifth \\
