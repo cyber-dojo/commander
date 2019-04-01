@@ -19,10 +19,10 @@ def cyber_dojo_up
   exit failed unless unknowns == []
 
   # Explicit start-points?
-  exit failed unless up_arg_img_ok(help, args,    'custom')  # --custom=NAME
-  exit failed unless up_arg_img_ok(help, args, 'exercises')  # --exercises=NAME
-  exit failed unless up_arg_img_ok(help, args, 'languages')  # --languages=NAME
-  exit failed unless up_arg_int_ok(help, args,      'port')  # --port=PORT
+  exit failed unless up_arg_img_ok(args,    'custom')  # --custom=NAME
+  exit failed unless up_arg_img_ok(args, 'exercises')  # --exercises=NAME
+  exit failed unless up_arg_img_ok(args, 'languages')  # --languages=NAME
+  exit failed unless up_arg_int_ok(args,      'port')  # --port=PORT
 
      custom = default_custom
   exercises = default_exercises
@@ -162,7 +162,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def up_arg_int_ok(help, args, name)
+def up_arg_int_ok(args, name)
   int_value = get_arg("--#{name}", args)
   if int_value.nil?
     return true
@@ -180,7 +180,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def up_arg_img_ok(help, args, name)
+def up_arg_img_ok(args, name)
   img = get_arg("--#{name}", args)
   if img.nil? || img == name # handled in cyber-dojo.sh
     return true
