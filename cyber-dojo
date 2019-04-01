@@ -86,7 +86,6 @@ delegate_to_commander()
     ${volume_grafana_env_file} \
     ${volume_nginx_env_file} \
     ${volume_web_env_file} \
-    ${volume_zipper_env_file} \
       "${cyber_dojo_commander}" \
         /app/cyber-dojo.rb ${debug_option} "$@"
 }
@@ -109,11 +108,6 @@ set_env_file_volumes()
   declare grafana_env="${my_dir}/grafana.env"
   if [ -f "${grafana_env}" ];  then
     volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
-  fi
-  # zipper:env_file: in docker-compose.yml
-  declare zipper_env="${my_dir}/zipper.env"
-  if [ -f "${zipper_env}" ];  then
-    volume_zipper_env_file="--volume=${zipper_env}:${zipper_env}:ro"
   fi
 }
 

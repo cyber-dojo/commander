@@ -120,7 +120,7 @@ services:
     read_only: true
     tmpfs: /tmp
     mem_limit: 256M
-    memswap_limit: 256M    
+    memswap_limit: 256M
     restart: on-failure
     depends_on:
       - mapper
@@ -177,8 +177,6 @@ services:
     restart: on-failure
     depends_on:
       - saver
-    env_file:
-      - ${CYBER_DOJO_ENV_ROOT}/zipper.env
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
