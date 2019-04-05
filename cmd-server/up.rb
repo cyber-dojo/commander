@@ -1,5 +1,5 @@
 
-def cyber_dojo_up
+def cyber_dojo_server_up
   exit_success_if_show_up_help
   exit_failure_if_up_unknown_arguments
 

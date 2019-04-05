@@ -1,5 +1,5 @@
 
-def cyber_dojo_down
+def cyber_dojo_server_down
   exit_success_if_show_down_help
   exit_failure_if_down_unknown_arguments
   my_dir = File.dirname(__FILE__)

@@ -1,5 +1,5 @@
 
-def cyber_dojo_sh
+def cyber_dojo_server_sh
   help = [
     '',
     "Use: #{me} sh SERVICE",

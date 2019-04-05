@@ -7,13 +7,13 @@ def cyber_dojo_start_point_inspect
     'Displays details of the named start-point',
   ]
 
-  image_name = ARGV[2]
-  if [nil,'-h','--help'].include?(image_name)
+  name = ARGV[2]
+  if [nil,'-h','--help'].include?(name)
     show help
     exit succeeded
   end
 
-  exit_unless_start_point_image(image_name)
+  exit_unless_start_point_image(name)
 
   ARGV[3..-1].each do |arg|
     STDERR.puts "FAILED: unknown argument [#{arg}]"
@@ -27,7 +27,7 @@ def cyber_dojo_start_point_inspect
     'docker run',
     '--rm',
     '--interactive',
-    image_name,
+    name,
     "sh -c 'ruby /app/repos/inspect.rb'"
   ].join(' ')
   puts run(command)

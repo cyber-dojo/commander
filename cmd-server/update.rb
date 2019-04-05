@@ -1,5 +1,5 @@
 
-def cyber_dojo_update
+def cyber_dojo_server_update
   help = [
     '',
     "Use: #{me} update",

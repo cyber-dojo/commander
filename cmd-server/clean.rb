@@ -1,5 +1,5 @@
 
-def cyber_dojo_clean
+def cyber_dojo_server_clean
   help = [
     '',
     "Use: #{me} clean",

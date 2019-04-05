@@ -130,13 +130,13 @@ case ARGV[0]
   when nil            then cyber_dojo_help
   when '-h'           then cyber_dojo_help
   when '--help'       then cyber_dojo_help
-  when 'clean'        then cyber_dojo_clean
-  when 'down'         then cyber_dojo_down
-  when 'logs'         then cyber_dojo_logs
-  when 'sh'           then cyber_dojo_sh
+  when 'clean'        then cyber_dojo_server_clean
+  when 'down'         then cyber_dojo_server_down
+  when 'up'           then cyber_dojo_server_up
+  when 'update'       then cyber_dojo_server_update
+  when 'logs'         then cyber_dojo_service_logs
+  when 'sh'           then cyber_dojo_service_sh
   when 'start-point'  then cyber_dojo_start_point
-  when 'up'           then cyber_dojo_up
-  when 'update'       then cyber_dojo_update
   else
     STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
     exit failed

@@ -1,5 +1,5 @@
 
-def cyber_dojo_logs
+def cyber_dojo_service_logs
   help = [
     '',
     "Use: #{me} logs SERVICE",
