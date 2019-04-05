@@ -115,7 +115,7 @@ set_env_file_volumes()
 readonly MY_NAME=$(basename "${0}")
 readonly IMAGE_NAME="${3}"
 readonly IMAGE_TYPE="${4}"
-readonly GIT_REPO_URLS="(${@:5})"
+declare -ar GIT_REPO_URLS="(${@:5})"
 
 handle_start_point_create_locally()
 {
@@ -256,7 +256,7 @@ git_clone_one_url_into_context_dir()
   local stderr
   if ! stderr="$(git clone --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
     local newline=$'\n'
-    local msg="BAD git clone <git-repo-url>${newline}"
+    local msg="BAD git clone <url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
     msg+="${stderr}"
     error 3 "${msg}"
