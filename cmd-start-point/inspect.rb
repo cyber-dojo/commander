@@ -1,27 +1,7 @@
 
 def cyber_dojo_start_point_inspect
-  help = [
-    '',
-    "Use: #{me} start-point inspect NAME",
-    '',
-    'Displays details of the named start-point',
-  ]
-
-  name = ARGV[2]
-  if [nil,'-h','--help'].include?(name)
-    show help
-    exit succeeded
-  end
-
-  exit_unless_start_point_image(name)
-
-  ARGV[3..-1].each do |arg|
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
-  end
-  unless ARGV[3].nil?
-    exit failed
-  end
-
+  exit_success_if_show_start_point_inspect_help
+  exit_failure_if_start_point_inspect_unknown_arguments
   command =
   [
     'docker run',
@@ -31,4 +11,32 @@ def cyber_dojo_start_point_inspect
     "sh -c 'ruby /app/repos/inspect.rb'"
   ].join(' ')
   puts run(command)
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
+
+def exit_success_if_show_start_point_inspect_help
+  help = [
+    '',
+    "Use: #{me} start-point inspect NAME",
+    '',
+    'Displays details of the named start-point',
+  ]
+  name = ARGV[2]
+  if [nil,'-h','--help'].include?(name)
+    show help
+    exit succeeded
+  end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
+
+def exit_failure_if_start_point_inspect_unknown_arguments
+  exit_unless_start_point_image(name)
+  ARGV[3..-1].each do |arg|
+    STDERR.puts "FAILED: unknown argument [#{arg}]"
+  end
+  unless ARGV[3].nil?
+    exit failed
+  end
 end
