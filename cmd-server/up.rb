@@ -23,11 +23,12 @@ def cyber_dojo_server_up
          port = value if name == '--port'
   end
 
-  # Ensure all docker images named in start-points
-  # exists (there is no image-pull on-demand).
-  check_cyber_dojo_start_point_exists(   'custom',    custom)
-  check_cyber_dojo_start_point_exists('exercises', exercises)
-  check_cyber_dojo_start_point_exists('languages', languages)
+  exit_failure_unless_start_point_exists(   'custom',    custom)
+  exit_failure_unless_start_point_exists('exercises', exercises)
+  exit_failure_unless_start_point_exists('languages', languages)
+
+  pull_all_images_named_in(custom)
+  pull_all_images_named_in(languages)
 
   sh_root = ENV['CYBER_DOJO_SH_ROOT']
   # Write .env files to where docker-compose.yml expects them to be
@@ -132,7 +133,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def check_cyber_dojo_start_point_exists(type, image_name)
+def exit_failure_unless_start_point_exists(type, image_name)
   unless image_exists?(image_name)
     STDERR.puts "FAILED: cannot find a start-point called #{image_name}"
     exit failed
@@ -148,19 +149,21 @@ def check_cyber_dojo_start_point_exists(type, image_name)
   end
 end
 
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
-=begin
-  command =
-  [
-    'docker run',
-    '--rm',
-    '--tty',
-    "--user=root",
-    "--volume=#{vol}:/data:#{read_only}",
-    '--volume=/var/run/docker.sock:/var/run/docker.sock',
-    "#{cyber_dojo_commander}",
-    "sh -c './start_point_exist.rb /data'"
-  ].join(space=' ')
-  STDOUT.puts "checking images in start-point [#{vol}] all exist..."
-  system(command)
-=end
+def pull_all_images_named_in(image_name)
+  stdout = cyber_dojo_start_point_inspection(image_name)
+  json = JSON.parse!(stdout)
+  manifests_image_names = json.values.collect { |value| value['image_name'] }.sort.uniq
+  image_names = `docker image ls --format {{.Repository}}`.split.sort.uniq - ['<none>']
+  manifests_image_names.each do |image_name|
+    STDOUT.puts ">>checking #{image_name}:latest"
+    if image_names.include? image_name
+      STDOUT.puts ">>exists #{image_name}:latest"
+    else
+      STDOUT.puts ">>!exists #{image_name}:latest"
+      STDOUT.puts ">>pulling #{image_name}:latest"
+      system("docker pull #{image_name}:latest")
+    end
+  end
+end

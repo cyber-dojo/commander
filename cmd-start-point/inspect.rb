@@ -3,6 +3,12 @@ def cyber_dojo_start_point_inspect
   exit_success_if_show_start_point_inspect_help
   exit_failure_if_start_point_inspect_unknown_arguments
   name = ARGV[2]
+  puts cyber_dojo_start_point_inspection(name)
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
+
+def cyber_dojo_start_point_inspection(name)
   command =
   [
     'docker run',
@@ -11,7 +17,7 @@ def cyber_dojo_start_point_inspect
     name,
     "sh -c 'ruby /app/repos/inspect.rb'"
   ].join(' ')
-  puts run(command)
+  run(command)
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
