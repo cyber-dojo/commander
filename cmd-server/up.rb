@@ -146,6 +146,8 @@ def check_cyber_dojo_start_point_exists(type, image_name)
     STDERR.puts "FAILED: the type of #{image_name} is #{image_type} (not #{type})"
     exit failed
   end
+end
+
 
 =begin
   command =
@@ -162,4 +164,3 @@ def check_cyber_dojo_start_point_exists(type, image_name)
   STDOUT.puts "checking images in start-point [#{vol}] all exist..."
   system(command)
 =end
-end

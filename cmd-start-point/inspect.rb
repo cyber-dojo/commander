@@ -2,6 +2,7 @@
 def cyber_dojo_start_point_inspect
   exit_success_if_show_start_point_inspect_help
   exit_failure_if_start_point_inspect_unknown_arguments
+  name = ARGV[2]
   command =
   [
     'docker run',
@@ -32,6 +33,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - -
 
 def exit_failure_if_start_point_inspect_unknown_arguments
+  name = ARGV[2]
   exit_unless_start_point_image(name)
   ARGV[3..-1].each do |arg|
     STDERR.puts "FAILED: unknown argument [#{arg}]"
