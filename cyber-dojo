@@ -85,7 +85,7 @@ delegate_to_commander()
     ${volume_nginx_env_file} \
     ${volume_web_env_file} \
       "${cyber_dojo_commander}" \
-        /app/cyber-dojo.rb ${debug_option} "$@"
+        /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
