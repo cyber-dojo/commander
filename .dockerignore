@@ -7,9 +7,7 @@
 !Gemfile
 
 !cyber-dojo*
-!cmd-start-point/*
-!cmd-server/*
-!cmd-service/*
+!cmd/*
 
 !Dockerfile.katas
 !Dockerignore.katas

@@ -7,9 +7,9 @@ require 'json'
 require 'tempfile'
 
 require_relative 'cyber-dojo-help'
-require_relative 'cmd-start-point/all'
-require_relative 'cmd-server/all'
-require_relative 'cmd-service/all'
+require_relative 'cmd/start-point/all'
+require_relative 'cmd/server/all'
+require_relative 'cmd/service/all'
 
 $exit_status = 0
 
