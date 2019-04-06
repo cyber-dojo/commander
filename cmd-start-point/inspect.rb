@@ -27,7 +27,7 @@ def exit_success_if_show_start_point_inspect_help
     '',
     "Use: #{me} start-point inspect NAME",
     '',
-    'Displays details of the named start-point',
+    'Prints the display_name, image_name, sha, and url of each entry in the named start-point',
   ]
   name = ARGV[2]
   if [nil,'-h','--help'].include?(name)
