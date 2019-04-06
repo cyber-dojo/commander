@@ -9,11 +9,7 @@
 !cyber-dojo*
 !cmd/*
 
-!Dockerfile.katas
-!Dockerignore.katas
-
 !.env
 !docker-compose.yml
 !defaults.env/*
-!start_point_*.rb
 !test/rb
