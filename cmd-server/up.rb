@@ -152,11 +152,8 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def pull_all_images_named_in(image_name)
-  stdout = cyber_dojo_start_point_inspection(image_name)
-  json = JSON.parse!(stdout)
-  manifests_image_names = json.values.collect { |value| value['image_name'] }.sort.uniq
-  image_names = `docker image ls --format {{.Repository}}`.split.sort.uniq - ['<none>']
-  manifests_image_names.each do |image_name|
+  image_names = get_image_names
+  get_manifests_image_names(image_name).each do |image_name|
     STDOUT.puts ">>checking #{image_name}:latest"
     if image_names.include? image_name
       STDOUT.puts ">>exists #{image_name}:latest"
@@ -166,4 +163,18 @@ def pull_all_images_named_in(image_name)
       system("docker pull #{image_name}:latest")
     end
   end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def get_image_names
+  `docker image ls --format {{.Repository}}`.split.sort.uniq - ['<none>']
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def get_manifests_image_names(image_name)
+  stdout = cyber_dojo_start_point_inspection(image_name)
+  json = JSON.parse!(stdout)
+  json.values.collect { |value| value['image_name'] }.sort.uniq
 end
