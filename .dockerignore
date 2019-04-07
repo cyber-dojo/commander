@@ -9,7 +9,6 @@
 !cyber-dojo*
 !cmd/*
 
-!.env
 !docker-compose.yml
 !defaults.env/*
 !test/rb
