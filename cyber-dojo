@@ -1,8 +1,7 @@
 #!/bin/sh
 
 # Controls a cyber-dojo web server.
-# requires: awk, curl, sed, grep which are
-# all in DockerToolbox Quickstart Terminal.
+# requires: grep which is in DockerToolbox Quickstart Terminal.
 #
 # Most commands forward to, and run inside, the cyber-dojo
 # commander container. However, a few commands are handled
