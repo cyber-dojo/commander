@@ -32,6 +32,29 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+on_Mac()
+{
+  # https://stackoverflow.com/questions/394230
+  [[ "$OSTYPE" == "darwin"* ]]
+}
+
+not_using_DockerToolbox()
+{
+  [[ -z "${DOCKER_MACHINE_NAME}" ]]
+}
+
+if not_using_DockerToolbox; then
+  if on_Mac; then
+    echo 'ERROR'
+    echo 'On a Mac you must use Docker Toolbox.'
+    echo 'Maybe you need to run:'
+    echo '$ eval $(docker-machine env)'
+    exit 1
+  fi
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
 readonly cyber_dojo_commander=cyberdojo/commander
 
