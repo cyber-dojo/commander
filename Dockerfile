@@ -42,13 +42,6 @@ RUN set -x && \
     apk del .deps
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# [start-point create NAME --git=...] requires git clone
-# [start-point create NAME --list=...] requires curl
-# - - - - - - - - - - - - - - - - - - - - - -
-
-RUN apk add --update git curl
-
-# - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
 # - - - - - - - - - - - - - - - - - - - - - -
 
@@ -66,4 +59,3 @@ ARG CYBER_DOJO_ENV_ROOT=/tmp/app
 RUN mkdir ${CYBER_DOJO_ENV_ROOT} \
   && cp -r ${HOME_DIR}/defaults.env/* ${CYBER_DOJO_ENV_ROOT} \
   && chmod -R a+w ${CYBER_DOJO_ENV_ROOT}
-
