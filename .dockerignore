@@ -5,10 +5,8 @@
 #-----!Except these
 
 !Gemfile
-
-!cyber-dojo*
+!cyber-dojo
 !cmd/*
-
 !docker-compose.yml
 !defaults.env/*
 !test/rb
