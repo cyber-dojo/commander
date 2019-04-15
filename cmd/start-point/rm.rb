@@ -22,7 +22,7 @@ def cyber_dojo_start_point_rm
 
   run("docker image rm #{image_name} &> /dev/null")
   if $exit_status != 0
-    puts "FAILED cannot remove start-point #{image_name}"
+    puts "FAILED cannot remove start-point #{image_name}. A container is probably using it."
     exit failed
   end
 end
