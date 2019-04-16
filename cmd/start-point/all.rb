@@ -34,7 +34,7 @@ def exit_success_if_show_start_point_help
     'Manage cyber-dojo start-points',
     '',
     'Commands:',
-    minitab + 'create         Creates a new start-point from a list of git-repo-urls',
+    minitab + 'create         Creates a new start-point from a list of git-repo urls',
     minitab + 'inspect        Displays details of a named start-point',
     minitab + 'ls             Lists the names of all start-points',
     minitab + 'rm             Removes a named start-point',
