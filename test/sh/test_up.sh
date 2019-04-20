@@ -12,7 +12,7 @@ test_UP() { :; }
 
 test___success() { :; }
 
-test_____small_prints_two_start_points_and_port_and_creates_containers()
+xtest_____small_prints_two_start_points_and_port_and_creates_containers()
 {
   local readonly port=8462
   local readonly name=small
@@ -59,29 +59,46 @@ test_____small_prints_two_start_points_and_port_and_creates_containers()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____help_arg_prints_use()
+xtest_____help_arg_prints_use()
 {
   local readonly expected_stdout="
 Use: cyber-dojo up [OPTIONS]
 
-Creates and starts the cyber-dojo server using named/default start-points
+Creates and starts a cyber-dojo server using named/default start-points.
 
-  --languages=START-POINTS  Specify the languages start-points.
-                            Defaults to the start-points named 'languages' created from
-                            https://github.com/cyber-dojo/start-points-languages.git
+Options:
+  --custom=NAME       Specify the custom start-point name.
+  --exercises=NAME    Specify the exercises start-point name.
+  --languages=NAME    Specify the languages start-point name.
+  --port=PORT         Specify the port number.
 
-  --exercises=START-POINTS  Specify the exercises start-points.
-                            Defaults to the start-points named 'exercises' created from
-                            https://github.com/cyber-dojo/start-points-exercises.git
+Defaults:
+  --custom=cyberdojo/custom
+  --exercises=cyberdojo/exercises
+  --languages=cyberdojo/languages-common
+  --port=80
 
-  --custom=START-POINTS     Specify the custom start-points.
-                            Defaults to the start-points named 'custom' created from
-                            https://github.com/cyber-dojo/start-points-custom.git
+Defaults were created using:
+  \$ ./cyber-dojo start-point create \\
+      cyberdojo/custom \\
+        --custom \\
+          https://github.com/cyber-dojo/custom.git
 
-  --port=LISTEN-PORT        Specify port to listen on.
-                            Defaults to 80"
+  \$ ./cyber-dojo start-point create \\
+      cyberdojo/exercises \\
+        --exercises \\
+          https://github.com/cyber-dojo/exercises.git
+
+  \$ ./cyber-dojo start-point create \\
+      cyberdojo/languages-common \\
+        --languages \\
+          \$(curl --silent https://github.com/cyber-dojo/languages/master/url_list/common)"
 
   assertUp --help
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
+
+  assertUp -h
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -94,7 +111,7 @@ test_____missing_languages()
 {
   refuteUp --languages=
   assertNoStdout
-  assertStderrEquals 'FAILED: missing argument value --languages=[???]'
+  assertStderrEquals 'ERROR: missing argument value --languages=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -103,7 +120,7 @@ test_____missing_custom()
 {
   refuteUp --custom=
   assertNoStdout
-  assertStderrEquals 'FAILED: missing argument value --custom=[???]'
+  assertStderrEquals 'ERROR: missing argument value --custom=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -112,7 +129,7 @@ test_____missing_exercises()
 {
   refuteUp --exercises=
   assertNoStdout
-  assertStderrEquals 'FAILED: missing argument value --exercises=[???]'
+  assertStderrEquals 'ERROR: missing argument value --exercises=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -121,17 +138,7 @@ test_____missing_port()
 {
   refuteUp --port=
   assertNoStdout
-  assertStderrEquals 'FAILED: missing argument value --port=[???]'
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____named_languages_does_not_exist()
-{
-  local readonly name=notExist
-  refuteUp --languages=${name}
-  assertNoStdout
-  assertStderrEquals "FAILED: start-point ${name} does not exist"
+  assertStderrEquals 'ERROR: missing argument value --port=[???]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -141,7 +148,7 @@ test_____named_custom_does_not_exist()
   local readonly name=notExist
   refuteUp --custom=${name}
   assertNoStdout
-  assertStderrEquals "FAILED: start-point ${name} does not exist"
+  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,19 +158,29 @@ test_____named_exercises_does_not_exist()
   local readonly name=notExist
   refuteUp --exercises=${name}
   assertNoStdout
-  assertStderrEquals "FAILED: start-point ${name} does not exist"
+  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____named_exercises_is_not_exercise_type()
+test_____named_languages_does_not_exist()
+{
+  local readonly name=notExist
+  refuteUp --languages=${name}
+  assertNoStdout
+  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+xtest_____named_exercises_is_not_exercise_type()
 {
   local readonly name=jj
   local url=https://github.com/cyber-dojo/start-points-custom.git
   assertStartPointCreate ${name} --git=${url}
   refuteUp --exercises=${name}
   assertNoStdout
-  assertStderrEquals "FAILED: ${name} is not a exercises start-point (it's type from setup.json is custom)"
+  assertStderrEquals "ERROR: ${name} is not a exercises start-point (it's type from setup.json is custom)"
   assertStartPointRm ${name}
 }
 
@@ -174,7 +191,7 @@ test_____unknown_arg()
   local readonly name=salmon
   refuteUp ${name}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${name}]"
+  assertStderrEquals "ERROR: unknown argument [${name}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -185,8 +202,8 @@ test_____unknown_args()
   local readonly arg2=--tay
   refuteUp ${arg1}=A ${arg2}=B
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

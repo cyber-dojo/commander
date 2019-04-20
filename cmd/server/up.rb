@@ -14,7 +14,7 @@ def cyber_dojo_server_up
     name  = arg.split('=')[0]
     value = arg.split('=')[1]
     if value.nil?
-      STDERR.puts "FAILED: missing argument value #{name}=[???]"
+      STDERR.puts "ERROR: missing argument value #{name}=[???]"
       exit failed
     end
        custom = value if name == '--custom'
@@ -126,7 +126,7 @@ def exit_failure_if_up_unknown_arguments
   end
   unknowns.each do |unknown|
     arg = unknown.split('=')[0]
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
+    STDERR.puts "ERROR: unknown argument [#{arg}]"
   end
   exit failed unless unknowns == []
 end
@@ -135,16 +135,16 @@ end
 
 def exit_failure_unless_start_point_exists(type, image_name)
   unless image_exists?(image_name)
-    STDERR.puts "FAILED: cannot find a start-point called #{image_name}"
+    STDERR.puts "ERROR: cannot find a start-point called #{image_name}"
     exit failed
   end
   unless start_point_image?(image_name)
-    STDERR.puts "FAILED: #{image_name} was not created using [cyber-dojo start-point create]"
+    STDERR.puts "ERROR: #{image_name} was not created using [cyber-dojo start-point create]"
     exit failed
   end
   image_type = start_point_type(image_name)
   unless image_type == type
-    STDERR.puts "FAILED: the type of #{image_name} is #{image_type} (not #{type})"
+    STDERR.puts "ERROR: the type of #{image_name} is #{image_type} (not #{type})"
     exit failed
   end
 end
