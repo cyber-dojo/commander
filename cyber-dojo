@@ -457,7 +457,8 @@ fi
 
 exit_non_zero_unless_docker_installed
 if ! delegate_to_commander "$@"; then
-  error 5 ''
+  # error 5 ''
+  exit 5
 fi
 
 handle_start_point_create_locally "$@"

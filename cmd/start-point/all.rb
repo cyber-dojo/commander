@@ -19,7 +19,7 @@ def cyber_dojo_start_point
       ARGV[1..-1].each do |arg|
         STDERR.puts "FAILED: unknown argument [#{arg}]"
       end
-      exit failed
+      exit(failed)
     end
   end
 end
