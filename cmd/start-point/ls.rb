@@ -16,9 +16,9 @@ def cyber_dojo_start_point_ls
   end
   options = ARGV[2..-1]
   if options == ['--quiet'] || options == ['-q']
-    puts names
+    puts names if names != []
   else
-    puts JSON.pretty_generate(json)
+    puts JSON.pretty_generate(json) if json != {}
   end
 end
 

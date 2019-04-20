@@ -15,17 +15,17 @@ test___success() { :; }
 test_____help_arg_prints_use()
 {
   local readonly expected_stdout="
-Use: cyber-dojo start-point [OPTIONS] ls
+Use: cyber-dojo start-point ls [-q|--quiet]
 
-Lists the name, type, and source of all cyber-dojo start-points
+Lists, in JSON form, the name and type of all cyber-dojo start-points.
 
-  --quiet     Only display start-point names"
+-q|--quiet     Only display start-point names"
   assertStartPointLs --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
 
-test_____no_args_prints_nothing_when_no_volumes()
+test_____no_args_prints_nothing_when_no_imags()
 {
   assertStartPointLs
   assertNoStdout
@@ -34,22 +34,28 @@ test_____no_args_prints_nothing_when_no_volumes()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____quiet_arg_prints_nothing_when_no_volumes()
+test_____quiet_arg_prints_nothing_when_no_images()
 {
   assertStartPointLs --quiet
+  assertNoStdout
+  assertNoStderr
+  assertStartPointLs -q
   assertNoStdout
   assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____quiet_arg_prints_just_names_when_volumes_exist()
+test_____quiet_arg_prints_just_names_when_images_exist()
 {
   local readonly name=jj
   local readonly url="${github_cyber_dojo}/start-points-exercises.git"
-  assertStartPointCreate ${name} --git=${url}
+  assertStartPointCreate ${name} --exercises ${url}
   assertStartPointLs --quiet
-  assertStdoutEquals 'jj'
+  assertStdoutIncludes "${name}"
+  assertNoStderr
+  assertStartPointLs -q
+  assertStdoutIncludes "${name}"
   assertNoStderr
 
   assertStartPointRm ${name}
@@ -57,11 +63,11 @@ test_____quiet_arg_prints_just_names_when_volumes_exist()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____no_arg_prints_heading_and_names_types_sources()
+x_test_____no_arg_prints_heading_and_names_types_sources()
 {
   local readonly name=jj
   local readonly url="${github_cyber_dojo}/start-points-exercises.git"
-  assertStartPointCreate ${name} --git=${url}
+  assertStartPointCreate ${name} --exercises ${url}
   assertStartPointLs
   assertStdoutIncludes 'NAME   TYPE        SRC'
   # TODO: fix this. SRC is missing
