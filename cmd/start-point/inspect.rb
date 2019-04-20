@@ -42,7 +42,7 @@ def exit_failure_if_start_point_inspect_unknown_arguments
   name = ARGV[2]
   exit_unless_start_point_image(name)
   ARGV[3..-1].each do |arg|
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
+    STDERR.puts "ERROR: unknown argument [#{arg}]"
   end
   unless ARGV[3].nil?
     exit failed

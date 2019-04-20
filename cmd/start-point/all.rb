@@ -17,7 +17,7 @@ def cyber_dojo_start_point
     when 'update'  then cyber_dojo_start_point_update
     else begin
       ARGV[1..-1].each do |arg|
-        STDERR.puts "FAILED: unknown argument [#{arg}]"
+        STDERR.puts "ERROR: unknown argument [#{arg}]"
       end
       exit(failed)
     end

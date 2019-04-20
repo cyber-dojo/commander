@@ -278,7 +278,7 @@ git_clone_one_url_into_context_dir()
   local stderr
   if ! stderr="$(git clone --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
     local newline=$'\n'
-    local msg="BAD git clone <url>${newline}"
+    local msg="bad git clone <url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
     msg+="${stderr}"
     error 3 "${msg}"

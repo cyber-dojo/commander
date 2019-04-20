@@ -18,26 +18,26 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local readonly expected_stdout="
-Use: cyber-dojo start-point create NAME --list=URL|FILE
-Creates a start-point named NAME from git-clones of all the URLs listed in URL|FILE
-
-Use: cyber-dojo start-point create NAME --git=URL
-Creates a start-point named NAME from a git clone of URL
-
-Use: cyber-dojo start-point create NAME --dir=DIR
-Creates a start-point named NAME from a copy of DIR
-
-NAME's first letter must be [a-zA-Z0-9]
-NAME's remaining letters must be [a-zA-Z0-9_.-]
-NAME must be at least two letters long"
+  line1='$ ./cyber-dojo start-point create <name> --custom    <url>...'
+  line2='$ ./cyber-dojo start-point create <name> --exercises <url>...'
+  line3='$ ./cyber-dojo start-point create <name> --languages <url>...'
 
   assertStartPointCreate
-  assertStdoutEquals "${expected_stdout}"
+  assertStdoutIncludes "${line1}"
+  assertStdoutIncludes "${line2}"
+  assertStdoutIncludes "${line3}"
   assertNoStderr
 
   assertStartPointCreate --help
-  assertStdoutEquals "${expected_stdout}"
+  assertStdoutIncludes "${line1}"
+  assertStdoutIncludes "${line2}"
+  assertStdoutIncludes "${line3}"
+  assertNoStderr
+
+  assertStartPointCreate -h
+  assertStdoutIncludes "${line1}"
+  assertStdoutIncludes "${line2}"
+  assertStdoutIncludes "${line3}"
   assertNoStderr
 }
 
@@ -47,25 +47,28 @@ test___failure() { :; }
 
 test_____name_first_letter()
 {
+  local name=jj
   local readonly arg=+bad
-  refuteStartPointCreate ${arg}
+  refuteStartPointCreate "${name}" --exercises ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: ${arg} is an illegal NAME"
+  assertStderrIncludes 'ERROR: bad git clone <url>'
+  assertStderrIncludes '--exercises +bad'
+  assertStderrIncludes "fatal: repository '+bad' does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____name_second_letter()
+xtest_____name_second_letter()
 {
   local readonly arg=b+ad
   refuteStartPointCreate ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: ${arg} is an illegal NAME"
+  assertStderrEquals "ERROR: ${arg} is an illegal NAME"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____name_one_letter_name()
+xtest_____name_one_letter_name()
 {
   local readonly name=b
   refuteStartPointCreate ${name}
@@ -75,33 +78,33 @@ test_____name_one_letter_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____dir_and_git_args()
+xtest_____dir_and_git_args()
 {
   refuteStartPointCreate jj --dir=where --git=url
   assertNoStdout
-  assertStderrEquals 'FAILED: specify ONE of --git= / --dir= / --list='
+  assertStderrEquals 'ERROR: specify ONE of --git= / --dir= / --list='
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____unknown_arg()
+xtest_____unknown_arg()
 {
   local readonly arg='--where'
   refuteStartPointCreate jj ${arg}=tay
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____unknown_args()
+xtest_____unknown_args()
 {
   local readonly arg1='--where'
   local readonly arg2='--there'
   refuteStartPointCreate jj ${arg1}=tay ${arg2}=x
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

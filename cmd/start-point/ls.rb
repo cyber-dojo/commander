@@ -46,7 +46,7 @@ def exit_failure_if_start_point_ls_unknown_arguments
   return if ARGV[2..-1] == ['-q']
   return if ARGV[2..-1] == ['--quiet']
   ARGV[2..-1].each do |arg|
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
+    STDERR.puts "ERROR: unknown argument [#{arg}]"
   end
   unless ARGV[2].nil?
     exit failed

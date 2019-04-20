@@ -45,7 +45,7 @@ test_____unknown_arg()
   local readonly arg=parr
   refuteStartPoint ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,8 +56,8 @@ test_____unknown_args()
   local readonly arg2=egg
   refuteStartPoint ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

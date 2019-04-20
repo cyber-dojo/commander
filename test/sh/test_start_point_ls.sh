@@ -25,7 +25,7 @@ Lists, in JSON form, the name and type of all cyber-dojo start-points.
   assertNoStderr
 }
 
-test_____no_args_prints_nothing_when_no_imags()
+test_____no_args_prints_nothing_when_no_images()
 {
   assertStartPointLs
   assertNoStdout
@@ -87,7 +87,7 @@ test_____unknown_arg()
   local readonly arg=salmo
   refuteStartPointLs ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -98,8 +98,8 @@ test_____unknown_args()
   local readonly arg2=spey
   refuteStartPointLs ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
