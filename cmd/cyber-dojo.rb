@@ -93,11 +93,11 @@ end
 
 def exit_unless_start_point_image(image_name)
   unless image_exists?(image_name)
-    STDERR.puts "FAILED: #{image_name} does not exist."
+    STDERR.puts "ERROR: #{image_name} does not exist."
     exit failed
   end
   unless start_point_image?(image_name)
-    STDERR.puts "FAILED: #{image_name} is not a cyber-dojo start-point image."
+    STDERR.puts "ERROR: #{image_name} is not a cyber-dojo start-point image."
     exit failed
   end
 end
@@ -141,7 +141,7 @@ case ARGV[0]
   when 'sh'           then cyber_dojo_service_sh
   when 'start-point'  then cyber_dojo_start_point
   else
-    STDERR.puts "FAILED: unknown argument [#{ARGV[0]}]"
+    STDERR.puts "ERROR: unknown argument [#{ARGV[0]}]"
     exit failed
 end
 
