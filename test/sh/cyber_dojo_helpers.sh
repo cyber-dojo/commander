@@ -1,9 +1,26 @@
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-readonly github_cyber_dojo='https://github.com/cyber-dojo'
+readonly github_cyber_dojo=https://github.com/cyber-dojo
 
 readonly exe="${MY_DIR}/../../cyber-dojo"
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+languages_urls()
+{
+  if [ -z "${CIRCLE_SHA1}" ]; then
+    local CDL_DIR="$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
+    echo -n "file://${CDL_DIR}/gcc-assert \
+             file://${CDL_DIR}/python-unittest \
+             file://${CDL_DIR}/ruby-minitest"
+  else
+    local GITHUB_ORG=https://raw.githubusercontent.com/cyber-dojo
+    echo -n $(curl --silent "${GITHUB_ORG}/languages/master/url_list/small")
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
 down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }

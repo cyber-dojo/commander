@@ -12,34 +12,33 @@ test_UP() { :; }
 
 test___success() { :; }
 
-xtest_____small_prints_two_start_points_and_port_and_creates_containers()
+test_____up_prints_start_points_and_port_and_creates_containers()
 {
   local readonly port=8462
-  local readonly name=small
-  local readonly url=`absPath ${MY_DIR}/../rb/example_start_points/languages_list_small`
-  assertStartPointCreate ${name} --list=${url}
-
-  assertUp --languages=small --port=${port}
+  local readonly languages_name=small
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
+  assertUp --languages=${languages_name} --port=${port}
 
   #assertStdoutIncludes "checking images in [${name}] all exist..."
   assertStdoutIncludes 'checking cyberdojofoundation/gcc_assert:latest'
   assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
+  assertStdoutIncludes 'checking cyberdojofoundation/ruby_mini_test:latest'
 
   #assertStdoutIncludes 'checking images in [custom] all exist...'
-  assertStdoutIncludes 'checking cyberdojofoundation/csharp_nunit:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/gpp_assert:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/java_junit:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/ruby_test_unit:latest'
+  #assertStdoutIncludes 'checking cyberdojofoundation/csharp_nunit:latest'
+  #assertStdoutIncludes 'checking cyberdojofoundation/gpp_assert:latest'
+  #assertStdoutIncludes 'checking cyberdojofoundation/java_junit:latest'
+  #assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
+  #assertStdoutIncludes 'checking cyberdojofoundation/ruby_test_unit:latest'
 
   assertStdoutIncludes 'Using default grafana.env'
   assertStdoutIncludes 'Using default nginx.env'
   assertStdoutIncludes 'Using default web.env'
-  assertStdoutIncludes 'Using default zipper.env'
+  #assertStdoutIncludes 'Using default zipper.env'
 
-  assertStdoutIncludes "Using --languages=${name}"
-  assertStdoutIncludes 'Using --exercises=exercises'
-  assertStdoutIncludes 'Using --custom=custom'
+  assertStdoutIncludes 'Using --custom=cyberdojo/custom:latest'
+  assertStdoutIncludes 'Using --exercises=cyberdojo/exercises:latest'
+  assertStdoutIncludes "Using --languages=${languages_name}"
   assertStdoutIncludes "Using --port=${port}"
 
   assertStdoutIncludes 'Creating cyber-dojo-differ'
@@ -47,19 +46,22 @@ xtest_____small_prints_two_start_points_and_port_and_creates_containers()
   assertStdoutIncludes 'Creating cyber-dojo-prometheus'
   assertStdoutIncludes 'Creating cyber-dojo-nginx'
   assertStdoutIncludes 'Creating cyber-dojo-runner'
-  assertStdoutIncludes 'Creating cyber-dojo-starter'
+  assertStdoutIncludes 'Creating cyber-dojo-languages'
+  assertStdoutIncludes 'Creating cyber-dojo-exercises'
+  assertStdoutIncludes 'Creating cyber-dojo-custom'
   assertStdoutIncludes 'Creating cyber-dojo-web'
   assertStdoutIncludes 'Creating cyber-dojo-zipper'
   assertStdoutIncludes 'Creating cyber-dojo-saver'
   assertStdoutIncludes 'Creating cyber-dojo-mapper'
   assertNoStderr
+
   assertDown
-  assertStartPointRm ${name}
+  assertStartPointRm ${languages_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____help_arg_prints_use()
+test_____help_arg_prints_use()
 {
   local readonly expected_stdout="
 Use: cyber-dojo up [OPTIONS]
@@ -173,7 +175,7 @@ test_____named_languages_does_not_exist()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____named_exercises_is_not_exercise_type()
+XXX_test_____named_exercises_is_not_exercise_type()
 {
   local readonly name=jj
   local url=https://github.com/cyber-dojo/start-points-custom.git
