@@ -27,16 +27,16 @@ Stops and removes docker containers created with 'up'"
 
 test_____no_args_stops_and_removes_server_containers()
 {
-  local c_name=custom_for_down
-  assertStartPointCreate ${c_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/custom`
+  local readonly custom_name=test_down_custom
+  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  local readonly exercises_name=test_down_exercises
+  assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
+  local readonly languages_name=test_down_languages
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
 
-  local e_name=exercises_for_down
-  assertStartPointCreate ${e_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/exercises`
-
-  local l_name=languages_for_down
-  assertStartPointCreate ${l_name} --dir=`absPath ${MY_DIR}/../rb/example_start_points/languages`
-
-  assertUp --custom=${c_name} --exercises=${e_name} --languages=${l_name}
+  assertUp --custom=${custom_name} \
+           --exercises=${exercises_name} \
+           --languages=${languages_name}
 
   assertDown
 
@@ -46,7 +46,9 @@ test_____no_args_stops_and_removes_server_containers()
     nginx
     prometheus
     runner
-    starter
+    custom
+    exercises
+    languages
     web
     zipper
     saver
@@ -54,14 +56,14 @@ test_____no_args_stops_and_removes_server_containers()
   )
   for service in "${services[@]}"
   do
-    assertStderrIncludes "Stopping cyber-dojo-${service}"
-    assertStderrIncludes "Removing cyber-dojo-${service}"
+    assertStdoutIncludes "Stopping cyber-dojo-${service}"
+    assertStdoutIncludes "Removing cyber-dojo-${service}"
   done
-  assertNoStdout
+  assertNoStderr
 
-  assertStartPointRm ${l_name}
-  assertStartPointRm ${e_name}
-  assertStartPointRm ${c_name}
+  assertStartPointRm ${custom_name}
+  assertStartPointRm ${exercises_name}
+  assertStartPointRm ${languages_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

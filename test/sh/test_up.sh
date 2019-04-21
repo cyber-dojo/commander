@@ -14,14 +14,13 @@ test___success() { :; }
 
 test_____up_prints_start_points_and_port_and_creates_containers()
 {
-  local readonly custom_name=test_up_custom_2
-  local readonly exercises_name=test_up_exercises_1
-  local readonly languages_name=test_up_languages_1
-  local readonly port=8462
-
+  local readonly custom_name=test_up_custom_1
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  local readonly exercises_name=test_up_exercises_1
   assertStartPointCreate ${languages_name} --languages $(languages_urls)
+  local readonly languages_name=test_up_languages_1
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
+  local readonly port=8462
 
   assertUp --custom=${custom_name} \
            --exercises=${exercises_name} \

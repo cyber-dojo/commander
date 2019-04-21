@@ -59,7 +59,7 @@ def cyber_dojo_server_up
   STDOUT.puts "Using --exercises=#{exercises}"
   STDOUT.puts "Using --languages=#{languages}"
   STDOUT.puts "Using --port=#{port}"
-  env_vars = {
+  up_env_vars = {
     'CYBER_DOJO_ENV_ROOT' => env_root,
     'CYBER_DOJO_START_POINT_CUSTOM_IMAGE'    => custom,
     'CYBER_DOJO_START_POINT_EXERCISES_IMAGE' => exercises,
@@ -68,9 +68,9 @@ def cyber_dojo_server_up
   }
   my_dir = File.dirname(__FILE__)
   docker_compose_cmd = "docker-compose --file=#{my_dir}/../../docker-compose.yml"
-  # It seems a successful [docker-compose up] writes to stderr !?
+  # It seems a successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
-  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
+  system(up_env_vars, "#{docker_compose_cmd} up -d 2>&1")
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
