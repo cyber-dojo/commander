@@ -26,6 +26,10 @@ Removes dangling docker images/volumes and exited containers"
   assertClean --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
+
+  assertClean -h
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

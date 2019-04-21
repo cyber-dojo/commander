@@ -19,5 +19,5 @@ def cyber_dojo_server_clean
     exit failed
   end
 
-  run('docker system prune --force')
+  run('docker system prune --force >/dev/null 2>/dev/null')
 end
