@@ -46,6 +46,23 @@ languages_urls()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+declare -a service_names=(
+  custom
+  differ
+  exercises
+  grafana
+  languages
+  mapper
+  nginx
+  prometheus
+  runner
+  saver
+  web
+  zipper
+)
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
 down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
 logs()              { ${exe} logs                $* >${stdoutF} 2>${stderrF}; }

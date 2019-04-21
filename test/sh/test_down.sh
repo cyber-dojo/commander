@@ -40,21 +40,7 @@ test_____no_args_stops_and_removes_server_containers()
 
   assertDown
 
-  declare -a services=(
-    differ
-    grafana
-    nginx
-    prometheus
-    runner
-    custom
-    exercises
-    languages
-    web
-    zipper
-    saver
-    mapper
-  )
-  for service in "${services[@]}"
+  for service in "${service_names[@]}"
   do
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
     assertStdoutIncludes "Removing cyber-dojo-${service}"

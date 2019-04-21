@@ -17,9 +17,9 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   local readonly custom_name=test_up_custom_1
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
   local readonly exercises_name=test_up_exercises_1
-  assertStartPointCreate ${languages_name} --languages $(languages_urls)
-  local readonly languages_name=test_up_languages_1
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
+  local readonly languages_name=test_up_languages_1
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
   local readonly port=8462
 
   assertUp --custom=${custom_name} \
@@ -45,18 +45,10 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertStdoutIncludes "Using --languages=${languages_name}"
   assertStdoutIncludes "Using --port=${port}"
 
-  assertStdoutIncludes 'Creating cyber-dojo-differ'
-  assertStdoutIncludes 'Creating cyber-dojo-grafana'
-  assertStdoutIncludes 'Creating cyber-dojo-prometheus'
-  assertStdoutIncludes 'Creating cyber-dojo-nginx'
-  assertStdoutIncludes 'Creating cyber-dojo-runner'
-  assertStdoutIncludes 'Creating cyber-dojo-languages'
-  assertStdoutIncludes 'Creating cyber-dojo-exercises'
-  assertStdoutIncludes 'Creating cyber-dojo-custom'
-  assertStdoutIncludes 'Creating cyber-dojo-web'
-  assertStdoutIncludes 'Creating cyber-dojo-zipper'
-  assertStdoutIncludes 'Creating cyber-dojo-saver'
-  assertStdoutIncludes 'Creating cyber-dojo-mapper'
+  for service in "${service_names[@]}"
+  do
+    assertStdoutIncludes "Creating cyber-dojo-${service}"
+  done
   assertNoStderr
 
   assertDown
