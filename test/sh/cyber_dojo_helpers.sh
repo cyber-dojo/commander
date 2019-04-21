@@ -10,32 +10,37 @@ readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+on_CI()
+{
+  [[ ! -z "${CIRCLE_SHA1}" ]]
+}
+
 custom_urls()
 {
-  if [ -z "${CIRCLE_SHA1}" ]; then
-    echo -n "file://${CD_DIR}/custom"
-  else
+  if on_CI; then
     echo -n "${github_cyber_dojo}/custom"
+  else
+    echo -n "file://${CD_DIR}/custom"
   fi
 }
 
 exercises_urls()
 {
-  if [ -z "${CIRCLE_SHA1}" ]; then
-    echo -n "file://${CD_DIR}/exercises"
-  else
+  if on_CI; then
     echo -n "${github_cyber_dojo}/exercises"
+  else
+    echo -n "file://${CD_DIR}/exercises"
   fi
 }
 
 languages_urls()
 {
-  if [ -z "${CIRCLE_SHA1}" ]; then
+  if on_CI; then
+    echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
+  else
     echo -n "file://${CDL_DIR}/gcc-assert \
              file://${CDL_DIR}/python-unittest \
              file://${CDL_DIR}/ruby-minitest"
-  else
-    echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
   fi
 }
 
