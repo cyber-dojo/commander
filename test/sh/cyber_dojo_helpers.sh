@@ -1,22 +1,41 @@
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+CD_DIR="$( cd "${MY_DIR}" && cd ../../../../cyber-dojo && pwd )"
+CDL_DIR="$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
+readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
 
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+custom_urls()
+{
+  if [ -z "${CIRCLE_SHA1}" ]; then
+    echo -n "file://${CD_DIR}/custom"
+  else
+    echo -n "${github_cyber_dojo}/custom"
+  fi
+}
+
+exercises_urls()
+{
+  if [ -z "${CIRCLE_SHA1}" ]; then
+    echo -n "file://${CD_DIR}/exercises"
+  else
+    echo -n "${github_cyber_dojo}/exercises"
+  fi
+}
+
 languages_urls()
 {
   if [ -z "${CIRCLE_SHA1}" ]; then
-    local CDL_DIR="$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
     echo -n "file://${CDL_DIR}/gcc-assert \
              file://${CDL_DIR}/python-unittest \
              file://${CDL_DIR}/ruby-minitest"
   else
-    local GITHUB_ORG=https://raw.githubusercontent.com/cyber-dojo
-    echo -n $(curl --silent "${GITHUB_ORG}/languages/master/url_list/small")
+    echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
   fi
 }
 

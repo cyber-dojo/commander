@@ -14,30 +14,35 @@ test___success() { :; }
 
 test_____up_prints_start_points_and_port_and_creates_containers()
 {
+  local readonly custom_name=test_up_custom_2
+  local readonly exercises_name=test_up_exercises_1
+  local readonly languages_name=test_up_languages_1
   local readonly port=8462
-  local readonly languages_name=small
-  assertStartPointCreate ${languages_name} --languages $(languages_urls)
-  assertUp --languages=${languages_name} --port=${port}
 
-  #assertStdoutIncludes "checking images in [${name}] all exist..."
+  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
+  assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
+
+  assertUp --custom=${custom_name} \
+           --exercises=${exercises_name} \
+           --languages=${languages_name} \
+           --port=${port}
+
   assertStdoutIncludes 'checking cyberdojofoundation/gcc_assert:latest'
   assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
   assertStdoutIncludes 'checking cyberdojofoundation/ruby_mini_test:latest'
 
-  #assertStdoutIncludes 'checking images in [custom] all exist...'
-  #assertStdoutIncludes 'checking cyberdojofoundation/csharp_nunit:latest'
-  #assertStdoutIncludes 'checking cyberdojofoundation/gpp_assert:latest'
-  #assertStdoutIncludes 'checking cyberdojofoundation/java_junit:latest'
-  #assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
-  #assertStdoutIncludes 'checking cyberdojofoundation/ruby_test_unit:latest'
+  assertStdoutIncludes 'checking cyberdojofoundation/csharp_nunit:latest'
+  assertStdoutIncludes 'checking cyberdojofoundation/java_junit:latest'
+  assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
+  assertStdoutIncludes 'checking cyberdojofoundation/ruby_test_unit:latest'
 
   assertStdoutIncludes 'Using default grafana.env'
   assertStdoutIncludes 'Using default nginx.env'
   assertStdoutIncludes 'Using default web.env'
-  #assertStdoutIncludes 'Using default zipper.env'
 
-  assertStdoutIncludes 'Using --custom=cyberdojo/custom:latest'
-  assertStdoutIncludes 'Using --exercises=cyberdojo/exercises:latest'
+  assertStdoutIncludes "Using --custom=${custom_name}"
+  assertStdoutIncludes "Using --exercises=${exercises_name}"
   assertStdoutIncludes "Using --languages=${languages_name}"
   assertStdoutIncludes "Using --port=${port}"
 
@@ -56,6 +61,8 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertNoStderr
 
   assertDown
+  assertStartPointRm ${custom_name}
+  assertStartPointRm ${exercises_name}
   assertStartPointRm ${languages_name}
 }
 
@@ -175,15 +182,14 @@ test_____named_languages_does_not_exist()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-XXX_test_____named_exercises_is_not_exercise_type()
+test_____named_exercises_is_not_exercise_type()
 {
-  local readonly name=jj
-  local url=https://github.com/cyber-dojo/start-points-custom.git
-  assertStartPointCreate ${name} --git=${url}
-  refuteUp --exercises=${name}
+  local readonly custom_name=test_up_custom_2
+  assertStartPointCreate ${custom_name} --custom $(custom_urls)
+  refuteUp --exercises=${custom_name}
   assertNoStdout
-  assertStderrEquals "ERROR: ${name} is not a exercises start-point (it's type from setup.json is custom)"
-  assertStartPointRm ${name}
+  assertStderrEquals "ERROR: the type of ${custom_name} is custom (not exercises)"
+  assertStartPointRm ${custom_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
