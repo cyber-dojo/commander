@@ -52,7 +52,16 @@ test_____unknown_arg()
   assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
-#TODO unknown args (plural)
+test_____unknown_args()
+{
+  local readonly arg1=xyz
+  local readonly arg2=abc
+  ${exe} ${arg1} ${arg2} >${stdoutF} 2>${stderrF}
+  assertFalse $?
+  assertNoStdout
+  assertStderrEquals "ERROR: unknown argument [${arg1}]"
+  assertStderrEquals "ERROR: unknown argument [${arg1}]"
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
