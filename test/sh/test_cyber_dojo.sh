@@ -45,11 +45,11 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly arg=unknown
+  local readonly arg=xyz
   ${exe} ${arg} >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
 #TODO unknown args (plural)

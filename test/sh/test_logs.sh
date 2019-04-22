@@ -13,7 +13,7 @@ Use: cyber-dojo logs SERVICE
 
 Prints the logs from a service container
 Example: cyber-dojo logs web
-Example: cyber-dojo logs storer"
+Example: cyber-dojo logs saver"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -42,7 +42,7 @@ test_____unknown_arg()
   local readonly arg=salmon
   refuteLogs ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: cyber-dojo-${arg} is not a running container"
+  assertStderrEquals "ERROR: cyber-dojo-${arg} is not a running container"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

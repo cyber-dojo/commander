@@ -48,9 +48,8 @@ test_____quiet_arg_prints_nothing_when_no_images()
 
 test_____quiet_arg_prints_just_names_when_images_exist()
 {
-  local readonly name=jj
-  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
-  assertStartPointCreate ${name} --exercises ${url}
+  local readonly name=jj1
+  assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointLs --quiet
   assertStdoutIncludes "${name}"
   assertNoStderr
@@ -63,16 +62,21 @@ test_____quiet_arg_prints_just_names_when_images_exist()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-x_test_____no_arg_prints_heading_and_names_types_sources()
+test_____no_arg_prints_heading_and_names_types_sources()
 {
-  local readonly name=jj
-  local readonly url="${github_cyber_dojo}/start-points-exercises.git"
-  assertStartPointCreate ${name} --exercises ${url}
+  local readonly name=jj2
+  assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointLs
-  assertStdoutIncludes 'NAME   TYPE        SRC'
-  # TODO: fix this. SRC is missing
-  assertStdoutIncludes 'jj     exercises'
-  #assertStdoutIncludes 'jj     exercises   https://github.com/cyber-dojo/start-points-exercises.git'
+  assertStdoutIncludes '{'
+  assertStdoutIncludes '  "custom": ['
+  assertStdoutIncludes '  ],'
+  assertStdoutIncludes '  "exercises": ['
+  assertStdoutIncludes "    \"${name}:latest\","
+  assertStdoutIncludes '  ],'
+  assertStdoutIncludes '  "languages": ['
+  assertStdoutIncludes '  ],'
+  assertStdoutIncludes '}'
+
   assertNoStderr
 
   assertStartPointRm ${name}
