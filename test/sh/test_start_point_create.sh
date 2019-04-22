@@ -47,64 +47,60 @@ test___failure() { :; }
 
 test_____name_first_letter()
 {
-  local name=jj
-  local readonly arg=+bad
-  refuteStartPointCreate "${name}" --exercises ${arg}
+  local name=jj1
+  local readonly bad_url=+bad
+  refuteStartPointCreate ${name} --exercises ${bad_url}
   assertNoStdout
   assertStderrIncludes 'ERROR: bad git clone <url>'
-  assertStderrIncludes '--exercises +bad'
-  assertStderrIncludes "fatal: repository '+bad' does not exist"
+  assertStderrIncludes "--exercises ${bad_url}"
+  assertStderrIncludes "fatal: repository '${bad_url}' does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____name_second_letter()
+test_____name_second_letter()
 {
-  local readonly arg=b+ad
-  refuteStartPointCreate ${arg}
+  local name=jj2
+  local readonly bad_url=b+ad
+  refuteStartPointCreate ${name} --exercises ${bad_url}
   assertNoStdout
-  assertStderrEquals "ERROR: ${arg} is an illegal NAME"
+  assertStderrIncludes 'ERROR: bad git clone <url>'
+  assertStderrIncludes "--exercises ${bad_url}"
+  assertStderrIncludes "fatal: repository '${bad_url}' does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____name_one_letter_name()
+test_____name_one_letter_name()
 {
-  local readonly name=b
-  refuteStartPointCreate ${name}
+  local name=jj3
+  local readonly bad_url=b
+  refuteStartPointCreate ${name} --exercises ${bad_url}
   assertNoStdout
-  assertStderrEquals "FAILED: ${name} is an illegal NAME"
+  assertStderrIncludes 'ERROR: bad git clone <url>'
+  assertStderrIncludes "--exercises ${bad_url}"
+  assertStderrIncludes "fatal: repository '${bad_url}' does not exist"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____dir_and_git_args()
-{
-  refuteStartPointCreate jj --dir=where --git=url
-  assertNoStdout
-  assertStderrEquals 'ERROR: specify ONE of --git= / --dir= / --list='
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-xtest_____unknown_arg()
+test_____unknown_arg()
 {
   local readonly arg='--where'
   refuteStartPointCreate jj ${arg}=tay
   assertNoStdout
-  assertStderrEquals "ERROR: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____unknown_args()
+test_____unknown_args()
 {
   local readonly arg1='--where'
   local readonly arg2='--there'
   refuteStartPointCreate jj ${arg1}=tay ${arg2}=x
   assertNoStdout
-  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
-  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
+  assertStderrEquals "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
