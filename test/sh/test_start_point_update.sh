@@ -45,14 +45,12 @@ test_____absent_start_point()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-XXX_test_____present_but_not_a_start_point()
+test_____present_but_not_a_start_point()
 {
-  local readonly arg=notStartPoint
-  docker volume create --name ${arg} > /dev/null
+  local readonly arg=cyberdojo/starter-base
   refuteStartPointUpdate ${arg}
-  docker volume rm ${arg} > /dev/null
   assertNoStdout
-  assertStderrEquals "ERROR: ${arg} is not a cyber-dojo start-point."
+  assertStderrEquals "ERROR: ${arg} is not a cyber-dojo start-point image."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
