@@ -5,7 +5,6 @@ CDL_DIR="$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
 readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
-
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -14,6 +13,8 @@ on_CI()
 {
   [[ ! -z "${CIRCLE_SHA1}" ]]
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 custom_urls()
 {
@@ -24,6 +25,8 @@ custom_urls()
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
 exercises_urls()
 {
   if on_CI; then
@@ -32,6 +35,8 @@ exercises_urls()
     echo -n "file://${CD_DIR}/exercises"
   fi
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 languages_urls()
 {
