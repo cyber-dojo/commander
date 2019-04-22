@@ -29,28 +29,54 @@ Prints, in JSON form, the display_name, image_name, sha, and url of each entry i
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____custom_start_point_prints_details()
+test_____custom_start_point_prints_details()
 {
-  local readonly name=ok
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  local readonly name=ok1
+  assertStartPointCreate ${name} --custom $(custom_urls)
   assertStartPointInspect ${name}
-  assertStdoutIncludes 'DISPLAY_NAME'
-  assertStdoutIncludes 'IMAGE_NAME'
-  assertStdoutIncludes 'Tennis refactoring, C# NUnit'
+  assertStdoutIncludes '{'
+  assertStdoutIncludes '  "Java Countdown, Round 4": {'
+  assertStdoutIncludes '    "url":'
+  assertStdoutIncludes '    "sha":'
+  assertStdoutIncludes '    "image_name": "cyberdojofoundation/java_junit"'
+  assertStdoutIncludes '  }'
+  assertStdoutIncludes '}'
   assertNoStderr
   assertStartPointRm ${name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____exercises_start_point_prints_details()
+test_____exercises_start_point_prints_details()
 {
-  local readonly name=ok
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-exercises.git
+  local readonly name=ok2
+  assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointInspect ${name}
-  assertStdoutIncludes 'Fizz Buzz'
-  assertStdoutIncludes 'Mars Rover'
-  assertStdoutIncludes 'Print Diamond'
+  assertStdoutIncludes '{'
+  assertStdoutIncludes '  "Print Diamond": {'
+  assertStdoutIncludes '    "url":'
+  assertStdoutIncludes '    "sha":'
+  assertStdoutIncludes '    "image_name": null' # TODO
+  assertStdoutIncludes '  }'
+  assertStdoutIncludes '}'
+  assertNoStderr
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____languages_start_point_prints_details()
+{
+  local readonly name=ok3
+  assertStartPointCreate ${name} --languages $(languages_urls)
+  assertStartPointInspect ${name}
+  assertStdoutIncludes '{'
+  assertStdoutIncludes '  "Ruby, MiniTest": {'
+  assertStdoutIncludes '    "url":'
+  assertStdoutIncludes '    "sha":'
+  assertStdoutIncludes '    "image_name": "cyberdojofoundation/ruby_mini_test"'
+  assertStdoutIncludes '  }'
+  assertStdoutIncludes '}'
   assertNoStderr
   assertStartPointRm ${name}
 }
@@ -69,23 +95,21 @@ test_____absent_start_point()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____present_but_not_a_start_point()
+test_____present_but_not_a_start_point()
 {
-  local readonly name=notStartPoint
-  docker volume create --name ${name} > /dev/null
+  local readonly name=cyberdojo/starter-base
   refuteStartPointInspect ${name}
-  docker volume rm ${name} > /dev/null
   assertNoStdout
-  assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point."
+  assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point image."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____unknown_arg()
+test_____unknown_arg()
 {
-  local readonly name=ok
+  local readonly name=ok4
   local readonly arg=wibble
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  assertStartPointCreate ${name} --custom $(custom_urls)
   refuteStartPointInspect ${name} ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: unknown argument [${arg}]"
@@ -94,12 +118,12 @@ xtest_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-xtest_____unknown_args()
+test_____unknown_args()
 {
-  local readonly name=ok
+  local readonly name=ok5
   local readonly arg1=springer
   local readonly arg2=salmon
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
+  assertStartPointCreate ${name} --custom $(custom_urls)
   refuteStartPointInspect ${name} ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "ERROR: unknown argument [${arg1}]"
