@@ -30,15 +30,15 @@ def cyber_dojo_update_server
   # I'd like to get these image names directly from docker-compose.yml
   # but there does not seem to be a simple way to do that :-(
   service_images = %w(
-    nginx
-    web
-    runner-stateless
-    saver
-    mapper
     differ
-    zipper
-    prometheus
     grafana
+    mapper
+    nginx
+    prometheus
+    runner
+    saver
+    web
+    zipper
   )
 
   #TODO: How to update these 3?

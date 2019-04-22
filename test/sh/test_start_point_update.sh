@@ -6,7 +6,7 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_START_POINT_PULL() { :; }
+test_START_POINT_UPDATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -15,14 +15,18 @@ test___success() { :; }
 test_____no_arg_or_help_prints_use()
 {
   local readonly expected_stdout="
-Use: cyber-dojo start-point pull NAME
+Use: cyber-dojo start-point update NAME
 
-Pulls all the docker images inside the named start-point"
-  assertStartPointPull
+Updates all the docker images inside the named start-point"
+  assertStartPointUpdate
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 
-  assertStartPointPull --help
+  assertStartPointUpdate --help
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
+
+  assertStartPointUpdate -h
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -34,21 +38,21 @@ test___failure() { :; }
 test_____absent_start_point()
 {
   local readonly arg=absent
-  refuteStartPointPull ${arg}
+  refuteStartPointUpdate ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: ${arg} does not exist."
+  assertStderrEquals "ERROR: ${arg} does not exist."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____present_but_not_a_start_point()
+XXX_test_____present_but_not_a_start_point()
 {
   local readonly arg=notStartPoint
   docker volume create --name ${arg} > /dev/null
-  refuteStartPointPull ${arg}
+  refuteStartPointUpdate ${arg}
   docker volume rm ${arg} > /dev/null
   assertNoStdout
-  assertStderrEquals "FAILED: ${arg} is not a cyber-dojo start-point."
+  assertStderrEquals "ERROR: ${arg} is not a cyber-dojo start-point."
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,10 +61,10 @@ test_____unknown_arg()
 {
   local readonly name=ok
   local readonly arg=salmon
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  refuteStartPointPull ${name} ${arg}
+  assertStartPointCreate ${name} --exercises $(exercises_urls)
+  refuteStartPointUpdate ${name} ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
   assertStartPointRm ${name}
 }
 
@@ -71,11 +75,11 @@ test_____unknown_args()
   local readonly name=ok
   local readonly arg1=salmon
   local readonly arg2=ova
-  assertStartPointCreate ${name} --git=${github_cyber_dojo}/start-points-custom.git
-  refuteStartPointPull ${name} ${arg1} ${arg2}
+  assertStartPointCreate ${name} --exercises $(exercises_urls)
+  refuteStartPointUpdate ${name} ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
   assertStartPointRm ${name}
 }
 
