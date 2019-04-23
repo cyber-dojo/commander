@@ -25,16 +25,19 @@ Removes a start-point created with the [cyber-dojo start-point create] command"
   assertStartPointRm --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
+
+  assertStartPointRm -h
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____removes_previously_created_start_point()
 {
-  local readonly name=good
-  local readonly good_dir=`absPath ${MY_DIR}/../rb/example_start_points/custom`
-  assertStartPointCreate ${name} --dir=${good_dir}
-  assertStartPointExists ${name}
+  local readonly name=good1
+  assertStartPointCreate ${name} --custom $(custom_urls)
+  assertStartPointExists ${name}:latest
   assertStartPointRm ${name}
   assertNoStdout
   assertNoStderr
@@ -47,11 +50,11 @@ test___failure() { :; }
 
 test_____named_start_point_does_not_exist()
 {
-  local readonly name=salmon
+  local readonly name=salmon1
   refuteStartPointExists ${name}
   refuteStartPointRm ${name}
   assertNoStdout
-  assertStderrEquals "FAILED: ${name} does not exist."
+  assertStderrEquals "ERROR: ${name} does not exist."
   refuteStartPointExists ${name}
 }
 
@@ -59,12 +62,36 @@ test_____named_start_point_does_not_exist()
 
 test_____named_start_point_is_not_a_cyber_dojo_volume()
 {
-  local readonly name=salmon
-  docker volume create --name ${name} > /dev/null; assertEquals 0 $?;
+  local readonly name=cyberdojo/starter-base
   refuteStartPointRm ${name}
-  docker volume rm ${name} > /dev/null; assertEquals 0 $?;
   assertNoStdout
-  assertStderrEquals "FAILED: ${name} is not a cyber-dojo start-point."
+  assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point image."
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_arg()
+{
+  local readonly name=good2
+  assertStartPointCreate ${name} --custom $(custom_urls)
+  local readonly arg=salmo
+  refuteStartPointRm ${name} ${arg}
+  assertNoStdout
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____unknown_args()
+{
+  local readonly name=good2
+  assertStartPointCreate ${name} --custom $(custom_urls)
+  local readonly arg1=salmo
+  local readonly arg2=leaper
+  refuteStartPointRm ${name} ${arg1} ${arg2}
+  assertNoStdout
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

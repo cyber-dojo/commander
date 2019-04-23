@@ -128,13 +128,14 @@ startPointExists()
 {
   # don't match a substring
   local readonly start_of_line='^'
-  local readonly start_point=$1
+  local readonly name=$1
   local readonly end_of_line='$'
-  docker volume ls --quiet | grep "${start_of_line}${start_point}${end_of_line}" > /dev/null
+  docker image ls --format '{{.Repository}}:{{.Tag}}' \
+    | grep "${start_of_line}${name}${end_of_line}" > /dev/null
 }
 
-assertStartPointExists()  { startPointExists  $1; assertTrue  $?; }
-refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
+assertStartPointExists()  { startPointExists $1; assertTrue  $?; }
+refuteStartPointExists()  { startPointExists $1; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
