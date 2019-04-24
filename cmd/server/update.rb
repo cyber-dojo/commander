@@ -4,7 +4,7 @@ def cyber_dojo_server_update
     '',
     "Use: #{me} update",
     '',
-    'Updates all cyber-dojo server and language images and the cyber-dojo script file',
+    'Updates all cyber-dojo server images and the cyber-dojo script file',
   ]
 
   if ['-h','--help'].include?(ARGV[1])
@@ -15,12 +15,11 @@ def cyber_dojo_server_update
   # unknown arguments?
   args = ARGV[1..-1]
   args.each do |arg|
-    STDERR.puts "FAILED: unknown argument [#{arg}]"
+    STDERR.puts "ERROR: unknown argument [#{arg}]"
   end
   exit failed unless args == []
 
   cyber_dojo_update_server
-  cyber_dojo_update_languages
   # cyber-dojo script updates itself
 end
 
@@ -40,23 +39,8 @@ def cyber_dojo_update_server
     web
     zipper
   )
-
-  #TODO: How to update these 3?
-  # custom exercises languages
-
   service_images.each do |name|
     # use system() so pulls are visible in terminal
     system "docker pull cyberdojo/#{name}:latest"
-  end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def cyber_dojo_update_languages
-  cmd = "docker image ls --format '{{.Repository}}' | grep cyberdojofoundation"
-  stdout = `#{cmd}`
-  language_images = stdout.split("\n")
-  language_images.each do |name|
-    system "docker pull #{name}"
   end
 end

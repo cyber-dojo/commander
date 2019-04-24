@@ -17,9 +17,13 @@ test_____help_arg_prints_use()
   local readonly expected_stdout="
 Use: cyber-dojo update
 
-Updates all cyber-dojo server and language images and the cyber-dojo script file"
+Updates all cyber-dojo server images and the cyber-dojo script file"
 
   assertUpdate --help
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
+
+  assertUpdate -h
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
 }
@@ -36,23 +40,13 @@ x_test_____pull_latest_images_for_all_services()
   assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/grafana'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/mapper'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/prometheus'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/runner'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/starter'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/saver'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/mapper'  
-  assertNoStderr
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-x_test_____pull_latest_images_for_all_languages()
-{
-  ${exe} update languages >${stdoutF} 2>${stderrF}
-  assertFalse $?
-  assertStdoutIncludes 'latest: Pulling from cyberdojofoundation/gcc_assert'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
+  assertStdoutIncludes 'latest: Pulling from cyberdojo/zipper'
   assertNoStderr
 }
 
@@ -65,7 +59,7 @@ test_____unknown_arg()
   local readonly arg=salmon
   refuteUpdate ${arg}
   assertNoStdout
-  assertStderrEquals "FAILED: unknown argument [${arg}]"
+  assertStderrEquals "ERROR: unknown argument [${arg}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -76,8 +70,8 @@ test_____unknown_args()
   local readonly arg2=parr
   refuteUpdate ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "FAILED: unknown argument [${arg1}]"
-  assertStderrIncludes "FAILED: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
+  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
