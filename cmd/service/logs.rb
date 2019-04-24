@@ -6,7 +6,7 @@ def cyber_dojo_service_logs
     '',
     'Prints the logs from a service container',
     "Example: #{me} logs web",
-    "Example: #{me} logs storer"
+    "Example: #{me} logs saver"
   ]
 
   service = ARGV[1]
@@ -22,7 +22,7 @@ def cyber_dojo_service_logs
 
   name = "cyber-dojo-#{service}"
   unless service_running(name)
-    STDERR.puts "FAILED: #{name} is not a running container"
+    STDERR.puts "ERROR: #{name} is not a running container"
     exit failed
   end
 
