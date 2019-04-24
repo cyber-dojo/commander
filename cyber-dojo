@@ -308,7 +308,7 @@ build_image_from_context_dir()
     'languages') PORT=4524;;
   esac
 
-  local env_vars="PORT=${PORT}"
+  local env_vars="PORT=${PORT} IMAGE_TYPE=$(image_type)"
   if [ -n "${SHA}" ]; then
     env_vars="${env_vars} SHA=${SHA}"
   fi

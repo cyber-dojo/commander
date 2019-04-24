@@ -56,7 +56,7 @@ test_____exercises_start_point_prints_details()
   assertStdoutIncludes '  "Print Diamond": {'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
-  assertStdoutIncludes '    "image_name": null' # TODO
+  refuteStdoutIncludes '    "image_name":'
   assertStdoutIncludes '  }'
   assertStdoutIncludes '}'
   assertNoStderr

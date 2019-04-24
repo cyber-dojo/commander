@@ -20,6 +20,17 @@ assertStdoutIncludes()
   fi
 }
 
+refuteStdoutIncludes()
+{
+  local stdout="`cat ${stdoutF}`"
+  if [[ "${stdout}" = *"${1}"* ]]; then
+    echo "<stdout>"
+    cat ${stdoutF}
+    echo "</stdout>"
+    fail "expected stdout to NOT include ${1}"
+  fi
+}
+
 assertStderrIncludes()
 {
   local stderr="`cat ${stderrF}`"
