@@ -13,7 +13,7 @@ Use: cyber-dojo sh SERVICE
 
 Shells into a service container
 Example: cyber-dojo sh web
-Example: cyber-dojo sh storer"
+Example: cyber-dojo sh saver"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -45,7 +45,7 @@ test_____arg_is_not_a_running_container()
   assertStderrEquals "ERROR: cyber-dojo-${arg} is not a running container"
 }
 
-test_____more_than_one_arg_prints_use()
+test_____extra_arg_prints_use()
 {
   refuteSh wibble fubar
   assertStdoutEquals "${help_text}"
