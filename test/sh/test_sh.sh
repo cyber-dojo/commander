@@ -31,6 +31,10 @@ test_____help_arg_prints_use()
   assertSh --help
   assertStdoutEquals "${help_text}"
   assertNoStderr
+
+  assertSh -h
+  assertStdoutEquals "${help_text}"
+  assertNoStderr
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

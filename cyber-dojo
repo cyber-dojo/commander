@@ -387,7 +387,7 @@ handle_sh_locally()
     echo "shelling into ${name}"
     local cmd="export PS1='[${arg}] \\w $ ';sh"
     docker exec --interactive --tty "${name}" sh -c "${cmd}"
-  elif [ "${arg}" != '--help' ] && [ "${arg}" != '' ]; then
+  elif [ "${arg}" != '--help' ] && [ "${arg}" != '-h' ] && [ "${arg}" != '' ]; then
     error 4 "${name} is not a running container"
   fi
 }
