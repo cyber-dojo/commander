@@ -325,6 +325,7 @@ build_image_from_context_dir()
   local output
   if ! output=$(docker image build \
         --quiet                    \
+        --rm                       \
         --tag "${IMAGE_NAME}"      \
         "${CONTEXT_DIR}" 2>&1)
   then
@@ -353,6 +354,7 @@ build_image_from_context_dir()
       || :
     local last_line="${output##*$'\n'}"
     local last_word="${last_line##* }"
+    docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
     echo "Successfully built ${IMAGE_NAME}"
