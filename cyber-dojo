@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Controls a cyber-dojo web server.
 # requires: grep which is in DockerToolbox Quickstart Terminal.
