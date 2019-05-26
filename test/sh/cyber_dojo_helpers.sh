@@ -1,7 +1,5 @@
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-CD_DIR="$( cd "${MY_DIR}" && cd ../../../../cyber-dojo && pwd )"
-CDL_DIR="$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
 readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
@@ -9,9 +7,20 @@ readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+CD_DIR()
+{
+  echo "$( cd "${MY_DIR}" && cd ../../../../cyber-dojo && pwd )"
+}
+
+CDL_DIR()
+{
+  echo "$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
+}
+
+
 on_CI()
 {
-  [[ ! -z "${CIRCLE_SHA1}" ]]
+  [[ ! -z "${CIRCLE_SHA1}" ]] || [[ ! -z "${TRAVIS}" ]]
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,7 +30,7 @@ custom_urls()
   if on_CI; then
     echo -n "${github_cyber_dojo}/custom"
   else
-    echo -n "file://${CD_DIR}/custom"
+    echo -n "file://$(CD_DIR)/custom"
   fi
 }
 
@@ -32,7 +41,7 @@ exercises_urls()
   if on_CI; then
     echo -n "${github_cyber_dojo}/exercises"
   else
-    echo -n "file://${CD_DIR}/exercises"
+    echo -n "file://$(CD_DIR)/exercises"
   fi
 }
 
@@ -43,9 +52,9 @@ languages_urls()
   if on_CI; then
     echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
   else
-    echo -n "file://${CDL_DIR}/gcc-assert \
-             file://${CDL_DIR}/python-unittest \
-             file://${CDL_DIR}/ruby-minitest"
+    echo -n "file://$(CDL_DIR)/gcc-assert \
+             file://$(CDL_DIR)/python-unittest \
+             file://$(CDL_DIR)/ruby-minitest"
   fi
 }
 
