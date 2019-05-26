@@ -78,7 +78,7 @@ Defaults:
   --languages=cyberdojo/languages-common
   --port=80
 
-Defaults were created using:
+Default start-points were created using:
   \$ ./cyber-dojo start-point create \\
       cyberdojo/custom \\
         --custom \\
@@ -92,7 +92,7 @@ Defaults were created using:
   \$ ./cyber-dojo start-point create \\
       cyberdojo/languages-common \\
         --languages \\
-          \$(curl --silent https://github.com/cyber-dojo/languages/master/url_list/common)"
+          \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)"
 
   assertUp --help
   assertStdoutEquals "${expected_stdout}"

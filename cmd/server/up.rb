@@ -94,7 +94,7 @@ def exit_success_if_show_up_help
     minitab + '--languages=cyberdojo/languages-common',
     minitab + '--port=80',
     '',
-    'Defaults were created using:',
+    'Default start-points were created using:',
     minitab + '$ ./cyber-dojo start-point create \\',
     minitab + '    cyberdojo/custom \\',
     minitab + '      --custom \\',
@@ -108,7 +108,7 @@ def exit_success_if_show_up_help
     minitab + '$ ./cyber-dojo start-point create \\',
     minitab + '    cyberdojo/languages-common \\',
     minitab + '      --languages \\',
-    minitab + '        $(curl --silent https://github.com/cyber-dojo/languages/master/url_list/common)',
+    minitab + '        $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)',
   ]
   if ['-h','--help'].include?(ARGV[1])
     show help
