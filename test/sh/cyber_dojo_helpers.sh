@@ -133,6 +133,15 @@ refuteUpdate() { update $*; assertFalse $?; }
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+removeAllStartPoints()
+{
+  startPoints=(`${exe} start-point ls --quiet`)
+  for startPoint in "${startPoints[@]}"
+  do
+    ${exe} start-point rm "${startPoint}"
+  done
+}
+
 startPointExists()
 {
   # don't match a substring

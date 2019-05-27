@@ -27,6 +27,7 @@ Lists, in JSON form, the name and type of all cyber-dojo start-points.
 
 test_____no_args_prints_nothing_when_no_images()
 {
+  removeAllStartPoints
   assertStartPointLs
   assertNoStdout
   assertNoStderr
@@ -36,6 +37,7 @@ test_____no_args_prints_nothing_when_no_images()
 
 test_____quiet_arg_prints_nothing_when_no_images()
 {
+  removeAllStartPoints
   assertStartPointLs --quiet
   assertNoStdout
   assertNoStderr
@@ -68,13 +70,9 @@ test_____no_arg_prints_heading_and_names_types_sources()
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointLs
   assertStdoutIncludes '{'
-  assertStdoutIncludes '  "custom": ['
-  assertStdoutIncludes '  ],'
   assertStdoutIncludes '  "exercises": ['
-  assertStdoutIncludes "    \"${name}:latest\","
-  assertStdoutIncludes '  ],'
-  assertStdoutIncludes '  "languages": ['
-  assertStdoutIncludes '  ],'
+  assertStdoutIncludes "    \"${name}:latest\""
+  assertStdoutIncludes '  ]'
   assertStdoutIncludes '}'
 
   assertNoStderr
