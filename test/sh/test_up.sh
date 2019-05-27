@@ -148,7 +148,7 @@ test_____named_custom_does_not_exist()
   local readonly name=notExist
   refuteUp --custom=${name}
   assertNoStdout
-  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
+  assertStderrEquals "ERROR: failed to pull ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -158,7 +158,7 @@ test_____named_exercises_does_not_exist()
   local readonly name=notExist
   refuteUp --exercises=${name}
   assertNoStdout
-  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
+  assertStderrEquals "ERROR: failed to pull ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

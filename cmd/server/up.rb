@@ -135,8 +135,12 @@ end
 
 def exit_failure_unless_start_point_exists(type, image_name)
   unless image_exists?(image_name)
-    STDERR.puts "ERROR: cannot find a start-point called #{image_name}"
-    exit failed
+    command = "docker pull #{image_name}"
+    STDOUT.puts command
+    if !system(command)
+      STDERR.puts "ERROR: failed to pull #{image_name}"
+      exit failed
+    end
   end
   unless start_point_image?(image_name)
     STDERR.puts "ERROR: #{image_name} was not created using [cyber-dojo start-point create]"
