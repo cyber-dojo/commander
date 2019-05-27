@@ -41,14 +41,15 @@ services:
     memswap_limit: 2G
     restart: on-failure
     depends_on:
+      - differ
       - custom
       - exercises
       - languages
+      - mapper
+      - ragger
       - runner
       - saver
-      - differ
       - zipper
-      - mapper
     env_file:
       - ${CYBER_DOJO_ENV_ROOT}/web.env
 
@@ -92,7 +93,7 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runner: runs tests in time-boxed container
+  # runner: runs cyber-dojo.sh in time-boxed container
 
   runner:
     user: root
@@ -107,6 +108,23 @@ services:
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # ragger: convert runner's [stdout,stderr,status] to red/amber/green
+
+  ragger:
+    user: nobody
+    image: cyberdojo/ragger
+    init: true
+    container_name: cyber-dojo-ragger
+    cpu_shares: 512
+    read_only: true
+    tmpfs: /tmp
+    mem_limit: 32M
+    memswap_limit: 32M
+    restart: on-failure
+    depends_on:
+      - runner
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # saver: stores groups/katas and code+tests for every test event

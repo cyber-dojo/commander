@@ -38,6 +38,7 @@ def cyber_dojo_update_server
     saver
     web
     zipper
+    ragger
   )
   service_images.each do |name|
     # use system() so pulls are visible in terminal
