@@ -145,30 +145,30 @@ test_____missing_port()
 
 test_____named_custom_does_not_exist()
 {
-  local readonly name=notExist
+  local readonly name=not_exist
   refuteUp --custom=${name}
-  assertNoStdout
-  assertStderrEquals "ERROR: failed to pull ${name}"
+  assertStdoutIncludes "docker pull ${name}"
+  assertStderrIncludes "ERROR: failed to pull ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____named_exercises_does_not_exist()
 {
-  local readonly name=notExist
+  local readonly name=not_exist
   refuteUp --exercises=${name}
-  assertNoStdout
-  assertStderrEquals "ERROR: failed to pull ${name}"
+  assertStdoutIncludes "docker pull ${name}"
+  assertStderrIncludes "ERROR: failed to pull ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____named_languages_does_not_exist()
 {
-  local readonly name=notExist
+  local readonly name=not_exist
   refuteUp --languages=${name}
-  assertNoStdout
-  assertStderrEquals "ERROR: cannot find a start-point called ${name}"
+  assertStdoutIncludes "docker pull ${name}"
+  assertStderrIncludes "ERROR: failed to pull ${name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
