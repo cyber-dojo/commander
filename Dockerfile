@@ -19,8 +19,6 @@ RUN set -x && \
     apk add glibc.apk glibc-bin.apk && \
     rm -rf /var/cache/apk/* && \
     rm glibc.apk glibc-bin.apk && \
-    \
-    # Clean-up
     apk del .deps
 
 # - - - - - - - - - - - - - - - - - - - - - -
@@ -34,11 +32,7 @@ RUN set -x && \
     DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64 && \
     curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
     chmod a+rx /usr/local/bin/docker-compose && \
-    \
-    # Basic check it works
     docker-compose version && \
-    \
-    # Clean-up
     apk del .deps
 
 # - - - - - - - - - - - - - - - - - - - - - -
