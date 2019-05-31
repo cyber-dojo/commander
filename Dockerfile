@@ -40,6 +40,9 @@ ARG HOME_DIR=/app
 COPY . ${HOME_DIR}
 WORKDIR ${HOME_DIR}
 
+ARG SHA
+ENV SHA=${SHA}
+
 # - - - - - - - - - - - - - - - - - - - - - -
 # make sure default .env files can be overwritten
 # - - - - - - - - - - - - - - - - - - - - - -
