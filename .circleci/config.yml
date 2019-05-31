@@ -18,12 +18,14 @@ jobs:
           name: publish image on dockerhub
           command: |
             set -ev
-            readonly image=cyberdojo/commander
-            docker tag  ${image}:latest ${image}:${CIRCLE_SHA1:0:7}
-            docker tag  ${image}:latest ${image}:beta
+            readonly project=${CIRCLE_PROJECT_REPONAME}
+            docker tag  cyberdojo/${project}:latest cyberdojo/${project}:${CIRCLE_SHA1:0:7}
+            docker tag  cyberdojo/${project}:latest cyberdojo/${project}:beta
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
-            docker push ${image}:${CIRCLE_SHA1:0:7}
-            docker push ${image}:beta
+            docker push cyberdojo/${project}:${CIRCLE_SHA1:0:7}
+            docker push cyberdojo/${project}:beta
+            # old architecture
+            docker push cyberdojo/${project}:latest
 
 workflows:
   version: 2
