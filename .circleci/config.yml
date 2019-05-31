@@ -13,7 +13,9 @@ jobs:
           name: build image
           command: |
             set -ev
-            ./sh/pipe_build_up_test.sh
+            mkdir -p /cyber-dojo
+            chown -R 19663 /cyber-dojo
+            ./pipe_build_up_test.sh
       - run:
           name: publish image on dockerhub
           command: |
