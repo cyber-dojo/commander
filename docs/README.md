@@ -5,11 +5,11 @@
 
 # the cyber-dojo bash script
 
-Controls a [cyber-dojo](http://cyber-dojo.org) web server.
+Controls a [cyber-dojo](https://cyber-dojo.org) server.
 Delegates its commands to a docker container created from
 **cyberdojo/commander**.
 
-```
+```text
 $ ./cyber-dojo
 
 Use: cyber-dojo [--debug] COMMAND
@@ -46,7 +46,6 @@ MESSAGE=your-message-here
 
 - - - -
 
-* [Take me to cyber-dojo's home github repo](https://github.com/cyber-dojo/cyber-dojo).
-* [Take me to http://cyber-dojo.org](http://cyber-dojo.org).
+* Go to cyber-dojo's [home repo](https://github.com/cyber-dojo/cyber-dojo).
 
 ![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/master/shared/home_page_snapshot.png)
