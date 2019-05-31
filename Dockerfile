@@ -4,7 +4,7 @@ LABEL maintainer=jon@jaggersoft.com
 RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# Install glibc on Alpine (required by docker-compose) from
+# install glibc on Alpine (required by docker-compose) from
 # https://github.com/sgerrand/alpine-pkg-glibc
 # See also https://github.com/gliderlabs/docker-alpine/issues/11
 # - - - - - - - - - - - - - - - - - - - - - -
