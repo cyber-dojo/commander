@@ -1,0 +1,20 @@
+services: docker
+language: node_js
+git:
+  depth: 1
+  quiet: true
+
+branches:
+  only:
+    - master
+
+before_script:
+    - curl -O https://raw.githubusercontent.com/cyber-dojo/cyber-dojo/master/shared/push_and_trigger.sh
+    - chmod +x push_and_trigger.sh
+
+script:
+    - docker-compose --version
+    - sudo mkdir -p /cyber-dojo
+    - sudo chown -R 19663 /cyber-dojo
+    - travis_retry ./pipe_build_up_test.sh
+    - travis_retry ./push_and_trigger.sh cyber-dojo/system-tests
