@@ -13,8 +13,8 @@ jobs:
           name: build image
           command: |
             set -ev
-            mkdir -p /cyber-dojo
-            chown -R 19663 /cyber-dojo
+            sudo mkdir -p /cyber-dojo
+            sudo chown 19663:65533 /cyber-dojo
             ./pipe_build_up_test.sh
       - run:
           name: publish image on dockerhub
