@@ -4,36 +4,31 @@ LABEL maintainer=jon@jaggersoft.com
 RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - -
-# install glibc on Alpine (required by docker-compose) from
-# https://github.com/sgerrand/alpine-pkg-glibc
-# See also https://github.com/gliderlabs/docker-alpine/issues/11
-# - - - - - - - - - - - - - - - - - - - - - -
-
-RUN set -x && \
-    apk add --no-cache -t .deps ca-certificates curl && \
-    GLIBC_VERSION='2.28-r0' && \
-    curl -Lo /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    curl -Lo glibc.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-$GLIBC_VERSION.apk && \
-    curl -Lo glibc-bin.apk https://github.com/sgerrand/alpine-pkg-glibc/releases/download/$GLIBC_VERSION/glibc-bin-$GLIBC_VERSION.apk && \
-    apk update && \
-    apk add glibc.apk glibc-bin.apk && \
-    rm -rf /var/cache/apk/* && \
-    rm glibc.apk glibc-bin.apk && \
-    apk del .deps
-
-# - - - - - - - - - - - - - - - - - - - - - -
-# install docker-compose
-# https://docs.docker.com/compose/install/
 # https://github.com/wernight/docker-compose/blob/master/Dockerfile
 # - - - - - - - - - - - - - - - - - - - - - -
 
 RUN set -x && \
-    apk add --no-cache -t .deps ca-certificates curl && \
-    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/1.22.0/docker-compose-Linux-x86_64 && \
-    curl -Lo /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
+    apk add --no-cache -t .deps ca-certificates && \
+    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.29-r0/glibc-2.29-r0.apk && \
+    apk add glibc-2.29-r0.apk && \
+    rm glibc-2.29-r0.apk && \
+    apk del --purge .deps
+
+# Required for docker-compose to find zlib.
+ENV LD_LIBRARY_PATH=/lib:/usr/lib
+
+RUN set -x && \
+    apk add --no-cache -t .deps ca-certificates && \
+    apk add --no-cache zlib libgcc && \
+    DOCKER_COMPOSE_URL=https://github.com$(wget -q -O- https://github.com/docker/compose/releases/latest \
+        | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' \
+        | sed 's/^href="//' \
+        | head -n1) && \
+    wget -q -O /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
     chmod a+rx /usr/local/bin/docker-compose && \
-    docker-compose version && \
-    apk del .deps
+    apk del --purge .deps && \
+    docker-compose version
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
