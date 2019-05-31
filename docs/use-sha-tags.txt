@@ -1,0 +1,105 @@
+
+
+Create a .env file and use it in docker-compose.yml
+eg
+NGINX_TAG=ab07f62
+WEB_TAG=94008a4
+RUNNER_TAG=7ef52cd
+RAGGER_TAG=64b47d1
+...
+PROMETHEUS_TAG=021b579
+GRAFANA_TAG=06796d6
+
+Now a
+$ ./cyber-dojo up
+will automatically pull each immutable image.
+
+======================================================
+
+Make sure the commander image has a SHA env-var. DONE.
+
+Now allow
+$ ./cyber-dojo update [TAG]
+which defaults to
+$ ./cyber-dojo update latest
+
+The cyber-dojo script will do this...
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#!/bin/bash
+# TAG could be a SHA or latest
+readonly TAG="${2}"
+
+docker pull cyberdojo/commander:${TAG}
+
+# get the SHA even if TAG=latest
+local SHA=$(docker run --rm -i cyberdojo/commander:${TAG} sh -c 'echo -n ${SHA}')
+
+# a safe no-op if TAG=SHA
+docker tag cyberdojo/commander:${TAG} cyberdojo/commander:${SHA}
+
+# a safe no-op if TAG=latest
+docker tag cyberdojo/commander:${TAG} cyberdojo/commander:latest
+
+# At this point
+# 1) we have the image tagged to the SHA
+# 2) we have moved the latest tag on.
+#
+# NOW
+# 1) extract new cyber-dojo script from :latest
+# 2) delegate the update if --help option was used.
+
+Note that this means update does not have to do anything else.
+./cyber-dojo up
+will now take care of itself.
+If a service's image:tag is not present it will be pulled.
+If it is there, it's there! Immutability :-)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Note that this also makes an update testable since I can use a
+specific TAG in an update command and verify the output contains
+the expected SHAs for each service.
+
+======================================================
+
+In the .env file what about SHA's for
+custom/exercises/languages?
+Would be handy to have a local .ini or .config file that
+held the most recent choices.
+
+======================================================
+
+$ ./cyber-dojo tags
+Could be a new option that displays the SHAs of each service.
+Would be handy for testing too.
+
+======================================================
+
+$ ./cyber-dojo update history
+Could show log of all updates. This would rely on
+the non latest tags in cyberdojo/commander:XXX
+being findable. Now sort them by date order.
+How to get the date an image was created?
+$ docker inspect -f '{{ .Created }}' IMAGE_OR_CONTAINER
+
+Note that this does not show the date the specific
+tag was first _used_.
+
+Could also show the list of SHAs of each service for
+each tagged commander image.
+
+======================================================
+
+At the moment some of the SHA's are exposed in the web page
+https://cyber-dojo.org/sha/index
+But, this cannot nginx (easily)
+And how to I get the SHAs of prometheus and grafana?
+Cant see an way (from web).
+I think it would be better to put this functionality into
+the ./cyber-dojo script.
+
+======================================================
+
+Is there some way the SHAs in production-values.yaml could be
+harvested and used in a [cyber-dojo update] command?
