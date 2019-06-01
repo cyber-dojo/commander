@@ -4,10 +4,10 @@ def cyber_dojo_server_up
   exit_failure_if_up_unknown_arguments
 
   # Process arguments
-     custom = default_custom
-  exercises = default_exercises
-  languages = default_languages
-       port = default_port
+     custom = custom_image_name
+  exercises = exercises_image_name
+  languages = languages_image_name
+       port = port_number
 
   args = ARGV[1..-1]
   args.each do |arg|

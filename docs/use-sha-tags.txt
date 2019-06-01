@@ -64,25 +64,8 @@ the expected SHAs for each service.
 ======================================================
 
 What about SHA's for custom/exercises/languages?
-Simply make them part of the defaults set in
-app/cmd/cyber-dojo.rb eg
-  def default_exercises
-    'cyberdojo/exercises:latest'
-  end
-will become
-  def exercises_image_name
-    'cyberdojo/exercises:543fe31'
-  end
-
-But maybe they could be set in the .env file and
-be overridden by an ENV-VAR?
-Suggests putting whole image-names into .env
-Yes. Then don't need ruby script for start-point names.
-All image names are in the .env file.
-
 Would be handy to have a local .ini or .config file that
 held the most recent choices for custom/exercises/languages.
-
 Better answer: Look for environment variables on HOST
 
 ======================================================

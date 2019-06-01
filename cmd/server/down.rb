@@ -8,7 +8,6 @@ def cyber_dojo_server_down
     "--file=#{my_dir}/../../docker-compose.yml",
     "--file=#{my_dir}/../../docker-compose.images.yml"
   ].join(' ')
-  #docker_compose_cmd = "docker-compose --file=#{my_dir}/../../docker-compose.yml"
   # It seems a successful [docker-compose ... down] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(down_env_vars, "#{docker_compose_cmd} down 2>&1")
@@ -46,9 +45,9 @@ end
 def down_env_vars
   {
     'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT'],
-    'CYBER_DOJO_CUSTOM'    => default_custom,
-    'CYBER_DOJO_EXERCISES' => default_exercises,
-    'CYBER_DOJO_LANGUAGES' => default_languages,
-    'CYBER_DOJO_NGINX_PORT' => default_port
+    'CYBER_DOJO_CUSTOM'    => custom_image_name,
+    'CYBER_DOJO_EXERCISES' => exercises_image_name,
+    'CYBER_DOJO_LANGUAGES' => languages_image_name,
+    'CYBER_DOJO_NGINX_PORT' => port_number
   }
 end

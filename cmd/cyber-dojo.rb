@@ -69,19 +69,19 @@ def dot_env
   lines.map{ |line| line.split('=') }.to_h
 end
 
-def default_exercises
+def exercises_image_name
   dot_env['CYBER_DOJO_EXERCISES'].strip
 end
 
-def default_custom
+def custom_image_name
   dot_env['CYBER_DOJO_CUSTOM'].strip
 end
 
-def default_languages
+def languages_image_name
   dot_env['CYBER_DOJO_LANGUAGES'].strip
 end
 
-def default_port
+def port_number
   '80'
 end
 
