@@ -1,27 +1,9 @@
 
 def cyber_dojo_server_up
-  exit_success_if_show_up_help
+  exit_success_if_up_help
   exit_failure_if_up_unknown_arguments
 
-  # Process arguments
-     custom = custom_image_name
-  exercises = exercises_image_name
-  languages = languages_image_name
-       port = port_number
-
-  args = ARGV[1..-1]
-  args.each do |arg|
-    name  = arg.split('=')[0]
-    value = arg.split('=')[1]
-    if value.nil?
-      STDERR.puts "ERROR: missing argument value #{name}=[???]"
-      exit failed
-    end
-       custom = value if name == '--custom'
-    exercises = value if name == '--exercises'
-    languages = value if name == '--languages'
-         port = value if name == '--port'
-  end
+  custom,exercises,languages,port = overridable_options
 
   exit_failure_unless_start_point_exists(   'custom',    custom)
   exit_failure_unless_start_point_exists('exercises', exercises)
@@ -59,27 +41,45 @@ def cyber_dojo_server_up
   STDOUT.puts "Using --exercises=#{exercises}"
   STDOUT.puts "Using --languages=#{languages}"
   STDOUT.puts "Using --port=#{port}"
+
   up_env_vars = {
-    'CYBER_DOJO_ENV_ROOT' => env_root,
-    'CYBER_DOJO_CUSTOM'    => custom,
-    'CYBER_DOJO_EXERCISES' => exercises,
-    'CYBER_DOJO_LANGUAGES' => languages,
-    'CYBER_DOJO_NGINX_PORT' => port
+    'CYBER_DOJO_CUSTOM'     => custom,
+    'CYBER_DOJO_EXERCISES'  => exercises,
+    'CYBER_DOJO_LANGUAGES'  => languages,
+    'CYBER_DOJO_NGINX_PORT' => port,
+    'CYBER_DOJO_ENV_ROOT'   => env_root
   }
-  my_dir = File.dirname(__FILE__)
-  docker_compose_cmd = [
-    'docker-compose',
-    "--file=#{my_dir}/../../docker-compose.yml",
-    "--file=#{my_dir}/../../docker-compose.images.yml"
-  ].join(' ')
-  # It seems a successful [docker-compose ... up] writes to stderr !?
+
+  # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(up_env_vars, "#{docker_compose_cmd} up -d 2>&1")
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def exit_success_if_show_up_help
+def overridable_options
+     custom = custom_image_name
+  exercises = exercises_image_name
+  languages = languages_image_name
+       port = port_number
+
+  ARGV[1..-1].each do |arg|
+    name,value = arg.split('=',2)
+    if value.nil? || value.empty?
+     STDERR.puts "ERROR: missing argument value #{name}=[???]"
+     exit failed
+    end
+       custom = value if name == '--custom'
+    exercises = value if name == '--exercises'
+    languages = value if name == '--languages'
+         port = value if name == '--port'
+  end
+  [custom,exercises,languages,port]
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def exit_success_if_up_help
   help = [
     '',
     "Use: #{me} up [OPTIONS]",

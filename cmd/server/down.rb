@@ -2,13 +2,7 @@
 def cyber_dojo_server_down
   exit_success_if_show_down_help
   exit_failure_if_down_unknown_arguments
-  my_dir = File.dirname(__FILE__)
-  docker_compose_cmd = [
-    'docker-compose',
-    "--file=#{my_dir}/../../docker-compose.yml",
-    "--file=#{my_dir}/../../docker-compose.images.yml"
-  ].join(' ')
-  # It seems a successful [docker-compose ... down] writes to stderr !?
+  # A successful [docker-compose ... down] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(down_env_vars, "#{docker_compose_cmd} down 2>&1")
 end

@@ -3,7 +3,7 @@ Specify default PORT in .env file same as start-points
 
 =========================================================
 
-CI needs to trigger system-tests 
+CI needs to trigger system-tests
 
 =========================================================
 
@@ -47,3 +47,15 @@ Creating cyber-dojo-custom     ... done
 Creating cyber-dojo-languages  ... done
 Creating cyber-dojo-runner     ... done
 ...
+
+=========================================================
+up.rb does this...
+
+STDOUT.puts "Using --custom=#{custom}"
+STDOUT.puts "Using --exercises=#{exercises}"
+STDOUT.puts "Using --languages=#{languages}"
+STDOUT.puts "Using --port=#{port}"
+
+better if it did
+STDOUT.puts "Using --port=#{port}"
+and then printed out all the image names

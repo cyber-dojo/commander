@@ -2,8 +2,7 @@
 version: '2.2'
 
 services:
-  # overridable start-points
-  #   $ ./cyber-dojo up --custom=... --exercises=... --languages=...
+  # overridable start-points. See .env file
   custom:
     image: ${CYBER_DOJO_CUSTOM}
   exercises:
