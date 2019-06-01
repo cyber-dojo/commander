@@ -11,10 +11,8 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # multi-threaded front-end with http caching
-
   nginx:
     user: root
-    image: ${CYBER_DOJO_NGINX}
     init: true
     container_name: cyber-dojo-nginx
     cpu_shares: 1024
@@ -30,10 +28,8 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # main server (rails)
-
   web:
     user: nobody
-    image: ${CYBER_DOJO_WEB}
     init: true
     container_name: cyber-dojo-web
     cpu_shares: 1024
@@ -55,10 +51,8 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
-
   custom:
     user: nobody
-    image: ${CYBER_DOJO_CUSTOM}
     init: true
     container_name: cyber-dojo-custom
     cpu_shares: 512
@@ -70,7 +64,6 @@ services:
 
   exercises:
     user: nobody
-    image: ${CYBER_DOJO_EXERCISES}
     init: true
     container_name: cyber-dojo-exercises
     cpu_shares: 512
@@ -82,7 +75,6 @@ services:
 
   languages:
     user: nobody
-    image: ${CYBER_DOJO_LANGUAGES}
     init: true
     container_name: cyber-dojo-languages
     cpu_shares: 512
@@ -93,11 +85,9 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runner: runs cyber-dojo.sh in time-boxed container
-
+  # runs cyber-dojo.sh in time-boxed container
   runner:
     user: root
-    image: ${CYBER_DOJO_RUNNER}
     init: true
     container_name: cyber-dojo-runner
     cpu_shares:  1024
@@ -110,11 +100,9 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # ragger: convert runner's [stdout,stderr,status] to red/amber/green
-
+  # convert runner's [stdout,stderr,status] to red/amber/green
   ragger:
     user: nobody
-    image: ${CYBER_DOJO_RAGGER}
     init: true
     container_name: cyber-dojo-ragger
     cpu_shares: 512
@@ -127,11 +115,9 @@ services:
       - runner
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # saver: stores groups/katas and code+tests for every test event
-
+  # stores groups/katas and code+tests for every test event
   saver:
     user: saver
-    image: ${CYBER_DOJO_SAVER}
     init: true
     container_name: cyber-dojo-saver
     cpu_shares: 1024
@@ -147,11 +133,9 @@ services:
       - /cyber-dojo:/cyber-dojo:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # mapper: holds storer->saver id mappings created by porter
-
+  # holds storer->saver id mappings created by porter
   mapper:
     user: nobody
-    image: ${CYBER_DOJO_MAPPER}
     init: true
     container_name: cyber-dojo-mapper
     cpu_shares: 128
@@ -165,11 +149,9 @@ services:
 
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # differ: diffs all the files in two test events
-
+  # diffs all the files in two test events
   differ:
     user: nobody
-    image: ${CYBER_DOJO_DIFFER}
     init: true
     container_name: cyber-dojo-differ
     cpu_shares: 512
@@ -181,10 +163,8 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # provides tgz files of practice sessions
-
   zipper:
     user: nobody
-    image: ${CYBER_DOJO_ZIPPER}
     init: true
     container_name: cyber-dojo-zipper
     cpu_shares: 256
@@ -200,13 +180,11 @@ services:
   # monitoring
 
   prometheus:
-    image: ${CYBER_DOJO_PROMETHEUS}
     init: true
     container_name: cyber-dojo-prometheus
     cpu_shares: 128
 
   grafana:
-    image: ${CYBER_DOJO_GRAFANA}
     init: true
     container_name: cyber-dojo-grafana
     cpu_shares: 128

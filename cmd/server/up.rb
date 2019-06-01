@@ -67,7 +67,11 @@ def cyber_dojo_server_up
     'CYBER_DOJO_NGINX_PORT' => port
   }
   my_dir = File.dirname(__FILE__)
-  docker_compose_cmd = "docker-compose --file=#{my_dir}/../../docker-compose.yml"
+  docker_compose_cmd = [
+    'docker-compose',
+    "--file=#{my_dir}/../../docker-compose.yml",
+    "--file=#{my_dir}/../../docker-compose.images.yml"
+  ].join(' ')
   # It seems a successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(up_env_vars, "#{docker_compose_cmd} up -d 2>&1")
