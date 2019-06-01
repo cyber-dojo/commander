@@ -1,4 +1,18 @@
 
+Specify default PORT in .env file same as start-points
+
+=========================================================
+
+CI needs to trigger system-tests 
+
+=========================================================
+
+in main cyber-dojo script the names of some functions
+need to be lengthened to show its clear they are to
+do with [start_point create]
+
+=========================================================
+
 When you do an up it would be better if this output...
 
 >>checking cyberdojofoundation/csharp_nunit:latest

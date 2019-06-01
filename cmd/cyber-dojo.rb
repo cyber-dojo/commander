@@ -60,11 +60,30 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def default_exercises; 'cyberdojo/exercises:latest'; end
-def default_custom   ; 'cyberdojo/custom:latest'   ; end
-def default_languages; 'cyberdojo/languages-common:latest'; end
+def dot_env
+  my_dir = File.dirname(__FILE__)
+  src = IO.read("#{my_dir}/../.env")
+  lines = src.lines.reject do |line|
+    line.start_with?('#') || line.strip.empty?
+  end
+  lines.map{ |line| line.split('=') }.to_h
+end
 
-def default_port; '80'; end
+def default_exercises
+  dot_env['CYBER_DOJO_EXERCISES'].strip
+end
+
+def default_custom
+  dot_env['CYBER_DOJO_CUSTOM'].strip
+end
+
+def default_languages
+  dot_env['CYBER_DOJO_LANGUAGES'].strip
+end
+
+def default_port
+  '80'
+end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 

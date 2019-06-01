@@ -83,6 +83,8 @@ All image names are in the .env file.
 Would be handy to have a local .ini or .config file that
 held the most recent choices for custom/exercises/languages.
 
+Better answer: Look for environment variables on HOST
+
 ======================================================
 
 $ ./cyber-dojo tags
