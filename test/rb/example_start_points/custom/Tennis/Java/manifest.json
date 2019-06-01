@@ -10,8 +10,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/java_junit",
 
   "filename_extension" : ".java"

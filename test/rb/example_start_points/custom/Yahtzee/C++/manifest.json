@@ -10,8 +10,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/gpp_assert",
 
   "filename_extension" : ".cpp"

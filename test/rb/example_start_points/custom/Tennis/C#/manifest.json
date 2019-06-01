@@ -11,8 +11,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/csharp_nunit",
 
   "filename_extension" : ".cs"

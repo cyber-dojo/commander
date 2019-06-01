@@ -8,8 +8,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/ruby_test_unit",
 
   "filename_extension" : ".rb"

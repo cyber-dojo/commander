@@ -8,8 +8,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/python_unittest",
 
   "filename_extension" : ".py"

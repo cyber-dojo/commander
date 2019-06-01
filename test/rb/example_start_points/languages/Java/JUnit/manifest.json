@@ -10,8 +10,6 @@
 
   "image_name": "cyberdojofoundation/java_junit",
 
-  "runner_choice":"stateful",
-
   "filename_extension": ".java",
 
   "progress_regexs": [

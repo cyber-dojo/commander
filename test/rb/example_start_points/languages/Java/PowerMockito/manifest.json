@@ -9,8 +9,6 @@
     "cyber-dojo.sh"
   ],
 
-  "runner_choice": "stateless",
-
   "image_name": "cyberdojofoundation/java_powermockito",
 
   "filename_extension" : ".java"
