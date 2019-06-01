@@ -14,12 +14,7 @@ def cyber_dojo_server_up
 
   env_root = write_env_files
 
-  STDOUT.puts "Using --custom=#{custom}"
-  STDOUT.puts "Using --exercises=#{exercises}"
-  STDOUT.puts "Using --languages=#{languages}"
-  STDOUT.puts "Using --port=#{port}"
-
-  up_env_vars = {
+  env_vars = {
     'CYBER_DOJO_CUSTOM'     => custom,
     'CYBER_DOJO_EXERCISES'  => exercises,
     'CYBER_DOJO_LANGUAGES'  => languages,
@@ -27,19 +22,25 @@ def cyber_dojo_server_up
     'CYBER_DOJO_ENV_ROOT'   => env_root
   }
 
+  STDOUT.puts "Using --custom=#{custom}"
+  STDOUT.puts "Using --exercises=#{exercises}"
+  STDOUT.puts "Using --languages=#{languages}"
+  STDOUT.puts "Using --port=#{port}"
+
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
-  system(up_env_vars, "#{docker_compose_cmd} up -d 2>&1")
+  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def overridable_options
+  # defaults
      custom = custom_image_name
   exercises = exercises_image_name
   languages = languages_image_name
        port = port_number
-
+  # command line --options
   ARGV[1..-1].each do |arg|
     name,value = arg.split('=',2)
     if value.nil? || value.empty?
@@ -51,6 +52,12 @@ def overridable_options
     languages = value if name == '--languages'
          port = value if name == '--port'
   end
+  # environment-variables
+     custom = ENV['CYBER_DOJO_CUSTOM'   ] || custom
+  exercises = ENV['CYBER_DOJO_EXERCISES'] || exercises
+  languages = ENV['CYBER_DOJO_LANGUAGES'] || languages
+       port = ENV['CYBER_DOJO_PORT'     ] || port
+
   [custom,exercises,languages,port]
 end
 

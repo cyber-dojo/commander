@@ -100,6 +100,10 @@ delegate_to_commander()
     --rm \
     --interactive \
     --user=root \
+    --env CYBER_DOJO_CUSTOM \
+    --env CYBER_DOJO_EXERCISES \
+    --env CYBER_DOJO_LANGUAGES \
+    --env CYBER_DOJO_PORT \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
