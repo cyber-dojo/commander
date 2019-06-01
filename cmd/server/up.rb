@@ -61,9 +61,9 @@ def cyber_dojo_server_up
   STDOUT.puts "Using --port=#{port}"
   up_env_vars = {
     'CYBER_DOJO_ENV_ROOT' => env_root,
-    'CYBER_DOJO_START_POINT_CUSTOM_IMAGE'    => custom,
-    'CYBER_DOJO_START_POINT_EXERCISES_IMAGE' => exercises,
-    'CYBER_DOJO_START_POINT_LANGUAGES_IMAGE' => languages,
+    'CYBER_DOJO_CUSTOM'    => custom,
+    'CYBER_DOJO_EXERCISES' => exercises,
+    'CYBER_DOJO_LANGUAGES' => languages,
     'CYBER_DOJO_NGINX_PORT' => port
   }
   my_dir = File.dirname(__FILE__)
