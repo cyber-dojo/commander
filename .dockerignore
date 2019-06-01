@@ -13,6 +13,7 @@
 !docker-compose.env-files.yml
 !docker-compose.images.yml
 !docker-compose.mem-limits.yml
+!docker-compose.ports.yml
 !docker-compose.volumes.yml
 !defaults.env/*
 !test/rb
