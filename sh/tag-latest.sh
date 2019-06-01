@@ -5,6 +5,11 @@ readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 readonly CONTAINER_NAME=target
 
 # WIP
+# Basic plan is for all the services to tag latest
+# but for commander's CI pipe to use .env files
+# with do NOT have SHA tags.
+# Then have specific process to create commander image
+# tagged :latest which has a .env file in it with SHA tags.
 
 # Assumes already...
 #   ./sh/service-puller.sh      # [1] got :latest copies of all services
@@ -25,12 +30,3 @@ docker commit ${CONTAINER_NAME} cyberdojo/commander:latest
 
 # remove the commander container
 docker rm ${CONTAINER_NAME} --force
-
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# PROBLEM
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-# This is using a base of a commander image
-# whose .env file does not have explicit SHAs.
-# But one of the aims is to NOT have :latest tags
-# for the service images, only for commander.
-# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
