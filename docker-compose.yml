@@ -1,12 +1,6 @@
 
 version: '2.2'
 
-volumes:
-  # monitoring
-  grafana_data: {}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -62,8 +56,6 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: on-failure
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # convert runner's [stdout,stderr,status] to red/amber/green
@@ -84,8 +76,6 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: on-failure
-    volumes:
-      - /cyber-dojo:/cyber-dojo:rw
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # holds storer->saver id mappings created by porter
@@ -96,8 +86,6 @@ services:
     read_only: true
     tmpfs: /tmp
     restart: on-failure
-    volumes:
-      - /porter:/porter:ro
 
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -126,11 +114,13 @@ services:
   prometheus:
     init: true
     container_name: cyber-dojo-prometheus
+    tmpfs: /tmp
+    restart: on-failure
 
   grafana:
     init: true
     container_name: cyber-dojo-grafana
-    volumes:
-      - grafana_data:/var/lib/grafana
+    tmpfs: /tmp
+    restart: on-failure    
     ports:
       - 3000:3000

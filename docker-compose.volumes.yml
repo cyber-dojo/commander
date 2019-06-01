@@ -1,0 +1,19 @@
+
+version: '2.2'
+
+volumes:
+  grafana_data: {}
+
+services:
+  runner:
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  saver:
+    volumes:
+      - /cyber-dojo:/cyber-dojo:rw
+  mapper:
+    volumes:
+      - /porter:/porter:ro
+  grafana:
+    volumes:
+      - grafana_data:/var/lib/grafana

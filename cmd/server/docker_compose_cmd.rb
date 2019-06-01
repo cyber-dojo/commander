@@ -8,6 +8,7 @@ def docker_compose_cmd
     "--file=#{my_dir}/../../docker-compose.depends-on.yml",
     "--file=#{my_dir}/../../docker-compose.env-files.yml",
     "--file=#{my_dir}/../../docker-compose.images.yml",
-    "--file=#{my_dir}/../../docker-compose.mem-limits.yml"
+    "--file=#{my_dir}/../../docker-compose.mem-limits.yml",
+    "--file=#{my_dir}/../../docker-compose.volumes.yml"
   ].join(' ')
 end
