@@ -109,6 +109,9 @@ test___failure() { :; }
 
 test_____missing_languages()
 {
+  refuteUp --languages
+  assertNoStdout
+  assertStderrEquals 'ERROR: missing argument value --languages=[???]'
   refuteUp --languages=
   assertNoStdout
   assertStderrEquals 'ERROR: missing argument value --languages=[???]'
@@ -118,6 +121,9 @@ test_____missing_languages()
 
 test_____missing_custom()
 {
+  refuteUp --custom
+  assertNoStdout
+  assertStderrEquals 'ERROR: missing argument value --custom=[???]'
   refuteUp --custom=
   assertNoStdout
   assertStderrEquals 'ERROR: missing argument value --custom=[???]'
@@ -127,6 +133,9 @@ test_____missing_custom()
 
 test_____missing_exercises()
 {
+  refuteUp --exercises
+  assertNoStdout
+  assertStderrEquals 'ERROR: missing argument value --exercises=[???]'
   refuteUp --exercises=
   assertNoStdout
   assertStderrEquals 'ERROR: missing argument value --exercises=[???]'
@@ -136,6 +145,9 @@ test_____missing_exercises()
 
 test_____missing_port()
 {
+  refuteUp --port
+  assertNoStdout
+  assertStderrEquals 'ERROR: missing argument value --port=[???]'
   refuteUp --port=
   assertNoStdout
   assertStderrEquals 'ERROR: missing argument value --port=[???]'
