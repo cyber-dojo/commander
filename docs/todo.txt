@@ -1,7 +1,4 @@
 
-Specify default PORT in .env file same as start-points
-
-=========================================================
 
 CI needs to trigger system-tests
 

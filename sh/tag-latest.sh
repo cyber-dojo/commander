@@ -4,6 +4,8 @@ set -e
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 readonly CONTAINER_NAME=target
 
+# WIP
+
 # Assumes already...
 #   ./sh/service-puller.sh      # [1] got :latest copies of all services
 #   ./sh/build_docker_images.sh # [2] built a new commander image
@@ -23,3 +25,12 @@ docker commit ${CONTAINER_NAME} cyberdojo/commander:latest
 
 # remove the commander container
 docker rm ${CONTAINER_NAME} --force
+
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# PROBLEM
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+# This is using a base of a commander image
+# whose .env file does not have explicit SHAs.
+# But one of the aims is to NOT have :latest tags
+# for the service images, only for commander.
+# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

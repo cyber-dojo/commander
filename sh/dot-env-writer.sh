@@ -1,18 +1,16 @@
 #!/bin/bash
 set -e
 
+# WIP
+
 # Writes a new .env file (to stdout) with explicit SHAs tags for
 # all service image names, ready to create a new commander image
 # suitable for :latest tagging.
 
-declare -a start_point_names=(
-  custom exercises languages
-)
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-declare -a service_names=(
-  differ mapper nginx ragger runner saver web zipper
-  grafana prometheus
-)
+. ${MY_DIR}/start-point-names.sh
+. ${MY_DIR}/service-names.sh
 
 env_var_for()
 {
