@@ -29,7 +29,7 @@ services:
     image: cyberdojo/zipper:latest
 
   # monitoring
-  prometheus:
-    image: cyberdojo/prometheus:latest
   grafana:
     image: cyberdojo/grafana:latest
+  prometheus:
+    image: cyberdojo/prometheus:latest
