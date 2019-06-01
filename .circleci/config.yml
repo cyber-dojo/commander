@@ -21,7 +21,6 @@ jobs:
           command: |
             set -ev
             readonly project=${CIRCLE_PROJECT_REPONAME}
-            docker run --rm -it cyberdojo/${project}:latest sh -c 'cat /etc/issue'
             docker tag  cyberdojo/${project}:latest cyberdojo/${project}:${CIRCLE_SHA1:0:7}
             docker tag  cyberdojo/${project}:latest cyberdojo/${project}:beta
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
