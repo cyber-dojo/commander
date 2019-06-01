@@ -1,0 +1,16 @@
+
+Four .env var variables are overridable:
+  o) CYBER_DOJO_PORT
+  o) CYBER_DOJO_CUSTOM
+  o) CYBER_DOJO_EXERCISES
+  o) CYBER_DOJO_LANGUAGES
+
+Via command line arguments
+--------------------------
+$ ./cyber-dojo up \
+      --languages=james/custom:9b38aa2
+
+Via environment-variables
+-------------------------
+$ export CYBER_DOJO_LANGUAGES=james/custom:9b38aa2
+$ ./cyber-dojo up

@@ -1,0 +1,22 @@
+
+# start a container from commander image which has :latest tags in its .env file
+$ docker run -d -it --name target cyberdojo/commander bash
+
+# run sh/dot-env-writer.sh to generate new .env file
+$ ./sh/dot-env-writer.sh > /tmp/.env
+
+Now how to create a new image?
+
+# docker cp the new .env file into the container
+$ docker cp /tmp/.env target:/app/.env
+
+# docker commit the container to a new image
+$ docker commit target cyberdojo/commander:latest
+
+# remove the commander container
+$ docker rm target --force
+
+Or
+
+. git commit the new .env file to commander github repo
+. let CI create new image
