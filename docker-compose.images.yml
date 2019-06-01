@@ -1,9 +1,9 @@
 
 version: '2.2'
 
-# overridable start-points
-#   $ ./cyber-dojo up --custom=... --exercises=... --languages=...
 services:
+  # overridable start-points
+  #   $ ./cyber-dojo up --custom=... --exercises=... --languages=...
   custom:
     image: ${CYBER_DOJO_CUSTOM}
   exercises:
@@ -11,28 +11,26 @@ services:
   languages:
     image: ${CYBER_DOJO_LANGUAGES}
 
-# main services
-services:
+  # main services
   differ:
-    image: ${CYBER_DOJO_DIFFER}
+    image: cyberdojo/differ:latest
   mapper:
-    image: ${CYBER_DOJO_MAPPER}
+    image: cyberdojo/mapper:latest
   nginx:
-    image: ${CYBER_DOJO_NGINX}
+    image: cyberdojo/nginx:latest
   ragger:
-    image: ${CYBER_DOJO_RAGGER}
+    image: cyberdojo/ragger:latest
   runner:
-    image: ${CYBER_DOJO_RUNNER}
+    image: cyberdojo/runner:latest
   saver:
-    image: ${CYBER_DOJO_SAVER}
+    image: cyberdojo/saver:latest
   web:
-    image: ${CYBER_DOJO_WEB}
+    image: cyberdojo/web:latest
   zipper:
-    image: ${CYBER_DOJO_ZIPPER}
+    image: cyberdojo/zipper:latest
 
-# monitoring
-services:
+  # monitoring
   prometheus:
-    image: ${CYBER_DOJO_PROMETHEUS}
+    image: cyberdojo/prometheus:latest
   grafana:
-    image: ${CYBER_DOJO_GRAFANA}
+    image: cyberdojo/grafana:latest

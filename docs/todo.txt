@@ -1,0 +1,35 @@
+
+When you do an up it would be better if this output...
+
+>>checking cyberdojofoundation/csharp_nunit:latest
+>>exists cyberdojofoundation/csharp_nunit:latest
+
+Did not come at the start. Start should be...
+
+WARNING: Using default grafana admin password.
+To set your own password and remove this warning:
+   1. Create a file grafana.env with contents
+      GF_SECURITY_ADMIN_PASSWORD=mypassword
+      in the same directory as the cyber-dojo script.
+   2. Re-issue the command [cyberdojo up ...]
+Using default grafana.env
+Using default nginx.env
+Using default web.env
+Using --custom=cyberdojo/custom:latest
+Using --exercises=cyberdojo/exercises:latest
+Using --languages=cyberdojo/languages-small
+Using --port=80
+
+Then
+>>checking cyberdojofoundation/csharp_nunit:latest
+>>exists cyberdojofoundation/csharp_nunit:latest
+...
+
+Then
+Creating network "app_default" with the default driver
+Creating cyber-dojo-mapper     ... done
+Creating cyber-dojo-differ     ... done
+Creating cyber-dojo-custom     ... done
+Creating cyber-dojo-languages  ... done
+Creating cyber-dojo-runner     ... done
+...
