@@ -15,8 +15,6 @@ services:
     user: root
     init: true
     container_name: cyber-dojo-nginx
-    mem_limit: 50M
-    memswap_limit: 50M
     restart: on-failure
     ports:
       - ${CYBER_DOJO_NGINX_PORT}:80
@@ -27,8 +25,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-web
-    mem_limit: 2G
-    memswap_limit: 2G
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -39,8 +35,6 @@ services:
     container_name: cyber-dojo-custom
     read_only: true
     tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
     restart: on-failure
 
   exercises:
@@ -49,8 +43,6 @@ services:
     container_name: cyber-dojo-exercises
     read_only: true
     tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
     restart: on-failure
 
   languages:
@@ -59,8 +51,6 @@ services:
     container_name: cyber-dojo-languages
     read_only: true
     tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -71,8 +61,6 @@ services:
     container_name: cyber-dojo-runner
     read_only: true
     tmpfs: /tmp
-    mem_limit: 2G
-    memswap_limit: 2G
     restart: on-failure
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -85,8 +73,6 @@ services:
     container_name: cyber-dojo-ragger
     read_only: true
     tmpfs: /tmp
-    mem_limit: 32M
-    memswap_limit: 32M
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -97,8 +83,6 @@ services:
     container_name: cyber-dojo-saver
     read_only: true
     tmpfs: /tmp
-    mem_limit: 256M
-    memswap_limit: 256M
     restart: on-failure
     volumes:
       - /cyber-dojo:/cyber-dojo:rw
@@ -111,8 +95,6 @@ services:
     container_name: cyber-dojo-mapper
     read_only: true
     tmpfs: /tmp
-    mem_limit: 32M
-    memswap_limit: 32M
     restart: on-failure
     volumes:
       - /porter:/porter:ro
@@ -126,8 +108,6 @@ services:
     container_name: cyber-dojo-differ
     read_only: true
     tmpfs: /tmp
-    mem_limit: 1G
-    memswap_limit: 1G
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -138,8 +118,6 @@ services:
     container_name: cyber-dojo-zipper
     read_only: true
     tmpfs: /tmp
-    mem_limit: 50M
-    memswap_limit: 50M
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -155,4 +133,4 @@ services:
     volumes:
       - grafana_data:/var/lib/grafana
     ports:
-      - '3000:3000'
+      - 3000:3000

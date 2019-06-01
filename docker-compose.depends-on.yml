@@ -9,7 +9,7 @@ services:
   # mapper:
   # prometheus:
   # runner:
-  
+
   nginx:
     depends_on:
       - web
@@ -30,7 +30,6 @@ services:
   saver:
     depends_on:
       - mapper
-      - prometheus
   zipper:
     depends_on:
       - saver

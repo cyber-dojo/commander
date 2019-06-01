@@ -12,6 +12,7 @@
 !docker-compose.depends-on.yml
 !docker-compose.env-files.yml
 !docker-compose.images.yml
+!docker-compose.mem-limits.yml
 !defaults.env/*
 !test/rb
 !.env

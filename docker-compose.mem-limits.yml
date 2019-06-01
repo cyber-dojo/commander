@@ -1,0 +1,47 @@
+
+version: '2.2'
+
+services:
+  runner:
+    mem_limit: 2G
+    memswap_limit: 2G
+  web:
+    mem_limit: 2G
+    memswap_limit: 2G
+
+  differ:
+    mem_limit: 1G
+    memswap_limit: 1G
+
+  saver:
+    mem_limit: 256M
+    memswap_limit: 256M
+
+  custom:
+    mem_limit: 64M
+    memswap_limit: 64M
+  exercises:
+    mem_limit: 64M
+    memswap_limit: 64M
+  languages:
+    mem_limit: 64M
+    memswap_limit: 64M
+  nginx:
+    mem_limit: 64M
+    memswap_limit: 64M
+  zipper:
+    mem_limit: 64M
+    memswap_limit: 64M
+
+  grafana:
+    mem_limit: 32M
+    memswap_limit: 32M
+  ragger:
+    mem_limit: 32M
+    memswap_limit: 32M
+  mapper:
+    mem_limit: 32M
+    memswap_limit: 32M
+  prometheus:
+    mem_limit: 32M
+    memswap_limit: 32M
