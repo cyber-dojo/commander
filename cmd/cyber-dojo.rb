@@ -148,13 +148,19 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def service_names
+  %w( custom exercises languages
+      differ mapper nginx ragger runner saver web zipper
+      grafana prometheus
+  ).sort
+end
+
 def cyber_dojo_info
-  # HOW WILL THIS WORK FOR custom/exercises/languages
-  %w( nginx web runner ragger saver mapper differ zipper
-    prometheus grafana custom exercises languages
-  ).sort.each do |name|
-    sha = `docker exec -i cyber-dojo-#{name} sh -c  'echo -n ${SHA}'`
-    puts "CYBER_DOJO_#{name.upcase}=cyberdojo/#{name}:#{sha}"
+  service_names.sort.each do |name|
+    container = "cyber-dojo-#{name}"
+    image_name = `docker inspect --format='{{.Config.Image}}' #{container}`.strip
+    sha = `docker exec -i #{container} sh -c  'echo -n ${SHA}'`.strip
+    puts "CYBER_DOJO_#{name.upcase}=#{image_name}:#{sha[0...7]}"
   end
 end
 
@@ -164,7 +170,7 @@ case ARGV[0]
   when '--help'       then cyber_dojo_help
   when 'clean'        then cyber_dojo_server_clean
   when 'down'         then cyber_dojo_server_down
-  #when 'info'         then cyber_dojo_info
+  when 'info'         then cyber_dojo_info
   when 'up'           then cyber_dojo_server_up
   when 'update'       then cyber_dojo_server_update
   when 'logs'         then cyber_dojo_service_logs
