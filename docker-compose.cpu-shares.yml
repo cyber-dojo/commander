@@ -1,0 +1,33 @@
+
+version: '2.2'
+
+services:
+  nginx:
+    cpu_shares: 1024
+  runner:
+    cpu_shares: 1024
+  saver:
+    cpu_shares: 1024
+  web:
+    cpu_shares: 1024
+
+  custom:
+    cpu_shares: 512
+  differ:
+    cpu_shares: 512
+  exercises:
+    cpu_shares: 512
+  languages:
+    cpu_shares: 512
+  ragger:
+    cpu_shares: 512
+
+  mapper:
+    cpu_shares: 256
+  zipper:
+    cpu_shares: 256
+
+  grafana:
+    cpu_shares: 64
+  prometheus:
+    cpu_shares: 64

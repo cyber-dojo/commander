@@ -15,12 +15,9 @@ services:
     user: root
     init: true
     container_name: cyber-dojo-nginx
-    cpu_shares: 1024
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
-    depends_on:
-      - web
     ports:
       - ${CYBER_DOJO_NGINX_PORT}:80
 
@@ -30,20 +27,9 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-web
-    cpu_shares: 1024
     mem_limit: 2G
     memswap_limit: 2G
     restart: on-failure
-    depends_on:
-      - differ
-      - custom
-      - exercises
-      - languages
-      - mapper
-      - ragger
-      - runner
-      - saver
-      - zipper
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
@@ -51,7 +37,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-custom
-    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
@@ -62,7 +47,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-exercises
-    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
@@ -73,7 +57,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-languages
-    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
@@ -86,7 +69,6 @@ services:
     user: root
     init: true
     container_name: cyber-dojo-runner
-    cpu_shares:  1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 2G
@@ -101,14 +83,11 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-ragger
-    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 32M
     memswap_limit: 32M
     restart: on-failure
-    depends_on:
-      - runner
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # stores groups/katas and code+tests for every test event
@@ -116,15 +95,11 @@ services:
     user: saver
     init: true
     container_name: cyber-dojo-saver
-    cpu_shares: 1024
     read_only: true
     tmpfs: /tmp
     mem_limit: 256M
     memswap_limit: 256M
     restart: on-failure
-    depends_on:
-      - mapper
-      - prometheus
     volumes:
       - /cyber-dojo:/cyber-dojo:rw
 
@@ -134,7 +109,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-mapper
-    cpu_shares: 128
     read_only: true
     tmpfs: /tmp
     mem_limit: 32M
@@ -150,7 +124,6 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-differ
-    cpu_shares: 512
     read_only: true
     tmpfs: /tmp
     mem_limit: 1G
@@ -163,14 +136,11 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-zipper
-    cpu_shares: 256
     read_only: true
     tmpfs: /tmp
     mem_limit: 50M
     memswap_limit: 50M
     restart: on-failure
-    depends_on:
-      - saver
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
@@ -178,15 +148,11 @@ services:
   prometheus:
     init: true
     container_name: cyber-dojo-prometheus
-    cpu_shares: 128
 
   grafana:
     init: true
     container_name: cyber-dojo-grafana
-    cpu_shares: 128
     volumes:
       - grafana_data:/var/lib/grafana
-    depends_on:
-      - prometheus
     ports:
       - '3000:3000'
