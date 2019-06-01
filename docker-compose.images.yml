@@ -2,7 +2,7 @@
 version: '2.2'
 
 services:
-  # overridable start-points. See .env file
+  # start-points (overridable)
   custom:
     image: ${CYBER_DOJO_CUSTOM}
   exercises:
@@ -12,24 +12,24 @@ services:
 
   # main services
   differ:
-    image: cyberdojo/differ:latest
+    image: ${CYBER_DOJO_DIFFER}
   mapper:
-    image: cyberdojo/mapper:latest
+    image: ${CYBER_DOJO_MAPPER}
   nginx:
-    image: cyberdojo/nginx:latest
+    image: ${CYBER_DOJO_NGINX}
   ragger:
-    image: cyberdojo/ragger:latest
+    image: ${CYBER_DOJO_RAGGER}
   runner:
-    image: cyberdojo/runner:latest
+    image: ${CYBER_DOJO_RUNNER}
   saver:
-    image: cyberdojo/saver:latest
+    image: ${CYBER_DOJO_SAVER}
   web:
-    image: cyberdojo/web:latest
+    image: ${CYBER_DOJO_WEB}
   zipper:
-    image: cyberdojo/zipper:latest
+    image: ${CYBER_DOJO_ZIPPER}
 
   # monitoring
   grafana:
-    image: cyberdojo/grafana:latest
+    image: ${CYBER_DOJO_GRAFANA}
   prometheus:
-    image: cyberdojo/prometheus:latest
+    image: ${CYBER_DOJO_PROMETHEUS}
