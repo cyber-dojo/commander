@@ -12,31 +12,8 @@ def cyber_dojo_server_up
   pull_all_images_named_in(custom)
   pull_all_images_named_in(languages)
 
-  sh_root = ENV['CYBER_DOJO_SH_ROOT']
-  # Write .env files to where docker-compose.yml expects them to be
-  unless File.exist?("#{sh_root}/grafana.env")
-    puts 'WARNING: Using default grafana admin password.'
-    puts 'To set your own password and remove this warning:'
-    puts '   1. Create a file grafana.env with contents'
-    puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
-    puts '      in the same directory as the cyber-dojo script.'
-    puts '   2. Re-issue the command [cyberdojo up ...]'
-  end
+  env_root = write_env_files
 
-  env_root = ENV['CYBER_DOJO_ENV_ROOT']
-  %w( grafana nginx web ).each do |name|
-    from = "#{sh_root}/#{name}.env"
-    to = "#{env_root}/#{name}.env"
-    if File.exist?(from)
-      puts "Using custom #{name}.env"
-      content = IO.read(from)
-      File.open(to, 'w') { |file| file.write(content) }
-    else
-      puts "Using default #{name}.env"
-    end
-  end
-
-  # Bring up server
   STDOUT.puts "Using --custom=#{custom}"
   STDOUT.puts "Using --exercises=#{exercises}"
   STDOUT.puts "Using --languages=#{languages}"
@@ -75,6 +52,34 @@ def overridable_options
          port = value if name == '--port'
   end
   [custom,exercises,languages,port]
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def write_env_files
+  sh_root = ENV['CYBER_DOJO_SH_ROOT']
+  unless File.exist?("#{sh_root}/grafana.env")
+    puts 'WARNING: Using default grafana admin password.'
+    puts 'To set your own password and remove this warning:'
+    puts '   1. Create a file grafana.env with contents'
+    puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
+    puts '      in the same directory as the cyber-dojo script.'
+    puts '   2. Re-issue the command [cyberdojo up ...]'
+  end
+  # Write any .env files to where docker-compose.yml expects them
+  env_root = ENV['CYBER_DOJO_ENV_ROOT']
+  %w( grafana nginx web ).each do |name|
+    from = "#{sh_root}/#{name}.env"
+    if File.exist?(from)
+      puts "Using custom #{name}.env"
+      content = IO.read(from)
+      to = "#{env_root}/#{name}.env"
+      File.open(to, 'w') { |file| file.write(content) }
+    else
+      puts "Using default #{name}.env"
+    end
+  end
+  env_root
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
