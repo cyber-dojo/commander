@@ -8,6 +8,7 @@
 !cyber-dojo
 !cmd/*
 !docker-compose.yml
+!docker-compose.env-files.yml
 !docker-compose.images.yml
 !defaults.env/*
 !test/rb

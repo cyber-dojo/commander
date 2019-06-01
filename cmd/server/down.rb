@@ -1,6 +1,6 @@
 
 def cyber_dojo_server_down
-  exit_success_if_show_down_help
+  exit_success_if_down_help
   exit_failure_if_down_unknown_arguments
   # A successful [docker-compose ... down] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
@@ -9,7 +9,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def exit_success_if_show_down_help
+def exit_success_if_down_help
   help = [
     '',
     "Use: #{me} down",
