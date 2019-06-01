@@ -129,15 +129,15 @@ end
 
 def exit_failure_if_up_unknown_arguments
   args = ARGV[1..-1]
-  knowns = %w( custom exercises languages port )
+  knowns = %w( --custom --exercises --languages --port )
   unknowns = args.select do |arg|
-    knowns.none? { |known| arg.start_with?('--' + known + '=') }
+    knowns.none? { |known| arg.split('=')[0] === known }
   end
   unknowns.each do |unknown|
     arg = unknown.split('=')[0]
     STDERR.puts "ERROR: unknown argument [#{arg}]"
   end
-  exit failed unless unknowns == []
+  exit failed unless unknowns === []
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
