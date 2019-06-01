@@ -63,43 +63,64 @@ the expected SHAs for each service.
 
 ======================================================
 
-In the .env file what about SHA's for
-custom/exercises/languages?
+What about SHA's for custom/exercises/languages?
+Simply make them part of the defaults set in
+app/cmd/cyber-dojo.rb eg
+  def default_exercises
+    'cyberdojo/exercises:latest'
+  end
+will become
+  def exercises_image_name
+    'cyberdojo/exercises:543fe31'
+  end
+
+But maybe they could be set in the .env file and
+be overridden by an ENV-VAR?
+Suggests putting whole image-names into .env
+Yes. Then don't need ruby script for start-point names.
+All image names are in the .env file.
+
 Would be handy to have a local .ini or .config file that
-held the most recent choices.
+held the most recent choices for custom/exercises/languages.
 
 ======================================================
 
 $ ./cyber-dojo tags
 Could be a new option that displays the SHAs of each service.
-Would be handy for testing too.
+It would always look in cyberdojo/commander:latest which
+is retagged on an [update].
+Handy for testing too.
 
 ======================================================
 
 $ ./cyber-dojo update history
-Could show log of all updates. This would rely on
+Could show log of _all_ updates. This would rely on
 the non latest tags in cyberdojo/commander:XXX
-being findable. Now sort them by date order.
+being findable. Then sort them by date order.
 How to get the date an image was created?
-$ docker inspect -f '{{ .Created }}' IMAGE_OR_CONTAINER
+$ docker inspect -f '{{ .Created }}' IMAGE
 
 Note that this does not show the date the specific
-tag was first _used_.
+tag was first _used_, only when it was created.
 
 Could also show the list of SHAs of each service for
-each tagged commander image.
+each tagged cyberdojo/commander image.
 
 ======================================================
 
 At the moment some of the SHA's are exposed in the web page
 https://cyber-dojo.org/sha/index
-But, this cannot nginx (easily)
+But, this cannot get nginx's SHA (easily)
 And how to I get the SHAs of prometheus and grafana?
 Cant see an way (from web).
 I think it would be better to put this functionality into
 the ./cyber-dojo script.
+Then have a local script that
+o) does a pull on all images using :latest tag.
+o) find the SHA tag of each pulled image.
 
 ======================================================
 
 Is there some way the SHAs in production-values.yaml could be
 harvested and used in a [cyber-dojo update] command?
+Would that even be useful?
