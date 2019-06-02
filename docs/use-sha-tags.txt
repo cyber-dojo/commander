@@ -1,23 +1,5 @@
 
 
-Create a .env file and use it in docker-compose.yml
-eg
-NGINX_TAG=ab07f62
-WEB_TAG=94008a4
-RUNNER_TAG=7ef52cd
-RAGGER_TAG=64b47d1
-...
-PROMETHEUS_TAG=021b579
-GRAFANA_TAG=06796d6
-
-Now a
-$ ./cyber-dojo up
-will automatically pull each immutable image.
-
-======================================================
-
-Make sure the commander image has a SHA env-var. DONE.
-
 Now allow
 $ ./cyber-dojo update [TAG]
 which defaults to
@@ -63,10 +45,11 @@ the expected SHAs for each service.
 
 ======================================================
 
-What about SHA's for custom/exercises/languages?
-Would be handy to have a local .ini or .config file that
-held the most recent choices for custom/exercises/languages.
-Better answer: Look for environment variables on HOST
+What about SHA's for tailored start-point images.
+I think that's orthogonal. The dot-env-writer.sh
+shows the .env values for an _original_ server.
+A tailored start-point is layered on top of that
+via a command-line argument or an environment variable.
 
 ======================================================
 
@@ -90,19 +73,6 @@ tag was first _used_, only when it was created.
 
 Could also show the list of SHAs of each service for
 each tagged cyberdojo/commander image.
-
-======================================================
-
-At the moment some of the SHA's are exposed in the web page
-https://cyber-dojo.org/sha/index
-But, this cannot get nginx's SHA (easily)
-And how to I get the SHAs of prometheus and grafana?
-Cant see an way (from web).
-I think it would be better to put this functionality into
-the ./cyber-dojo script.
-Then have a local script that
-o) does a pull on all images using :latest tag.
-o) find the SHA tag of each pulled image.
 
 ======================================================
 

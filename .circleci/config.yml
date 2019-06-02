@@ -12,21 +12,22 @@ jobs:
       - run:
           name: build image
           command: |
-            set -ev
+            set -e
             sudo mkdir -p /cyber-dojo
             sudo chown 19663:65533 /cyber-dojo
             ./pipe_build_up_test.sh
       - run:
           name: publish image on dockerhub
           command: |
-            set -ev
-            readonly project=${CIRCLE_PROJECT_REPONAME}
-            docker tag  cyberdojo/${project}:latest cyberdojo/${project}:${CIRCLE_SHA1:0:7}
-            docker tag  cyberdojo/${project}:latest cyberdojo/${project}:beta
+            set -e
+            readonly PROJECT=${CIRCLE_PROJECT_REPONAME}
+            readonly SHA_7=${CIRCLE_SHA1:0:7}
+            docker tag  cyberdojo/${PROJECT}:latest cyberdojo/${PROJECT}:${SHA_7}
+            docker tag  cyberdojo/${PROJECT}:latest cyberdojo/${PROJECT}:beta
             echo "${DOCKER_PASS}" | docker login -u "${DOCKER_USER}" --password-stdin
-            docker push cyberdojo/${project}:${CIRCLE_SHA1:0:7}
-            docker push cyberdojo/${project}:beta
-            docker push cyberdojo/${project}:latest
+            docker push cyberdojo/${PROJECT}:${SHA_7}
+            docker push cyberdojo/${PROJECT}:beta
+            docker push cyberdojo/${PROJECT}:latest
 
 workflows:
   version: 2
