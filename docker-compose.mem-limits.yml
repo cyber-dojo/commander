@@ -45,4 +45,14 @@ services:
   zipper:
     mem_limit: 32M
     memswap_limit: 32M
-    
+
+# memory limits
+# https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources
+#
+# mem_limit:
+# Totoal memory limit not including swap.
+# corresponds to [docker run --memory]
+#
+# memswap_limit:
+# Total memory limit including swap.
+# corresponds to [docker run --memory-swap]
