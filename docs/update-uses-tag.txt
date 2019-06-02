@@ -1,15 +1,16 @@
 
-
-Now allow
+Aim for
 $ ./cyber-dojo update [TAG]
+
 which defaults to
 $ ./cyber-dojo update latest
 
+
+
 The cyber-dojo script will do this...
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #!/bin/bash
-# TAG could be a SHA or latest
+# TAG could be a SHA or latest or 1.4 ?????
 readonly TAG="${2}"
 
 docker pull cyberdojo/commander:${TAG}
