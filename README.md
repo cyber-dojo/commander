@@ -1,8 +1,6 @@
 
 [![CircleCI](https://circleci.com/gh/cyber-dojo/commander.svg?style=svg)](https://circleci.com/gh/cyber-dojo/commander)
 
-<img src="https://raw.githubusercontent.com/cyber-dojo/nginx/master/images/home_page_logo.png" alt="cyber-dojo yin/yang logo" width="50px" height="50px"/>
-
 # the cyber-dojo bash script
 
 Controls a [cyber-dojo](https://cyber-dojo.org) server.
@@ -45,7 +43,5 @@ To add a message to the UI footer-info-bar
 MESSAGE=your-message-here
 
 - - - -
-
-* Go to cyber-dojo's [home repo](https://github.com/cyber-dojo/cyber-dojo).
 
 ![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/master/shared/home_page_snapshot.png)
