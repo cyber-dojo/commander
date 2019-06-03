@@ -61,28 +61,16 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def dot_env
+  $dot_env ||= read_dot_env
+end
+
+def read_dot_env
   release = 'latest'
   src = `docker run --rm -i cyberdojo/versioner:#{release} sh -c 'cat /app/.env'`
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?
   end
   lines.map{ |line| line.split('=').map(&:strip) }.to_h
-end
-
-def exercises_image_name
-  dot_env['CYBER_DOJO_EXERCISES']
-end
-
-def custom_image_name
-  dot_env['CYBER_DOJO_CUSTOM']
-end
-
-def languages_image_name
-  dot_env['CYBER_DOJO_LANGUAGES']
-end
-
-def port_number
-  '80'
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

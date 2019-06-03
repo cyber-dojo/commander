@@ -38,10 +38,10 @@ end
 
 def down_env_vars
   vars = {
-    'CYBER_DOJO_CUSTOM'    => custom_image_name,
-    'CYBER_DOJO_EXERCISES' => exercises_image_name,
-    'CYBER_DOJO_LANGUAGES' => languages_image_name,
-    'CYBER_DOJO_NGINX_PORT' => port_number,
+    'CYBER_DOJO_CUSTOM'    => dot_env['CYBER_DOJO_CUSTOM'],
+    'CYBER_DOJO_EXERCISES' => dot_env['CYBER_DOJO_EXERCISES'],
+    'CYBER_DOJO_LANGUAGES' => dot_env['CYBER_DOJO_LANGUAGES'],
+    'CYBER_DOJO_NGINX_PORT' => dot_env['CYBER_DOJO_PORT'],
     'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT']
   }
   service_names.each do |name|

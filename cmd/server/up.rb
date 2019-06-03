@@ -2,14 +2,12 @@
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-  cla = checked_up_command_line_arguments
+     custom = up_argument(   'custom')
+  exercises = up_argument('exercises')
+  languages = up_argument('languages')
+       port = up_argument(     'port')
 
-     custom = ENV['CYBER_DOJO_CUSTOM'   ] || cla['--custom'   ] ||    custom_image_name
-  exercises = ENV['CYBER_DOJO_EXERCISES'] || cla['--exercises'] || exercises_image_name
-  languages = ENV['CYBER_DOJO_LANGUAGES'] || cla['--languages'] || languages_image_name
-       port = ENV['CYBER_DOJO_PORT'     ] || cla['--port'     ] ||          port_number
-
-  exit_failure_unless_start_point_exists(   'custom',    custom)
+  exit_failure_unless_start_point_exists(   'custom', custom   )
   exit_failure_unless_start_point_exists('exercises', exercises)
   exit_failure_unless_start_point_exists('languages', languages)
 
@@ -20,10 +18,10 @@ def cyber_dojo_server_up
 
   env_vars = {
     'CYBER_DOJO_ENV_ROOT'   => env_root,
-    'CYBER_DOJO_NGINX_PORT' => port,
     'CYBER_DOJO_CUSTOM'    => custom,
     'CYBER_DOJO_EXERCISES' => exercises,
     'CYBER_DOJO_LANGUAGES' => languages,
+    'CYBER_DOJO_PORT' => port,
   }
   add_image_tag_variables(env_vars)
 
@@ -35,6 +33,37 @@ def cyber_dojo_server_up
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
   system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def up_argument(name)
+  key = "CYBER_DOJO_#{name.upcase}"
+  option = "--#{name}"
+  ENV[key] || up_command_line[option] || dot_env[key]
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def up_command_line
+  args = {}
+  bad = []
+  knowns = %w( --custom --exercises --languages --port )
+  ARGV[1..-1].each do |arg|
+    name,value = arg.split('=',2)
+    if knowns.none?{ |known| name === known }
+      bad << "ERROR: unknown argument [#{name}]"
+    elsif value.nil? || value.empty?
+      bad << "ERROR: missing argument value #{name}=[???]"
+    else
+      args[name.strip] = value.rstrip
+    end
+  end
+  unless bad === []
+    bad.each { |msg| STDERR.puts msg }
+    exit failed
+  end
+  args
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -118,29 +147,6 @@ def exit_success_if_up_help
     show help
     exit succeeded
   end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def checked_up_command_line_arguments
-  args = {}
-  bad = []
-  knowns = %w( --custom --exercises --languages --port )
-  ARGV[1..-1].each do |arg|
-    name,value = arg.split('=',2)
-    if knowns.none?{ |known| name === known }
-      bad << "ERROR: unknown argument [#{name}]"
-    elsif value.nil? || value.empty?
-      bad << "ERROR: missing argument value #{name}=[???]"
-    else
-      args[name.strip] = value.rstrip
-    end
-  end
-  unless bad === []
-    bad.each { |msg| STDERR.puts msg }
-    exit failed
-  end
-  args
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
