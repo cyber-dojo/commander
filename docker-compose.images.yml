@@ -4,32 +4,32 @@ version: '2.2'
 services:
   # start-points (overridable)
   custom:
-    image: ${CYBER_DOJO_CUSTOM}
+    image: ${CYBER_DOJO_CUSTOM_IMAGE}:${CYBER_DOJO_CUSTOM_TAG}
   exercises:
-    image: ${CYBER_DOJO_EXERCISES}
+    image: ${CYBER_DOJO_EXERCISES_IMAGE}:${CYBER_DOJO_EXERCISES_TAG}
   languages:
-    image: ${CYBER_DOJO_LANGUAGES}
+    image: ${CYBER_DOJO_LANGUAGES_IMAGE}:${CYBER_DOJO_LANGUAGES_TAG}
 
   # main services
   differ:
-    image: ${CYBER_DOJO_DIFFER}
+    image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
   mapper:
-    image: ${CYBER_DOJO_MAPPER}
+    image: cyberdojo/mapper:${CYBER_DOJO_MAPPER_TAG}
   nginx:
-    image: ${CYBER_DOJO_NGINX}
+    image: cyberdojo/nginx:${CYBER_DOJO_NGINX_TAG}
   ragger:
-    image: ${CYBER_DOJO_RAGGER}
+    image: cyberdojo/ragger:${CYBER_DOJO_RAGGER_TAG}
   runner:
-    image: ${CYBER_DOJO_RUNNER}
+    image: cyberdojo/runner:${CYBER_DOJO_RUNNER_TAG}
   saver:
-    image: ${CYBER_DOJO_SAVER}
+    image: cyberdojo/saver:${CYBER_DOJO_SAVER_TAG}
   web:
-    image: ${CYBER_DOJO_WEB}
+    image: cyberdojo/web:${CYBER_DOJO_WEB_TAG}
   zipper:
-    image: ${CYBER_DOJO_ZIPPER}
+    image: cyberdojo/zipper:${CYBER_DOJO_ZIPPER_TAG}
 
   # monitoring
   grafana:
-    image: ${CYBER_DOJO_GRAFANA}
+    image: cyberdojo/grafana:${CYBER_DOJO_GRAFANA_TAG}
   prometheus:
-    image: ${CYBER_DOJO_PROMETHEUS}
+    image: cyberdojo/prometheus:${CYBER_DOJO_PROMETHEUS_TAG}

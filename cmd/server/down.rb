@@ -37,11 +37,16 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def down_env_vars
-  {
-    'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT'],
-    'CYBER_DOJO_CUSTOM'    => custom_image_name,
-    'CYBER_DOJO_EXERCISES' => exercises_image_name,
-    'CYBER_DOJO_LANGUAGES' => languages_image_name,
-    'CYBER_DOJO_NGINX_PORT' => port_number
+  vars = {
+    'CYBER_DOJO_CUSTOM_IMAGE'    => custom_image_name,
+    'CYBER_DOJO_EXERCISES_IMAGE' => exercises_image_name,
+    'CYBER_DOJO_LANGUAGES_IMAGE' => languages_image_name,
+    'CYBER_DOJO_NGINX_PORT' => port_number,
+    'CYBER_DOJO_ENV_ROOT' => ENV['CYBER_DOJO_ENV_ROOT']
   }
+  service_names.each do |name|
+    key = "CYBER_DOJO_#{name.upcase}_TAG"
+    vars[key] = 'avoid-warning-about-tag-not-being-set'
+  end
+  vars
 end

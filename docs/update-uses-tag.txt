@@ -5,8 +5,6 @@ $ ./cyber-dojo update [TAG]
 which defaults to
 $ ./cyber-dojo update latest
 
-
-
 The cyber-dojo script will do this...
 
 #!/bin/bash

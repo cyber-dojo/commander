@@ -1,5 +1,6 @@
 require_relative 'clean'
 require_relative 'docker_compose_cmd'
 require_relative 'down'
+require_relative 'service_names'
 require_relative 'up'
 require_relative 'update'

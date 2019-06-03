@@ -15,12 +15,13 @@ def cyber_dojo_server_up
   env_root = write_env_files
 
   env_vars = {
-    'CYBER_DOJO_CUSTOM'     => custom,
-    'CYBER_DOJO_EXERCISES'  => exercises,
-    'CYBER_DOJO_LANGUAGES'  => languages,
+    'CYBER_DOJO_ENV_ROOT'   => env_root,
     'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_ENV_ROOT'   => env_root
+    'CYBER_DOJO_CUSTOM_IMAGE'    => custom,
+    'CYBER_DOJO_EXERCISES_IMAGE' => exercises,
+    'CYBER_DOJO_LANGUAGES_IMAGE' => languages,
   }
+  add_image_tag_variables(env_vars)
 
   STDOUT.puts "Using --custom=#{custom}"
   STDOUT.puts "Using --exercises=#{exercises}"
@@ -53,10 +54,10 @@ def overridable_options
          port = value if name == '--port'
   end
   # environment-variables
-     custom = ENV['CYBER_DOJO_CUSTOM'   ] || custom
-  exercises = ENV['CYBER_DOJO_EXERCISES'] || exercises
-  languages = ENV['CYBER_DOJO_LANGUAGES'] || languages
-       port = ENV['CYBER_DOJO_PORT'     ] || port
+     custom = ENV['CYBER_DOJO_CUSTOM_IMAGE'   ] || custom
+  exercises = ENV['CYBER_DOJO_EXERCISES_IMAGE'] || exercises
+  languages = ENV['CYBER_DOJO_LANGUAGES_IMAGE'] || languages
+       port = ENV['CYBER_DOJO_PORT'] || port
 
   [custom,exercises,languages,port]
 end
@@ -87,6 +88,19 @@ def write_env_files
     end
   end
   env_root
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def add_image_tag_variables(env_vars)
+  dot_env = IO.read('/app/.env')
+  service_names.each do |service|
+    name = service.upcase
+    key = "CYBER_DOJO_#{name}_SHA"
+    line = dot_env.lines.find { |line| line.start_with?(key) }
+    sha = line.split('=')[1].strip # '5c95484d60e50ee1a77a5b859bb23a5cdea1cebb'
+    env_vars["CYBER_DOJO_#{name}_TAG"] = sha[0...7] # '5c95484'
+  end
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
