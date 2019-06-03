@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+shift # sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # $ ./cyber-dojo sh ...
@@ -43,5 +44,4 @@ running_container()
   return $?
 }
 
-shift # sh
 handle_sh_locally "$@"

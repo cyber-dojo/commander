@@ -1,5 +1,7 @@
 #!/bin/bash
 set -e
+shift # start-point
+shift # create
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #  ./cyber-dojo start-point create NAME --custom <git-repo-url>...
@@ -267,8 +269,6 @@ image_type()
 
 #==========================================================
 
-shift # start-point
-shift # create
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed

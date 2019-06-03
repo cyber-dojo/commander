@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+shift # update
 
 handle_update_locally()
 {
@@ -27,5 +28,4 @@ replace_myself()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-shift # update
 handle_update_locally "$@"
