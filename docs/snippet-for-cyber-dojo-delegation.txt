@@ -16,14 +16,15 @@ readonly ENV_VARS=$(docker run --rm -i ${VERSIONER} sh -c 'cat /app/.env')
 readonly COMMANDER_SHA=$(echo ${ENV_VARS} | grep CYBER_DOJO_COMMANDER_SHA)
 readonly COMMANDER_TAG=${COMMANDER_SHA:0:7}
 docker run \
-   --env RELEASE=${RELEASE} \
-   --env DOCKER_MACHINE_NAME \
    --env CYBER_DOJO_CUSTOM \
    --env CYBER_DOJO_EXERCISES \
    --env CYBER_DOJO_LANGUAGES \
    --env CYBER_DOJO_PORT \
    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
+   --env DOCKER_MACHINE_NAME \
+   --env OSTYPE \
+   --env RELEASE=${RELEASE} \
    --interactive \
    --rm \
    --volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -33,6 +34,6 @@ docker run \
 # Note. Assuming cyber-dojo.sh is existing cyber-dojo script
 # Note. Will I still need SH_ROOT?
 # Note. Will I still need ENV_ROOT?
-# Note. Passing DOCKER_MACHINE_NAME to allow commander to see if you
+# Note. Passing DOCKER_MACHINE_NAME and OSTYPE to allow commander to see if you
 #       are running on ToolBox if a [start-point create] GIT_REPO_URL
 #       cannot be resolved.
