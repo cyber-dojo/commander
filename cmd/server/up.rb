@@ -3,7 +3,9 @@ def cyber_dojo_server_up
   exit_success_if_up_help
   exit_failure_if_up_unknown_arguments
 
-  custom,exercises,languages,port = overridable_options
+  custom = start_point_custom
+  exercises = start_point_exercises
+  languages = start_point_languages
 
   exit_failure_unless_start_point_exists(   'custom',    custom)
   exit_failure_unless_start_point_exists('exercises', exercises)
@@ -13,6 +15,8 @@ def cyber_dojo_server_up
   pull_all_images_named_in(languages)
 
   env_root = write_env_files
+
+  port = ENV['CYBER_DOJO_PORT'] || port_number
 
   env_vars = {
     'CYBER_DOJO_ENV_ROOT'   => env_root,
@@ -35,31 +39,46 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def overridable_options
-  # defaults
-     custom = custom_image_name
+def start_point_custom
+  custom = custom_image_name
+  start_point_command_line_options.each do |name,value|
+    custom = value if name == '--custom'
+  end
+  ENV['CYBER_DOJO_CUSTOM'] || custom
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def start_point_exercises
   exercises = exercises_image_name
+  start_point_command_line_options.each do |name,value|
+    exercises = value if name == '--exercises'
+  end
+  ENV['CYBER_DOJO_EXERCISES'] || exercises
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def start_point_languages
   languages = languages_image_name
-       port = port_number
-  # command line --options
+  start_point_command_line_options.each do |name,value|
+    languages = value if name == '--languages'
+  end
+  ENV['CYBER_DOJO_LANGUAGES'] || languages
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def start_point_command_line_options
   ARGV[1..-1].each do |arg|
     name,value = arg.split('=',2)
     if value.nil? || value.empty?
      STDERR.puts "ERROR: missing argument value #{name}=[???]"
      exit failed
-    end
-       custom = value if name == '--custom'
-    exercises = value if name == '--exercises'
-    languages = value if name == '--languages'
-         port = value if name == '--port'
+   else
+     yield name,value
+   end
   end
-  # environment-variables
-     custom = ENV['CYBER_DOJO_CUSTOM'   ] || custom
-  exercises = ENV['CYBER_DOJO_EXERCISES'] || exercises
-  languages = ENV['CYBER_DOJO_LANGUAGES'] || languages
-       port = ENV['CYBER_DOJO_PORT'] || port
-
-  [custom,exercises,languages,port]
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
