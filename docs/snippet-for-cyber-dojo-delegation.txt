@@ -1,0 +1,32 @@
+
+# Aim is for cyber-dojo script to boil down to straight delegation.
+#
+# ./cyber-dojo up
+#
+# ./cyber-dojo up --languages=james/cppu
+#
+# RELEASE=2.3 \
+#  ./cyber-dojo up --languages=james/cppu
+
+
+readonly RELEASE=${RELEASE:-latest}
+readonly ENV_VARS=$(docker run --rm -i cyberdojo/versioner:$RELEASE)
+readonly COMMANDER_SHA=$(echo ${ENV_VARS} | grep CYBER_DOJO_COMMANDER_SHA)
+readonly COMMANDER_TAG=${COMMANDER_SHA:0:7}
+
+docker run \
+   --env RELEASE=${RELEASE} \
+   --env CYBER_DOJO_CUSTOM_IMAGE \
+   --env CYBER_DOJO_CUSTOM_TAG \
+   --env CYBER_DOJO_EXERCISES_IMAGE \
+   --env CYBER_DOJO_EXERCISES_TAG \
+   --env CYBER_DOJO_LANGUAGES_IMAGE \
+   --env CYBER_DOJO_LANGUAGES_TAG \
+   --env CYBER_DOJO_PORT \
+   --env CYBER_DOJO_SH_ROOT="${my_dir}" \
+   --env CYBER_DOJO_ENV_ROOT=/tmp/app \
+   --interactive \
+   --rm \
+   --volume=/var/run/docker.sock:/var/run/docker.sock \
+   cyberdojo/commander:${COMMANDER_TAG} \
+   $@

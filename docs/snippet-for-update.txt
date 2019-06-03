@@ -1,0 +1,20 @@
+
+Update could be _inside_ commander.
+Allows cyber-dojo script to do just delegation.
+
+$ ./cyber-dojo update [RELEASE]
+
+#!/bin/bash
+set -e
+RELEASE=${2:-latest}
+docker pull cyberdojo/versioner:$RELEASE
+NUMBER=$(docker run --rm -i cyberdojo/versioner:$RELEASE sh -c 'echo -n $RELEASE')
+docker tag cyberdojo/versioner:$RELEASE cyberdojo/versioner:$NUMBER
+docker tag cyberdojo/versioner:$RELEASE cyberdojo/versioner:latest
+
+# The two tag commands are because you can do
+# 1) ./cyber-dojo update 2.3
+# 2) ./cyber-dojo update latest
+# And whichever one we do we need to create tags for 2.3 and latest
+# remembering that latest is the default for RELEASE in the cyber-dojo script.
+# This means each versioner image will need its RELEASE env-var inside itself. 
