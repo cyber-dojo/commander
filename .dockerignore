@@ -16,5 +16,3 @@
 !docker-compose.ports.yml
 !docker-compose.volumes.yml
 !defaults.env/*
-!test/rb
-!.env

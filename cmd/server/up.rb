@@ -93,14 +93,16 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def add_image_tag_variables(env_vars)
-  dot_env = IO.read('/app/.env')
   service_names.each do |service|
     name = service.upcase
     key = "CYBER_DOJO_#{name}_SHA"
-    line = dot_env.lines.find { |line| line.start_with?(key) }
-    sha = line.split('=')[1].strip # '5c95484d60e50ee1a77a5b859bb23a5cdea1cebb'
+    sha = dot_env[key]
     env_vars["CYBER_DOJO_#{name}_TAG"] = sha[0...7] # '5c95484'
   end
+  env_vars['CYBER_DOJO_CUSTOM_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
+  env_vars['CYBER_DOJO_EXERCISES_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
+  env_vars['CYBER_DOJO_LANGUAGES_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
+  env_vars
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

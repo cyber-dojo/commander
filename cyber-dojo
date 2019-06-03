@@ -101,8 +101,11 @@ delegate_to_commander()
     --interactive \
     --user=root \
     --env CYBER_DOJO_CUSTOM_IMAGE \
+    --env CYBER_DOJO_CUSTOM_TAG \
     --env CYBER_DOJO_EXERCISES_IMAGE \
+    --env CYBER_DOJO_EXERCISES_TAG \
     --env CYBER_DOJO_LANGUAGES_IMAGE \
+    --env CYBER_DOJO_LANGUAGES_TAG \
     --env CYBER_DOJO_PORT \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \

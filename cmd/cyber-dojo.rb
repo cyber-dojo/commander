@@ -61,12 +61,12 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def dot_env
-  my_dir = File.dirname(__FILE__)
-  src = IO.read("#{my_dir}/../.env")
+  release = 'latest'
+  src = `docker run --rm -i cyberdojo/versioner:#{release} sh -c 'cat /app/.env'`
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?
   end
-  lines.map{ |line| line.split('=') }.to_h
+  lines.map{ |line| line.split('=').map(&:strip) }.to_h
 end
 
 def exercises_image_name
