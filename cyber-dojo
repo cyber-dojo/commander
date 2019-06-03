@@ -6,28 +6,7 @@
 # Most commands forward to, and run inside, the cyber-dojo
 # commander container. However, a few commands are handled
 # locally, on the host server, outside of the container, viz:
-#
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# $ ./cyber-dojo start-point create ...
-#
-# If you're running Docker-Toolbox then the git-repo-urls
-# (being git-cloned into the docker-build context-dir)
-# may not be volume-mounted into the default VM (they may not
-# be under /Users/<user>) so the git-clones have to happen locally.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# $ ./cyber-dojo sh ...
-#
-# The docker run command could take --interactive --tty
-# options which should enable the sh command to be handled
-# by the commander container. Trying this out briefly shows
-# that it affects the captured output (trailing \r \n) which
-# breaks the sh tests.
-#
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# $ ./cyber-dojo update ...
-#
-# Ends by replacing this script.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 on_Mac()
 {
@@ -57,19 +36,12 @@ readonly cyber_dojo_commander=cyberdojo/commander
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-error()
-{
-  >&2 echo "ERROR: ${2}"
-  exit "${1}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_unless_docker_installed()
 {
   local docker="${DOCKER_PROGRAM:-docker}"
   if ! hash "${docker}" 2> /dev/null; then
-    error 2 'docker is not installed!'
+    >&2 echo 'ERROR: docker is not installed!'
+    exit 2
   fi
 }
 
@@ -125,57 +97,16 @@ set_env_file_volumes()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-handle_sh_locally()
+docker_cat_and_run_directly()
 {
-  local arg="$2"
-  local name="cyber-dojo-${arg}"
-  if running_container "${name}"; then
-    echo "shelling into ${name}"
-    local cmd="export PS1='[${arg}] \\w $ ';sh"
-    docker exec --interactive --tty "${name}" sh -c "${cmd}"
-  elif [ "${arg}" != '--help' ] && [ "${arg}" != '-h' ] && [ "${arg}" != '' ]; then
-    error 4 "${name} is not a running container"
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-running_container()
-{
-  local space='\s'
-  local name="$1"
-  local end_of_line='$'
-  docker ps --filter "name=${name}" | grep "${space}${name}${end_of_line}" > /dev/null
-  return $?
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-handle_update_locally()
-{
-  if [ "$2" = '' ]; then
-    replace_myself
-  fi
-  if [ "$2" = 'server' ] && [ "$3" = '' ]; then
-    replace_myself
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-replace_myself()
-{
-  # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
-  docker cp "${cid}":/app/cyber-dojo /tmp
-  docker rm "${cid}" > /dev/null
-  local new_me=/tmp/cyber-dojo
-  chmod +x "${new_me}"
-  cp "${new_me}" "$0"
-  rm "${new_me}"
+  local script="${1}"
+  shift
+  docker run --rm -i cyberdojo/commander:latest \
+    sh -c "cat /app/${script}" > /tmp/${script}
+  chmod +x /tmp/${script}
+  /tmp/${script} $@
+  exit $?
 }
 
 #==========================================================
@@ -206,18 +137,13 @@ if ! delegate_to_commander "$@"; then
 fi
 
 if [ "$1 $2" = 'start-point create' ]; then
-  script=cyber-dojo-start-point-create.sh
-  docker run --rm -i cyberdojo/commander:latest \
-    sh -c "cat /app/${script}" > /tmp/${script}
-  chmod 700 /tmp/${script}
-  /tmp/${script} $@
-  exit $?
+  docker_cat_and_run_directly cyber-dojo-start-point-create.sh "$@"
 fi
 
-if [ "$1" = "sh" ]; then
-  handle_sh_locally "$@"
+if [ "$1" = 'sh' ]; then
+  docker_cat_and_run_directly cyber-dojo-shell.sh "$@"
 fi
 
-if [ "$1" != 'update' ]; then
-  handle_update_locally "$@"
+if [ "$1" = 'update' ]; then
+  docker_cat_and_run_directly cyber-dojo-update.sh "$@"
 fi

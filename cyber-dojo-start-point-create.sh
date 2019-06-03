@@ -4,7 +4,10 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #  ./cyber-dojo start-point create NAME --custom <git-repo-url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# See comment at top of cyber-dojo script.
+# If you're running Docker-Toolbox then the git-repo-urls
+# (being git-cloned into the docker-build context-dir)
+# may not be volume-mounted into the default VM (they may not
+# be under /Users/<user>) so the git-clones have to happen locally.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 error()
@@ -35,15 +38,15 @@ exit_non_zero_unless_docker_installed()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-readonly IMAGE_NAME="${3}"
-readonly IMAGE_TYPE="${4}"
-declare -ar GIT_REPO_URLS="(${@:5})"
+readonly IMAGE_NAME="${1}"
+readonly IMAGE_TYPE="${2}"
+declare -ar GIT_REPO_URLS="(${@:3})"
 
 # - - - - - - - - - - - -
 
 exit_zero_if_show_use()
 {
-  if [ "${3}" = '' ] || [ "${3}" = '-h' ] || [ "${3}" = '--help' ]; then
+  if [ "${1}" = '' ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
     show_use
     exit 0
   fi
@@ -114,7 +117,7 @@ EOF
 
 exit_non_zero_if_bad_args()
 {
-  local args="${@:3}"
+  local args="${@:1}"
   set +e
   docker container run --rm $(base_image_name) \
     /app/src/from_script/bad_args.rb ${args}
@@ -264,6 +267,8 @@ image_type()
 
 #==========================================================
 
+shift # start-point
+shift # create
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed
