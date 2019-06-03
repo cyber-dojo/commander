@@ -16,6 +16,7 @@ readonly COMMANDER_TAG=${COMMANDER_SHA:0:7}
 
 docker run \
    --env RELEASE=${RELEASE} \
+   --env DOCKER_MACHINE_NAME \
    --env CYBER_DOJO_CUSTOM_IMAGE \
    --env CYBER_DOJO_CUSTOM_TAG \
    --env CYBER_DOJO_EXERCISES_IMAGE \
@@ -30,3 +31,8 @@ docker run \
    --volume=/var/run/docker.sock:/var/run/docker.sock \
    cyberdojo/commander:${COMMANDER_TAG} \
    $@
+
+# Note. Assuming ENTRYPOINT of cyber-dojo.sh (existing cyber-dojo script)
+# Note. Passing DOCKER_MACHINE_NAME to allow commander to see if you
+# are running on ToolBox if a [start-point create] GIT_REPO_URL
+# cannot be resolved.
