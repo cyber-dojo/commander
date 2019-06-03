@@ -2,20 +2,13 @@
 A new service whose only job is to hold a .env file
 holding SHA env-vars for commander itself, its services, for a specific release.
 
-It's Dockerfile will have
-ENTRYPOINT [ "cat", "/app/.env" ]
-
 eg
 
 CYBER_DOJO_PORT=80
 
-CYBER_DOJO_CUSTOM_IMAGE=cyberdojo/custom
-CYBER_DOJO_EXERCISES_IMAGE=cyberdojo/exercises
-CYBER_DOJO_LANGUAGES_IMAGE=cyberdojo/languages-common
-
-CYBER_DOJO_CUSTOM_SHA=7d29a75bdff8d8be1c9e71b403dcfa322b98787e
-CYBER_DOJO_EXERCISES_SHA=3ba2e02ec917aad98fcfb6f9a8e9f685f1105a81
-CYBER_DOJO_LANGUAGES_SHA=0bac237904bf19dba52052e168013235f85614a2
+CYBER_DOJO_CUSTOM=cyberdojo/custom:7d29a75
+CYBER_DOJO_EXERCISES=cyberdojo/exercises:3ba2e02
+CYBER_DOJO_LANGUAGES=cyberdojo/languages-common:0bac237
 
 CYBER_DOJO_DIFFER_COMMANDER=234234edf666aab3345c95484d60e50ee1a77a54
 CYBER_DOJO_DIFFER_SHA=5c95484d60e50ee1a77a5b859bb23a5cdea1cebb

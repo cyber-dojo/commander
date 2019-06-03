@@ -70,15 +70,15 @@ def dot_env
 end
 
 def exercises_image_name
-  dot_env['CYBER_DOJO_EXERCISES_IMAGE'].strip
+  dot_env['CYBER_DOJO_EXERCISES'].strip
 end
 
 def custom_image_name
-  dot_env['CYBER_DOJO_CUSTOM_IMAGE'].strip
+  dot_env['CYBER_DOJO_CUSTOM'].strip
 end
 
 def languages_image_name
-  dot_env['CYBER_DOJO_LANGUAGES_IMAGE'].strip
+  dot_env['CYBER_DOJO_LANGUAGES'].strip
 end
 
 def port_number

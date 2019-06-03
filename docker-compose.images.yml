@@ -4,11 +4,11 @@ version: '2.2'
 services:
   # start-points (overridable)
   custom:
-    image: ${CYBER_DOJO_CUSTOM_IMAGE}:${CYBER_DOJO_CUSTOM_TAG}
+    image: ${CYBER_DOJO_CUSTOM}
   exercises:
-    image: ${CYBER_DOJO_EXERCISES_IMAGE}:${CYBER_DOJO_EXERCISES_TAG}
+    image: ${CYBER_DOJO_EXERCISES}
   languages:
-    image: ${CYBER_DOJO_LANGUAGES_IMAGE}:${CYBER_DOJO_LANGUAGES_TAG}
+    image: ${CYBER_DOJO_LANGUAGES}
 
   # main services
   differ:

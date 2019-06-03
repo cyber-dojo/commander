@@ -17,9 +17,9 @@ def cyber_dojo_server_up
   env_vars = {
     'CYBER_DOJO_ENV_ROOT'   => env_root,
     'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_CUSTOM_IMAGE'    => custom,
-    'CYBER_DOJO_EXERCISES_IMAGE' => exercises,
-    'CYBER_DOJO_LANGUAGES_IMAGE' => languages,
+    'CYBER_DOJO_CUSTOM'    => custom,
+    'CYBER_DOJO_EXERCISES' => exercises,
+    'CYBER_DOJO_LANGUAGES' => languages,
   }
   add_image_tag_variables(env_vars)
 
@@ -54,9 +54,9 @@ def overridable_options
          port = value if name == '--port'
   end
   # environment-variables
-     custom = ENV['CYBER_DOJO_CUSTOM_IMAGE'   ] || custom
-  exercises = ENV['CYBER_DOJO_EXERCISES_IMAGE'] || exercises
-  languages = ENV['CYBER_DOJO_LANGUAGES_IMAGE'] || languages
+     custom = ENV['CYBER_DOJO_CUSTOM'   ] || custom
+  exercises = ENV['CYBER_DOJO_EXERCISES'] || exercises
+  languages = ENV['CYBER_DOJO_LANGUAGES'] || languages
        port = ENV['CYBER_DOJO_PORT'] || port
 
   [custom,exercises,languages,port]
@@ -99,9 +99,6 @@ def add_image_tag_variables(env_vars)
     sha = dot_env[key]
     env_vars["CYBER_DOJO_#{name}_TAG"] = sha[0...7] # '5c95484'
   end
-  env_vars['CYBER_DOJO_CUSTOM_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
-  env_vars['CYBER_DOJO_EXERCISES_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
-  env_vars['CYBER_DOJO_LANGUAGES_TAG'] = dot_env['CYBER_DOJO_CUSTOM_TAG']
   env_vars
 end
 
