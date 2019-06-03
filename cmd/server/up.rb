@@ -124,18 +124,21 @@ end
 
 def checked_up_command_line_arguments
   args = {}
+  bad = []
   knowns = %w( --custom --exercises --languages --port )
   ARGV[1..-1].each do |arg|
     name,value = arg.split('=',2)
     if knowns.none?{ |known| name === known }
-      STDERR.puts "ERROR: unknown argument [#{name}]"
-      exit failed
+      bad << "ERROR: unknown argument [#{name}]"
+    elsif value.nil? || value.empty?
+      bad << "ERROR: missing argument value #{name}=[???]"
+    else
+      args[name.strip] = value.rstrip
     end
-    if value.nil? || value.empty?
-      STDERR.puts "ERROR: missing argument value #{name}=[???]"
-      exit failed
-    end
-    args[name.strip] = value.rstrip
+  end
+  unless bad === []
+    bad.each { |msg| STDERR.puts msg }
+    exit failed
   end
   args
 end
