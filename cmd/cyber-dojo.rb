@@ -65,8 +65,7 @@ def dot_env
 end
 
 def read_dot_env
-  # TODO: latest --> from RELEASE env-var
-  release = 'latest'
+  release = ENV['RELEASE'] || 'latest'
   src = `docker run --rm -i cyberdojo/versioner:#{release} sh -c 'cat /app/.env'`
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?

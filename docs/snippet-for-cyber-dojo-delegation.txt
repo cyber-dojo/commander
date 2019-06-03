@@ -8,13 +8,13 @@
 # RELEASE=2.3 \
 #  ./cyber-dojo up --languages=james/cppu
 
-
+#!/bin/bash
+set -e
 readonly RELEASE=${RELEASE:-latest}
 readonly VERSIONER=cyberdojo/versioner:${RELEASE}
 readonly ENV_VARS=$(docker run --rm -i ${VERSIONER} sh -c 'cat /app/.env')
 readonly COMMANDER_SHA=$(echo ${ENV_VARS} | grep CYBER_DOJO_COMMANDER_SHA)
 readonly COMMANDER_TAG=${COMMANDER_SHA:0:7}
-
 docker run \
    --env RELEASE=${RELEASE} \
    --env DOCKER_MACHINE_NAME \
