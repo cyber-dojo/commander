@@ -6,14 +6,37 @@ shift # update
 #  ./cyber-dojo update
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+show_help()
+{
+  echo
+  echo "Use: cyber-dojo update"
+  echo
+  echo 'Updates all cyber-dojo server images and the cyber-dojo script file'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 handle_update_locally()
 {
-  if [ "$1" = '' ]; then
+  if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+    show_help
+  elif [ "$1" = '' ]; then
+    # TODO: THE UPDATE...
     replace_myself
+  else
+    error_bad_args "$@"
   fi
-  if [ "$1" = 'server' ] && [ "$2" = '' ]; then
-    replace_myself
-  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+error_bad_args()
+{
+  for arg in "$@"
+  do
+    >&2 echo "ERROR: unknown argument [${arg}]"
+  done
+  exit 1
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

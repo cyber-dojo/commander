@@ -3,7 +3,7 @@ set -e
 shift # sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# $ ./cyber-dojo sh ...
+# $ ./cyber-dojo sh [NAME]
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 error()

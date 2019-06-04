@@ -36,6 +36,7 @@ OFF_test_____pull_latest_images_for_all_services()
   # If it runs then the update will [docker pull] the commander
   # image from dockerhub which will overwrite the one created by
   # build.sh and the travis script will repush the old image!
+  # Proper [update] semantics is WIP
   assertUpdate
   assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
   assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'

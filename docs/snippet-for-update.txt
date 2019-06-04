@@ -1,6 +1,6 @@
 
 Update could be _inside_ commander.
-Allows cyber-dojo script to do just delegation.
+But better outside since the last step is for cyber-dojo to replace itself.
 
 $ ./cyber-dojo update [RELEASE]
 
