@@ -2,6 +2,10 @@
 set -e
 shift # update
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#  ./cyber-dojo update
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 handle_update_locally()
 {
   if [ "$1" = '' ]; then

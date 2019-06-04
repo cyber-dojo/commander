@@ -5,12 +5,6 @@ shift # sh
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # $ ./cyber-dojo sh ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# The docker run command could take --interactive --tty
-# options which should enable the sh command to be handled
-# by the commander container. Trying this out briefly shows
-# that it affects the captured output (trailing \r \n) which
-# breaks the sh tests.
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 error()
 {

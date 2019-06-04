@@ -4,12 +4,9 @@ shift # start-point
 shift # create
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  ./cyber-dojo start-point create NAME --custom <git-repo-url>...
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# If you're running Docker-Toolbox then the git-repo-urls
-# (being git-cloned into the docker-build context-dir)
-# may not be volume-mounted into the default VM (they may not
-# be under /Users/<user>) so the git-clones have to happen locally.
+#  ./cyber-dojo start-point create NAME \
+#     --custom|--exercises|--languages \
+#       <git-repo-url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 error()
@@ -258,8 +255,9 @@ build_image_from_context_dir()
 
 base_image_name()
 {
-  # Must be pushed to dockerhub in .circleci/config.yml
-  echo 'cyberdojo/starter-base:latest'
+  # The uppercase-tag in this replaced by the actual tag for the
+  # specified/defaulted RELEASE by the cat-start-point-create.sh script.
+  echo 'cyberdojo/starter-base:STARTER_BASE_TAG'
 }
 
 image_type()

@@ -2,8 +2,8 @@
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Most commands delegate to a commander container.
-# However, a few commands are handled locally, on the host.
-# These are handled by docker_cat_and_run_directly().
+# However, a few commands are handled locally, on the host,
+# handled by docker_extract_and_run().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
@@ -70,13 +70,17 @@ exit_non_zero_unless_docker_installed()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-docker_cat_and_run_directly()
+docker_extract_and_run()
 {
   local script="${1}"
   shift
-  docker run --rm -i cyberdojo/commander:latest \
-    sh -c "cat /app/cmd/sh/${script}" > /tmp/${script}
-  chmod +x /tmp/${script}
+  docker run \
+    --interactive \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --rm \
+    cyberdojo/commander:latest \
+    sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
+  chmod 700 /tmp/${script}
   /tmp/${script} $@
   exit $?
 }
@@ -99,13 +103,13 @@ if ! delegate_to_commander "$@"; then
 fi
 
 if [ "$1 $2" = 'start-point create' ]; then
-  docker_cat_and_run_directly start-point-create.sh "$@"
+  docker_extract_and_run start-point-create.sh "$@"
 fi
 
 if [ "$1" = 'sh' ]; then
-  docker_cat_and_run_directly sh.sh "$@"
+  docker_extract_and_run sh.sh "$@"
 fi
 
 if [ "$1" = 'update' ]; then
-  docker_cat_and_run_directly update.sh "$@"
+  docker_extract_and_run update.sh "$@"
 fi
