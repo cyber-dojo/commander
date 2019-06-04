@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e
 
+# after running pull-all-services-latest.sh
+# run this to tag each latest to its sha
+# which prevents further scripts from attempting
+# to docker-pull them from dockerhub.
+
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 . ${MY_DIR}/service-names.sh

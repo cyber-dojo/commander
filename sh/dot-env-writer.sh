@@ -2,12 +2,6 @@
 set -e
 
 # WIP
-# Assumes a cyber-dojo server is up with a running container for
-# each cyber-dojo-X service (X = web,nginx,ragger,runner, etc).
-# And that these containes were launched from a
-# cyberdojo/commander:latest image with a :latest .env file
-# with each image-name tagged with :latest
-# CYBER_DOJO_RUNNER_TAG=latest
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
@@ -17,13 +11,18 @@ readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 echo
 echo CYBER_DOJO_PORT=80
 echo
-echo CYBER_DOJO_CUSTOM=cyberdojo/custom:latest
-echo CYBER_DOJO_EXERCISES=cyberdojo/exercises:latest
-echo CYBER_DOJO_LANGUAGES=cyberdojo/languages-common:latest
+
+SHA=$(sha_for custom)
+echo CYBER_DOJO_CUSTOM=cyberdojo/custom:${SHA:0:7}
+
+SHA=$(sha_for exercises)
+echo CYBER_DOJO_EXERCISES=cyberdojo/exercises:${SHA:0:7}
+
+SHA=$(sha_for languages-common)
+echo CYBER_DOJO_LANGUAGES=cyberdojo/languages-common:${SHA:0:7}
+
 echo
-sha=$(docker run --rm -i cyberdojo/commander:latest sh -c 'echo -n ${SHA}')
-echo "CYBER_DOJO_COMMANDER_SHA=${sha}"
 for name in "${service_names[@]}"; do
-  NAME=$(echo "${name}" | tr a-z A-Z)
+  NAME=$(echo "${name}" | tr a-z\- A-Z\_)
   echo "CYBER_DOJO_${NAME}_SHA=$(sha_for ${name})"
 done
