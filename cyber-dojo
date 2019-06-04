@@ -1,52 +1,13 @@
 #!/bin/bash
 
-# Controls a cyber-dojo web server.
-# requires: grep which is in DockerToolbox Quickstart Terminal.
-#
-# Most commands forward to, and run inside, the cyber-dojo
-# commander container. However, a few commands are handled
-# locally, on the host server, outside of the container.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Most commands delegate to a commander container.
+# However, a few commands are handled locally, on the host.
 # These are handled by docker_cat_and_run_directly().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-on_Mac()
-{
-  # https://stackoverflow.com/questions/394230
-  [[ "$OSTYPE" == "darwin"* ]]
-}
-
-not_using_DockerToolbox()
-{
-  [[ -z "${DOCKER_MACHINE_NAME}" ]]
-}
-
-if not_using_DockerToolbox; then
-  if on_Mac; then
-    echo 'ERROR'
-    echo 'On a Mac you must use Docker Toolbox.'
-    echo 'Maybe you need to run:'
-    echo '$ eval $(docker-machine env)'
-    exit 1
-  fi
-fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
 readonly cyber_dojo_commander=cyberdojo/commander
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_non_zero_unless_docker_installed()
-{
-  local docker="${DOCKER_PROGRAM:-docker}"
-  if ! hash "${docker}" 2> /dev/null; then
-    >&2 echo 'ERROR: docker is not installed!'
-    exit 2
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander()
 {
@@ -99,6 +60,17 @@ set_env_file_volumes()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+exit_non_zero_unless_docker_installed()
+{
+  local docker="${DOCKER_PROGRAM:-docker}"
+  if ! hash "${docker}" 2> /dev/null; then
+    >&2 echo 'ERROR: docker is not installed!'
+    exit 2
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 docker_cat_and_run_directly()
 {
   local script="${1}"
@@ -129,8 +101,6 @@ if [ "$1" = 'update' ]; then
     docker pull ${cyber_dojo_commander}
   fi
 fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_non_zero_unless_docker_installed
 if ! delegate_to_commander "$@"; then

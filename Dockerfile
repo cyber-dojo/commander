@@ -1,7 +1,5 @@
-FROM  cyberdojo/docker-base
+FROM cyberdojo/docker-base
 LABEL maintainer=jon@jaggersoft.com
-
-RUN export RACK_ENV='production'
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # https://github.com/wernight/docker-compose/blob/master/Dockerfile
