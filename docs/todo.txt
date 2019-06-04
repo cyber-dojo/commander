@@ -1,12 +1,22 @@
 
-
 CI needs to trigger system-tests
 
 =========================================================
 
-in main cyber-dojo script the names of some functions
-need to be lengthened to show its clear they are to
-do with [start_point create]
+CYBER_DOJO_STARTER_BASE_SHA needs to be inside versioner
+and then it is somehow baked into the start-point script
+emitted by docker_cat_and_run_directly
+
+=========================================================
+
+Add --help text for overridable settings
+not just for [up] but can be used for any command.
+
+=========================================================
+
+.env files inside versioner have start-point settings like
+CYBER_DOJO_CUSTOM=cyberdojo/custom:7d29a75
+This does not give the full SHA. Is that needed anywhere?
 
 =========================================================
 
