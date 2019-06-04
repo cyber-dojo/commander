@@ -6,6 +6,18 @@ shift # sh
 # $ ./cyber-dojo sh [NAME]
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+show_help()
+{
+  echo
+  echo Use: cyber-dojo sh SERVICE
+  echo
+  echo Shells into a service container
+  echo Example: cyber-dojo sh web
+  echo Example: cyber-dojo sh runner
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 error()
 {
   >&2 echo "ERROR: ${2}"
@@ -14,7 +26,7 @@ error()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-handle_sh_locally()
+shell_in()
 {
   local arg="$1"
   local name="cyber-dojo-${arg}"
@@ -38,4 +50,13 @@ running_container()
   return $?
 }
 
-handle_sh_locally "$@"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "$1" = '' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+  show_help
+elif [ "$2" != '' ]; then
+  show_help
+  exit 1
+else
+  shell_in "$1"
+fi

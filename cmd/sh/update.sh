@@ -9,24 +9,25 @@ shift # update
 show_help()
 {
   echo
-  echo "Use: cyber-dojo update"
+  echo Use: cyber-dojo update
   echo
-  echo 'Updates all cyber-dojo server images and the cyber-dojo script file'
+  echo Updates all cyber-dojo server images and the cyber-dojo script file
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-handle_update_locally()
-{
-  if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
-    show_help
-  elif [ "$1" = '' ]; then
-    # TODO: THE UPDATE...
-    replace_myself
-  else
-    error_bad_args "$@"
-  fi
-}
+IMAGE_NAMES=(
+  differ
+  grafana
+  mapper
+  nginx
+  prometheus
+  ragger
+  runner
+  saver
+  web
+  zipper
+)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,4 +56,15 @@ replace_myself()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-handle_update_locally "$@"
+if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+  show_help
+elif [ "$1" = '' ]; then
+  docker pull cyberdojo/commander:latest
+  for NAME in "${IMAGE_NAMES[@]}"
+  do
+    docker pull cyberdojo/${NAME}:latest
+  done
+  replace_myself
+else
+  error_bad_args "$@"
+fi

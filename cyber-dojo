@@ -94,18 +94,12 @@ if [ "$1" = '--debug' ]; then
   debug_option='--debug'
 fi
 
-if [ "$1 $2" = 'update' ]; then
-  docker pull ${cyber_dojo_commander}
-fi
-
-if ! delegate_to_commander "$@"; then
-  exit 5
-fi
-
 if [ "$1 $2" = 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
 elif [ "$1" = 'sh' ]; then
   extract_and_run sh.sh "$@"
 elif [ "$1" = 'update' ]; then
   extract_and_run update.sh "$@"
+elif ! delegate_to_commander "$@"; then
+  exit 5
 fi
