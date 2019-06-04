@@ -1,15 +1,19 @@
 
 def docker_compose_cmd
-  my_dir = File.dirname(__FILE__)
   [
     'docker-compose',
-    "--file=#{my_dir}/../../docker-compose.yml",
-    "--file=#{my_dir}/../../docker-compose.cpu-shares.yml",
-    "--file=#{my_dir}/../../docker-compose.depends-on.yml",
-    "--file=#{my_dir}/../../docker-compose.env-files.yml",
-    "--file=#{my_dir}/../../docker-compose.images.yml",
-    "--file=#{my_dir}/../../docker-compose.mem-limits.yml",
-    "--file=#{my_dir}/../../docker-compose.ports.yml",
-    "--file=#{my_dir}/../../docker-compose.volumes.yml"
+      compose_file('cpu-shares.yml'),
+      compose_file('depends-on.yml'),
+      compose_file('env-files.yml'),
+      compose_file('images.yml'),
+      compose_file('main.yml'),
+      compose_file('mem-limits.yml'),
+      compose_file('ports.yml'),
+      compose_file('volumes.yml'),
   ].join(' ')
+end
+
+def compose_file(name)
+  my_dir = File.dirname(__FILE__)
+  "--file=#{my_dir}/../../cmd/docker-compose/#{name}"
 end
