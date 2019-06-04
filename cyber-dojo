@@ -91,18 +91,12 @@ fi
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "$1" = 'update' ]; then
-  if [ "$2" = '' ]; then
-    exit_non_zero_unless_docker_installed
-    docker pull ${cyber_dojo_commander}
-  fi
-  if [ "$2" = 'server' ] && [ "$3" = '' ]; then
-    exit_non_zero_unless_docker_installed
-    docker pull ${cyber_dojo_commander}
-  fi
+exit_non_zero_unless_docker_installed
+
+if [ "$1 $2" = 'update' ]; then
+  docker pull ${cyber_dojo_commander}
 fi
 
-exit_non_zero_unless_docker_installed
 if ! delegate_to_commander "$@"; then
   exit 5
 fi
