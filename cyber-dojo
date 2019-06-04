@@ -11,12 +11,6 @@ readonly cyber_dojo_commander=cyberdojo/commander
 
 delegate_to_commander()
 {
-  if [ "$1" = 'up' ];  then
-    set_env_file_volumes
-  fi
-  # shellcheck disable=SC2086
-  # 2086 == Double quote to prevent globbing and word splitting.
-  # CYBER_DOJO_ENV_ROOT must match Dockerfile
   docker run \
     --init \
     --rm \
@@ -30,31 +24,36 @@ delegate_to_commander()
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env RELEASE \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    ${volume_grafana_env_file} \
-    ${volume_nginx_env_file} \
-    ${volume_web_env_file} \
+    $(volume_grafana_env_file) \
+    $(volume_nginx_env_file) \
+    $(volume_web_env_file) \
       "${cyber_dojo_commander}" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set_env_file_volumes()
+volume_web_env_file()
 {
-  # web:env_file: in docker-compose.yml
   local web_env="${my_dir}/web.env"
   if [ -f "${web_env}" ];  then
-    volume_web_env_file="--volume=${web_env}:${web_env}:ro"
+    echo "--volume=${web_env}:${web_env}:ro"
   fi
-  # nginx:env_file: in docker-compose.yml
+}
+
+volume_nginx_env_file()
+{
   local nginx_env="${my_dir}/nginx.env"
   if [ -f "${nginx_env}" ];  then
-    volume_nginx_env_file="--volume=${nginx_env}:${nginx_env}:ro"
+    echo "--volume=${nginx_env}:${nginx_env}:ro"
   fi
-  # grafana:env_file: in docker-compose.yml
+}
+
+volume_grafana_env_file()
+{
   local grafana_env="${my_dir}/grafana.env"
   if [ -f "${grafana_env}" ];  then
-    volume_grafana_env_file="--volume=${grafana_env}:${grafana_env}:ro"
+    echo "--volume=${grafana_env}:${grafana_env}:ro"
   fi
 }
 
@@ -84,14 +83,12 @@ docker_cat_and_run_directly()
 
 #==========================================================
 
-if [ "$1" = '--debug' ]; then
-  debug_option='--debug'
-  shift
-fi
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_unless_docker_installed
+
+if [ "$1" = '--debug' ]; then
+  shift
+  debug_option='--debug'
+fi
 
 if [ "$1 $2" = 'update' ]; then
   docker pull ${cyber_dojo_commander}
