@@ -5,7 +5,8 @@
 #
 # Most commands forward to, and run inside, the cyber-dojo
 # commander container. However, a few commands are handled
-# locally, on the host server, outside of the container, viz:
+# locally, on the host server, outside of the container.
+# These are handled by docker_cat_and_run_directly().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 on_Mac()
@@ -103,7 +104,7 @@ docker_cat_and_run_directly()
   local script="${1}"
   shift
   docker run --rm -i cyberdojo/commander:latest \
-    sh -c "cat /app/${script}" > /tmp/${script}
+    sh -c "cat /app/cmd/sh/${script}" > /tmp/${script}
   chmod +x /tmp/${script}
   /tmp/${script} $@
   exit $?
@@ -137,13 +138,13 @@ if ! delegate_to_commander "$@"; then
 fi
 
 if [ "$1 $2" = 'start-point create' ]; then
-  docker_cat_and_run_directly cyber-dojo-start-point-create.sh "$@"
+  docker_cat_and_run_directly start-point-create.sh "$@"
 fi
 
 if [ "$1" = 'sh' ]; then
-  docker_cat_and_run_directly cyber-dojo-shell.sh "$@"
+  docker_cat_and_run_directly sh.sh "$@"
 fi
 
 if [ "$1" = 'update' ]; then
-  docker_cat_and_run_directly cyber-dojo-update.sh "$@"
+  docker_cat_and_run_directly update.sh "$@"
 fi

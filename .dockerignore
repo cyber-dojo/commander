@@ -6,9 +6,6 @@
 
 !Gemfile
 !cyber-dojo
-!cyber-dojo-shell.sh
-!cyber-dojo-start-point-create.sh
-!cyber-dojo-update.sh
 !cmd/*
 !docker-compose.yml
 !docker-compose.cpu-shares.yml
