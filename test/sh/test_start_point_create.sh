@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # Some of these tests will fail
 #   o) if you do not have a network connection

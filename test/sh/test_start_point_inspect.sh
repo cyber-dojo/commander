@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
