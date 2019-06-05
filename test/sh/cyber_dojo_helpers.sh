@@ -115,7 +115,14 @@ refuteStartPointInspect() { set +e; startPointInspect $*; assertFalse $?; set -e
 assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
 refuteStartPointLs()      { set +e; startPointLs      $*; assertFalse $?; set -e; }
 
-assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
+assertStartPointRm()
+{
+  set +e;
+  startPointRm      $*;
+  assertTrue  $?;
+  set -e;
+}
+
 refuteStartPointRm()      { set +e; startPointRm      $*; assertFalse $?; set -e; }
 
 assertStartPointUpdate()  { startPointUpdate  $*; assertTrue  $?; }

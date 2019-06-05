@@ -52,10 +52,10 @@ test_____no_args_stops_and_removes_server_containers()
     assertStdoutIncludes "Removing cyber-dojo-${service}"
   done
   echo A
-  assertEquals 'stdout' '' ''
+  assertEquals 'stderr' '' ''
   echo B
   assertNoStderr # <<<<<
-
+  echo C
   assertStartPointRm ${custom_name}
   assertStartPointRm ${exercises_name}
   assertStartPointRm ${languages_name}
