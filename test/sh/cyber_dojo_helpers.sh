@@ -30,7 +30,7 @@ custom_urls()
   if on_CI; then
     echo -n "${github_cyber_dojo}/custom"
   else
-    echo -n "file://$(CD_DIR)/custom"
+    echo -n "$(CD_DIR)/custom"
   fi
 }
 
@@ -41,7 +41,7 @@ exercises_urls()
   if on_CI; then
     echo -n "${github_cyber_dojo}/exercises"
   else
-    echo -n "file://$(CD_DIR)/exercises"
+    echo -n "$(CD_DIR)/exercises"
   fi
 }
 
@@ -52,9 +52,9 @@ languages_urls()
   if on_CI; then
     echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
   else
-    echo -n "file://$(CDL_DIR)/gcc-assert \
-             file://$(CDL_DIR)/python-unittest \
-             file://$(CDL_DIR)/ruby-minitest"
+    echo -n "$(CDL_DIR)/gcc-assert \
+             $(CDL_DIR)/python-unittest \
+             $(CDL_DIR)/ruby-minitest"
   fi
 }
 
@@ -90,58 +90,46 @@ update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPointCreate()  { startPointCreate  $*; assertTrue  $?; }
-refuteStartPointCreate()  { startPointCreate  $*; assertFalse $?; }
+assertClean()             { clean             $*; assert $?; }
+refuteClean()             { clean             $*; refute $?; }
 
-assertStartPoint()        { startPoint        $*; assertTrue  $?; }
-refuteStartPoint()        { startPoint        $*; assertFalse $?; }
+assertDown()              { down              $*; assert $?; }
+refuteDown()              { down              $*; refute $?; }
 
-assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
-refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
+assertLogs()              { logs              $*; assert $?; }
+refuteLogs()              { logs              $*; refute $?; }
 
-assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
-refuteStartPointLs()      { startPointLs      $*; assertFalse $?; }
+assertSh()                { sh                $*; assert $?; }
+refuteSh()                { sh                $*; refute $?; }
 
-assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
-refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
+assertStartPointCreate()  { startPointCreate  $*; assert $?; }
+refuteStartPointCreate()  { startPointCreate  $*; refute $?; }
 
-assertStartPointUpdate()  { startPointUpdate  $*; assertTrue  $?; }
-refuteStartPointUpdate()  { startPointUpdate  $*; assertFalse $?; }
+assertStartPoint()        { startPoint        $*; assert $?; }
+refuteStartPoint()        { startPoint        $*; refute $?; }
 
-assertStartPointExists()  { startPointExists  $1; assertTrue  $?; }
-refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
+assertStartPointInspect() { startPointInspect $*; assert $?; }
+refuteStartPointInspect() { startPointInspect $*; refute $?; }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - -
+assertStartPointLs()      { startPointLs      $*; assert $?; }
+refuteStartPointLs()      { startPointLs      $*; refute $?; }
 
-assertClean()  { clean  $*; assertTrue  $?; }
-refuteClean()  { clean  $*; assertFalse $?; }
+assertStartPointRm()      { startPointRm      $*; assert $?; }
+refuteStartPointRm()      { startPointRm      $*; refute $?; }
 
-assertDown()   { down   $*; assertTrue  $?; }
-refuteDown()   { down   $*; assertFalse $?; }
+assertStartPointUpdate()  { startPointUpdate  $*; assert $?; }
+refuteStartPointUpdate()  { startPointUpdate  $*; refute $?; }
 
-assertLogs()   { logs   $*; assertTrue  $?; }
-refuteLogs()   { logs   $*; assertFalse $?; }
+assertUp()                { up                $*; assert $?; }
+refuteUp()                { up                $*; refute $?; }
 
-assertSh()     { sh     $*; assertTrue  $?; }
-refuteSh()     { sh     $*; assertFalse $?; }
-
-assertUp()     { up     $*; assertTrue  $?; }
-refuteUp()     { up     $*; assertFalse $?; }
-
-assertUpdate() { update $*; assertTrue  $?; }
-refuteUpdate() { update $*; assertFalse $?; }
+assertUpdate()            { update            $*; assert $?; }
+refuteUpdate()            { update            $*; refute $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
-# - - - - - - - - - - - - - - - - - - - - - - - - -
 
-removeAllStartPoints()
-{
-  startPoints=(`${exe} start-point ls --quiet`)
-  for startPoint in "${startPoints[@]}"
-  do
-    ${exe} start-point rm "${startPoint}"
-  done
-}
+assertStartPointExists()  { startPointExists  $1; assert $?; }
+refuteStartPointExists()  { startPointExists  $1; refute $?; }
 
 startPointExists()
 {
@@ -153,32 +141,34 @@ startPointExists()
     | grep "${start_of_line}${name}${end_of_line}" > /dev/null
 }
 
+removeAllStartPoints()
+{
+  startPoints=(`${exe} start-point ls --quiet`)
+  for startPoint in "${startPoints[@]}"
+  do
+    ${exe} start-point rm "${startPoint}"
+  done
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
+
+stdout_stderr()
+{
+  echo "<stdout>${stdoutF}</stdout><stderr>${stderrF}</stderr>"
+}
 
 assert()
 {
-  if [ "$1" == "0" ]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    echo "<stderr>"
-    cat ${stderrF}
-    echo "</stderr>"
-    #TODO: print 'original' arguments
-    assertTrue 1
+  if [ "$1" != "0" ]; then
+    assertTrue $(stdout_stderr) 1
+    exit 1
   fi
 }
 
 refute()
 {
   if [ "$1" == "0" ]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    echo "<stderr>"
-    cat ${stderrF}
-    echo "</stderr>"
-    #TODO: print 'original' arguments
-    assertFalse 0
+    assertFalse $(stdout_stderr) 0
+    exit 1
   fi
 }
