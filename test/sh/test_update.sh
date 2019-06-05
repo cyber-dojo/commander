@@ -30,25 +30,27 @@ Updates all cyber-dojo server images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-OFF_test_____pull_latest_images_for_all_services()
+test_____updating_to_specific_tag_causes_next_up_to_use_specific_service_tags()
 {
-  # This test is turned off.
-  # If it runs then the update will [docker pull] the commander
-  # image from dockerhub which will overwrite the one created by
-  # build.sh and the travis script will repush the old image!
-  # Proper [update] semantics is WIP
-  assertUpdate
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/commander'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/differ'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/grafana'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/mapper'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/nginx'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/prometheus'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/runner'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/saver'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/web'
-  assertStdoutIncludes 'latest: Pulling from cyberdojo/zipper'
+  assertUpdate 8fdf595
+  assertStdoutIncludes "8fdf595: Pulling from cyberdojo/versioner"
+  assertUp
+  assertStdoutIncludes 'Using custom=cyberdojo/custom:a089497'
+  assertStdoutIncludes 'Using exercises=cyberdojo/exercises:16fb5d9'
+  assertStdoutIncludes 'Using languages=cyberdojo/languages-common:8ab7cd9'
+  assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
+  assertStdoutIncludes 'Using grafana=cyberdojo/grafana:449370c'
+  assertStdoutIncludes 'Using mapper=cyberdojo/mapper:5729d56'
+  assertStdoutIncludes 'Using nginx=cyberdojo/nginx:380c557'
+  assertStdoutIncludes 'Using prometheus=cyberdojo/prometheus:f0f7978'
+  assertStdoutIncludes 'Using ragger=cyberdojo/ragger:5998a76'
+  assertStdoutIncludes 'Using runner=cyberdojo/runner:1b06f00'
+  assertStdoutIncludes 'Using saver=cyberdojo/saver:8485ef3'
+  assertStdoutIncludes 'Using web=cyberdojo/web:5121b0b'
+  assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
   assertNoStderr
+
+  assertUpdate latest # reset back
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -65,7 +67,7 @@ test_____unknown_tag_prints_to_stderr()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-OFF_test_____unknown_args()
+OFF_test_____too_many_args()
 {
   local readonly arg1=salmon
   local readonly arg2=parr
