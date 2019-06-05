@@ -7,13 +7,13 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_DOWN() { :; }
+X_test_DOWN() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___success() { :; }
+X_test___success() { :; }
 
-test_____help_arg_prints_use()
+X_test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo down
@@ -60,9 +60,9 @@ test_____no_args_stops_and_removes_server_containers()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test___failure() { :; }
+X_test___failure() { :; }
 
-test_____unknown_arg()
+X_test_____unknown_arg()
 {
   local arg=salmon
   refuteDown ${arg}
@@ -72,7 +72,7 @@ test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____unknown_args()
+X_test_____unknown_args()
 {
   local arg1=salmon
   local arg2=parr
