@@ -31,7 +31,7 @@ Stops and removes docker containers created with 'up'"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_____no_args_stops_and_removes_server_containers()
+test_____no_args_stops_and_removes_server_containers()
 {
   local readonly custom_name=test_down_custom
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
