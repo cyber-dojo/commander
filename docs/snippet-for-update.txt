@@ -10,9 +10,7 @@ shift # update
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #  Use:
-#  \$ ./cyber-dojo update latest
-#  \$ ./cyber-dojo update RELEASE
-#  \$ ./cyber-dojo update TAG
+#  \$ ./cyber-dojo update [latest|RELEASE]
 #
 #  Example 1: update to latest (the default)
 #    \$ ./cyber-dojo update
@@ -24,43 +22,46 @@ shift # update
 #    \$ cyber-dojo update 2.3.0
 #    Pulls 2.3.0 and tags it with latest
 #    ready for the next [cyber-dojo up] command.
-#
-#  Example 3: update to a non-release tag
-#    \$ cyber-dojo update 23df2e8
-#    Pulls 23df2e8 and tags it with latest
-#    ready for the next [cyber-dojo up] command.
-#    Warns it is dev only.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 RELEASE=${1:-latest}
 IMAGE=cyberdojo/versioner:${RELEASE}
+
 if [ "${RELEASE}" = 'latest' ]; then
   docker pull ${IMAGE}
 fi
-TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
-if [ "${TAG}" = '' ]; then
-  SHA=$(docker run --rm ${IMAGE} sh -c 'echo -n ${SHA}')
-  TAG=${SHA:0:7}
-  echo "Warning: ${RELEASE} is dev only"
-fi
-docker tag ${IMAGE} cyberdojo/versioner:${TAG}
-docker tag ${IMAGE} cyberdojo/versioner:latest
 
+TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
+
+if [ "${RELEASE}" = 'latest' ]; then
+  docker tag ${IMAGE} cyberdojo/versioner:${TAG}
+elif [ "${TAG}" != '' ]; then
+  docker tag ${IMAGE} cyberdojo/versioner:latest
+else
+  echo "ERROR: ${RELEASE} is dev only" && exit 1
+fi
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Instead of allowing
+  ./cyber-dojo update 23df2e8
+I think its simpler, in that case, to just do
+  RELEASE=23df2e8 ./cyber-dojo up
 
 # The two tag commands are because you can do
 # 1) ./cyber-dojo update 2.3.0
 # 2) ./cyber-dojo update latest
-# 3) ./cyber-dojo update 23df2e8
 # And if we do (2) we need to create a non-latest tag
 # because latest moves and we want to keep a local history.
-# Number (3) shows that versioner is also tagging non-releases.
-# And that only releases (1) also get the latest tag (2).
-# This is useful for working on versioner itself.
+
 # How to set RELEASE env-var?
 # Use commit message like  [ci skip]
 # Eg
 # [release=2.3.1]
 # Scripts will have to detect this.
+# Need the env-var on CircleCI for the commit message.
+# Can you do an if inside a Dockerfile. Probably not.
+# Will need two Dockerfiles (for versioner).
 
-# Would be nice to add colour to the help-text
-# so the bash fragments in the examples stand out.
+
+# Would be nice to colour bash fragments in the help text
+# green examples stand out. Similarly, errors can be in red.
