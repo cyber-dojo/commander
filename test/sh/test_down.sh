@@ -21,7 +21,7 @@ Use: cyber-dojo down
 Stops and removes docker containers created with 'up'"
 
   assertDown -h
-  #assertStdoutEquals "${expected_stdout}"
+  assertStdoutEquals "${expected_stdout}"
   #assertNoStderr
 
   assertDown --help
