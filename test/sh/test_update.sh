@@ -34,10 +34,11 @@ test_____updating_to_specific_tag_causes_next_up_to_use_specific_service_tags()
 {
   assertUpdate 8fdf595
   assertStdoutIncludes "8fdf595: Pulling from cyberdojo/versioner"
-  assertUp
+  # use languages-small to minimize language-test-framework pulls
+  assertUp --languages=cyberdojo/languages-small:8ab7cd9
   assertStdoutIncludes 'Using custom=cyberdojo/custom:a089497'
   assertStdoutIncludes 'Using exercises=cyberdojo/exercises:16fb5d9'
-  assertStdoutIncludes 'Using languages=cyberdojo/languages-common:8ab7cd9'
+  assertStdoutIncludes 'Using languages=cyberdojo/languages-small:8ab7cd9'
   assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
   assertStdoutIncludes 'Using grafana=cyberdojo/grafana:449370c'
   assertStdoutIncludes 'Using mapper=cyberdojo/mapper:5729d56'
@@ -50,6 +51,7 @@ test_____updating_to_specific_tag_causes_next_up_to_use_specific_service_tags()
   assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
   assertNoStderr
 
+  assertDown
   assertUpdate latest # reset back
 }
 
