@@ -91,42 +91,45 @@ update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertStartPointCreate() { startPointCreate   $*; assertTrue  $?; }
-refuteStartPointCreate() { startPointCreate   $*; assertFalse $?; }
+refuteStartPointCreate() { set +e; startPointCreate   $*; assertFalse $?; set -e; }
 
 assertStartPoint()        { startPoint        $*; assertTrue  $?; }
-refuteStartPoint()        { startPoint        $*; assertFalse $?; }
+refuteStartPoint()        { set +e; startPoint        $*; assertFalse $?; set -e; }
 
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
-refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
+refuteStartPointInspect() { set +e; startPointInspect $*; assertFalse $?; set -e; }
 
 assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
-refuteStartPointLs()      { startPointLs      $*; assertFalse $?; }
+refuteStartPointLs()      { set +e; startPointLs      $*; assertFalse $?; set -e; }
 
 assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
-refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
+refuteStartPointRm()      { set +e; startPointRm      $*; assertFalse $?; set -e; }
 
 assertStartPointUpdate()  { startPointUpdate  $*; assertTrue  $?; }
-refuteStartPointUpdate()  { startPointUpdate  $*; assertFalse $?; }
+refuteStartPointUpdate()  { set +e; startPointUpdate  $*; assertFalse $?; set -e; }
+
+assertStartPointExists()  { startPointExists $1; assertTrue  $?; }
+refuteStartPointExists()  { set +e; startPointExists $1; assertFalse $?; set -e; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertClean()  { clean  $*; assertTrue  $?; }
-refuteClean()  { clean  $*; assertFalse $?; }
+refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
 
 assertDown()   { down   $*; assertTrue  $?; }
-refuteDown()   { down   $*; assertFalse $?; }
+refuteDown()   { set +e; down   $*; assertFalse $?; set -e; }
 
 assertLogs()   { logs   $*; assertTrue  $?; }
-refuteLogs()   { logs   $*; assertFalse $?; }
+refuteLogs()   { set +e; logs   $*; assertFalse $?; set -e; }
 
 assertSh()     { sh     $*; assertTrue  $?; }
-refuteSh()     { sh     $*; assertFalse $?; }
+refuteSh()     { set +e; sh     $*; assertFalse $?; set -e; }
 
 assertUp()     { up     $*; assertTrue  $?; }
-refuteUp()     { up     $*; assertFalse $?; }
+refuteUp()     { set +e; up     $*; assertFalse $?; set -e; }
 
 assertUpdate() { update $*; assertTrue  $?; }
-refuteUpdate() { update $*; assertFalse $?; }
+refuteUpdate() { set +e; update $*; assertFalse $?; set -e; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -149,9 +152,6 @@ startPointExists()
   docker image ls --format '{{.Repository}}:{{.Tag}}' \
     | grep "${start_of_line}${name}${end_of_line}" > /dev/null
 }
-
-assertStartPointExists()  { startPointExists $1; assertTrue  $?; }
-refuteStartPointExists()  { startPointExists $1; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 

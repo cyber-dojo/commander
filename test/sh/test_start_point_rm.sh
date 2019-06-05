@@ -61,7 +61,7 @@ test_____named_start_point_does_not_exist()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____named_start_point_is_not_a_cyber_dojo_volume()
+test_____named_start_point_is_not_a_cyber_dojo_image()
 {
   local readonly name=cyberdojo/starter-base
   refuteStartPointRm ${name}
