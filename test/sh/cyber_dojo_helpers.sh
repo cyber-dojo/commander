@@ -118,7 +118,7 @@ refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
 
 assertDown()   {
   set +e
-  down   $*;
+  down $*;
   status=$?
   info="assertDown() done down, $? status=${status}"
   o=$(cat ${stdoutF})

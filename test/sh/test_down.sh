@@ -7,11 +7,11 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_DOWN() { :; }
+test_DOWN() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test___success() { :; }
+test___success() { :; }
 
 test_____help_arg_prints_use()
 {
