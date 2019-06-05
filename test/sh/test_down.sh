@@ -22,7 +22,7 @@ Stops and removes docker containers created with 'up'"
 
   assertDown -h
   assertStdoutEquals "${expected_stdout}"
-  #assertNoStderr
+  assertNoStderr
 
   assertDown --help
   #assertStdoutEquals "${expected_stdout}"
