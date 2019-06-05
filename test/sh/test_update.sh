@@ -55,12 +55,12 @@ OFF_test_____pull_latest_images_for_all_services()
 
 test___failure() { :; }
 
-OFF_test_____unknown_arg()
+test_____unknown_tag_prints_to_stderr()
 {
   local readonly arg=salmon
   refuteUpdate ${arg}
   assertNoStdout
-  assertStderrEquals "ERROR: unknown argument [${arg}]"
+  assertStderrEquals "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
