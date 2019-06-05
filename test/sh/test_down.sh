@@ -35,6 +35,7 @@ test_____no_args_stops_and_removes_server_containers()
 {
   local readonly custom_name=test_down_custom
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  
   local readonly exercises_name=test_down_exercises
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
   local readonly languages_name=test_down_languages

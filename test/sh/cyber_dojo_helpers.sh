@@ -90,7 +90,20 @@ update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPointCreate() { startPointCreate   $*; assertTrue  $?; }
+assertStartPointCreate()
+{
+  set +e
+  startPointCreate $*
+  status=$?
+  info="assertDown() done down, $? status=${status}"
+  o=$(cat ${stdoutF})
+  e=$(cat ${stderrF})
+  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  assertTrue "${msg}" ${status}
+  #assertTrue $?
+  set -e
+}
+
 refuteStartPointCreate() { set +e; startPointCreate   $*; assertFalse $?; set -e; }
 
 assertStartPoint()        { startPoint        $*; assertTrue  $?; }
