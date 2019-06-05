@@ -35,7 +35,6 @@ test_____no_args_stops_and_removes_server_containers()
 {
   local readonly custom_name=test_down_custom
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
-  
   local readonly exercises_name=test_down_exercises
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
   local readonly languages_name=test_down_languages
@@ -52,7 +51,10 @@ test_____no_args_stops_and_removes_server_containers()
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
     assertStdoutIncludes "Removing cyber-dojo-${service}"
   done
-  assertNoStderr
+  echo A
+  assertEquals 'stdout' '' ''
+  echo B
+  assertNoStderr # <<<<<
 
   assertStartPointRm ${custom_name}
   assertStartPointRm ${exercises_name}

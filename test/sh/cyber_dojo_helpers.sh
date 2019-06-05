@@ -94,13 +94,13 @@ assertStartPointCreate()
 {
   set +e
   startPointCreate $*
-  status=$?
-  info="assertDown() done down, $? status=${status}"
-  o=$(cat ${stdoutF})
-  e=$(cat ${stderrF})
-  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  assertTrue "${msg}" ${status}
-  #assertTrue $?
+  #status=$?
+  #info="assertDown() done down, $? status=${status}"
+  #o=$(cat ${stdoutF})
+  #e=$(cat ${stderrF})
+  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  #assertTrue "${msg}" ${status}
+  assertTrue $?
   set -e
 }
 
@@ -132,13 +132,13 @@ refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
 assertDown()   {
   set +e
   down $*;
-  status=$?
-  info="assertDown() done down, $? status=${status}"
-  o=$(cat ${stdoutF})
-  e=$(cat ${stderrF})
-  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  assertTrue "${msg}" ${status}
-  #assertTrue  $?;
+  #status=$?
+  #info="assertDown() done down, $? status=${status}"
+  #o=$(cat ${stdoutF})
+  #e=$(cat ${stderrF})
+  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  #assertTrue "${msg}" ${status}
+  assertTrue  $?;
   set -e
 }
 
@@ -154,13 +154,13 @@ assertUp()
 {
   set +e
   up     $*
-  status=$?
-  info="assertDown() done down, $? status=${status}"
-  o=$(cat ${stdoutF})
-  e=$(cat ${stderrF})
-  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  assertTrue "${msg}" ${status}
-  #assertTrue $?
+  #status=$?
+  #info="assertUp() done up, $? status=${status}"
+  #o=$(cat ${stdoutF})
+  #e=$(cat ${stderrF})
+  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  #assertTrue "${msg}" ${status}
+  assertTrue $?
   set -e
 }
 
