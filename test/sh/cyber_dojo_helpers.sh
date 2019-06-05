@@ -150,7 +150,21 @@ refuteLogs()   { set +e; logs   $*; assertFalse $?; set -e; }
 assertSh()     { sh     $*; assertTrue  $?; }
 refuteSh()     { set +e; sh     $*; assertFalse $?; set -e; }
 
-assertUp()     { up     $*; assertTrue  $?; }
+assertUp()
+{
+  set +e
+  up     $*
+  status=$?
+  info="assertDown() done down, $? status=${status}"
+  o=$(cat ${stdoutF})
+  e=$(cat ${stderrF})
+  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  assertTrue "${msg}" ${status}
+  #assertTrue $?
+  set -e
+}
+
+
 refuteUp()     { set +e; up     $*; assertFalse $?; set -e; }
 
 assertUpdate() { update $*; assertTrue  $?; }
