@@ -72,7 +72,7 @@ test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_____unknown_args()
+test_____unknown_args()
 {
   local arg1=salmon
   local arg2=parr
