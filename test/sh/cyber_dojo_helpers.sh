@@ -76,35 +76,22 @@ declare -a service_names=(
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
-down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
+down()              { set +e; ${exe} down                $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
 logs()              { ${exe} logs                $* >${stdoutF} 2>${stderrF}; }
 sh()                { ${exe} sh                  $* >${stdoutF} 2>${stderrF}; }
 startPoint()        { ${exe} start-point         $* >${stdoutF} 2>${stderrF}; }
-startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
+startPointCreate()  { set +e; ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
 startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLs()      { ${exe} start-point ls      $* >${stdoutF} 2>${stderrF}; }
-startPointRm()      { ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; }
+startPointRm()      { set +e; ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
 startPointUpdate()  { ${exe} start-point update  $* >${stdoutF} 2>${stderrF}; }
-up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
+up()                { set +e; ${exe} up                  $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPointCreate()
-{
-  set +e
-  startPointCreate $*
-  #status=$?
-  #info="assertDown() done down, $? status=${status}"
-  #o=$(cat ${stdoutF})
-  #e=$(cat ${stderrF})
-  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  #assertTrue "${msg}" ${status}
-  assertTrue $?
-  set -e
-}
-
-refuteStartPointCreate() { set +e; startPointCreate   $*; assertFalse $?; set -e; }
+assertStartPointCreate()  { startPointCreate $*; assertTrue  $?; }
+refuteStartPointCreate()  { startPointCreate $*; assertFalse $?; }
 
 assertStartPoint()        { startPoint        $*; assertTrue  $?; }
 refuteStartPoint()        { set +e; startPoint        $*; assertFalse $?; set -e; }
@@ -115,15 +102,8 @@ refuteStartPointInspect() { set +e; startPointInspect $*; assertFalse $?; set -e
 assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
 refuteStartPointLs()      { set +e; startPointLs      $*; assertFalse $?; set -e; }
 
-assertStartPointRm()
-{
-  set +e;
-  startPointRm      $*;
-  assertTrue  $?;
-  set -e;
-}
-
-refuteStartPointRm()      { set +e; startPointRm      $*; assertFalse $?; set -e; }
+assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
+refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
 
 assertStartPointUpdate()  { startPointUpdate  $*; assertTrue  $?; }
 refuteStartPointUpdate()  { set +e; startPointUpdate  $*; assertFalse $?; set -e; }
@@ -136,20 +116,8 @@ refuteStartPointExists()  { set +e; startPointExists $1; assertFalse $?; set -e;
 assertClean()  { clean  $*; assertTrue  $?; }
 refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
 
-assertDown()   {
-  set +e
-  down $*;
-  #status=$?
-  #info="assertDown() done down, $? status=${status}"
-  #o=$(cat ${stdoutF})
-  #e=$(cat ${stderrF})
-  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  #assertTrue "${msg}" ${status}
-  assertTrue  $?;
-  set -e
-}
-
-refuteDown()   { set +e; down   $*; assertFalse $?; set -e; }
+assertDown()   { down   $*; assertTrue  $?; }
+refuteDown()   { down   $*; assertFalse $?; }
 
 assertLogs()   { logs   $*; assertTrue  $?; }
 refuteLogs()   { set +e; logs   $*; assertFalse $?; set -e; }
@@ -157,22 +125,8 @@ refuteLogs()   { set +e; logs   $*; assertFalse $?; set -e; }
 assertSh()     { sh     $*; assertTrue  $?; }
 refuteSh()     { set +e; sh     $*; assertFalse $?; set -e; }
 
-assertUp()
-{
-  set +e
-  up     $*
-  #status=$?
-  #info="assertUp() done up, $? status=${status}"
-  #o=$(cat ${stdoutF})
-  #e=$(cat ${stderrF})
-  #msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  #assertTrue "${msg}" ${status}
-  assertTrue $?
-  set -e
-}
-
-
-refuteUp()     { set +e; up     $*; assertFalse $?; set -e; }
+assertUp()     { up     $*; assertTrue  $?; }
+refuteUp()     { up     $*; assertFalse $?; }
 
 assertUpdate() { update $*; assertTrue  $?; }
 refuteUpdate() { set +e; update $*; assertFalse $?; set -e; }
