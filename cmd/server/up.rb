@@ -5,7 +5,6 @@ def cyber_dojo_server_up
      custom = up_argument(   'custom')
   exercises = up_argument('exercises')
   languages = up_argument('languages')
-       port = up_argument(     'port')
 
   exit_failure_unless_start_point_exists(   'custom', custom   )
   exit_failure_unless_start_point_exists('exercises', exercises)
@@ -15,13 +14,14 @@ def cyber_dojo_server_up
   pull_all_images_named_in(languages)
 
   env_root = write_env_files
+  port = up_argument('port')
 
   env_vars = {
-    'CYBER_DOJO_ENV_ROOT'   => env_root,
+    'CYBER_DOJO_ENV_ROOT' => env_root,
+    'CYBER_DOJO_PORT' => port,
     'CYBER_DOJO_CUSTOM'    => custom,
     'CYBER_DOJO_EXERCISES' => exercises,
     'CYBER_DOJO_LANGUAGES' => languages,
-    'CYBER_DOJO_PORT' => port,
   }
   add_image_tag_variables(env_vars)
 
@@ -60,7 +60,7 @@ end
 def up_command_line
   args = {}
   bad = []
-  knowns = %w( --custom --exercises --languages --port )
+  knowns = %w( --port --custom --exercises --languages )
   ARGV[1..-1].each do |arg|
     name,value = arg.split('=',2)
     if knowns.none?{ |known| name === known }
