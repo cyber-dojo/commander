@@ -1,7 +1,6 @@
 #!/bin/bash
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-
 . ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

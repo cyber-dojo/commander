@@ -76,60 +76,60 @@ declare -a service_names=(
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
-down()              { set +e; ${exe} down                $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
+down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
 logs()              { ${exe} logs                $* >${stdoutF} 2>${stderrF}; }
 sh()                { ${exe} sh                  $* >${stdoutF} 2>${stderrF}; }
 startPoint()        { ${exe} start-point         $* >${stdoutF} 2>${stderrF}; }
-startPointCreate()  { set +e; ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
+startPointCreate()  { ${exe} start-point create  $* >${stdoutF} 2>${stderrF}; }
 startPointInspect() { ${exe} start-point inspect $* >${stdoutF} 2>${stderrF}; }
 startPointLs()      { ${exe} start-point ls      $* >${stdoutF} 2>${stderrF}; }
-startPointRm()      { set +e; ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
+startPointRm()      { ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; }
 startPointUpdate()  { ${exe} start-point update  $* >${stdoutF} 2>${stderrF}; }
-up()                { set +e; ${exe} up                  $* >${stdoutF} 2>${stderrF}; status=$?; set -e; return $status; }
+up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-assertStartPointCreate()  { startPointCreate $*; assertTrue  $?; }
-refuteStartPointCreate()  { startPointCreate $*; assertFalse $?; }
+assertStartPointCreate()  { startPointCreate  $*; assertTrue  $?; }
+refuteStartPointCreate()  { startPointCreate  $*; assertFalse $?; }
 
 assertStartPoint()        { startPoint        $*; assertTrue  $?; }
-refuteStartPoint()        { set +e; startPoint        $*; assertFalse $?; set -e; }
+refuteStartPoint()        { startPoint        $*; assertFalse $?; }
 
 assertStartPointInspect() { startPointInspect $*; assertTrue  $?; }
-refuteStartPointInspect() { set +e; startPointInspect $*; assertFalse $?; set -e; }
+refuteStartPointInspect() { startPointInspect $*; assertFalse $?; }
 
 assertStartPointLs()      { startPointLs      $*; assertTrue  $?; }
-refuteStartPointLs()      { set +e; startPointLs      $*; assertFalse $?; set -e; }
+refuteStartPointLs()      { startPointLs      $*; assertFalse $?; }
 
 assertStartPointRm()      { startPointRm      $*; assertTrue  $?; }
 refuteStartPointRm()      { startPointRm      $*; assertFalse $?; }
 
 assertStartPointUpdate()  { startPointUpdate  $*; assertTrue  $?; }
-refuteStartPointUpdate()  { set +e; startPointUpdate  $*; assertFalse $?; set -e; }
+refuteStartPointUpdate()  { startPointUpdate  $*; assertFalse $?; }
 
-assertStartPointExists()  { startPointExists $1; assertTrue  $?; }
-refuteStartPointExists()  { set +e; startPointExists $1; assertFalse $?; set -e; }
+assertStartPointExists()  { startPointExists  $1; assertTrue  $?; }
+refuteStartPointExists()  { startPointExists  $1; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 assertClean()  { clean  $*; assertTrue  $?; }
-refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
+refuteClean()  { clean  $*; assertFalse $?; }
 
 assertDown()   { down   $*; assertTrue  $?; }
 refuteDown()   { down   $*; assertFalse $?; }
 
 assertLogs()   { logs   $*; assertTrue  $?; }
-refuteLogs()   { set +e; logs   $*; assertFalse $?; set -e; }
+refuteLogs()   { logs   $*; assertFalse $?; }
 
 assertSh()     { sh     $*; assertTrue  $?; }
-refuteSh()     { set +e; sh     $*; assertFalse $?; set -e; }
+refuteSh()     { sh     $*; assertFalse $?; }
 
 assertUp()     { up     $*; assertTrue  $?; }
 refuteUp()     { up     $*; assertFalse $?; }
 
 assertUpdate() { update $*; assertTrue  $?; }
-refuteUpdate() { set +e; update $*; assertFalse $?; set -e; }
+refuteUpdate() { update $*; assertFalse $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # - - - - - - - - - - - - - - - - - - - - - - - - -

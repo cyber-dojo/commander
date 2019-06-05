@@ -1,12 +1,10 @@
 #!/bin/bash
-set -e
 
 # Some of these tests will fail
 #   o) if you do not have a network connection
 #   o) if github is down
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-
 . ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 . ${MY_DIR}/cyber_dojo_helpers.sh

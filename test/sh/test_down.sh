@@ -1,19 +1,17 @@
 #!/bin/bash
-set -ex
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-
 . ${MY_DIR}/cyber_dojo_helpers.sh
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_DOWN() { :; }
+test_DOWN() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test___success() { :; }
+test___success() { :; }
 
-X_test_____help_arg_prints_use()
+test_____help_arg_prints_use()
 {
   local expected_stdout="
 Use: cyber-dojo down
@@ -51,11 +49,8 @@ test_____no_args_stops_and_removes_server_containers()
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
     assertStdoutIncludes "Removing cyber-dojo-${service}"
   done
-  echo A
-  assertEquals 'stderr' '' ''
-  echo B
   assertNoStderr # <<<<<
-  echo C
+
   assertStartPointRm ${custom_name}
   assertStartPointRm ${exercises_name}
   assertStartPointRm ${languages_name}
@@ -63,9 +58,9 @@ test_____no_args_stops_and_removes_server_containers()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test___failure() { :; }
+test___failure() { :; }
 
-X_test_____unknown_arg()
+test_____unknown_arg()
 {
   local arg=salmon
   refuteDown ${arg}
@@ -75,7 +70,7 @@ X_test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_____unknown_args()
+test_____unknown_args()
 {
   local arg1=salmon
   local arg2=parr
