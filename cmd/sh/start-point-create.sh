@@ -9,9 +9,9 @@ shift # create
 # cyber-dojo start-point create <name> --languages <url> ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-RED=$(tput setaf 1)
-GREEN=$(tput setaf 2)
-BOLD=$(tput bold)
+RED=$(tput -Txterm setaf 1)
+GREEN=$(tput -Txterm setaf 2)
+BOLD=$(tput -Txterm bold)
 RS='\033[0m' # NoColour
 
 error()
