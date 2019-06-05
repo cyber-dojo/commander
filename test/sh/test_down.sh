@@ -62,7 +62,7 @@ X_test_____no_args_stops_and_removes_server_containers()
 
 test___failure() { :; }
 
-X_test_____unknown_arg()
+test_____unknown_arg()
 {
   local arg=salmon
   refuteDown ${arg}
