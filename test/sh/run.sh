@@ -8,4 +8,5 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 #  ${file}
 #done
 
+${MY_DIR}/test_cyber_dojo.sh
 ${MY_DIR}/test_down.sh
