@@ -4,14 +4,19 @@ shift # start-point
 shift # create
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  ./cyber-dojo start-point create NAME \
-#     --custom|--exercises|--languages \
-#       <git-repo-url>...
+# cyber-dojo start-point create <name> --custom    <url> ...
+# cyber-dojo start-point create <name> --exercises <url> ...
+# cyber-dojo start-point create <name> --languages <url> ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+RED=$(tput setaf 1)
+GREEN=$(tput setaf 2)
+BOLD=$(tput bold)
+RS='\033[0m' # NoColour
 
 error()
 {
-  >&2 echo "ERROR: ${2}"
+  >&2 echo -e "${RED}ERROR: ${2}${RS}"
   exit "${1}"
 }
 
@@ -53,66 +58,76 @@ exit_zero_if_show_use()
 
 # - - - - - - - - - - - -
 
+define()
+{
+  o=;
+  while IFS="\n" read -r a; do o="$o$a"'
+';
+  done
+  eval "$1=\$o"
+}
+
 show_use()
 {
   local MY_NAME=cyber-dojo
-  cat <<- EOF
+  define TEXT <<- EOF
 
   Use:
-  \$ ./${MY_NAME} start-point create <name> --custom    <url>...
-  \$ ./${MY_NAME} start-point create <name> --exercises <url>...
-  \$ ./${MY_NAME} start-point create <name> --languages <url>...
+  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--custom${RS}    <url> ...
+  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--exercises${RS} <url> ...
+  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--languages${RS} <url> ...
 
   Creates a cyber-dojo start-point image named <name>
-  Its base image will be cyberdojo/starter-base:latest
+  Its base image will be ${BOLD}cyberdojo/starter-base:STARTER_BASE_TAG${RS}
   It will contain git clones of all the specified git-repo <url>s
 
   Example 1: local git-repo urls
 
-  \$ ./${MY_NAME} start-point create \\
-        eg/first \\
-          --custom \\
-            /user/fred/.../yahtzee \
-            /user/fred/.../bowling_game.git \
-            file:///user/fred/.../fizz_buzz \
-            file:///user/fred/.../game_of_life.git
+  ${GREEN}${MY_NAME} start-point create \\\\
+        eg/first \\\\
+          --custom \\\\
+            /user/fred/.../yahtzee \\\\
+            /user/fred/.../bowling_game.git \\\\
+            file:///user/fred/.../fizz_buzz \\\\
+            file:///user/fred/.../game_of_life.git${RS}
 
   Example 2: non-local git-repo <url>
 
-  \$ ./${MY_NAME} start-point create \\
-        eg/second \\
-          --exercises \\
-            https://github.com/.../my-exercises.git
+  ${GREEN}${MY_NAME} start-point create \\\\
+        eg/second \\\\
+          --exercises \\\\
+            https://github.com/.../my-exercises.git${RS}
 
   Example 3: local and non-local git-repo <url>s
 
-  \$ ./${MY_NAME} start-point create \\
-        eg/third \\
-          --languages \\
-            /user/fred/.../asm-assert \\
-            https://github.com/.../my-languages.git
+  ${GREEN}${MY_NAME} start-point create \\\\
+        eg/third \\\\
+          --languages \\\\
+            /user/fred/.../asm-assert \\\\
+            https://github.com/.../my-languages.git${RS}
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  \$ ./${MY_NAME} start-point create \\
-        eg/fourth \\
-          --languages \\
-            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
+  ${GREEN}${MY_NAME} start-point create \\\\
+        eg/fourth \\\\
+          --languages \\\\
+            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)${RS}
 
   Example 5: read git-repo <url>s from a local file
 
-  \$ ./${MY_NAME} start-point create \\
-        eg/fifth \\
-          --languages \\
-            \$(< my-language-selection.txt)
+  ${GREEN}${MY_NAME} start-point create \\\\
+        eg/fifth \\\\
+          --languages \\\\
+            \$(< my-language-selection.txt)${RS}
 
-  \$ cat my-language-selection.txt
+  ${GREEN}cat my-language-selection.txt${RS}
   https://github.com/.../java-junit.git
   https://github.com/.../javascript-jasmine.git
   https://github.com/.../python-pytest.git
   https://github.com/.../ruby-minitest.git
 
 EOF
+  echo -e "${TEXT}"
 }
 
 # - - - - - - - - - - - -
@@ -250,7 +265,7 @@ build_image_from_context_dir()
     docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
-    echo "Successfully built ${IMAGE_NAME}"
+    echo -e "${GREEN}Successfully built ${IMAGE_NAME}${RS}"
   fi
 }
 

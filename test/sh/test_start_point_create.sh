@@ -18,26 +18,22 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  line1='$ ./cyber-dojo start-point create <name> --custom    <url>...'
-  line2='$ ./cyber-dojo start-point create <name> --exercises <url>...'
-  line3='$ ./cyber-dojo start-point create <name> --languages <url>...'
+  line1='Creates a cyber-dojo start-point image named <name>'
+  line2='It will contain git clones of all the specified git-repo <url>s'
 
   assertStartPointCreate
   assertStdoutIncludes "${line1}"
   assertStdoutIncludes "${line2}"
-  assertStdoutIncludes "${line3}"
   assertNoStderr
 
   assertStartPointCreate --help
   assertStdoutIncludes "${line1}"
   assertStdoutIncludes "${line2}"
-  assertStdoutIncludes "${line3}"
   assertNoStderr
 
   assertStartPointCreate -h
   assertStdoutIncludes "${line1}"
   assertStdoutIncludes "${line2}"
-  assertStdoutIncludes "${line3}"
   assertNoStderr
 }
 

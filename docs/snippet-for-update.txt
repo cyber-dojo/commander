@@ -57,10 +57,9 @@ I think its simpler, in that case, to just do
 # Use commit message like  [ci skip]
 # Eg
 # [release=2.3.1]
-# Scripts will have to detect this.
+# CI Scripts will have to detect this.
 # Need the env-var on CircleCI for the commit message.
-# Can you do an if inside a Dockerfile. Probably not.
-# Will need two Dockerfiles (for versioner).
+# Dockerfile will set RELEASE even it its empty string.
 
 
 # Would be nice to colour bash fragments in the help text
