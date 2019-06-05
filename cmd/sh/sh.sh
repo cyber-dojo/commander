@@ -52,9 +52,9 @@ running_container()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "$1" = '' ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
+if [ -z "$1" ] || [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   show_help
-elif [ "$2" != '' ]; then
+elif [ -n "$2" ]; then
   show_help
   exit 1
 else

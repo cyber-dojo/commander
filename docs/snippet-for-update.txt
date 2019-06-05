@@ -38,7 +38,7 @@ shift # update
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 readonly WAS_TAG=$(docker run --rm cyberdojo/versioner:latest sh -c 'echo -n ${RELEASE}')
-if [ ! -z "${WAS_TAG}" ]; then
+if [ -n "${WAS_TAG}" ]; then
   docker tag cyberdojo/versioner:latest cyberdojo/versioner:${WAS_TAG}
 fi
 
@@ -52,7 +52,7 @@ fi
 readonly NOW_TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
 if [ "${RELEASE}" = 'latest' ]; then
   docker tag ${IMAGE} cyberdojo/versioner:${NOW_TAG}
-elif [ ! -z "${NOW_TAG}" ]; then
+elif [ -n "${NOW_TAG}" ]; then
   docker tag ${IMAGE} cyberdojo/versioner:latest
 else
   # ????? Allow this I think ????? Issue warning

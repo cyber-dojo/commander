@@ -18,6 +18,6 @@ sha_for()
   esac
 }
 
-if [ "${1}" != '' ]; then
+if [ -n "${1}" ]; then
   sha_for "${1}"
 fi

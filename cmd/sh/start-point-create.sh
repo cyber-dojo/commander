@@ -50,7 +50,7 @@ declare -ar GIT_REPO_URLS="(${@:3})"
 
 exit_zero_if_show_use()
 {
-  if [ "${1}" = '' ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
+  if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
     show_use
     exit 0
   fi
