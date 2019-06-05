@@ -12,4 +12,4 @@ STARTER_BASE_TAG=${STARTER_BASE_SHA:0:7}
 SCRIPT=$(cat "${MY_DIR}/start-point-create.sh")
 
 # replace the string STARTER_BASE_TAG with its var-value in SCRIPT
-echo "${SCRIPT/STARTER_BASE_TAG/${STARTER_BASE_TAG}}"
+echo "${SCRIPT//STARTER_BASE_TAG/${STARTER_BASE_TAG}}"
