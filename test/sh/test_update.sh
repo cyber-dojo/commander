@@ -12,7 +12,7 @@ test_UPDATE() { :; }
 
 test___success() { :; }
 
-OFF_test_____help_arg_prints_use()
+test_____help_arg_prints_use()
 {
   local readonly expected_stdout="
 Use: cyber-dojo update [latest|TAG]
