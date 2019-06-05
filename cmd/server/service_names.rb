@@ -9,10 +9,10 @@ def service_names
     mapper
     nginx
     prometheus
+    ragger
     runner
     saver
     web
     zipper
-    ragger
   )
 end

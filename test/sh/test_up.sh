@@ -40,13 +40,15 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertStdoutIncludes 'Using default nginx.env'
   assertStdoutIncludes 'Using default web.env'
 
-  assertStdoutIncludes "Using --custom=${custom_name}"
-  assertStdoutIncludes "Using --exercises=${exercises_name}"
-  assertStdoutIncludes "Using --languages=${languages_name}"
-  assertStdoutIncludes "Using --port=${port}"
+  assertStdoutIncludes "Using port=${port}"
+  
+  assertStdoutIncludes "Using custom=${custom_name}"
+  assertStdoutIncludes "Using exercises=${exercises_name}"
+  assertStdoutIncludes "Using languages=${languages_name}"
 
   for service in "${service_names[@]}"
   do
+    assertStdoutIncludes "Using ${service}=cyberdojo/${service}:"
     assertStdoutIncludes "Creating cyber-dojo-${service}"
   done
   assertNoStderr

@@ -30,10 +30,13 @@ To set your own password and remove this warning:
 Using default grafana.env
 Using default nginx.env
 Using default web.env
-Using --custom=cyberdojo/custom:latest
-Using --exercises=cyberdojo/exercises:latest
-Using --languages=cyberdojo/languages-small
-Using --port=80
+Using port=80
+Using custom=cyberdojo/custom:7d29a75
+Using exercises=cyberdojo/exercises:3ba2e02
+Using languages=cyberdojo/languages-small:0bac237
+Using ragger=cyberdojo/ragger:5998a76
+Using runner=cyberdojo/runner:1b06f00
+...
 
 Then
 >>checking cyberdojofoundation/csharp_nunit:latest

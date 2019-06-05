@@ -25,10 +25,13 @@ def cyber_dojo_server_up
   }
   add_image_tag_variables(env_vars)
 
-  STDOUT.puts "Using --custom=#{custom}"
-  STDOUT.puts "Using --exercises=#{exercises}"
-  STDOUT.puts "Using --languages=#{languages}"
-  STDOUT.puts "Using --port=#{port}"
+  STDOUT.puts "Using port=#{port}"
+  STDOUT.puts "Using custom=#{custom}"
+  STDOUT.puts "Using exercises=#{exercises}"
+  STDOUT.puts "Using languages=#{languages}"
+  service_names.each do |name|
+    STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
+  end
 
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
@@ -41,6 +44,15 @@ def up_argument(name)
   key = "CYBER_DOJO_#{name.upcase}"
   option = "--#{name}"
   ENV[key] || up_command_line[option] || dot_env[key]
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def tagged_image_name(service)
+  key = "CYBER_DOJO_#{service.upcase}_SHA"
+  sha = dot_env[key]
+  tag = sha[0...7]
+  "cyberdojo/#{service}:#{tag}"
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
