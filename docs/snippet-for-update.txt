@@ -1,8 +1,9 @@
 
 Update could be _inside_ commander.
 But better outside since the last step is for cyber-dojo to replace itself.
+Dropped RELEASE env-var from main script.
+[./cyber-dojo update] is now the only way to change what :latest is
 
-$ ./cyber-dojo update [RELEASE]
 
 #!/bin/bash
 set -e
@@ -12,40 +13,63 @@ shift # update
 #  Use:
 #  \$ ./cyber-dojo update [latest|RELEASE]
 #
-#  Example 1: update to latest (the default)
-#    \$ ./cyber-dojo update
-#    \$ ./cyber-dojo update latest
-#    Pulls latest ready for the next [cyber-dojo up] command.
-#    Tags it with its release number (eg 2.3.0)
+#  Example 1: change to latest (the default)
 #
-#  Example 2: update to a release
-#    \$ cyber-dojo update 2.3.0
-#    Pulls 2.3.0 and tags it with latest
+#    cyber-dojo update
+#    cyber-dojo update latest
+#
+#    Pulls latest ready for the next [cyber-dojo up] command.
+#    Tags it with its release number (eg 3.19.1)
+#
+#  Example 2: change to a given release
+#
+#    cyber-dojo update 2.7.31
+#
+#    Pulls 2.7.31 and tags it with latest
 #    ready for the next [cyber-dojo up] command.
+#
+#  Example 3: change to a given tag
+#
+#    cyber-dojo update 3ec864c
+#
+#    Pulls 3ec864c and tags it with latest
+#    ready for the next [cyber-dojo up] command.
+#    Warns that you are on a development tag.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-RELEASE=${1:-latest}
-IMAGE=cyberdojo/versioner:${RELEASE}
+readonly WAS_TAG=$(docker run --rm cyberdojo/versioner:latest sh -c 'echo -n ${RELEASE}')
+if [ ! -z "${WAS_TAG}" ]; then
+  docker tag cyberdojo/versioner:latest cyberdojo/versioner:${WAS_TAG}
+fi
+
+readonly RELEASE=${1:-latest}
+readonly IMAGE=cyberdojo/versioner:${RELEASE}
 
 if [ "${RELEASE}" = 'latest' ]; then
   docker pull ${IMAGE}
 fi
 
-TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
-
+readonly NOW_TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
 if [ "${RELEASE}" = 'latest' ]; then
-  docker tag ${IMAGE} cyberdojo/versioner:${TAG}
-elif [ "${TAG}" != '' ]; then
+  docker tag ${IMAGE} cyberdojo/versioner:${NOW_TAG}
+elif [ ! -z "${NOW_TAG}" ]; then
   docker tag ${IMAGE} cyberdojo/versioner:latest
 else
+  # ????? Allow this I think ????? Issue warning
   echo "ERROR: ${RELEASE} is dev only" && exit 1
 fi
+
+TODO: overwrite cyber-dojo script with one from ${IMAGE}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Instead of allowing
   ./cyber-dojo update 23df2e8
 I think its simpler, in that case, to just do
   RELEASE=23df2e8 ./cyber-dojo up
+
+Hmmm. But that assumes the current cyber-dojo script is correct
+for 23df2e8 which is not necessarily true...
+No. All commands always use version:latest to get commander's tag
 
 # The two tag commands are because you can do
 # 1) ./cyber-dojo update 2.3.0

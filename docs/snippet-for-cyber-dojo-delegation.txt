@@ -2,17 +2,12 @@
 # Aim is for cyber-dojo script to boil down to straight delegation.
 #
 # ./cyber-dojo up
-#
 # ./cyber-dojo up --languages=james/cppu
-#
-# RELEASE=2.3 \
-#  ./cyber-dojo up --languages=james/cppu
 
 #!/bin/bash
 set -e
 
-readonly RELEASE=${RELEASE:-latest}
-readonly VERSIONER=cyberdojo/versioner:${RELEASE}
+readonly VERSIONER=cyberdojo/versioner:latest
 readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
 readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
 readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
@@ -25,7 +20,6 @@ docker run \
    --env CYBER_DOJO_PORT \
    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
-   --env RELEASE=${RELEASE} \
    --interactive \
    --rm \
    --volume=/var/run/docker.sock:/var/run/docker.sock \
