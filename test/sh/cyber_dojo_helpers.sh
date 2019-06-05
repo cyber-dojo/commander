@@ -124,7 +124,7 @@ assertDown()   {
   o=$(cat ${stdoutF})
   e=$(cat ${stderrF})
   msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
-  asserTrue "${msg}" ${status}
+  assertTrue "${msg}" ${status}
   #assertTrue  $?;
   set -e
 }
