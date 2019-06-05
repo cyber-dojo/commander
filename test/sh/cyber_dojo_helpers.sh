@@ -116,7 +116,19 @@ refuteStartPointExists()  { set +e; startPointExists $1; assertFalse $?; set -e;
 assertClean()  { clean  $*; assertTrue  $?; }
 refuteClean()  { set +e; clean  $*; assertFalse $?; set -e; }
 
-assertDown()   { down   $*; assertTrue  $?; }
+assertDown()   {
+  set +e
+  down   $*;
+  status=$?
+  info="assertDown() done down, $? status=${status}"
+  o=$(cat ${stdoutF})
+  e=$(cat ${stderrF})
+  msg="<info>${info}</info><o>${o}</o><e>${e}</e>"
+  asserTrue "${msg}" ${status}
+  #assertTrue  $?;
+  set -e
+}
+
 refuteDown()   { set +e; down   $*; assertFalse $?; set -e; }
 
 assertLogs()   { logs   $*; assertTrue  $?; }
