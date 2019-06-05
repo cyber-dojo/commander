@@ -67,12 +67,15 @@ show_use()
   Its base image will be cyberdojo/starter-base:latest
   It will contain git clones of all the specified git-repo <url>s
 
-  Example 1: local git-repo url
+  Example 1: local git-repo urls
 
   \$ ./${MY_NAME} start-point create \\
         eg/first \\
           --custom \\
-            file:///.../yahtzee
+            /user/fred/.../yahtzee \
+            /user/fred/.../bowling_game.git \
+            file:///user/fred/.../fizz_buzz \
+            file:///user/fred/.../game_of_life.git
 
   Example 2: non-local git-repo <url>
 
@@ -81,12 +84,12 @@ show_use()
           --exercises \\
             https://github.com/.../my-exercises.git
 
-  Example 3: multiple git-repo <url>s
+  Example 3: local and non-local git-repo <url>s
 
   \$ ./${MY_NAME} start-point create \\
         eg/third \\
           --languages \\
-            file:///.../asm-assert \\
+            /user/fred/.../asm-assert \\
             https://github.com/.../my-languages.git
 
   Example 4: read git-repo <url>s from a curl'd file

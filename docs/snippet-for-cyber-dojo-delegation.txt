@@ -25,18 +25,17 @@ docker run \
    --env CYBER_DOJO_PORT \
    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
-   --env DOCKER_MACHINE_NAME \
-   --env OSTYPE \
    --env RELEASE=${RELEASE} \
    --interactive \
    --rm \
    --volume=/var/run/docker.sock:/var/run/docker.sock \
    cyberdojo/commander:${COMMANDER_TAG} \
-     cyber-dojo.sh $@
+     cyber-dojo.rb $@
 
-# Note. Assuming cyber-dojo.sh is existing cyber-dojo script
+# Note. Will need to add volume-mounts for nginx.env etc.
 # Note. Will I still need SH_ROOT?
 # Note. Will I still need ENV_ROOT?
-# Note. Passing DOCKER_MACHINE_NAME and OSTYPE to allow commander to see if you
-#       are running on ToolBox if a [start-point create] GIT_REPO_URL
-#       cannot be resolved.
+# Note. No need to pass DOCKER_MACHINE_NAME and OSTYPE to allow commander to
+#       see if are running on ToolBox if a [start-point create] GIT_REPO_URL
+#       cannot be resolved. start-point-create runs locally (outside the container)
+#       anyway
