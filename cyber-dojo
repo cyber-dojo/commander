@@ -7,7 +7,6 @@
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
-readonly cyber_dojo_commander=cyberdojo/commander
 
 delegate_to_commander()
 {
@@ -27,8 +26,19 @@ delegate_to_commander()
     $(volume_grafana_env_file) \
     $(volume_nginx_env_file) \
     $(volume_web_env_file) \
-      "${cyber_dojo_commander}" \
+      "$(commander_image_name)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+commander_image_name()
+{
+  local readonly VERSIONER=cyberdojo/versioner:latest
+  local readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
+  local readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+  echo "cyberdojo/commander:${COMMANDER_SHA:0:7}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,17 +69,6 @@ volume_grafana_env_file()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-exit_non_zero_unless_docker_installed()
-{
-  local docker="${DOCKER_PROGRAM:-docker}"
-  if ! hash "${docker}" 2> /dev/null; then
-    >&2 echo 'ERROR: docker is not installed!'
-    exit 2
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 extract_and_run()
 {
   local script="${1}"
@@ -78,7 +77,7 @@ extract_and_run()
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
-    cyberdojo/commander:latest \
+    "$(commander_image_name)" \
     sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
   chmod 700 /tmp/${script}
   /tmp/${script} $@
@@ -87,7 +86,11 @@ extract_and_run()
 
 #==========================================================
 
-exit_non_zero_unless_docker_installed
+readonly docker="${DOCKER_PROGRAM:-docker}"
+if ! hash "${docker}" 2> /dev/null; then
+  >&2 echo 'ERROR: docker is not installed!'
+  exit 2
+fi
 
 if [ "$1" = '--debug' ]; then
   shift

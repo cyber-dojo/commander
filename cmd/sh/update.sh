@@ -2,32 +2,19 @@
 set -e
 shift # update
 
+readonly TAG="${1:-latest}"
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  ./cyber-dojo update
+#  ./cyber-dojo update [latest|TAG]
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 show_help()
 {
   echo
-  echo Use: cyber-dojo update
+  echo 'Use: cyber-dojo update [latest|TAG]'
   echo
   echo Updates all cyber-dojo server images and the cyber-dojo script file
 }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-IMAGE_NAMES=(
-  differ
-  grafana
-  mapper
-  nginx
-  prometheus
-  ragger
-  runner
-  saver
-  web
-  zipper
-)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -42,29 +29,38 @@ error_bad_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-replace_myself()
+replace_main_script()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive "${cyber_dojo_commander}" sh)
+  local cid=$(docker create --interactive "$(commander_image_name)" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
-  local new_me=/tmp/cyber-dojo
-  chmod +x "${new_me}"
-  cp "${new_me}" "$0"
-  rm "${new_me}"
+  #TODO: pass in the dir of the main script?
+  #local new_me=/tmp/cyber-dojo
+  #chmod +x "${new_me}"
+  #cp "${new_me}" "$0"
+  #rm "${new_me}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+commander_image_name()
+{
+  local readonly VERSIONER=cyberdojo/versioner:latest
+  local readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
+  local readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+  echo "cyberdojo/commander:${COMMANDER_SHA:0:7}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   show_help
-elif [ "$1" = '' ]; then
-  docker pull cyberdojo/commander:latest
-  for NAME in "${IMAGE_NAMES[@]}"
-  do
-    docker pull cyberdojo/${NAME}:latest
-  done
-  replace_myself
 else
-  error_bad_args "$@"
+  docker pull cyberdojo/versioner:${TAG}
+  docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:latest
+  docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:${TAG}
+  replace_main_script
+#  error_bad_args "$@"
 fi

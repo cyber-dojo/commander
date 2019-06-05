@@ -12,10 +12,10 @@ test_UPDATE() { :; }
 
 test___success() { :; }
 
-test_____help_arg_prints_use()
+OFF_test_____help_arg_prints_use()
 {
   local readonly expected_stdout="
-Use: cyber-dojo update
+Use: cyber-dojo update [latest|TAG]
 
 Updates all cyber-dojo server images and the cyber-dojo script file"
 
@@ -55,7 +55,7 @@ OFF_test_____pull_latest_images_for_all_services()
 
 test___failure() { :; }
 
-test_____unknown_arg()
+OFF_test_____unknown_arg()
 {
   local readonly arg=salmon
   refuteUpdate ${arg}
@@ -65,7 +65,7 @@ test_____unknown_arg()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____unknown_args()
+OFF_test_____unknown_args()
 {
   local readonly arg1=salmon
   local readonly arg2=parr

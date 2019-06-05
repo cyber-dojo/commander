@@ -2,8 +2,7 @@
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-RELEASE=${RELEASE:-latest}
-VERSIONER=cyberdojo/versioner:${RELEASE}
+VERSIONER=cyberdojo/versioner:latest
 ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
 ENV_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_STARTER_BASE_SHA')
 # CYBER_DOJO_STARTER_BASE_SHA is 27 chars long, +1 for the =

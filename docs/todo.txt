@@ -3,8 +3,7 @@ CI needs to trigger system-tests
 
 =========================================================
 
-Add --help text for overridable settings
-not just for [up] but can be used for any command.
+Add --help text for overridable [up settings via ENV-VAR.
 
 =========================================================
 
@@ -51,15 +50,3 @@ Creating cyber-dojo-custom     ... done
 Creating cyber-dojo-languages  ... done
 Creating cyber-dojo-runner     ... done
 ...
-
-=========================================================
-up.rb does this...
-
-STDOUT.puts "Using --custom=#{custom}"
-STDOUT.puts "Using --exercises=#{exercises}"
-STDOUT.puts "Using --languages=#{languages}"
-STDOUT.puts "Using --port=#{port}"
-
-better if it did
-STDOUT.puts "Using --port=#{port}"
-and then printed out all the image names

@@ -243,7 +243,7 @@ build_image_from_context_dir()
     # On a Macbook using Docker-Toolbox stderr looks like this:
     #
     #   1 Sending build context to Docker daemon  185.9kB
-    #   2 Step 1/N : FROM cyberdojo/start-points-base:latest
+    #   2 Step 1/N : FROM cyberdojo/starter-base:...
     #   3  ---> Running in fe6adeee193c
     #   ...
     #---5 ERROR: no manifest.json files in
