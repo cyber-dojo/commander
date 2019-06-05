@@ -61,11 +61,8 @@ languages_urls()
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 declare -a service_names=(
-  custom
   differ
-  exercises
   grafana
-  languages
   mapper
   nginx
   prometheus

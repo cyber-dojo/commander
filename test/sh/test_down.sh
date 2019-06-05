@@ -40,7 +40,7 @@ test_____no_args_stops_and_removes_server_containers()
 
   assertDown
 
-  for service in "${service_names[@]}"
+  for service in custom exercises languages "${service_names[@]}"
   do
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
     assertStdoutIncludes "Removing cyber-dojo-${service}"

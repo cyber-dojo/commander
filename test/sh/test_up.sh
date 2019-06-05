@@ -41,14 +41,17 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertStdoutIncludes 'Using default web.env'
 
   assertStdoutIncludes "Using port=${port}"
-  
+
   assertStdoutIncludes "Using custom=${custom_name}"
   assertStdoutIncludes "Using exercises=${exercises_name}"
   assertStdoutIncludes "Using languages=${languages_name}"
-
   for service in "${service_names[@]}"
   do
     assertStdoutIncludes "Using ${service}=cyberdojo/${service}:"
+  done
+
+  for service in custom exercises languages "${service_names[@]}"
+  do
     assertStdoutIncludes "Creating cyber-dojo-${service}"
   done
   assertNoStderr
