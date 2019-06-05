@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
@@ -19,6 +19,11 @@ test_____help_arg_prints_use()
 Use: cyber-dojo down
 
 Stops and removes docker containers created with 'up'"
+
+  assertDown -h
+  assertStdoutEquals "${expected_stdout}"
+  assertNoStderr
+
   assertDown --help
   assertStdoutEquals "${expected_stdout}"
   assertNoStderr
