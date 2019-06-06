@@ -1,8 +1,7 @@
 
 Update could be _inside_ commander.
 But better outside since the last step is for cyber-dojo to replace itself.
-Dropped RELEASE env-var from main script.
-[./cyber-dojo update] is now the only way to change what :latest is
+[./cyber-dojo update] is the only way to change what :latest is
 
 
 #!/bin/bash
@@ -36,26 +35,33 @@ shift # update
 #    Warns that you are on a development tag.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-readonly WAS_TAG=$(docker run --rm cyberdojo/versioner:latest sh -c 'echo -n ${RELEASE}')
-if [ -n "${WAS_TAG}" ]; then
-  docker tag cyberdojo/versioner:latest cyberdojo/versioner:${WAS_TAG}
+# keep a release-tag for the outgoing latest
+readonly WAS_VERSIONER_IMAGE=cyberdojo/versioner:latest
+readonly WAS=$(docker run --rm ${WAS_VERSIONER_IMAGE} sh -c 'echo -n ${RELEASE}')
+if [ -n "${WAS}" ]; then
+  docker tag ${WAS_VERSIONER_IMAGE} cyberdojo/versioner:${WAS}
+else
+  readonly WAS_SHA=$(docker run --rm ${WAS_VERSIONER_IMAGE} sh -c 'echo -n ${SHA}')
+  readonly WAS_TAG=${WAS_SHA:0:7}
+  docker tag ${WAS_VERSIONER_IMAGE} cyberdojo/versioner:${WAS_TAG}
 fi
 
 readonly RELEASE=${1:-latest}
-readonly IMAGE=cyberdojo/versioner:${RELEASE}
+readonly NOW_VERSIONER_IMAGE=cyberdojo/versioner:${RELEASE}
+docker pull ${NOW_VERSIONER_IMAGE}
+docker tag ${NOW_VERSIONER_IMAGE} cyberdojo/versioner:latest
 
+# Do this? Not symmetric with keeping release-tag above.
+# Can still get release tag and display it when any command is run.
+# Maybe this should be done via the command:
+# ./cyber-dojo version
+readonly NOW_TAG=$(docker run --rm ${NOW_VERSIONER_IMAGE} sh -c 'echo -n ${RELEASE}')
 if [ "${RELEASE}" = 'latest' ]; then
-  docker pull ${IMAGE}
-fi
-
-readonly NOW_TAG=$(docker run --rm ${IMAGE} sh -c 'echo -n ${RELEASE}')
-if [ "${RELEASE}" = 'latest' ]; then
-  docker tag ${IMAGE} cyberdojo/versioner:${NOW_TAG}
-elif [ -n "${NOW_TAG}" ]; then
-  docker tag ${IMAGE} cyberdojo/versioner:latest
-else
+  docker tag ${NOW_VERSIONER_IMAGE} cyberdojo/versioner:${NOW_TAG}
+elif [ -z "${NOW_TAG}" ]; then
   echo "Warning: ${RELEASE} is dev only"
-fi
+end
+
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +81,3 @@ Update is the only way you change versioner:latest
 # CI Scripts will have to detect this.
 # Need the env-var on CircleCI for the commit message.
 # Dockerfile will set RELEASE even it its empty string.
-
-
-# Would be nice to colour bash fragments in the help text
-# green examples stand out. Similarly, errors can be in red.
