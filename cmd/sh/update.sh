@@ -33,6 +33,6 @@ if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
 else
   docker pull cyberdojo/versioner:${TAG}
   docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:latest
-  docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:${TAG}
-#  error_bad_args "$@"
+  #TODO: if TAG=latest tag create release tag
+  #error_bad_args "$@"
 fi
