@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
+readonly SCRIPT_DIR="{$1}"; shift
 shift # update
-
 readonly TAG="${1:-latest}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,11 +35,10 @@ replace_main_script()
   local cid=$(docker create --interactive "$(commander_image_name)" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
-  #TODO: pass in the dir of the main script?
-  #local new_me=/tmp/cyber-dojo
-  #chmod +x "${new_me}"
-  #cp "${new_me}" "$0"
-  #rm "${new_me}"
+  local new_me=/tmp/cyber-dojo
+  chmod +x "${new_me}"
+  cp "${new_me}" "${SCRIPT_DIR}"
+  rm "${new_me}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

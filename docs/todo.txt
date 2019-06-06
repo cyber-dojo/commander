@@ -1,4 +1,22 @@
 
+The main script needs to replace itself in an [upgrade]
+
+=========================================================
+
+The main cyber-dojo script needs to know what commander:SHA
+it came out of. Have [cyber-dojo version] which reports this.
+Handy for checking.
+
+=========================================================
+
+After curling the main cyber-dojo script (install)
+you also need to do a [cyber-dojo update latest]
+which will replace the main script with one from
+commander:SHA as determined by versioner:latest
+Is it better to have an install-cyber-dojo.sh script.
+
+=========================================================
+
 CI needs to trigger system-tests
 
 =========================================================

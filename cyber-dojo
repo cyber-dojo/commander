@@ -80,7 +80,7 @@ extract_and_run()
     "$(commander_image_name)" \
     sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
   chmod 700 /tmp/${script}
-  /tmp/${script} $@
+  /tmp/${script} "${my_dir}" $@
   exit $?
 }
 
