@@ -5,6 +5,10 @@ readonly github_cyber_dojo=https://github.com/cyber-dojo
 readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
+# Tests override COMMANDER_IMAGE so cyber-dojo script does
+# _NOT_ get the commander-image tag from versioner:latest
+export COMMANDER_IMAGE=cyberdojo/commander:latest
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CD_DIR()
@@ -20,7 +24,7 @@ CDL_DIR()
 
 on_CI()
 {
-  [[ ! -z "${CIRCLE_SHA1}" ]] || [[ ! -z "${TRAVIS}" ]]
+  [[ -n "${CIRCLE_SHA1}" ]] || [[ -n "${TRAVIS}" ]]
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -134,16 +138,16 @@ refuteStartPointExists()  { startPointExists  $1; refute $?; }
 startPointExists()
 {
   # don't match a substring
-  local readonly start_of_line='^'
-  local readonly name=$1
-  local readonly end_of_line='$'
+  local -r start_of_line='^'
+  local -r name=$1
+  local -r end_of_line='$'
   docker image ls --format '{{.Repository}}:{{.Tag}}' \
     | grep "${start_of_line}${name}${end_of_line}" > /dev/null
 }
 
 removeAllStartPoints()
 {
-  startPoints=(`${exe} start-point ls --quiet`)
+  local -r startPoints=(`${exe} start-point ls --quiet`)
   for startPoint in "${startPoints[@]}"
   do
     ${exe} start-point rm "${startPoint}"

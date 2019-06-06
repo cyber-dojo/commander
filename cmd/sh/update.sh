@@ -32,10 +32,10 @@ error_bad_args()
 replace_main_script()
 {
   # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local cid=$(docker create --interactive "$(commander_image_name)" sh)
+  local -r cid=$(docker create --interactive "$(commander_image_name)" sh)
   docker cp "${cid}":/app/cyber-dojo /tmp
   docker rm "${cid}" > /dev/null
-  local new_me=/tmp/cyber-dojo
+  local -r new_me=/tmp/cyber-dojo
   chmod +x "${new_me}"
   cp "${new_me}" "${SCRIPT_DIR}"
   rm "${new_me}"
@@ -45,10 +45,10 @@ replace_main_script()
 
 commander_image_name()
 {
-  local readonly VERSIONER=cyberdojo/versioner:latest
-  local readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-  local readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
-  local readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+  local -r VERSIONER=cyberdojo/versioner:latest
+  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
+  local -r COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
   echo "cyberdojo/commander:${COMMANDER_SHA:0:7}"
 }
 

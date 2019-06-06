@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo down
 
 Stops and removes docker containers created with 'up'"
@@ -31,11 +31,11 @@ Stops and removes docker containers created with 'up'"
 
 test_____no_args_stops_and_removes_server_containers()
 {
-  local readonly custom_name=test_down_custom
+  local -r custom_name=test_down_custom
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
-  local readonly exercises_name=test_down_exercises
+  local -r exercises_name=test_down_exercises
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
-  local readonly languages_name=test_down_languages
+  local -r languages_name=test_down_languages
   assertStartPointCreate ${languages_name} --languages $(languages_urls)
 
   assertUp --custom=${custom_name} \
@@ -49,7 +49,7 @@ test_____no_args_stops_and_removes_server_containers()
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
     assertStdoutIncludes "Removing cyber-dojo-${service}"
   done
-  assertNoStderr # <<<<<
+  assertNoStderr
 
   assertStartPointRm ${custom_name}
   assertStartPointRm ${exercises_name}
@@ -62,7 +62,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local arg=salmon
+  local -r arg=salmon
   refuteDown ${arg}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${arg}]"
@@ -72,8 +72,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local arg1=salmon
-  local arg2=parr
+  local -r arg1=salmon
+  local -r arg2=parr
   refuteDown ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${arg1}]"

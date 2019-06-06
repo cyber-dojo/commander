@@ -42,7 +42,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly arg=salmon
+  local -r arg=salmon
   refuteLogs ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: cyber-dojo-${arg} is not a running container"

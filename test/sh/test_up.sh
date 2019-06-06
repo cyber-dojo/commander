@@ -13,13 +13,13 @@ test___success() { :; }
 
 test_____up_prints_start_points_and_port_and_creates_containers()
 {
-  local readonly custom_name=test_up_custom_1
+  local -r custom_name=test_up_custom_1
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
-  local readonly exercises_name=test_up_exercises_1
+  local -r exercises_name=test_up_exercises_1
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
-  local readonly languages_name=test_up_languages_1
+  local -r languages_name=test_up_languages_1
   assertStartPointCreate ${languages_name} --languages $(languages_urls)
-  local readonly port=8462
+  local -r port=8462
 
   assertUp --custom=${custom_name} \
            --exercises=${exercises_name} \
@@ -65,7 +65,7 @@ test_____up_prints_start_points_and_port_and_creates_containers()
 
 test_____help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo up [OPTIONS]
 
 Creates and starts a cyber-dojo server using named/default start-points.
@@ -161,7 +161,7 @@ test_____missing_port()
 
 test_____named_custom_does_not_exist()
 {
-  local readonly name=not_exist
+  local -r name=not_exist
   refuteUp --custom=${name}
   assertStdoutIncludes "docker pull ${name}"
   assertStderrIncludes "ERROR: failed to pull ${name}"
@@ -171,7 +171,7 @@ test_____named_custom_does_not_exist()
 
 test_____named_exercises_does_not_exist()
 {
-  local readonly name=not_exist
+  local -r name=not_exist
   refuteUp --exercises=${name}
   assertStdoutIncludes "docker pull ${name}"
   assertStderrIncludes "ERROR: failed to pull ${name}"
@@ -181,7 +181,7 @@ test_____named_exercises_does_not_exist()
 
 test_____named_languages_does_not_exist()
 {
-  local readonly name=not_exist
+  local -r name=not_exist
   refuteUp --languages=${name}
   assertStdoutIncludes "docker pull ${name}"
   assertStderrIncludes "ERROR: failed to pull ${name}"
@@ -191,7 +191,7 @@ test_____named_languages_does_not_exist()
 
 test_____named_exercises_is_not_exercise_type()
 {
-  local readonly custom_name=test_up_custom_2
+  local -r custom_name=test_up_custom_2
   assertStartPointCreate ${custom_name} --custom $(custom_urls)
   refuteUp --exercises=${custom_name}
   assertNoStdout
@@ -203,7 +203,7 @@ test_____named_exercises_is_not_exercise_type()
 
 test_____unknown_arg()
 {
-  local readonly name=salmon
+  local -r name=salmon
   refuteUp ${name}
   assertNoStdout
   assertStderrEquals "ERROR: unknown argument [${name}]"
@@ -213,8 +213,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly arg1=--spey
-  local readonly arg2=--tay
+  local -r arg1=--spey
+  local -r arg2=--tay
   refuteUp ${arg1}=A ${arg2}=B
   assertNoStdout
   assertStderrIncludes "ERROR: unknown argument [${arg1}]"

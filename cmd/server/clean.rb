@@ -11,7 +11,7 @@ def cyber_dojo_server_clean
     show help
     exit succeeded
   end
-
+  
   ARGV[1..-1].each do |arg|
     STDERR.puts "FAILED: unknown argument [#{arg}]"
   end

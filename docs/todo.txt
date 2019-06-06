@@ -1,19 +1,43 @@
 
-The main script needs to replace itself in an [upgrade]
+The main script needs to replace itself in an [update]
+Done that. Hit a nasty dependency.
+if I make a change to cyber-dojo and do
+./sh/build_docker_images.sh
+Then an [update] (eg in a test on CI) will do a
+docker pull cyberdojo/versioner:latest
+which will have its own COMMANDER_SHA
+so it will not replace the cyber-dojo script with the one
+from that CI run. The script replacement of cyber-dojo is too complex.
+Needs to go. Redesign...
+1. cyber-dojo finds the commander sha from versioner:latest
+2. docker cats a cyber-dojo-inner script from that to /tmp
+3. chmod's it to 700
+4. runs it from /tmp
+Means update.sh can be run from inside the container.
+Only leaves create-start-point which does benefit if you're on Toolbox. Worth it?
+
+readonly VERSION=${CYBER_DOJO_VERSION:-latest}
+readonly VERSIONER_IMAGE=cyberdojo/versioner:${VERSION}
+readonly ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
+readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep CYBER_DOJO_COMMANDER_SHA)
+readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+readonly COMMANDER_TAG="${COMMANDER_SHA:0:7}"
+readonly COMMANDER_IMAGE=${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}
+readonly SCRIPT=cyber-dojo-inner
+docker run --rm --entrypoint cat "${COMMANDER_IMAGE}" /app/"${SCRIPT}" > /tmp
+chmod 700 /tmp/${SCRIPT}
+/tmp/${SCRIPT} $@
+
+Note: COMMANER_IMAGE has override for tests and local dev.
+Note: VERSION is to allow you try commands on any version, eg
+CYBER_DOJO_VERSION=1.2.3 ./cyber-dojo up
+to try out 1.2.3 without updating your :latest tag.
 
 =========================================================
 
-The main cyber-dojo script needs to know what commander:SHA
-it came out of. Have [cyber-dojo version] which reports this.
-Handy for checking.
-
-=========================================================
-
-After curling the main cyber-dojo script (install)
-you also need to do a [cyber-dojo update latest]
-which will replace the main script with one from
-commander:SHA as determined by versioner:latest
-Is it better to have an install-cyber-dojo.sh script.
+Would be nice if the main cyber-dojo script knew
+what commander:SHA it came out of. Have [cyber-dojo version]
+which reports this. Handy for checking.
 
 =========================================================
 
@@ -21,7 +45,7 @@ CI needs to trigger system-tests
 
 =========================================================
 
-Add --help text for overridable [up settings via ENV-VAR.
+Add -h|--help text for overridable [up] settings via ENV-VAR.
 
 =========================================================
 

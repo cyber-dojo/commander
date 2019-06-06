@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____no_arg_or_help_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo start-point update NAME
 
 Updates all the docker images inside the named start-point"
@@ -36,7 +36,7 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  local readonly arg=absent
+  local -r arg=absent
   refuteStartPointUpdate ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: ${arg} does not exist."
@@ -46,7 +46,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local readonly arg=cyberdojo/starter-base
+  local -r arg=cyberdojo/starter-base
   refuteStartPointUpdate ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: ${arg} is not a cyber-dojo start-point image."
@@ -56,8 +56,8 @@ test_____present_but_not_a_start_point()
 
 test_____unknown_arg()
 {
-  local readonly name=ok
-  local readonly arg=salmon
+  local -r name=ok
+  local -r arg=salmon
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   refuteStartPointUpdate ${name} ${arg}
   assertNoStdout
@@ -69,9 +69,9 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly name=ok
-  local readonly arg1=salmon
-  local readonly arg2=ova
+  local -r name=ok
+  local -r arg1=salmon
+  local -r arg2=ova
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   refuteStartPointUpdate ${name} ${arg1} ${arg2}
   assertNoStdout

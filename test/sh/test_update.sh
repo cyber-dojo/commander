@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo update [latest|TAG]
 
 Updates all cyber-dojo server images and the cyber-dojo script file"
@@ -60,7 +60,7 @@ test___failure() { :; }
 
 test_____unknown_tag_prints_to_stderr()
 {
-  local readonly arg=salmon
+  local -r arg=salmon
   refuteUpdate ${arg}
   assertNoStdout
   assertStderrEquals "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
@@ -70,8 +70,8 @@ test_____unknown_tag_prints_to_stderr()
 
 OFF_test_____too_many_args()
 {
-  local readonly arg1=salmon
-  local readonly arg2=parr
+  local -r arg1=salmon
+  local -r arg2=parr
   refuteUpdate ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "ERROR: unknown argument [${arg1}]"

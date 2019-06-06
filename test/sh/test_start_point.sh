@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____no_arg_and_help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo start-point [COMMAND]
 
 Manage cyber-dojo start-points
@@ -42,7 +42,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly arg=parr
+  local -r arg=parr
   refuteStartPoint ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: unknown argument [${arg}]"
@@ -52,8 +52,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly arg1=parr
-  local readonly arg2=egg
+  local -r arg1=parr
+  local -r arg2=egg
   refuteStartPoint ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "ERROR: unknown argument [${arg1}]"

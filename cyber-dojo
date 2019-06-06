@@ -1,110 +1,21 @@
 #!/bin/bash
+set -e
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Most commands delegate to a commander container.
-# However, a few commands are handled locally, on the host,
-# handled by extract_and_run().
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+readonly VERSION=${CYBER_DOJO_VERSION:-latest}
+readonly VERSIONER_IMAGE=cyberdojo/versioner:${VERSION}
+readonly ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
+readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep CYBER_DOJO_COMMANDER_SHA)
+readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+readonly COMMANDER_TAG=${COMMANDER_SHA:0:7}
+readonly COMMANDER_IMAGE=${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}
+readonly SCRIPT=cyber-dojo-inner
 
-readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
+docker run \
+  --entrypoint cat \
+  --rm \
+  "${COMMANDER_IMAGE}" /app/"${SCRIPT}" \
+  > /tmp/${SCRIPT}
 
-delegate_to_commander()
-{
-  docker run \
-    --init \
-    --rm \
-    --interactive \
-    --user=root \
-    --env CYBER_DOJO_CUSTOM \
-    --env CYBER_DOJO_EXERCISES \
-    --env CYBER_DOJO_LANGUAGES \
-    --env CYBER_DOJO_PORT \
-    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
-    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
-    --env RELEASE \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    $(volume_grafana_env_file) \
-    $(volume_nginx_env_file) \
-    $(volume_web_env_file) \
-      "$(commander_image_name)" \
-        /app/cmd/cyber-dojo.rb ${debug_option} "$@"
-}
+chmod 700 /tmp/${SCRIPT}
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-commander_image_name()
-{
-  local readonly VERSIONER=cyberdojo/versioner:latest
-  local readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-  local readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
-  local readonly COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
-  echo "cyberdojo/commander:${COMMANDER_SHA:0:7}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-volume_web_env_file()
-{
-  local web_env="${my_dir}/web.env"
-  if [ -f "${web_env}" ];  then
-    echo "--volume=${web_env}:${web_env}:ro"
-  fi
-}
-
-volume_nginx_env_file()
-{
-  local nginx_env="${my_dir}/nginx.env"
-  if [ -f "${nginx_env}" ];  then
-    echo "--volume=${nginx_env}:${nginx_env}:ro"
-  fi
-}
-
-volume_grafana_env_file()
-{
-  local grafana_env="${my_dir}/grafana.env"
-  if [ -f "${grafana_env}" ];  then
-    echo "--volume=${grafana_env}:${grafana_env}:ro"
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-extract_and_run()
-{
-  local script="${1}"
-  shift
-  docker run \
-    --interactive \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
-    --rm \
-    "$(commander_image_name)" \
-    sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
-  chmod 700 /tmp/${script}
-  /tmp/${script} "${my_dir}" $@
-  exit $?
-}
-
-#==========================================================
-
-readonly docker="${DOCKER_PROGRAM:-docker}"
-if ! hash "${docker}" 2> /dev/null; then
-  >&2 echo 'ERROR: docker is not installed!'
-  exit 2
-fi
-
-if [ "$1" = '--debug' ]; then
-  shift
-  debug_option='--debug'
-fi
-
-if [ "$1 $2" = 'start-point create' ]; then
-  extract_and_run start-point-create.sh "$@"
-elif [ "$1" = 'sh' ]; then
-  extract_and_run sh.sh "$@"
-elif [ "$1" = 'update' ]; then
-  extract_and_run update.sh "$@"
-elif ! delegate_to_commander "$@"; then
-  exit 5
-fi
-
-exit 0
+/tmp/${SCRIPT} $@

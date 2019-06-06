@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____no_args_or_help_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo start-point inspect NAME
 
 Prints, in JSON form, the display_name, image_name, sha, and url of each entry in the named start-point"
@@ -30,7 +30,7 @@ Prints, in JSON form, the display_name, image_name, sha, and url of each entry i
 
 test_____custom_start_point_prints_details()
 {
-  local readonly name=ok1
+  local -r name=ok1
   assertStartPointCreate ${name} --custom $(custom_urls)
   assertStartPointInspect ${name}
   assertStdoutIncludes '{'
@@ -48,7 +48,7 @@ test_____custom_start_point_prints_details()
 
 test_____exercises_start_point_prints_details()
 {
-  local readonly name=ok2
+  local -r name=ok2
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointInspect ${name}
   assertStdoutIncludes '{'
@@ -66,7 +66,7 @@ test_____exercises_start_point_prints_details()
 
 test_____languages_start_point_prints_details()
 {
-  local readonly name=ok3
+  local -r name=ok3
   assertStartPointCreate ${name} --languages $(languages_urls)
   assertStartPointInspect ${name}
   assertStdoutIncludes '{'
@@ -86,7 +86,7 @@ test___failure() { :; }
 
 test_____absent_start_point()
 {
-  local readonly name=absent
+  local -r name=absent
   refuteStartPointInspect ${name}
   assertNoStdout
   assertStderrEquals "ERROR: ${name} does not exist."
@@ -96,7 +96,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local readonly name=cyberdojo/starter-base
+  local -r name=cyberdojo/starter-base
   refuteStartPointInspect ${name}
   assertNoStdout
   assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point image."
@@ -106,8 +106,8 @@ test_____present_but_not_a_start_point()
 
 test_____unknown_arg()
 {
-  local readonly name=ok4
-  local readonly arg=wibble
+  local -r name=ok4
+  local -r arg=wibble
   assertStartPointCreate ${name} --custom $(custom_urls)
   refuteStartPointInspect ${name} ${arg}
   assertNoStdout
@@ -119,9 +119,9 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly name=ok5
-  local readonly arg1=springer
-  local readonly arg2=salmon
+  local -r name=ok5
+  local -r arg1=springer
+  local -r arg2=salmon
   assertStartPointCreate ${name} --custom $(custom_urls)
   refuteStartPointInspect ${name} ${arg1} ${arg2}
   assertNoStdout

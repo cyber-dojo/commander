@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# The main cyber-dojo script cats this out of a commander container
+# and runs it. This is so a [cyber-dojo update] command does not
+# have to attempt to replace the cyber-dojo script with a new version.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Most commands delegate to a commander container.
+# However, a few commands are currently handled locally,
+# on the host; see by extract_and_run().
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
+
+delegate_to_commander()
+{
+  docker run \
+    --env CYBER_DOJO_CUSTOM \
+    --env CYBER_DOJO_EXERCISES \
+    --env CYBER_DOJO_LANGUAGES \
+    --env CYBER_DOJO_PORT \
+    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
+    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
+    --env RELEASE \
+    --interactive \
+    --rm \
+    --user=root \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    $(volume_grafana_env_file) \
+    $(volume_nginx_env_file) \
+    $(volume_web_env_file) \
+      "$(commander_image_name)" \
+        /app/cmd/cyber-dojo.rb ${debug_option} "$@"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+commander_image_name()
+{
+  # Tests override COMMANDER_IMAGE (to use :latest)
+  local -r VERSION=${CYBER_DOJO_VERSION:-latest}
+  local -r VERSIONER_IMAGE=cyberdojo/versioner:${VERSION}
+  local -r ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
+  local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
+  local -r COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
+  local -r COMMANDER_TAG=${COMMANDER_SHA:0:7}
+  local -r COMMANDER_IMAGE=${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}
+  echo "${COMMANDER_IMAGE}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+volume_web_env_file()
+{
+  local -r web_env="${my_dir}/web.env"
+  if [ -f "${web_env}" ];  then
+    echo "--volume=${web_env}:${web_env}:ro"
+  fi
+}
+
+volume_nginx_env_file()
+{
+  local -r nginx_env="${my_dir}/nginx.env"
+  if [ -f "${nginx_env}" ];  then
+    echo "--volume=${nginx_env}:${nginx_env}:ro"
+  fi
+}
+
+volume_grafana_env_file()
+{
+  local -r grafana_env="${my_dir}/grafana.env"
+  if [ -f "${grafana_env}" ];  then
+    echo "--volume=${grafana_env}:${grafana_env}:ro"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+extract_and_run()
+{
+  local -r script="${1}"
+  shift
+  docker run \
+    --interactive \
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    --rm \
+    "$(commander_image_name)" \
+    sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
+  chmod 700 /tmp/${script}
+  /tmp/${script} "${my_dir}" $@
+  exit $?
+}
+
+#==========================================================
+
+if [ "$1" = '--debug' ]; then
+  shift
+  debug_option='--debug'
+fi
+
+if [ "$1 $2" = 'start-point create' ]; then
+  extract_and_run start-point-create.sh "$@"
+elif [ "$1" = 'sh' ]; then
+  extract_and_run sh.sh "$@"
+elif [ "$1" = 'update' ]; then
+  extract_and_run update.sh "$@"
+elif ! delegate_to_commander "$@"; then
+  exit 5
+fi
+
+exit 0

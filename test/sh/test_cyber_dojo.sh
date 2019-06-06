@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____no_args_or_help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
@@ -44,7 +44,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly arg=xyz
+  local -r arg=xyz
   ${exe} ${arg} >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout
@@ -53,8 +53,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly arg1=xyz
-  local readonly arg2=abc
+  local -r arg1=xyz
+  local -r arg2=abc
   ${exe} ${arg1} ${arg2} >${stdoutF} 2>${stderrF}
   assertFalse $?
   assertNoStdout

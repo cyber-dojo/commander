@@ -13,7 +13,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo start-point ls [-q|--quiet]
 
 Lists, in JSON form, the name and type of all cyber-dojo start-points.
@@ -49,7 +49,7 @@ test_____quiet_arg_prints_nothing_when_no_images()
 
 test_____quiet_arg_prints_just_names_when_images_exist()
 {
-  local readonly name=jj1
+  local -r name=jj1
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointLs --quiet
   assertStdoutIncludes "${name}"
@@ -65,7 +65,7 @@ test_____quiet_arg_prints_just_names_when_images_exist()
 
 test_____no_arg_prints_heading_and_names_types_sources()
 {
-  local readonly name=jj2
+  local -r name=jj2
   assertStartPointCreate ${name} --exercises $(exercises_urls)
   assertStartPointLs
   assertStdoutIncludes '{'
@@ -85,7 +85,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly arg=salmo
+  local -r arg=salmo
   refuteStartPointLs ${arg}
   assertNoStdout
   assertStderrEquals "ERROR: unknown argument [${arg}]"
@@ -95,8 +95,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly arg1=salmon
-  local readonly arg2=spey
+  local -r arg1=salmon
+  local -r arg2=spey
   refuteStartPointLs ${arg1} ${arg2}
   assertNoStdout
   assertStderrIncludes "ERROR: unknown argument [${arg1}]"

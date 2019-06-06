@@ -25,19 +25,8 @@ error()
 
 exit_non_zero_unless_git_installed()
 {
-  local git="${GIT_PROGRAM:-git}"
-  if ! hash "${git}" 2> /dev/null; then
+  if ! hash git 2> /dev/null; then
     error 1 'git is not installed!'
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_non_zero_unless_docker_installed()
-{
-  local docker="${DOCKER_PROGRAM:-docker}"
-  if ! hash "${docker}" 2> /dev/null; then
-    error 2 'docker is not installed!'
   fi
 }
 
@@ -70,7 +59,7 @@ define()
 
 show_use()
 {
-  local MY_NAME=cyber-dojo
+  local -r MY_NAME=cyber-dojo
   define TEXT <<- EOF
 
   Use:
@@ -135,11 +124,11 @@ EOF
 
 exit_non_zero_if_bad_args()
 {
-  local args="${@:1}"
+  local -r args="${@:1}"
   set +e
   docker container run --rm $(base_image_name) \
     /app/src/from_script/bad_args.rb ${args}
-  local status=$?
+  local -r status=$?
   set -e
   if [ "${status}" != '0' ]; then
     exit "${status}"
@@ -182,7 +171,7 @@ git_clone_one_url_into_context_dir()
   # context dir before running [docker image build].
   # Viz, run [git clone] on the host rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
-  local url="${1}"
+  local -r url="${1}"
   cd "${CONTEXT_DIR}"
   local stderr
   if ! stderr="$(git clone --single-branch --branch master --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
@@ -194,8 +183,7 @@ git_clone_one_url_into_context_dir()
   fi
 
   chmod -R +rX "${URL_INDEX}"
-  local sha
-  sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
+  local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
@@ -261,8 +249,8 @@ build_image_from_context_dir()
       | grep --invert-match 'Removing intermediate container'  \
       | >&2 grep --invert-match "The command '/bin/sh -c"      \
       || :
-    local last_line="${output##*$'\n'}"
-    local last_word="${last_line##* }"
+    local -r last_line="${output##*$'\n'}"
+    local -r last_word="${last_line##* }"
     docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else

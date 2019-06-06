@@ -18,7 +18,7 @@ test___success() { :; }
 
 test_____help_arg_prints_use()
 {
-  local readonly expected_stdout="
+  local -r expected_stdout="
 Use: cyber-dojo clean
 
 Removes dangling docker images/volumes and exited containers"
@@ -35,8 +35,8 @@ Removes dangling docker images/volumes and exited containers"
 
 test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers()
 {
-  local readonly dangling_images=`docker image ls --quiet --filter='dangling=true'`
-  local readonly exited_containers=`docker ps --all --quiet --filter='status=exited'`
+  local -r dangling_images=`docker image ls --quiet --filter='dangling=true'`
+  local -r exited_containers=`docker ps --all --quiet --filter='status=exited'`
   assertClean
   assertNoStdout
   assertNoStderr
@@ -50,7 +50,7 @@ test___failure() { :; }
 
 test_____unknown_arg()
 {
-  local readonly name=extra
+  local -r name=extra
   refuteClean ${name}
   assertNoStdout
   assertStderrEquals "FAILED: unknown argument [${name}]"
@@ -60,8 +60,8 @@ test_____unknown_arg()
 
 test_____unknown_args()
 {
-  local readonly extra1=salmon
-  local readonly extra2=parr
+  local -r extra1=salmon
+  local -r extra2=parr
   refuteClean ${extra1} ${extra2}
   assertNoStdout
   assertStderrIncludes "FAILED: unknown argument [${extra1}]"
