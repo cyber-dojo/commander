@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-readonly SCRIPT_DIR="{$1}"; shift
+readonly SCRIPT_DIR="${1}"; shift
 shift # update
 readonly TAG="${1:-latest}"
 
