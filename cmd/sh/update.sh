@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-readonly SCRIPT_DIR="${1}"; shift
 shift # update
 readonly TAG="${1:-latest}"
 
@@ -29,37 +28,11 @@ error_bad_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-replace_main_script()
-{
-  # See https://bani.com.br/2013/04/shell-script-that-updates-itself/
-  local -r cid=$(docker create --interactive "$(commander_image_name)" sh)
-  docker cp "${cid}":/app/cyber-dojo /tmp
-  docker rm "${cid}" > /dev/null
-  local -r new_me=/tmp/cyber-dojo
-  chmod +x "${new_me}"
-  cp "${new_me}" "${SCRIPT_DIR}"
-  rm "${new_me}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-commander_image_name()
-{
-  local -r VERSIONER=cyberdojo/versioner:latest
-  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-  local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
-  local -r COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
-  echo "cyberdojo/commander:${COMMANDER_SHA:0:7}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 if [ "$1" = '-h' ] || [ "$1" = '--help' ]; then
   show_help
 else
   docker pull cyberdojo/versioner:${TAG}
   docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:latest
   docker tag cyberdojo/versioner:${TAG} cyberdojo/versioner:${TAG}
-  replace_main_script
 #  error_bad_args "$@"
 fi

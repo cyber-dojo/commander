@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-shift # script_dir
 shift # start-point
 shift # create
 
