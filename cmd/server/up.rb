@@ -10,10 +10,6 @@ def cyber_dojo_server_up
   exit_failure_unless_start_point_exists('exercises', exercises)
   exit_failure_unless_start_point_exists('languages', languages)
 
-  pull_all_images_named_in(custom)
-  pull_all_images_named_in(languages)
-  STDOUT.puts
-
   env_root = write_env_files
   port = up_argument('port')
 
@@ -33,6 +29,10 @@ def cyber_dojo_server_up
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
+
+  pull_all_images_named_in(custom)
+  pull_all_images_named_in(languages)
+  STDOUT.puts
 
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
@@ -89,19 +89,19 @@ def write_env_files
     puts '   1. Create a file grafana.env with contents'
     puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
     puts '      in the same directory as the cyber-dojo script.'
-    puts '   2. Re-issue the command [cyberdojo up ...]'
+    puts '   2. Re-issue the command [cyber-dojo up ...]'
   end
   # Write any .env files to where docker-compose.yml expects them
   env_root = ENV['CYBER_DOJO_ENV_ROOT']
   %w( grafana nginx web ).each do |name|
     from = "#{sh_root}/#{name}.env"
     if File.exist?(from)
-      puts "Using custom #{name}.env"
+      puts "Using #{name}.env=#{from}"
       content = IO.read(from)
       to = "#{env_root}/#{name}.env"
       File.open(to, 'w') { |file| file.write(content) }
     else
-      puts "Using default #{name}.env"
+      puts "Using #{name}.env=default"
     end
   end
   env_root
