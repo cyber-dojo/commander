@@ -26,21 +26,10 @@ test_____up_prints_start_points_and_port_and_creates_containers()
            --languages=${languages_name} \
            --port=${port}
 
-  assertStdoutIncludes 'checking cyberdojofoundation/gcc_assert:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/ruby_mini_test:latest'
-
-  assertStdoutIncludes 'checking cyberdojofoundation/csharp_nunit:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/java_junit:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/python_unittest:latest'
-  assertStdoutIncludes 'checking cyberdojofoundation/ruby_test_unit:latest'
-
-  assertStdoutIncludes 'Using default grafana.env'
-  assertStdoutIncludes 'Using default nginx.env'
-  assertStdoutIncludes 'Using default web.env'
-
+  assertStdoutIncludes 'Using grafana.env=default'
+  assertStdoutIncludes 'Using nginx.env=default'
+  assertStdoutIncludes 'Using web.env=default'
   assertStdoutIncludes "Using port=${port}"
-
   assertStdoutIncludes "Using custom=${custom_name}"
   assertStdoutIncludes "Using exercises=${exercises_name}"
   assertStdoutIncludes "Using languages=${languages_name}"
