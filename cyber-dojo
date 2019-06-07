@@ -12,6 +12,7 @@ readonly SCRIPT=cyber-dojo-inner
 
 docker run \
   --entrypoint cat \
+  --env CYBER_DOJO_VERSION=${VERSION} \
   --rm \
   "${COMMANDER_IMAGE}" /app/"${SCRIPT}" \
   > /tmp/${SCRIPT}

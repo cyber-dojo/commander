@@ -12,6 +12,7 @@ def cyber_dojo_server_up
 
   pull_all_images_named_in(custom)
   pull_all_images_named_in(languages)
+  STDOUT.puts
 
   env_root = write_env_files
   port = up_argument('port')
@@ -188,12 +189,9 @@ end
 def pull_all_images_named_in(image_name)
   image_names = get_image_names
   get_manifests_image_names(image_name).each do |image_name|
-    STDOUT.puts ">>checking #{image_name}:latest"
-    if image_names.include? image_name
-      STDOUT.puts ">>exists #{image_name}:latest"
-    else
-      STDOUT.puts ">>!exists #{image_name}:latest"
-      STDOUT.puts ">>pulling #{image_name}:latest"
+    STDOUT.print('.')
+    unless image_names.include?(image_name)
+      STDOUT.puts(image_name)
       system("docker pull #{image_name}:latest")
     end
   end

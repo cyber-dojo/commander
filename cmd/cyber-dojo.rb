@@ -49,9 +49,8 @@ def read_only; 'ro'; end
 def service_running(name)
   # TODO: suppose a service name is a prefix of another.
   # Do more accurate check. Shell did this...
-  # local space='\s'
-  # local name=$1
-  # local end_of_line='$'
+  # space='\s'
+  # end_of_line='$'
   # docker ps --filter "name=${name}" | \
   #   grep "${space}${name}${end_of_line}" > /dev/null
 
@@ -65,7 +64,8 @@ def dot_env
 end
 
 def read_dot_env
-  src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`
+  tag = ENV['CYBER_DOJO_VERSION'] || 'latest'
+  src = `docker run --rm -i cyberdojo/versioner:#{tag} sh -c 'cat /app/.env'`
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?
   end
@@ -88,9 +88,9 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def get_arg(name, argv)
-  # eg name: --git
-  #    argv: --git=URL
-  #    ====> returns URL
+  # eg name: --custom
+  #    argv: --custom=IMAGE
+  #    ====> returns IMAGE
   args = argv.select{ |arg| arg.start_with?(name + '=')}.map{ |arg| arg.split('=')[1] || '' }
   args.size == 1 ? args[0] : nil
 end

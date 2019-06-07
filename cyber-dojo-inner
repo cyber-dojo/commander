@@ -21,7 +21,7 @@ delegate_to_commander()
     --env CYBER_DOJO_PORT \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
-    --env RELEASE \
+    --env CYBER_DOJO_VERSION \
     --interactive \
     --rm \
     --user=root \
