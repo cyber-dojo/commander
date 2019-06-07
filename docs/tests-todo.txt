@@ -1,0 +1,27 @@
+
+commander runs its tests against commander:latest
+
+./cyber-dojo commands related to versioning
+
+update [latest|TAG]
+version [history]
+
+So commander needs tests...
+
+update_with_no_argument
+  defaults_to_latest
+  version shows the release-tag
+update_arg_is_latest_tag
+  version shows the release-tag
+update_arg_is_a_release_tag
+  sets the latest tag
+  issues no warning
+update_arg_is_a_dev_tag
+  sets the latest tag
+  issues a warning
+update_arg_is_unknown_tag
+  fails with warning
+
+update_with_env_var_for_release_is_ephemeral
+  $ CYBER_DOJO_RELEASE=2.3.1 ./cyber-dojo up
+  in commander. Add to documentation.
