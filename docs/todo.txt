@@ -1,5 +1,11 @@
 
-Add Using commander=.... to [up] output (and assert in up's tests)
+Do [update] directly in cyber-dojo inner.
+Do [sh] directly in cyber-dojo inner.
+Do [start-point create] on host but put it directly in
+cyber-dojo inner.
+Get rid of cat-${script} indirection.
+
+=========================================================
 
 Add version from inside cyberdojo/versioner:VERSION
 for all commands.
@@ -14,9 +20,7 @@ CI needs to trigger system-tests
 
 =========================================================
 
-Add -h|--help text for overridable [up] settings via ENV-VAR.
-
-Note: COMMANER_IMAGE has override for tests and local dev.
+Note: COMMANDER_IMAGE has override for tests and local dev.
 Note: in cyber-dojo script VERSION is to allow you try any commands on any version,
   eg  CYBER_DOJO_VERSION=1.2.3 ./cyber-dojo up
   to try out 1.2.3 without updating your :latest tag.
@@ -30,13 +34,5 @@ Only when --verbose is on, show docker pulls else show dots.
 =========================================================
 
 Move update tests into versioner?
-
-=========================================================
-
-Do [update] directly in cyber-dojo inner.
-Do [sh] directly in cyber-dojo inner.
-Do [start-point create] on host but put it directly in
-cyber-dojo inner.
-Get rid of cat-${script} indirection.
 
 =========================================================

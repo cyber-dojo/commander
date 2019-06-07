@@ -58,12 +58,20 @@ test_____help_arg_prints_use()
 Use: cyber-dojo up [OPTIONS]
 
 Creates and starts a cyber-dojo server using named/default start-points.
+Settings can be specified with environment variables, and command line
+arguments, with the former taking precedence.
 
-Options:
-  --custom=NAME       Specify the custom start-point name.
-  --exercises=NAME    Specify the exercises start-point name.
-  --languages=NAME    Specify the languages start-point name.
-  --port=PORT         Specify the port number.
+Environment variables:
+  CYBER_DOJO_CUSTOM=NAME      Specify the custom start-point name.
+  CYBER_DOJO_EXERCISES=NAME   Specify the exercises start-point name.
+  CYBER_DOJO_LANGUAGES=NAME   Specify the languages start-point name.
+  CYBER_DOJO_PORT=NUMBER      Specify the port number.
+
+Command line arguments:
+  --custom=NAME               Specify the custom start-point name.
+  --exercises=NAME            Specify the exercises start-point name.
+  --languages=NAME            Specify the languages start-point name.
+  --port=NUMBER               Specify the port number.
 
 Defaults:
   --custom=cyberdojo/custom
