@@ -1,8 +1,5 @@
 #!/bin/bash
 
-readonly MY_DIR=${1}
-shift
-
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
@@ -12,6 +9,8 @@ shift
 # on the host; see by extract_and_run().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
+
 delegate_to_commander()
 {
   docker run \
@@ -20,7 +19,7 @@ delegate_to_commander()
     --env CYBER_DOJO_LANGUAGES \
     --env CYBER_DOJO_PORT \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
-    --env CYBER_DOJO_SH_ROOT="${MY_DIR}" \
+    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --env CYBER_DOJO_VERSION=$(version) \
     --interactive \
     --rm \
@@ -43,7 +42,8 @@ commander_image_name()
   local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
   local -r COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
   local -r COMMANDER_TAG=${COMMANDER_SHA:0:7}
-  echo "${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}"
+  local -r COMMANDER_IMAGE=${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}
+  echo "${COMMANDER_IMAGE}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -57,7 +57,7 @@ version()
 
 volume_web_env_file()
 {
-  local -r web_env="${MY_DIR}/web.env"
+  local -r web_env="${my_dir}/web.env"
   if [ -f "${web_env}" ];  then
     echo "--volume=${web_env}:${web_env}:ro"
   fi
@@ -65,7 +65,7 @@ volume_web_env_file()
 
 volume_nginx_env_file()
 {
-  local -r nginx_env="${MY_DIR}/nginx.env"
+  local -r nginx_env="${my_dir}/nginx.env"
   if [ -f "${nginx_env}" ];  then
     echo "--volume=${nginx_env}:${nginx_env}:ro"
   fi
@@ -73,7 +73,7 @@ volume_nginx_env_file()
 
 volume_grafana_env_file()
 {
-  local -r grafana_env="${MY_DIR}/grafana.env"
+  local -r grafana_env="${my_dir}/grafana.env"
   if [ -f "${grafana_env}" ];  then
     echo "--volume=${grafana_env}:${grafana_env}:ro"
   fi
