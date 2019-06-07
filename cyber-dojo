@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+readonly MY_DIR="$( cd "$( dirname "$0" )" && pwd )"
 readonly VERSION=${CYBER_DOJO_VERSION:-latest}
 readonly VERSIONER_IMAGE=cyberdojo/versioner:${VERSION}
 readonly ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
@@ -19,4 +20,4 @@ docker run \
 
 chmod 700 /tmp/${SCRIPT}
 
-/tmp/${SCRIPT} $@
+/tmp/${SCRIPT} ${MY_DIR} $@
