@@ -186,13 +186,13 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def pull_all_images_named_in(image_name)
+def pull_all_images_named_in(start_point_image_name)
   image_names = get_image_names
-  get_manifests_image_names(image_name).each do |image_name|
+  get_manifests_image_names(start_point_image_name).each do |ltf|
     STDOUT.print('.')
-    unless image_names.include?(image_name)
-      STDOUT.puts(image_name)
-      system("docker pull #{image_name}:latest")
+    unless image_names.include?(ltf)
+      STDOUT.puts(ltf)
+      system("docker pull #{ltf}")
     end
   end
 end
