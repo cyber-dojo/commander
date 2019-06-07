@@ -29,21 +29,24 @@ Updates all cyber-dojo server images and the cyber-dojo script file"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____updating_to_specific_version_tag_causes_next_up_to_use_tags_contained_in_that_version()
+test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
 {
-  assertUpdate 8fdf595
-  assertStdoutIncludes "8fdf595: Pulling from cyberdojo/versioner"
-
+  # ensure we are using 5e3bc0b and not cyberdojo/commander:latest
+  unset COMMANDER_IMAGE
+  assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=cyberdojo/languages-small:8ab7cd9
+  export COMMANDER_IMAGE=cyberdojo/commander:latest
 
   assertStdoutIncludes 'Using grafana.env=default'
   assertStdoutIncludes 'Using nginx.env=default'
   assertStdoutIncludes 'Using web.env=default'
+  #
   assertStdoutIncludes 'Using port=80'
   assertStdoutIncludes 'Using custom=cyberdojo/custom:a089497'
   assertStdoutIncludes 'Using exercises=cyberdojo/exercises:16fb5d9'
   assertStdoutIncludes 'Using languages=cyberdojo/languages-small:8ab7cd9'
+  #
   assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
   assertStdoutIncludes 'Using grafana=cyberdojo/grafana:449370c'
   assertStdoutIncludes 'Using mapper=cyberdojo/mapper:5729d56'
@@ -52,12 +55,11 @@ test_____updating_to_specific_version_tag_causes_next_up_to_use_tags_contained_i
   assertStdoutIncludes 'Using ragger=cyberdojo/ragger:5998a76'
   assertStdoutIncludes 'Using runner=cyberdojo/runner:1b06f00'
   assertStdoutIncludes 'Using saver=cyberdojo/saver:8485ef3'
-  assertStdoutIncludes 'Using web=cyberdojo/web:5121b0b'
+  assertStdoutIncludes 'Using web=cyberdojo/web:c66c2da'
   assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
   assertNoStderr
 
   assertDown
-  assertUpdate latest # reset back
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
