@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Uses straight delegation (to cyber-dojo-inner script) so
+# this script can remain minimal and (hopefully) never need
+# updating, even after you've run a [cyber-dojo update].
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 readonly VERSIONER_IMAGE=cyberdojo/versioner:latest
 readonly ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
 readonly COMMANDER_VAR=$(echo "${ENV_VARS}" | grep CYBER_DOJO_COMMANDER_SHA)

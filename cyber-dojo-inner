@@ -11,9 +11,9 @@
 
 delegate_to_commander()
 {
-  validate_env_file CYBER_DOJO_GRAFANA_ENV "${CYBER_DOJO_GRAFANA_ENV}"
-  validate_env_file CYBER_DOJO_NGINX_ENV   "${CYBER_DOJO_NGINX_ENV}"
-  validate_env_file CYBER_DOJO_WEB_ENV     "${CYBER_DOJO_WEB_ENV}"
+  check_env_file_exists CYBER_DOJO_GRAFANA_ENV "${CYBER_DOJO_GRAFANA_ENV}"
+  check_env_file_exists CYBER_DOJO_NGINX_ENV   "${CYBER_DOJO_NGINX_ENV}"
+  check_env_file_exists CYBER_DOJO_WEB_ENV     "${CYBER_DOJO_WEB_ENV}"
 
   docker run \
     --env CYBER_DOJO_CUSTOM \
@@ -46,32 +46,31 @@ commander_image_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-validate_env_file()
+check_env_file_exists() # $1=name $2=path
 {
-  # This runs on the host. But the volume-mount string binds
-  # wherever the docker-daemon is running. If you are using
-  # Docker Toolbox (with a default VM) it be that...
-  #
-  #  o) the file does _not_ exist (on the host),
-  #     but does exist in the default VM.
-  #
-  #  o) the file exists (on the host),
-  #     but does _not_ exist in the default VM.
-  #
-  # To be robust against these you could:
-  # See if DOCKER_MACHINE_NAME is defined.
-  # o) If it is, do [ -f ] check inside ${DOCKER_MACHINE_NAME}
-  # o) If it isn't, do the  [ -f ] check directly.
-  #
-  # You cannot replace the env-var volume-mounts simply by
-  # passing the env-vars, since the env-vars would then be looked
-  # at by a process inside a commander container, which would
-  # definitely not have access to the paths they held.
-  local -r name="${1}"
-  local -r path="${2}"
-  if [ -n "${path}" ] && [ ! -f "${path}" ]; then
-    >&2 echo "ERROR: ${name} is set to ${path}"
-    >&2 echo "but ${path} does not exist"
+  if [ -n "${2}" ]; then
+    if [ -z "${DOCKER_MACHINE_NAME}" ]; then
+      check_env_file_exists_on_host "$@"
+    else
+      check_env_file_exists_on_target "$@"
+    fi
+  fi
+}
+
+check_env_file_exists_on_host() # $1=name $2=path
+{
+  if [ ! -f "${2}" ]; then
+    >&2 echo "ERROR: env-var ${1} is set to ${2}"
+    >&2 echo "but ${2} does not exist (on the host)"
+    exit 3
+  fi
+}
+
+check_env_file_exists_on_target() # $1=name $2=path
+{
+  if ! docker-machine ssh "${DOCKER_MACHINE_NAME}" "[ -f ${2} ]" 2> /dev/null; then
+    >&2 echo "ERROR: env-var ${1} is set to ${2}"
+    >&2 echo "but ${2} does not exist (on ${DOCKER_MACHINE_NAME} VM)"
     exit 3
   fi
 }
