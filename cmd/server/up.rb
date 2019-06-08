@@ -2,24 +2,12 @@
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-     custom = up_argument(   'custom')
+  use_any_custom_env_files
+
+       port = up_argument('port')
+     custom = up_argument('custom')
   exercises = up_argument('exercises')
   languages = up_argument('languages')
-
-  exit_failure_unless_start_point_exists(   'custom', custom   )
-  exit_failure_unless_start_point_exists('exercises', exercises)
-  exit_failure_unless_start_point_exists('languages', languages)
-
-  port = up_argument('port')
-
-  env_vars = {
-    'CYBER_DOJO_PORT' => port,
-    'CYBER_DOJO_CUSTOM'    => custom,
-    'CYBER_DOJO_EXERCISES' => exercises,
-    'CYBER_DOJO_LANGUAGES' => languages,
-  }
-  add_services_image_tags(env_vars)
-  use_custom_env_files
 
   STDOUT.puts "Using port=#{port}"
   STDOUT.puts "Using custom=#{custom}"
@@ -29,13 +17,25 @@ def cyber_dojo_server_up
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
 
+  exit_failure_unless_start_point_exists(   'custom', custom   )
+  exit_failure_unless_start_point_exists('exercises', exercises)
+  exit_failure_unless_start_point_exists('languages', languages)
+
   pull_all_images_named_in(custom)
   pull_all_images_named_in(languages)
   STDOUT.puts
 
+  env_vars = {
+    'CYBER_DOJO_PORT' => port,
+    'CYBER_DOJO_CUSTOM'    => custom,
+    'CYBER_DOJO_EXERCISES' => exercises,
+    'CYBER_DOJO_LANGUAGES' => languages,
+  }
+  add_services_image_tags(env_vars)
+
+  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
-  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -80,14 +80,14 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def use_custom_env_files
+def use_any_custom_env_files
   env_root = '/app/env_files'
   unless File.exist?("#{env_root}/custom.grafana.env")
     puts 'WARNING: Using default grafana admin password.'
     puts 'To set your own password and remove this warning:'
-    puts '   1. Create a file grafana.env with contents'
+    puts '   1. Create a file with contents'
     puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
-    puts '   2. export CYBER_DOJO_GRAFANA_ENV=<full-path-to-its-dir>'
+    puts '   2. export CYBER_DOJO_GRAFANA_ENV=<its-fully-pathed-filename>'
     puts '   3. Re-issue the command [cyber-dojo up ...]'
     puts '   4. Verify you do not get this warning'
   end
