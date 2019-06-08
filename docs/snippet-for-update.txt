@@ -60,7 +60,7 @@ if [ "${RELEASE}" = 'latest' ]; then
   docker tag ${NOW_VERSIONER_IMAGE} cyberdojo/versioner:${NOW_TAG}
 elif [ -z "${NOW_TAG}" ]; then
   echo "Warning: ${RELEASE} is dev only"
-end
+fi
 
 
 
