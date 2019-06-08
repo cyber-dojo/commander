@@ -16,7 +16,6 @@ delegate_to_commander()
     --env CYBER_DOJO_EXERCISES \
     --env CYBER_DOJO_LANGUAGES \
     --env CYBER_DOJO_PORT \
-    --interactive \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
