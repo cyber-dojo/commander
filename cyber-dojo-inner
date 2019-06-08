@@ -50,13 +50,23 @@ validate_env_file()
 {
   # This runs on the host. But the volume-mount string binds
   # wherever the docker-daemon is running. If you are using
-  # Docker Toolbox (with a default VM) it might report that...
+  # Docker Toolbox (with a default VM) it be that...
+  #
   #  o) the file does _not_ exist (on the host),
-  #     when it does exist in the default VM.
+  #     but does exist in the default VM.
+  #
   #  o) the file exists (on the host),
-  #     when it does _not_ exist in the default VM.
-  # It would probably be better to pass the values of the
-  # environment variables, eg CYBER_DOJO_WEB_ENV
+  #     but does _not_ exist in the default VM.
+  #
+  # To be robust against these you could:
+  # See if DOCKER_MACHINE_NAME is defined.
+  # o) If it is, do [ -f ] check inside ${DOCKER_MACHINE_NAME}
+  # o) If it isn't, do the  [ -f ] check directly.
+  #
+  # You cannot replace the env-var volume-mounts simply by
+  # passing the env-vars, since the env-vars would then be looked
+  # at by a process inside a commander container, which would
+  # definitely not have access to the paths they held.
   local -r name="${1}"
   local -r path="${2}"
   if [ -n "${path}" ] && [ ! -f "${path}" ]; then
