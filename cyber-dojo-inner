@@ -11,6 +11,10 @@
 
 delegate_to_commander()
 {
+  validate_env_file CYBER_DOJO_GRAFANA_ENV
+  validate_env_file CYBER_DOJO_NGINX_ENV
+  validate_env_file CYBER_DOJO_WEB_ENV
+
   docker run \
     --env CYBER_DOJO_CUSTOM \
     --env CYBER_DOJO_EXERCISES \
@@ -19,9 +23,9 @@ delegate_to_commander()
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    $(volume_env grafana "${CYBER_DOJO_GRAFANA_ENV}") \
-    $(volume_env nginx "${CYBER_DOJO_NGINX_ENV}") \
-    $(volume_env web "${CYBER_DOJO_WEB_ENV}") \
+    $(volume_env_file grafana "${CYBER_DOJO_GRAFANA_ENV}") \
+    $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
+    $(volume_env_file web "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_image_name)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
@@ -42,10 +46,23 @@ commander_image_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-volume_env()
+validate_env_file()
 {
-  if [ -n "${2}" ];  then
-    echo "--volume=${2}:/app/env_files/custom.${1}.env:ro"
+  local -r name=${1}
+  local -r path=${!1}
+  if [ -n "${path}" ] && [ ! -f "${path}" ]; then
+    >&2 echo "ERROR: ${name} is set to ${path}"
+    >&2 echo "but ${path} does not exist"
+    exit 3
+  fi
+}
+
+volume_env_file()
+{
+  local -r name="${1}"
+  local -r path=${2}
+  if [ -n "${path}" ]; then
+    echo "--volume=${path}:/app/env_files/custom.${name}.env:ro"
   fi
 }
 
