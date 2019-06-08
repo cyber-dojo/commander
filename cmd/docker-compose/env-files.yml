@@ -4,10 +4,10 @@ version: '2.2'
 services:
   grafana:
     env_file:
-      - ${CYBER_DOJO_ENV_ROOT}/grafana.env
+      - /app/env_files/grafana.env
   nginx:
     env_file:
-      - ${CYBER_DOJO_ENV_ROOT}/nginx.env
+      - /app/env_files/nginx.env
   web:
     env_file:
-      - ${CYBER_DOJO_ENV_ROOT}/web.env
+      - /app/env_files/web.env

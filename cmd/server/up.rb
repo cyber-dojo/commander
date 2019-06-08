@@ -10,17 +10,16 @@ def cyber_dojo_server_up
   exit_failure_unless_start_point_exists('exercises', exercises)
   exit_failure_unless_start_point_exists('languages', languages)
 
-  env_root = write_env_files
   port = up_argument('port')
 
   env_vars = {
-    'CYBER_DOJO_ENV_ROOT' => env_root,
     'CYBER_DOJO_PORT' => port,
     'CYBER_DOJO_CUSTOM'    => custom,
     'CYBER_DOJO_EXERCISES' => exercises,
     'CYBER_DOJO_LANGUAGES' => languages,
   }
-  add_image_tag_variables(env_vars)
+  add_services_image_tags(env_vars)
+  use_custom_env_files
 
   STDOUT.puts "Using port=#{port}"
   STDOUT.puts "Using custom=#{custom}"
@@ -81,35 +80,33 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def write_env_files
-  sh_root = ENV['CYBER_DOJO_SH_ROOT']
-  unless File.exist?("#{sh_root}/grafana.env")
+def use_custom_env_files
+  env_root = '/app/env_files'
+  unless File.exist?("#{env_root}/custom.grafana.env")
     puts 'WARNING: Using default grafana admin password.'
     puts 'To set your own password and remove this warning:'
     puts '   1. Create a file grafana.env with contents'
     puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
-    puts '      in the same directory as the cyber-dojo script.'
-    puts '   2. Re-issue the command [cyber-dojo up ...]'
+    puts '   2. export CYBER_DOJO_GRAFANA_ENV=<full-path-to-its-dir>'
+    puts '   3. Re-issue the command [cyber-dojo up ...]'
+    puts '   4. Verify you do not get this warning'
   end
-  # Write any .env files to where docker-compose.yml expects them
-  env_root = ENV['CYBER_DOJO_ENV_ROOT']
   %w( grafana nginx web ).each do |name|
-    from = "#{sh_root}/#{name}.env"
-    if File.exist?(from)
-      puts "Using #{name}.env=#{from}"
-      content = IO.read(from)
+    from = "#{env_root}/custom.#{name}.env"
       to = "#{env_root}/#{name}.env"
+    if File.exist?(from)
+      puts "Using #{name}.env=custom"
+      content = IO.read(from)
       File.open(to, 'w') { |file| file.write(content) }
     else
       puts "Using #{name}.env=default"
     end
   end
-  env_root
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def add_image_tag_variables(env_vars)
+def add_services_image_tags(env_vars)
   service_names.each do |service|
     name = service.upcase
     key = "CYBER_DOJO_#{name}_SHA"

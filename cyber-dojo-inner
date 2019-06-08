@@ -9,8 +9,6 @@
 # on the host; see by extract_and_run().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-readonly my_dir="$( cd "$( dirname "$0" )" && pwd )"
-
 delegate_to_commander()
 {
   docker run \
@@ -18,15 +16,13 @@ delegate_to_commander()
     --env CYBER_DOJO_EXERCISES \
     --env CYBER_DOJO_LANGUAGES \
     --env CYBER_DOJO_PORT \
-    --env CYBER_DOJO_ENV_ROOT=/tmp/app \
-    --env CYBER_DOJO_SH_ROOT="${my_dir}" \
     --interactive \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    $(volume_grafana_env_file) \
-    $(volume_nginx_env_file) \
-    $(volume_web_env_file) \
+    $(volume_env grafana "${CYBER_DOJO_GRAFANA_ENV}") \
+    $(volume_env nginx "${CYBER_DOJO_NGINX_ENV}") \
+    $(volume_env web "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_image_name)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
@@ -47,27 +43,10 @@ commander_image_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-volume_web_env_file()
+volume_env()
 {
-  local -r web_env="${my_dir}/web.env"
-  if [ -f "${web_env}" ];  then
-    echo "--volume=${web_env}:${web_env}:ro"
-  fi
-}
-
-volume_nginx_env_file()
-{
-  local -r nginx_env="${my_dir}/nginx.env"
-  if [ -f "${nginx_env}" ];  then
-    echo "--volume=${nginx_env}:${nginx_env}:ro"
-  fi
-}
-
-volume_grafana_env_file()
-{
-  local -r grafana_env="${my_dir}/grafana.env"
-  if [ -f "${grafana_env}" ];  then
-    echo "--volume=${grafana_env}:${grafana_env}:ro"
+  if [ -n "${2}" ];  then
+    echo "--volume=${2}:/app/env_files/custom.${1}.env:ro"
   fi
 }
 

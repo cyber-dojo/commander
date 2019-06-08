@@ -23,7 +23,7 @@ RUN set -x && \
         | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' \
         | sed 's/^href="//' \
         | head -n1) && \
-    wget -q -O /usr/local/bin/docker-compose $DOCKER_COMPOSE_URL && \
+    wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL} && \
     chmod a+rx /usr/local/bin/docker-compose && \
     apk del --purge .deps && \
     docker-compose version
@@ -40,12 +40,3 @@ WORKDIR ${HOME_DIR}
 
 ARG SHA
 ENV SHA=${SHA}
-
-# - - - - - - - - - - - - - - - - - - - - - -
-# make sure default .env files can be overwritten
-# - - - - - - - - - - - - - - - - - - - - - -
-
-ARG CYBER_DOJO_ENV_ROOT=/tmp/app
-RUN mkdir ${CYBER_DOJO_ENV_ROOT} \
-  && cp -r ${HOME_DIR}/defaults.env/* ${CYBER_DOJO_ENV_ROOT} \
-  && chmod -R a+w ${CYBER_DOJO_ENV_ROOT}

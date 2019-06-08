@@ -7,8 +7,7 @@ Get rid of cat-${script} indirection.
 
 =========================================================
 
-Add version from inside cyberdojo/versioner:VERSION
-for all commands.
+Print version from inside cyberdojo/versioner:latest for all commands.
 
 Add [cyber-dojo version] command. Handy for checking.
 Add [cyber-dojo version history] command.

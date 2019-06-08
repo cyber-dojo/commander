@@ -3,4 +3,4 @@
 !cyber-dojo
 !cyber-dojo-inner
 !cmd/*
-!defaults.env/*
+!env_files/*
