@@ -2,12 +2,14 @@
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-  use_any_custom_env_files
-
        port = up_argument('port')
      custom = up_argument('custom')
   exercises = up_argument('exercises')
   languages = up_argument('languages')
+
+  exit_failure_unless_start_point_exists(   'custom', custom   )
+  exit_failure_unless_start_point_exists('exercises', exercises)
+  exit_failure_unless_start_point_exists('languages', languages)
 
   STDOUT.puts "Using port=#{port}"
   STDOUT.puts "Using custom=#{custom}"
@@ -16,10 +18,6 @@ def cyber_dojo_server_up
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
-
-  exit_failure_unless_start_point_exists(   'custom', custom   )
-  exit_failure_unless_start_point_exists('exercises', exercises)
-  exit_failure_unless_start_point_exists('languages', languages)
 
   pull_all_images_named_in(custom)
   pull_all_images_named_in(languages)
@@ -32,6 +30,8 @@ def cyber_dojo_server_up
     'CYBER_DOJO_LANGUAGES' => languages,
   }
   add_services_image_tags(env_vars)
+
+  use_any_custom_env_files
 
   system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
   # A successful [docker-compose ... up] writes to stderr !?
