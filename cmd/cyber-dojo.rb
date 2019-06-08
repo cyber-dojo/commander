@@ -64,8 +64,7 @@ def dot_env
 end
 
 def read_dot_env
-  tag = ENV['CYBER_DOJO_VERSION'] || 'latest'
-  src = `docker run --rm -i cyberdojo/versioner:#{tag} sh -c 'cat /app/.env'`
+  src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?
   end

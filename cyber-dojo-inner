@@ -20,7 +20,6 @@ delegate_to_commander()
     --env CYBER_DOJO_PORT \
     --env CYBER_DOJO_ENV_ROOT=/tmp/app \
     --env CYBER_DOJO_SH_ROOT="${my_dir}" \
-    --env CYBER_DOJO_VERSION=$(version) \
     --interactive \
     --rm \
     --user=root \
@@ -37,20 +36,13 @@ delegate_to_commander()
 commander_image_name()
 {
   # Tests override COMMANDER_IMAGE (to use :latest)
-  local -r VERSIONER_IMAGE=cyberdojo/versioner:$(version)
+  local -r VERSIONER_IMAGE=cyberdojo/versioner:latest
   local -r ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
   local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
   local -r COMMANDER_SHA=$(echo ${COMMANDER_VAR:25:99})
   local -r COMMANDER_TAG=${COMMANDER_SHA:0:7}
   local -r COMMANDER_IMAGE=${COMMANDER_IMAGE:-cyberdojo/commander:${COMMANDER_TAG}}
   echo "${COMMANDER_IMAGE}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-version()
-{
-  echo "${CYBER_DOJO_VERSION:-latest}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

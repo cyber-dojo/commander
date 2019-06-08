@@ -20,19 +20,12 @@ CI needs to trigger system-tests
 
 =========================================================
 
-Note: COMMANDER_IMAGE has override for tests and local dev.
-Note: in cyber-dojo script VERSION is to allow you try any commands on any version,
-  eg  CYBER_DOJO_VERSION=1.2.3 ./cyber-dojo up
-  to try out 1.2.3 without updating your :latest tag.
-  Add this to help? At top level?
+COMMANDER_IMAGE has override for tests and local dev.
+Move update tests into versioner? Drop the override?
 
 =========================================================
 
 Change --debug option into --verbose
 Only when --verbose is on, show docker pulls else show dots.
-
-=========================================================
-
-Move update tests into versioner?
 
 =========================================================
