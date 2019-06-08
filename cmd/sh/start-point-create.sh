@@ -2,6 +2,9 @@
 set -e
 shift # start-point
 shift # create
+readonly IMAGE_NAME="${1}"
+readonly IMAGE_TYPE="${2}"
+declare -ar GIT_REPO_URLS="(${@:3})"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # cyber-dojo start-point create <name> --custom    <url> ...
@@ -20,7 +23,7 @@ error()
   exit "${1}"
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_non_zero_unless_git_installed()
 {
@@ -29,13 +32,7 @@ exit_non_zero_unless_git_installed()
   fi
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-readonly IMAGE_NAME="${1}"
-readonly IMAGE_TYPE="${2}"
-declare -ar GIT_REPO_URLS="(${@:3})"
-
-# - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_zero_if_show_use()
 {
@@ -45,16 +42,20 @@ exit_zero_if_show_use()
   fi
 }
 
-# - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 define()
 {
   o=;
-  while IFS="\n" read -r a; do o="$o$a"'
+  while IFS="\n" read -r a
+  do
+    o="$o$a"'
 ';
   done
   eval "$1=\$o"
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 show_use()
 {
@@ -119,7 +120,7 @@ EOF
   echo -e "${TEXT}"
 }
 
-# - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exit_non_zero_if_bad_args()
 {
@@ -134,7 +135,7 @@ exit_non_zero_if_bad_args()
   fi
 }
 
-# - - - - - - - - - - - -
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 CONTEXT_DIR=''
 
@@ -199,9 +200,9 @@ git_clone_one_url_into_context_dir()
 build_image_from_context_dir()
 {
   case "$(image_type)" in
-       'custom') PORT=4526;;
-    'exercises') PORT=4525;;
-    'languages') PORT=4524;;
+       custom) PORT=4526;;
+    exercises) PORT=4525;;
+    languages) PORT=4524;;
   esac
 
   local env_vars="PORT=${PORT} IMAGE_TYPE=$(image_type)"
