@@ -48,6 +48,15 @@ commander_image_name()
 
 validate_env_file()
 {
+  # This runs on the host. But the volume-mount string binds
+  # wherever the docker-daemon is running. If you are using
+  # Docker Toolbox (with a default VM) it might report that...
+  #  o) the file does _not_ exist (on the host),
+  #     when it does exist in the default VM.
+  #  o) the file exists (on the host),
+  #     when it does _not_ exist in the default VM.
+  # It would probably be better to pass the values of the
+  # environment variables, eg CYBER_DOJO_WEB_ENV
   local -r name="${1}"
   local -r path="${2}"
   if [ -n "${path}" ] && [ ! -f "${path}" ]; then
