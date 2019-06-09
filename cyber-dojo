@@ -5,19 +5,19 @@ set -e
 # this script can remain minimal and (hopefully) never need
 # updating, even after you've run a [cyber-dojo update].
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-readonly VERSIONER_IMAGE=cyberdojo/versioner:latest
-readonly ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
-readonly COMMANDER_SHA=$(echo "${ENV_VARS}" | grep CYBER_DOJO_COMMANDER_SHA)
-readonly COMMANDER_SHA7=${COMMANDER_SHA:25:7}
-readonly COMMANDER_TAG=${COMMANDER_TAG:-${COMMANDER_SHA7}}
-readonly COMMANDER_IMAGE=cyberdojo/commander:${COMMANDER_TAG}
+readonly VERSIONER=cyberdojo/versioner:latest
+readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+readonly SHA_VAR=$(echo "${ENV_VARS}" | grep CYBER_DOJO_COMMANDER_SHA)
+readonly SHA7=${SHA_VAR:25:7}
+readonly COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
 readonly SCRIPT=cyber-dojo-inner
 
 docker run \
   --entrypoint cat \
   --rm \
-  ${COMMANDER_IMAGE} /app/${SCRIPT} \
-    > /tmp/${SCRIPT}
+  cyberdojo/commander:${COMMANDER_TAG} \
+    /app/${SCRIPT} \
+      > /tmp/${SCRIPT}
 
 chmod 700 /tmp/${SCRIPT}
 

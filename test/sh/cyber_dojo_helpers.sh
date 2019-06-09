@@ -5,8 +5,8 @@ readonly github_cyber_dojo=https://github.com/cyber-dojo
 readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
-# Tests override COMMANDER_TAG so cyber-dojo script does
-# _NOT_ get the commander-image tag from cyberdojo/versioner:latest
+# Tests set COMMANDER_TAG to :latest so cyber-dojo script does
+# _NOT_ get it from cyberdojo/versioner:latest
 export COMMANDER_TAG=latest
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

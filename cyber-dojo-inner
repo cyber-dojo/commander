@@ -40,12 +40,12 @@ delegate_to_commander()
 
 commander_image_name()
 {
-  # Tests override COMMANDER_TAG (so they can use :latest)
-  local -r VERSIONER_IMAGE=cyberdojo/versioner:latest
-  local -r ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
-  local -r COMMANDER_SHA=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
-  local -r COMMANDER_SHA7=${COMMANDER_VAR:25:7}
-  local -r COMMANDER_TAG=${COMMANDER_TAG:-${COMMANDER_SHA7}}
+  # Tests set COMMANDER_TAG to :latest
+  local -r VERSIONER=cyberdojo/versioner:latest
+  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local -r SHA_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
+  local -r SHA7=${SHA_VAR:25:7}
+  local -r COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
   echo "cyberdojo/commander:${COMMANDER_TAG}"
 }
 
