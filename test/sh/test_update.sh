@@ -32,11 +32,11 @@ Updates all cyber-dojo server images and the cyber-dojo script file"
 test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
 {
   # ensure we are using 5e3bc0b and not cyberdojo/commander:latest
-  unset COMMANDER_IMAGE
+  unset COMMANDER_TAG
   assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=cyberdojo/languages-small:8ab7cd9
-  export COMMANDER_IMAGE=cyberdojo/commander:latest
+  export COMMANDER_TAG=latest
 
   assertStdoutIncludes 'Using grafana.env=default'
   assertStdoutIncludes 'Using nginx.env=default'
