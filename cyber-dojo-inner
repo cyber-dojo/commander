@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -x 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
