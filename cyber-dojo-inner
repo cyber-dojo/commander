@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x 
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
@@ -56,7 +56,7 @@ check_env_file_exists()
 {
   local -r name="${1}"
   local -r path="${2}"
-  if [ -n "${name}" ]; then
+  if [ -n "${path}" ]; then
     if [ -z "${DOCKER_MACHINE_NAME}" ]; then
       check_env_file_exists_on_host "${name}" "${path}"
     else
