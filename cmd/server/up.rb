@@ -92,10 +92,11 @@ def use_any_custom_env_files
     puts '   4. Verify you do not get this warning'
   end
   %w( grafana nginx web ).each do |name|
+    path = ENV["CYBER_DOJO_#{name.upcase}_ENV"]
     from = "#{env_root}/custom.#{name}.env"
       to = "#{env_root}/#{name}.env"
     if File.exist?(from)
-      puts "Using #{name}.env=custom"
+      puts "Using #{name}.env=#{path} (custom)"
       content = IO.read(from)
       File.open(to, 'w') { |file| file.write(content) }
     else
