@@ -33,4 +33,3 @@ kind()
 # docker tag $(image latest) $(image $(tag))
 echo "Version: $(tag)"
 echo "Kind: $(kind)"
-exit 1

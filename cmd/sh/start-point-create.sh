@@ -13,13 +13,28 @@ declare -ar GIT_REPO_URLS="(${@:3})"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 RED=$(tput -Txterm setaf 1)
-GREEN=$(tput -Txterm setaf 2)
-BOLD=$(tput -Txterm bold)
-RS='\033[0m' # NoColour
+RESET=$(tput -Txterm sgr0)
+
+red()
+{
+  echo -e "${RED}${1}${RESET}"
+}
+
+green()
+{
+  local -r GREEN=$(tput -Txterm setaf 2)
+  echo -e "${GREEN}${1}${RESET}"
+}
+
+bold()
+{
+  local -r BOLD=$(tput -Txterm bold)
+  echo -e "${BOLD}${1}${RESET}"
+}
 
 error()
 {
-  >&2 echo -e "${RED}ERROR: ${2}${RS}"
+  >&2 echo -e "${RED}ERROR: ${2}${RESET}"
   exit "${1}"
 }
 
@@ -63,54 +78,54 @@ show_use()
   define TEXT <<- EOF
 
   Use:
-  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--custom${RS}    <url> ...
-  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--exercises${RS} <url> ...
-  ${BOLD}${MY_NAME} start-point create${RS} <name> ${BOLD}--languages${RS} <url> ...
+  $(bold "${MY_NAME} start-point create") <name> $(bold --custom)    <url> ...
+  $(bold "${MY_NAME} start-point create") <name> $(bold --exercises) <url> ...
+  $(bold "${MY_NAME} start-point create") <name> $(bold --languages) <url> ...
 
   Creates a cyber-dojo start-point image named <name>
-  Its base image will be ${BOLD}cyberdojo/starter-base:STARTER_BASE_TAG${RS}
+  Its base image will be $(bold cyberdojo/starter-base:STARTER_BASE_TAG)
   It will contain git clones of all the specified git-repo <url>s
 
   Example 1: local git-repo urls
 
-  ${GREEN}${MY_NAME} start-point create \\\\
+  $(green "${MY_NAME} start-point create \\\\
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
             /user/fred/.../bowling_game.git \\\\
             file:///user/fred/.../fizz_buzz \\\\
-            file:///user/fred/.../game_of_life.git${RS}
+            file:///user/fred/.../game_of_life.git")
 
   Example 2: non-local git-repo <url>
 
-  ${GREEN}${MY_NAME} start-point create \\\\
+  $(green "${MY_NAME} start-point create \\\\
         eg/second \\\\
           --exercises \\\\
-            https://github.com/.../my-exercises.git${RS}
+            https://github.com/.../my-exercises.git")
 
   Example 3: local and non-local git-repo <url>s
 
-  ${GREEN}${MY_NAME} start-point create \\\\
+  $(green "${MY_NAME} start-point create \\\\
         eg/third \\\\
           --languages \\\\
             /user/fred/.../asm-assert \\\\
-            https://github.com/.../my-languages.git${RS}
+            https://github.com/.../my-languages.git")
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  ${GREEN}${MY_NAME} start-point create \\\\
+  $(green "${MY_NAME} start-point create \\\\
         eg/fourth \\\\
           --languages \\\\
-            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)${RS}
+            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)")
 
   Example 5: read git-repo <url>s from a local file
 
-  ${GREEN}${MY_NAME} start-point create \\\\
+  $(green "${MY_NAME} start-point create \\\\
         eg/fifth \\\\
           --languages \\\\
-            \$(< my-language-selection.txt)${RS}
+            \$(< my-language-selection.txt)")
 
-  ${GREEN}cat my-language-selection.txt${RS}
+  $(green "cat my-language-selection.txt")
   https://github.com/.../java-junit.git
   https://github.com/.../javascript-jasmine.git
   https://github.com/.../python-pytest.git

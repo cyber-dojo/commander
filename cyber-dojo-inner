@@ -103,8 +103,8 @@ echo_env_var_error()
 echo_red()
 {
   local -r red=$(tput -Txterm setaf 1)
-  local -r nc='\033[0m' # NoColour
-  >&2 echo -e "${red}${1}${nc}"
+  local -r reset=$(tput -Txterm sgr0)
+  >&2 echo -e "${red}${1}${reset}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
