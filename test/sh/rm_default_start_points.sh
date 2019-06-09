@@ -5,6 +5,7 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 # can't remove start-point volumes in use
 ${exe} down >/dev/null 2>/dev/null
+
 # remove default start-points for clean environment on start
 currentStartPoints=`${exe} start-point ls --quiet`
 defaultStartPoints=( "cyberdojo/languages-common:latest" "cyberdojo/exercises:latest" "cyberdojo/custom:latest" )

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set -e
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 

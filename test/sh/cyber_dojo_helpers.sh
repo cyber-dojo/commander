@@ -1,6 +1,4 @@
 
-set -x
-
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
@@ -66,7 +64,6 @@ languages_urls()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-echo GOT TO A
 declare -a service_names=(
   differ
   grafana
@@ -79,7 +76,7 @@ declare -a service_names=(
   web
   zipper
 )
-echo GOT TO B
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
