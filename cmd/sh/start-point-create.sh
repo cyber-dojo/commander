@@ -12,66 +12,6 @@ declare -ar GIT_REPO_URLS="(${@:3})"
 # cyber-dojo start-point create <name> --languages <url> ...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-RED=$(tput -Txterm setaf 1)
-RESET=$(tput -Txterm sgr0)
-
-red()
-{
-  echo -e "${RED}${1}${RESET}"
-}
-
-green()
-{
-  local -r GREEN=$(tput -Txterm setaf 2)
-  echo -e "${GREEN}${1}${RESET}"
-}
-
-bold()
-{
-  local -r BOLD=$(tput -Txterm bold)
-  echo -e "${BOLD}${1}${RESET}"
-}
-
-error()
-{
-  >&2 echo -e "${RED}ERROR: ${2}${RESET}"
-  exit "${1}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_non_zero_unless_git_installed()
-{
-  if ! hash git 2> /dev/null; then
-    error 1 'git is not installed!'
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exit_zero_if_show_use()
-{
-  if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
-    show_use
-    exit 0
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-define()
-{
-  o=;
-  while IFS="\n" read -r a
-  do
-    o="$o$a"'
-';
-  done
-  eval "$1=\$o"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 show_use()
 {
   local -r MY_NAME=cyber-dojo
@@ -137,6 +77,29 @@ EOF
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+define()
+{
+  o=;
+  while IFS="\n" read -r a
+  do
+    o="$o$a"'
+';
+  done
+  eval "$1=\$o"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+exit_zero_if_show_use()
+{
+  if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
+    show_use
+    exit 0
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
@@ -147,6 +110,16 @@ exit_non_zero_if_bad_args()
   set -e
   if [ "${status}" != '0' ]; then
     exit "${status}"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+exit_non_zero_unless_git_installed()
+{
+  if ! hash git 2> /dev/null; then
+    stderr 'ERROR: git is not installed!'
+    exit 3
   fi
 }
 
@@ -191,10 +164,11 @@ git_clone_one_url_into_context_dir()
   local stderr
   if ! stderr="$(git clone --single-branch --branch master --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
     local newline=$'\n'
-    local msg="bad git clone <url>${newline}"
+    local msg="ERROR: bad git clone <url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
     msg+="${stderr}"
-    error 3 "${msg}"
+    stderr "${msg}"
+    exit 3
   fi
 
   chmod -R +rX "${URL_INDEX}"
@@ -269,11 +243,31 @@ build_image_from_context_dir()
     docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
-    echo -e "${GREEN}Successfully built ${IMAGE_NAME}${RS}"
+    echo -e "$(green "Successfully built ${IMAGE_NAME}")"
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+RESET=$(tput -Txterm sgr0)
+
+green()
+{
+  local -r GREEN=$(tput -Txterm setaf 2)
+  echo -e "${GREEN}${1}${RESET}"
+}
+
+bold()
+{
+  local -r BOLD=$(tput -Txterm bold)
+  echo -e "${BOLD}${1}${RESET}"
+}
+
+stderr()
+{
+  local -r RED=$(tput -Txterm setaf 1)
+  >&2 echo -e "${RED}${1}${RESET}"
+}
 
 base_image_name()
 {
