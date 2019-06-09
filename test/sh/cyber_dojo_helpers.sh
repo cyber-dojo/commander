@@ -79,7 +79,8 @@ declare -a service_names=(
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
+clean()             { ${exe} clean               $* ; } # >${stdoutF} 2>${stderrF}; }
+#clean()             { ${exe} clean               $* >${stdoutF} 2>${stderrF}; }
 down()              { ${exe} down                $* >${stdoutF} 2>${stderrF}; }
 logs()              { ${exe} logs                $* >${stdoutF} 2>${stderrF}; }
 sh()                { ${exe} sh                  $* >${stdoutF} 2>${stderrF}; }
