@@ -44,6 +44,8 @@ def cyber_dojo_commander; "cyberdojo/commander"; end
 
 def read_only; 'ro'; end
 
+def env_root; '/app/env_files'; end
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def service_running(name)

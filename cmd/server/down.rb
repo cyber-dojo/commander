@@ -38,6 +38,7 @@ end
 
 def down_env_vars
   vars = {
+    'ENV_ROOT' => env_root,
     'CYBER_DOJO_CUSTOM'    => dot_env['CYBER_DOJO_CUSTOM'],
     'CYBER_DOJO_EXERCISES' => dot_env['CYBER_DOJO_EXERCISES'],
     'CYBER_DOJO_LANGUAGES' => dot_env['CYBER_DOJO_LANGUAGES'],

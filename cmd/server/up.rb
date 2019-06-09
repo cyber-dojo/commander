@@ -81,10 +81,6 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def env_root
-  '/app/env_files'
-end
-
 def use_any_custom_env_files
   unless File.exist?("#{env_root}/custom.grafana.env")
     puts 'WARNING: Using default grafana admin password.'
