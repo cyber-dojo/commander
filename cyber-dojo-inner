@@ -1,12 +1,18 @@
 #!/bin/bash
-
+set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Most commands delegate to a commander container.
-# However, a few commands are currently handled locally,
-# on the host; see by extract_and_run().
+# However, a few commands are handled locally, on the host.
+#   1) $ ./cyber-dojo start-point create NAME --custom <url> ...
+#      This is to allow the <url>s to be local.
+#   2) $ ./cyber-dojo sh web
+#      This is because the delegation is to a ruby script
+#      and not a bash script.
+#   3) $ ./cyber-dojo update
+#      This is simply historical.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander()
@@ -34,7 +40,7 @@ delegate_to_commander()
 
 commander_image_name()
 {
-  # Tests override COMMANDER_IMAGE (to use :latest)
+  # Tests override COMMANDER_IMAGE (so they can use :latest)
   local -r VERSIONER_IMAGE=cyberdojo/versioner:latest
   local -r ENV_VARS=$(docker run --rm ${VERSIONER_IMAGE} sh -c 'cat /app/.env')
   local -r COMMANDER_VAR=$(echo "${ENV_VARS}" | grep 'CYBER_DOJO_COMMANDER_SHA')
@@ -46,34 +52,59 @@ commander_image_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check_env_file_exists() # $1=name $2=path
+check_env_file_exists()
 {
-  if [ -n "${2}" ]; then
+  local -r name="${1}"
+  local -r path="${2}"
+  if [ -n "${name}" ]; then
     if [ -z "${DOCKER_MACHINE_NAME}" ]; then
-      check_env_file_exists_on_host "$@"
+      check_env_file_exists_on_host "${name}" "${path}"
     else
-      check_env_file_exists_on_target "$@"
+      check_env_file_exists_on_machine "${name}" "${path}"
     fi
   fi
 }
 
-check_env_file_exists_on_host() # $1=name $2=path
+check_env_file_exists_on_host()
 {
-  if [ ! -f "${2}" ]; then
-    >&2 echo "ERROR: env-var ${1} is set to ${2}"
-    >&2 echo "but ${2} does not exist (on the host)"
+  local -r name="${1}"
+  local -r path="${2}"
+  if [ ! -f "${path}" ]; then
+    local -r where='on the host'
+    echo_env_var_error "${name}" "${path}" "${where}"
     exit 3
   fi
 }
 
-check_env_file_exists_on_target() # $1=name $2=path
+check_env_file_exists_on_machine()
 {
-  if ! docker-machine ssh "${DOCKER_MACHINE_NAME}" "[ -f ${2} ]" 2> /dev/null; then
-    >&2 echo "ERROR: env-var ${1} is set to ${2}"
-    >&2 echo "but ${2} does not exist (on ${DOCKER_MACHINE_NAME} VM)"
-    exit 3
+  local -r name="${1}"
+  local -r path="${2}"
+  if ! docker-machine ssh "${DOCKER_MACHINE_NAME}" "[ -f ${path} ]" 2> /dev/null; then
+    local -r where="on VM '${DOCKER_MACHINE_NAME}'"
+    echo_env_var_error "${name}" "${path}" "${where}"
+    exit 4
   fi
 }
+
+echo_env_var_error()
+{
+  local -r name="${1}"
+  local -r path="${2}"
+  local -r where="${3}"
+  echo_red 'ERROR: bad environment variable'
+  echo_red "${name}=${path}"
+  echo_red "does not exist (${where})"
+}
+
+echo_red()
+{
+  local -r red=$(tput -Txterm setaf 1)
+  local -r nc='\033[0m' # NoColour
+  >&2 echo -e "${red}${1}${nc}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 volume_env_file()
 {
@@ -95,9 +126,10 @@ extract_and_run()
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
     "$(commander_image_name)" \
-    sh -c "/app/cmd/sh/cat-${script}" > /tmp/${script}
+    sh -c "/app/cmd/sh/cat-${script}" \
+      > /tmp/${script}
   chmod 700 /tmp/${script}
-  /tmp/${script} $@
+  /tmp/${script} "$@"
   exit $?
 }
 
