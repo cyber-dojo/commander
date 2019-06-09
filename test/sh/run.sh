@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 . ${MY_DIR}/rm_default_start_points.sh
