@@ -22,7 +22,7 @@ assertStdoutIncludes()
 
 refuteStdoutIncludes()
 {
-  local stdout="`cat ${stdoutF}`"
+  local stdout=$(cat "${stdoutF}")
   if [[ "${stdout}" = *"${1}"* ]]; then
     echo "<stdout>"
     cat ${stdoutF}
@@ -33,10 +33,10 @@ refuteStdoutIncludes()
 
 assertStderrIncludes()
 {
-  local stderr="`cat ${stderrF}`"
+  local stderr=$(cat "${stderrF}")
   if [[ "${stderr}" != *"${1}"* ]]; then
     echo "<stderr>"
-    cat ${stderrF}
+    echo "${stderr}"
     echo "</stderr>"
     fail "expected stderr to include ${1}"
   fi

@@ -158,13 +158,15 @@ removeAllStartPoints()
 
 stdout_stderr()
 {
-  echo "<stdout>${stdoutF}</stdout><stderr>${stderrF}</stderr>"
+  local stdout="`cat ${stdoutF}`"
+  local stderr="`cat ${stderrF}`"
+  echo "<stdout>${stdout}</stdout><stderr>${stderr}</stderr>"
 }
 
 assert()
 {
   if [ "$1" != "0" ]; then
-    assertTrue $(stdout_stderr) 1
+    assertTrue "$(stdout_stderr)" 1
     exit 1
   fi
 }
@@ -172,7 +174,7 @@ assert()
 refute()
 {
   if [ "$1" == "0" ]; then
-    assertFalse $(stdout_stderr) 0
+    assertFalse "$(stdout_stderr)" 0
     exit 1
   fi
 }
