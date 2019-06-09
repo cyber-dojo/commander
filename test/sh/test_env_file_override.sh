@@ -39,7 +39,7 @@ test_____web_env_file_exists_seen_as_custom___host()
     local -r grafana_env=/tmp/grafana.env.exists
     local -r nginx_env=/tmp/nginx.env.exists
     local -r web_env=/tmp/web.env.exists
-    touch "${grafana_env} ${nginx_env} ${web_env}"
+    touch "${grafana_env}" "${nginx_env}" "${web_env}"
     export CYBER_DOJO_GRAFANA_ENV="${grafana_env}"
     export CYBER_DOJO_NGINX_ENV="${nginx_env}"
     export CYBER_DOJO_WEB_ENV="${web_env}"
@@ -47,7 +47,7 @@ test_____web_env_file_exists_seen_as_custom___host()
     unset CYBER_DOJO_WEB_ENV
     unset CYBER_DOJO_NGINX_ENV
     unset CYBER_DOJO_GRAFANA_ENV
-    rm "${grafana_env} ${nginx_env} ${web_env}"
+    rm "${grafana_env}" "${nginx_env}" "${web_env}"
     assertStdoutIncludes "Using grafana.env=${grafana_env} (custom)"
     assertStdoutIncludes "Using nginx.env=${nginx_env} (custom)"
     assertStdoutIncludes "Using web.env=${web_env} (custom)"
