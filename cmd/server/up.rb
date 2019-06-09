@@ -24,6 +24,7 @@ def cyber_dojo_server_up
   STDOUT.puts
 
   env_vars = {
+    'ENV_ROOT' => env_root,
     'CYBER_DOJO_PORT' => port,
     'CYBER_DOJO_CUSTOM'    => custom,
     'CYBER_DOJO_EXERCISES' => exercises,
@@ -80,8 +81,11 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
+def env_root
+  '/app/env_files'
+end
+
 def use_any_custom_env_files
-  env_root = '/app/env_files'
   unless File.exist?("#{env_root}/custom.grafana.env")
     puts 'WARNING: Using default grafana admin password.'
     puts 'To set your own password and remove this warning:'

@@ -4,10 +4,10 @@ version: '2.2'
 services:
   grafana:
     env_file:
-      - /app/env_files/grafana.env
+      - ${ENV_ROOT}/grafana.env
   nginx:
     env_file:
-      - /app/env_files/nginx.env
+      - ${ENV_ROOT}/nginx.env
   web:
     env_file:
-      - /app/env_files/web.env
+      - ${ENV_ROOT}/web.env
