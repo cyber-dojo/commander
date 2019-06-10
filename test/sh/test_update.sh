@@ -31,11 +31,16 @@ Updates all cyber-dojo server images and the cyber-dojo script file"
 
 test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
 {
+  local -r custom_name=test_up_custom_246
+  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  local -r languages_name=test_up_languages_246
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
+
   # ensure we are using 5e3bc0b and not cyberdojo/commander:latest
   unset COMMANDER_TAG
   assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
-  assertUp --languages=cyberdojo/languages-small:8ab7cd9
+  assertUp --languages=${languages_name} --custom=${custom_name}
   export COMMANDER_TAG=latest
 
   assertStdoutIncludes 'Using grafana.env=default'
@@ -43,9 +48,9 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertStdoutIncludes 'Using web.env=default'
   #
   assertStdoutIncludes 'Using port=80'
-  assertStdoutIncludes 'Using custom=cyberdojo/custom:a089497'
+  assertStdoutIncludes "Using custom=${custom__name}"
   assertStdoutIncludes 'Using exercises=cyberdojo/exercises:16fb5d9'
-  assertStdoutIncludes 'Using languages=cyberdojo/languages-small:8ab7cd9'
+  assertStdoutIncludes "Using languages=${languages_name}"
   #
   assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
   assertStdoutIncludes 'Using grafana=cyberdojo/grafana:449370c'
@@ -60,6 +65,8 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertNoStderr
 
   assertDown
+  assertStartPointRm ${custom_name}
+  assertStartPointRm ${languages_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

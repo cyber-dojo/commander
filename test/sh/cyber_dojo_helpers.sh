@@ -32,9 +32,9 @@ on_CI()
 custom_urls()
 {
   if on_CI; then
-    echo -n "${github_cyber_dojo}/custom/JavaCountdown"
+    echo -n https://github.com/cyber-dojo-languages/java-junit
   else
-    echo -n "$(CD_DIR)/custom/JavaCountdown"
+    echo -n "$(CDL_DIR)/java-junit"
   fi
 }
 
@@ -54,11 +54,9 @@ exercises_urls()
 languages_urls()
 {
   if on_CI; then
-    echo -n $(curl --silent "${raw_github_cd_org}/languages/master/url_list/small")
+    echo -n https://github.com/cyber-dojo-languages/java-junit
   else
-    echo -n "$(CDL_DIR)/gcc-assert \
-             $(CDL_DIR)/python-unittest \
-             $(CDL_DIR)/ruby-minitest"
+    echo -n "$(CDL_DIR)/java-junit"
   fi
 }
 
