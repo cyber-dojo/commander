@@ -80,20 +80,20 @@ Defaults:
   --port=80
 
 Default start-points were created using:
-  \$ ./cyber-dojo start-point create \\
-      cyberdojo/custom \\
-        --custom \\
-          https://github.com/cyber-dojo/custom.git
+  cyber-dojo start-point create \\
+    cyberdojo/custom \\
+      --custom \\
+        https://github.com/cyber-dojo/custom.git
 
-  \$ ./cyber-dojo start-point create \\
-      cyberdojo/exercises \\
-        --exercises \\
-          https://github.com/cyber-dojo/exercises.git
+  cyber-dojo start-point create \\
+    cyberdojo/exercises \\
+      --exercises \\
+        https://github.com/cyber-dojo/exercises.git
 
-  \$ ./cyber-dojo start-point create \\
-      cyberdojo/languages-common \\
-        --languages \\
-          \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)"
+  cyber-dojo start-point create \\
+    cyberdojo/languages-common \\
+      --languages \\
+        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)"
 
   assertUp --help
   assertStdoutEquals "${expected_stdout}"

@@ -4,7 +4,7 @@ shift # update
 readonly TAG="${1:-latest}"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  ./cyber-dojo update [latest|TAG]
+#  cyber-dojo update [latest|TAG]
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 show_help()
