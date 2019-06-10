@@ -31,6 +31,7 @@ on_CI()
 
 custom_urls()
 {
+  # A single Alpine-based url to help make tests faster
   if on_CI; then
     echo -n https://github.com/cyber-dojo-languages/java-junit
   else
@@ -53,10 +54,11 @@ exercises_urls()
 
 languages_urls()
 {
+  # A single Alpine-based url to help make tests faster
   if on_CI; then
-    echo -n https://github.com/cyber-dojo-languages/java-junit
+    echo -n https://github.com/cyber-dojo-languages/ruby-minitest
   else
-    echo -n "$(CDL_DIR)/java-junit"
+    echo -n "$(CDL_DIR)/ruby-minitest"
   fi
 }
 
