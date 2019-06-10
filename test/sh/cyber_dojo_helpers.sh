@@ -13,12 +13,12 @@ export COMMANDER_TAG=latest
 
 CD_DIR()
 {
-  echo "$( cd "${MY_DIR}" && cd ../../../../cyber-dojo && pwd )"
+  echo "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
 }
 
 CDL_DIR()
 {
-  echo "$(cd "${MY_DIR}" && cd ../../../../cyber-dojo-languages && pwd )"
+  echo "$(cd "${MY_DIR}/../../../../cyber-dojo-languages" && pwd )"
 }
 
 
