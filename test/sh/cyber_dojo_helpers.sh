@@ -32,9 +32,9 @@ on_CI()
 custom_urls()
 {
   if on_CI; then
-    echo -n "${github_cyber_dojo}/custom"
+    echo -n "${github_cyber_dojo}/custom/JavaCountdown"
   else
-    echo -n "$(CD_DIR)/custom"
+    echo -n "$(CD_DIR)/custom/JavaCountdown"
   fi
 }
 
