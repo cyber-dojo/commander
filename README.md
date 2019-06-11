@@ -10,7 +10,7 @@ To bring up a default server:
 $ cyber-dojo up
 ```
 
-To bring the server up to latest version:
+To bring the server up to the latest version:
 ```bash
 $ cyber-dojo update
 $ cyber-dojo up
@@ -94,7 +94,7 @@ You can override these .env files as follows:
   ```bash
   $ cyber-dojo up
   ```
-- Read the **up** information messages to verify your .env file is being used:
+- Verify the **up** information messages say your .env file is being used:
   ```text
   ...
   Using grafana.env=default
