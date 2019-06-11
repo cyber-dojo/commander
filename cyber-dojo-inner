@@ -147,8 +147,8 @@ if [ "$1 $2" = 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
 elif [ "$1" = 'sh' ]; then
   extract_and_run sh.sh "$@"
-elif [ "$1" = 'update' ]; then
-  extract_and_run update.sh "$@"
+#elif [ "$1" = 'update' ]; then
+#  extract_and_run update.sh "$@"
 elif ! delegate_to_commander "$@"; then
   exit 5
 fi

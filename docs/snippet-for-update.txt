@@ -9,7 +9,9 @@ set -e
 shift # update
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-#  Use: cyber-dojo update [latest|RELEASE]
+#  Use: cyber-dojo update [latest]
+#  Use: cyber-dojo update [VERSION]
+#  Use: cyber-dojo update [TAG]
 #
 #  Example 1: change to latest (the default)
 #
@@ -19,7 +21,7 @@ shift # update
 #    Pulls latest ready for the next [cyber-dojo up] command.
 #    Tags it with its release number (eg 3.19.1)
 #
-#  Example 2: change to a given release
+#  Example 2: change to a given version
 #
 #    cyber-dojo update 2.7.31
 #

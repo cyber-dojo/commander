@@ -142,9 +142,10 @@ case ARGV[0]
   when '--help'       then cyber_dojo_help
   when 'clean'        then cyber_dojo_server_clean
   when 'down'         then cyber_dojo_server_down
-  when 'up'           then cyber_dojo_server_up
   when 'logs'         then cyber_dojo_service_logs
   when 'start-point'  then cyber_dojo_start_point
+  when 'up'           then cyber_dojo_server_up
+  when 'update'       then cyber_dojo_server_update
   when 'version'      then cyber_dojo_server_version
   else
     STDERR.puts "ERROR: unknown argument [#{ARGV[0]}]"
