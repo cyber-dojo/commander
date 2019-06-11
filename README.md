@@ -55,9 +55,9 @@ You can override the port in two ways:
 
 # overridable start-point images
 By default your cyber-dojo server will use these start-point images (tagged appropriately)
-- cyberdojo/custom
-- cyberdojo/exercises
-- cyberdojo/languages
+- [cyberdojo/custom](https://hub.docker.com/r/cyberdojo/custom/tags)
+- [cyberdojo/exercises](https://hub.docker.com/r/cyberdojo/exercises/tags)
+- [cyberdojo/languages-common](https://hub.docker.com/r/cyberdojo/languages-common/tags)
 
 You can override these start-point images in two ways:
 * with an environment-variable
