@@ -1,9 +1,9 @@
 
 [![CircleCI](https://circleci.com/gh/cyber-dojo/commander.svg?style=svg)](https://circleci.com/gh/cyber-dojo/commander)
 
-# the cyber-dojo bash script
+# cyber-dojo
 
-Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you can use the main cyber-dojo script to control a [cyber-dojo](https://cyber-dojo.org) server.
+Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you can use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
 
 To bring up a default server:
 ```bash
@@ -18,7 +18,7 @@ To update to the latest version and switch to it:
 
 To see an overview of available commands:
 ```bash
-$ ./cyber-dojo
+./cyber-dojo
 ```
 ```text
 Use: cyber-dojo [--debug] COMMAND
@@ -35,6 +35,28 @@ Commands:
 
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
+
+# overridable port
+By default your cyber-dojo server will be on port 80.
+You can override this in two ways:
+* with an environment variable
+  ```bash
+  export CYBER_DOJO_PORT=81
+  ./cyber-dojo up
+  ```
+  ```text
+  ...
+  Using port=81
+  ...
+  ```
+* with a command-line argument
+  ```bash
+  ./cyber-dojo up --port=82
+  ```
+  ```text
+  ...
+  Using port=82
+  ```
 
 # overridable start-point images
 ...
