@@ -18,7 +18,7 @@ $ cyber-dojo up
 
 To see an overview of available commands:
 ```bash
-$ cyber-dojo
+$ cyber-dojo --help
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
