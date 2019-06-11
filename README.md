@@ -17,9 +17,10 @@ To update to the latest version and switch to it:
 ```
 
 To see an overview of available commands:
-```text
+```bash
 $ ./cyber-dojo
-
+```
+```text
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
@@ -43,6 +44,7 @@ There are default .env files for three services:
 - nginx.env
 - grafana.env
 - web.env
+
 You can override these as follows:
 - Create your own .env file, eg nginx.env
 - Set an environment-variable to its absolute path. For example:
@@ -52,8 +54,13 @@ You can override these as follows:
 - Reissue the up command:
   ```bash
   ./cyber-dojo up
+  ```
+- Read the up information messages to verify your .env file is being used:
+  ```text
   ...
+  Using grafana.env=default
   Using nginx.env=/home/fred/nginx.env (custom)
+  Using web.env=default
   ...
   ```
 
