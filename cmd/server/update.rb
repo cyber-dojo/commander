@@ -2,6 +2,7 @@
 def cyber_dojo_server_update
   exit_success_if_update_help
 
+  # set tag for outgoing :latest
   versioner = 'cyberdojo/versioner:latest'
   was = `docker run --rm #{versioner} sh -c 'echo -n ${RELEASE}'`
   if !was.empty?
@@ -13,10 +14,13 @@ def cyber_dojo_server_update
   end
 
   tag = ARGV[1] || 'latest'
-  system("docker pull cyberdojo/versioner:#{tag}")
-  system("docker tag cyberdojo/versioner:#{tag} cyberdojo/versioner:latest")
-
+  run "docker pull cyberdojo/versioner:#{tag}"
+  exit(5) if $exit_status != 0
+  run "docker tag cyberdojo/versioner:#{tag} cyberdojo/versioner:latest"
+  exit(5) if $exit_status != 0
 end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def exit_success_if_update_help
   help = [

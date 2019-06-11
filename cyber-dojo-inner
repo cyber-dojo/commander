@@ -11,8 +11,6 @@ set -e
 #   2) ./cyber-dojo sh web
 #      This is because the delegation is to a ruby script
 #      and not a bash script.
-#   3) ./cyber-dojo update
-#      This is simply historical.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 delegate_to_commander()
@@ -147,8 +145,6 @@ if [ "$1 $2" = 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
 elif [ "$1" = 'sh' ]; then
   extract_and_run sh.sh "$@"
-#elif [ "$1" = 'update' ]; then
-#  extract_and_run update.sh "$@"
 elif ! delegate_to_commander "$@"; then
   exit 5
 fi

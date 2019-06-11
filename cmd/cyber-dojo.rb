@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
-# Called from cyber-dojo.sh
-# Returns non-zero to indicate cyber-dojo.sh should not proceed.
+# Called from cyber-dojo-inner
 
 require 'json'
 require 'tempfile'
