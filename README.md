@@ -7,20 +7,18 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 
 To bring up a default server:
 ```bash
-./cyber-dojo up
+$ cyber-dojo up
 ```
 
 To update to the latest version and switch to it:
 ```bash
-./cyber-dojo update
-./cyber-dojo up
+$ cyber-dojo update
+$ cyber-dojo up
 ```
 
 To see an overview of available commands:
 ```bash
-./cyber-dojo
-```
-```text
+$ cyber-dojo
 Use: cyber-dojo [--debug] COMMAND
      cyber-dojo --help
 
@@ -41,25 +39,22 @@ By default your cyber-dojo server will be on port 80.
 You can override this in two ways:
 * with an environment variable
   ```bash
-  export CYBER_DOJO_PORT=81
-  ./cyber-dojo up
-  ```
-  ```text
+  $ export CYBER_DOJO_PORT=81
+  $ cyber-dojo up
   ...
   Using port=81
   ...
   ```
 * with a command-line argument
   ```bash
-  ./cyber-dojo up --port=82
-  ```
-  ```text
+  $ cyber-dojo up --port=82
   ...
   Using port=82
+  ...
   ```
 
 # overridable start-point images
-...
+...TODO...
 
 # overridable .env files
 There are default .env files for three services:
@@ -71,11 +66,11 @@ You can override these as follows:
 - Create your own .env file, eg nginx.env
 - Set an environment-variable to its absolute path. For example:
   ```bash
-  export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
+  $ export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
   ```
-- Reissue the up command:
+- Re-issue the up command:
   ```bash
-  ./cyber-dojo up
+  $ cyber-dojo up
   ```
 - Read the up information messages to verify your .env file is being used:
   ```text
