@@ -3,14 +3,14 @@
 
 # cyber-dojo
 
-Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you can use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
+Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
 
 To bring up a default server:
 ```bash
 $ cyber-dojo up
 ```
 
-To update to the latest version and then bring it up:
+To bring the server up to latest version:
 ```bash
 $ cyber-dojo update
 $ cyber-dojo up
@@ -37,7 +37,7 @@ Run 'cyber-dojo COMMAND --help' for more information on a command.
 # overridable port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
-* with an environment variable
+* with an environment-variable
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
@@ -45,7 +45,7 @@ You can override the port in two ways:
   Using port=81
   ...
   ```
-* with a command-line argument to up
+* with a command-line argument to **up**
   ```bash
   $ cyber-dojo up --port=82
   ...
@@ -58,8 +58,9 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - cyberdojo/custom
 - cyberdojo/exercises
 - cyberdojo/languages
+
 You can override these start-point images in two ways:
-* with an environment variable
+* with an environment-variable
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
   $ cyber-dojo up
@@ -67,7 +68,7 @@ You can override these start-point images in two ways:
   Using custom=acme/my_custom:latest
   ...
   ```
-* with a command-line argument to up
+* with a command-line argument to **up**
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
@@ -89,11 +90,11 @@ You can override these .env files as follows:
   $   export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
   $ # export CYBER_DOJO_WEB_ENV=...
   ```
-- Re-issue the up command:
+- Re-issue the **up** command:
   ```bash
   $ cyber-dojo up
   ```
-- Read the up information messages to verify your .env file is being used:
+- Read the **up** information messages to verify your .env file is being used:
   ```text
   ...
   Using grafana.env=default
