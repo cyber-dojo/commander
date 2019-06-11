@@ -11,6 +11,7 @@ def cyber_dojo_server_up
   exit_failure_unless_start_point_exists('exercises', exercises)
   exit_failure_unless_start_point_exists('languages', languages)
 
+  STDOUT.puts "Using version=#{server_version} (#{server_type})"
   STDOUT.puts "Using port=#{port}"
   STDOUT.puts "Using custom=#{custom}"
   STDOUT.puts "Using exercises=#{exercises}"

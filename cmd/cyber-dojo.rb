@@ -145,6 +145,7 @@ case ARGV[0]
   when 'up'           then cyber_dojo_server_up
   when 'logs'         then cyber_dojo_service_logs
   when 'start-point'  then cyber_dojo_start_point
+  when 'version'      then cyber_dojo_server_version
   else
     STDERR.puts "ERROR: unknown argument [#{ARGV[0]}]"
     exit failed

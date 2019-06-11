@@ -28,7 +28,7 @@ show_use()
 
   Example 1: local git-repo urls
 
-  $(green "${MY_NAME} start-point create \\\\
+  $(bold "${MY_NAME} start-point create \\\\
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
@@ -38,14 +38,14 @@ show_use()
 
   Example 2: non-local git-repo <url>
 
-  $(green "${MY_NAME} start-point create \\\\
+  $(bold "${MY_NAME} start-point create \\\\
         eg/second \\\\
           --exercises \\\\
             https://github.com/.../my-exercises.git")
 
   Example 3: local and non-local git-repo <url>s
 
-  $(green "${MY_NAME} start-point create \\\\
+  $(bold "${MY_NAME} start-point create \\\\
         eg/third \\\\
           --languages \\\\
             /user/fred/.../asm-assert \\\\
@@ -53,19 +53,19 @@ show_use()
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  $(green "${MY_NAME} start-point create \\\\
+  $(bold "${MY_NAME} start-point create \\\\
         eg/fourth \\\\
           --languages \\\\
             \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)")
 
   Example 5: read git-repo <url>s from a local file
 
-  $(green "${MY_NAME} start-point create \\\\
+  $(bold "${MY_NAME} start-point create \\\\
         eg/fifth \\\\
           --languages \\\\
             \$(< my-language-selection.txt)")
 
-  $(green "cat my-language-selection.txt")
+  $(bold "cat my-language-selection.txt")
   https://github.com/.../java-junit.git
   https://github.com/.../javascript-jasmine.git
   https://github.com/.../python-pytest.git
@@ -251,16 +251,16 @@ build_image_from_context_dir()
 
 RESET=$(tput -Txterm sgr0)
 
-green()
-{
-  local -r GREEN=$(tput -Txterm setaf 2)
-  echo -e "${GREEN}${1}${RESET}"
-}
-
 bold()
 {
   local -r BOLD=$(tput -Txterm bold)
   echo -e "${BOLD}${1}${RESET}"
+}
+
+green()
+{
+  local -r GREEN=$(tput -Txterm setaf 2)
+  echo -e "${GREEN}${1}${RESET}"
 }
 
 stderr()

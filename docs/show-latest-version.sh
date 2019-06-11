@@ -1,35 +1,16 @@
 #!/bin/bash
 
-image() # $1=latest $1=067eaa7
+versioner() # $1=latest $1=067eaa7
 {
   echo "cyberdojo/versioner:${1}"
 }
 
-release()
+version()
 {
-  docker run --rm $(image latest) sh -c 'echo -n ${RELEASE}'
+  local -r release=$(docker run --rm $(versioner latest) sh -c 'echo -n ${RELEASE}')
+  local -r sha7=$(docker run --rm $(versioner latest) sh -c 'echo -n ${SHA:0:7}')
+  [ -n "${release}" ] && echo "${release}" || echo "${sha7}"
 }
 
-release?()
-{
-  [ -n "$(release)" ] && true || false
-}
-
-sha7()
-{
-  docker run --rm $(image latest) sh -c 'echo -n ${SHA:0:7}'
-}
-
-tag()
-{
-  release? && release || sha7
-}
-
-kind()
-{
-  release? && echo public || echo DEV-only
-}
-
-# docker tag $(image latest) $(image $(tag))
-echo "Version: $(tag)"
-echo "Kind: $(kind)"
+#docker tag $(versioner latest) $(versioner $(version))
+echo "Version: $(version)"

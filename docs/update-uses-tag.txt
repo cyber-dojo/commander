@@ -61,6 +61,7 @@ Handy for testing too.
 ======================================================
 
 $ ./cyber-dojo update history
+$ ./cyber-dojo version history
 Could show log of _all_ updates. This would rely on
 the non latest tags in cyberdojo/commander:XXX
 being findable. Then sort them by date order.
