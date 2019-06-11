@@ -87,14 +87,13 @@ test_____unknown_tag_prints_to_stderr()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-OFF_test_____too_many_args()
+test_____too_many_args_prints_to_stderr()
 {
   local -r arg1=salmon
   local -r arg2=parr
   refuteUpdate ${arg1} ${arg2}
   assertNoStdout
-  assertStderrIncludes "ERROR: unknown argument [${arg1}]"
-  assertStderrIncludes "ERROR: unknown argument [${arg2}]"
+  assertStderrIncludes "ERROR: too many arguments [${arg1} ${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

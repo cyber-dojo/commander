@@ -1,6 +1,7 @@
 
 def cyber_dojo_server_update
   exit_success_if_update_help
+  exit_failure_if_too_many_arguments
 
   # set tag for outgoing :latest
   versioner = 'cyberdojo/versioner:latest'
@@ -32,5 +33,14 @@ def exit_success_if_update_help
   if ['-h','--help'].include?(ARGV[1])
     show help
     exit succeeded
+  end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def exit_failure_if_too_many_arguments
+  unless ARGV[2].nil?
+    args = ARGV[1..-1]
+    STDERR.puts "ERROR: too many arguments [#{args.join(' ')}]"
   end
 end
