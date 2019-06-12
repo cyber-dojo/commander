@@ -34,7 +34,7 @@ Commands:
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
 
-# overridding the default port
+# overriding the default port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
 * an environment-variable
@@ -53,7 +53,7 @@ You can override the port in two ways:
   ...
   ```
 
-# overridding the default start-point images
+# overriding the default start-point images
 By default your cyber-dojo server will use these start-point images (tagged appropriately)
 - [cyberdojo/custom](https://hub.docker.com/r/cyberdojo/custom/tags)
 - [cyberdojo/exercises](https://hub.docker.com/r/cyberdojo/exercises/tags)
@@ -78,7 +78,7 @@ You can override these start-point images in two ways:
   ...
   ```
 
-# overridding the default .env files
+# overriding the default .env files
 There are default .env files for three of the core-services:
 - nginx.env
 - grafana.env
