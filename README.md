@@ -34,7 +34,7 @@ Commands:
 Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
 
-# overridable port
+# overridding the default port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
 * an environment-variable
@@ -53,7 +53,7 @@ You can override the port in two ways:
   ...
   ```
 
-# overridable start-point images
+# overridding the default start-point images
 By default your cyber-dojo server will use these start-point images (tagged appropriately)
 - [cyberdojo/custom](https://hub.docker.com/r/cyberdojo/custom/tags)
 - [cyberdojo/exercises](https://hub.docker.com/r/cyberdojo/exercises/tags)
@@ -63,6 +63,8 @@ You can override these start-point images in two ways:
 * an environment-variable
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
+  $ # export CYBER_DOJO_EXERCISES=...
+  $ # export CYBER_DOJO_LANGUAGES=...
   $ cyber-dojo up
   ...
   Using custom=acme/my_custom:latest
@@ -76,7 +78,7 @@ You can override these start-point images in two ways:
   ...
   ```
 
-# overridable .env files
+# overridding the default .env files
 There are default .env files for three of the core-services:
 - nginx.env
 - grafana.env
@@ -86,15 +88,15 @@ You can override these .env files as follows:
 - Create your own .env file, eg nginx.env
 - Set an environment-variable to its absolute path. For example:
   ```bash
+  $ export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
   $ # export CYBER_DOJO_GRAFANA_ENV=...
-  $   export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
   $ # export CYBER_DOJO_WEB_ENV=...
   ```
 - Re-issue the **up** command:
   ```bash
   $ cyber-dojo up
   ```
-- Verify the **up** information messages say your .env file is being used:
+- Verify the **up** information messages name your .env file(s):
   ```text
   ...
   Using grafana.env=default
