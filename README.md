@@ -8,13 +8,30 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 To bring up a default server:
 ```bash
 $ cyber-dojo up
+...
+$ cyber-dojo version
+1.0.19
+...
 ```
 
-To bring the server up to the latest version:
+To bring the server up at the latest version:
 ```bash
-$ cyber-dojo update
+$ cyber-dojo update latest
+$ cyber-dojo version
+Version 1.0.23
 $ cyber-dojo up
+...
 ```
+
+To bring the server up at a specific version:
+```bash
+$ cyber-dojo update 1.0.21
+$ cyber-dojo version
+Version 1.0.21
+$ cyber-dojo up
+...
+```
+
 
 To see an overview of available commands:
 ```bash
