@@ -37,7 +37,7 @@ Run 'cyber-dojo COMMAND --help' for more information on a command.
 # overridable port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
-* with an environment-variable
+* an environment-variable
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
@@ -45,7 +45,7 @@ You can override the port in two ways:
   Using port=81
   ...
   ```
-* with a command-line argument to **up**
+* a command-line argument to **up**
   ```bash
   $ cyber-dojo up --port=82
   ...
@@ -60,7 +60,7 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - [cyberdojo/languages-common](https://hub.docker.com/r/cyberdojo/languages-common/tags)
 
 You can override these start-point images in two ways:
-* with an environment-variable
+* an environment-variable
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
   $ cyber-dojo up
@@ -68,7 +68,7 @@ You can override these start-point images in two ways:
   Using custom=acme/my_custom:latest
   ...
   ```
-* with a command-line argument to **up**
+* a command-line argument to **up**
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
