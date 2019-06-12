@@ -29,7 +29,7 @@ def server_date
 end
 
 def ymd_hms(dt)
-  DateTime.iso8601(dt).strftime('%Y-%M-%d %H:%M:%S')
+  DateTime.iso8601(dt).strftime('%Y-%m-%d %H:%M:%S')
 end
 
 def cyber_dojo_server_version
