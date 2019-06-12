@@ -91,6 +91,7 @@ startPointRm()      { ${exe} start-point rm      $* >${stdoutF} 2>${stderrF}; }
 startPointUpdate()  { ${exe} start-point update  $* >${stdoutF} 2>${stderrF}; }
 up()                { ${exe} up                  $* >${stdoutF} 2>${stderrF}; }
 update()            { ${exe} update              $* >${stdoutF} 2>${stderrF}; }
+version()           { ${exe} version             $* >${stdoutF} 2>${stderrF}; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -129,6 +130,8 @@ refuteUp()                { up                $*; refute $?; }
 
 assertUpdate()            { update            $*; assert $?; }
 refuteUpdate()            { update            $*; refute $?; }
+
+assertVersion()           { version           $*; assert $?; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
