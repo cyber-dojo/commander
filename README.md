@@ -10,25 +10,34 @@ To bring up a default server:
 $ cyber-dojo up
 ...
 $ cyber-dojo version
-1.0.19
+Version: 1.0.19
+Type: public
 ...
 ```
 
-To bring the server up at the latest version:
+To update the server to the latest version:
 ```bash
 $ cyber-dojo update latest
 $ cyber-dojo version
-Version 1.0.23
+Version: 1.0.23
+Type: public
+...
 $ cyber-dojo up
+Using version=1.0.23 (public)
+Using port=80
 ...
 ```
 
-To bring the server up at a specific version:
+To update the server to a specific version:
 ```bash
 $ cyber-dojo update 1.0.21
 $ cyber-dojo version
-Version 1.0.21
+Version: 1.0.21
+Type: public
+...
 $ cyber-dojo up
+Using version=1.0.21 (public)
+Using port=80
 ...
 ```
 
@@ -62,7 +71,7 @@ You can override the port in two ways:
   Using port=81
   ...
   ```
-* a command-line argument to **up**
+* a command-line argument
   ```bash
   $ cyber-dojo up --port=82
   ...
@@ -87,7 +96,7 @@ You can override these start-point images in two ways:
   Using custom=acme/my_custom:latest
   ...
   ```
-* a command-line argument to **up**
+* a command-line argument
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
