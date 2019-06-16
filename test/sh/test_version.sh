@@ -11,7 +11,7 @@ test_VERSION() { :; }
 
 test___success() { :; }
 
-test_____update_to_public_release()
+test_____update_to_ABC_public_semantic_version()
 {
   # don't use cyberdojo/commander:latest
   unset COMMANDER_TAG
@@ -21,22 +21,28 @@ test_____update_to_public_release()
   assertStdoutIncludes 'Version: 0.0.2'
   assertStdoutIncludes 'Type: public'
   assertStdoutIncludes 'Created: 2019-06-12 18:00:19'
-  assertNoStderr
+
+  unset COMMANDER_TAG
+  assertUpdate 0.0.4
+  assertVersion
+  export COMMANDER_TAG=latest
+  assertStdoutIncludes 'Version: 0.0.4'
+  assertStdoutIncludes 'Type: public'
+  assertStdoutIncludes 'Created: 2019-06-16 07:35:46'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-X_test_____update_to_development_tag()
+test_____update_to_TAG_development_sha7_version()
 {
   # don't use cyberdojo/commander:latest
   unset COMMANDER_TAG
-  assertUpdate XXXXXXX # needs a development tag that has version in it!
+  assertUpdate 677df27
   assertVersion
   export COMMANDER_TAG=latest
-  assertStdoutIncludes 'Version: 5e3bc0b'
+  assertStdoutIncludes 'Version: 677df27'
   assertStdoutIncludes 'Type: development'
-  assertStdoutIncludes 'Created: 2019-06-07 09:07:09'
-  assertNoStderr
+  assertStdoutIncludes 'Created: 2019-06-16 07:29:16'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
