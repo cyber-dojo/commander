@@ -17,6 +17,9 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-web
+    environment:
+      - CYBER_DOJO_SHA
+      - CYBER_DOJO_RELEASE
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -

@@ -30,6 +30,8 @@ def cyber_dojo_server_up
     'CYBER_DOJO_CUSTOM'    => custom,
     'CYBER_DOJO_EXERCISES' => exercises,
     'CYBER_DOJO_LANGUAGES' => languages,
+    'CYBER_DOJO_SHA' => sha,
+    'CYBER_DOJO_RELEASE' => release
   }
   add_services_image_tags(env_vars)
 
@@ -109,6 +111,12 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def add_services_image_tags(env_vars)
+  # cmd/docker-compose/images.yml has entries such as
+  # services:
+  #   differ:
+  #     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
+  # and unfortunately you cannot do this:
+  #     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_SHA:0:7}
   service_names.each do |service|
     name = service.upcase
     key = "CYBER_DOJO_#{name}_SHA"

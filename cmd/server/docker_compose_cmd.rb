@@ -15,5 +15,5 @@ end
 
 def compose_file(name)
   my_dir = File.dirname(__FILE__)
-  "--file=#{my_dir}/../docker-compose/#{name}"
+  "--file=#{__dir__}/../docker-compose/#{name}"
 end

@@ -4,16 +4,20 @@ def versioner
   'cyberdojo/versioner:latest'
 end
 
+def sha
+  $sha ||= `docker run --rm #{versioner} sh -c 'echo -n ${SHA}'`
+end
+
+def sha7
+  sha[0...7]
+end
+
 def release
   $release ||= `docker run --rm #{versioner} sh -c 'echo -n ${RELEASE}'`
 end
 
 def release?
   !release.empty?
-end
-
-def sha7
-  $sha7 ||= `docker run --rm #{versioner} sh -c 'echo -n ${SHA:0:7}'`
 end
 
 def server_version
