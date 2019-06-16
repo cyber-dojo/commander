@@ -4,8 +4,17 @@ def versioner
   'cyberdojo/versioner:latest'
 end
 
+def versioner_env_vars
+  $versioner_env_vars ||= read_versioner_env_vars
+end
+
+def read_versioner_env_vars
+  src = `docker run --rm #{versioner} sh -c 'env'`
+  env_file_to_h(src)
+end
+
 def sha
-  $sha ||= `docker run --rm #{versioner} sh -c 'echo -n ${SHA}'`
+  versioner_env_vars['SHA']
 end
 
 def sha7
@@ -13,7 +22,7 @@ def sha7
 end
 
 def release
-  $release ||= `docker run --rm #{versioner} sh -c 'echo -n ${RELEASE}'`
+  versioner_env_vars['RELEASE']
 end
 
 def release?

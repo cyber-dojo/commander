@@ -66,6 +66,10 @@ end
 
 def read_dot_env
   src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`
+  env_file_to_h(src)
+end
+
+def env_file_to_h(src)
   lines = src.lines.reject do |line|
     line.start_with?('#') || line.strip.empty?
   end
