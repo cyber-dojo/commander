@@ -57,29 +57,26 @@ test_____help_arg_prints_use()
   local -r expected_stdout="
 Use: cyber-dojo up [OPTIONS]
 
-Creates and starts a cyber-dojo server using named/default start-points.
-Settings can be specified with environment variables, and command line
-arguments, with the former taking precedence.
+Creates and starts a cyber-dojo server using default/named port,
+and start-points. Settings can be specified with environment variables
+and command-line arguments, with the former taking precedence.
 
-Environment variables:
-  CYBER_DOJO_CUSTOM=NAME      Specify the custom start-point name.
-  CYBER_DOJO_EXERCISES=NAME   Specify the exercises start-point name.
-  CYBER_DOJO_LANGUAGES=NAME   Specify the languages start-point name.
-  CYBER_DOJO_PORT=NUMBER      Specify the port number.
+Environment-variable        Command-line-arg     Default
+CYBER_DOJO_PORT=NUMBER      --port=NUMBER        NUMBER=80
+CYBER_DOJO_CUSTOM=NAME      --custom=NAME        NAME=cyberdojo/custom
+CYBER_DOJO_EXERCISES=NAME   --exercises=NAME     NAME=cyberdojo/exercises
+CYBER_DOJO_LANGUAGES=NAME   --languages=NAME     NAME=cyberdojo/languages-common
 
-Command line arguments:
-  --custom=NAME               Specify the custom start-point name.
-  --exercises=NAME            Specify the exercises start-point name.
-  --languages=NAME            Specify the languages start-point name.
-  --port=NUMBER               Specify the port number.
+Example 1: specify port with environment variable:
 
-Defaults:
-  --custom=cyberdojo/custom
-  --exercises=cyberdojo/exercises
-  --languages=cyberdojo/languages-common
-  --port=80
+  export CYBER_DOJO_PORT=81
+  cyber-dojo up
 
-Default start-points were created using:
+Example 2: specify port and languages start-point with command-line arguments
+
+  cyber-dojo up --port=81 --languages=cyberdojo/languages-all
+
+The default start-points were created using:
   cyber-dojo start-point create \\
     cyberdojo/custom \\
       --custom \\
@@ -93,7 +90,18 @@ Default start-points were created using:
   cyber-dojo start-point create \\
     cyberdojo/languages-common \\
       --languages \\
-        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)"
+        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)
+
+Additionally, .env files for grafana, nginx, and web can be overriden using
+environment variables holding the .env file's absolute path.
+
+  CYBER_DOJO_GRAFANA_ENV=PATH
+  CYBER_DOJO_NGINX_ENV=PATH
+  CYBER_DOJO_WEB_ENV=PATH
+
+Example 3: specify .env file for grafana
+  export CYBER_DOJO_GRAFANA_ENV=/Users/fred/grafana.env
+  cyber-dojo up"
 
   assertUp --help
   assertStdoutEquals "${expected_stdout}"
