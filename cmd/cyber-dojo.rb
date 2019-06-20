@@ -61,12 +61,10 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def dot_env
-  $dot_env ||= read_dot_env
-end
-
-def read_dot_env
-  src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`
-  env_file_to_h(src)
+  $dot_env ||= begin
+    src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`
+    env_file_to_h(src)
+  end
 end
 
 def env_file_to_h(src)
