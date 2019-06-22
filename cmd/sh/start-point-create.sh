@@ -248,26 +248,33 @@ build_image_from_context_dir()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Turn off terminal colours till I can get them working on CircleCI
+# readonly RESET=$(tput -Txterm sgr0)
 
-readonly RESET=$(tput -Txterm sgr0)
+readonly RESET=''
 
 bold()
 {
-  local -r BOLD=$(tput -Txterm bold)
+  #local -r BOLD=$(tput -Txterm bold)
+  local -r BOLD=''
   echo -e "${BOLD}${1}${RESET}"
 }
 
 green()
 {
-  local -r GREEN=$(tput -Txterm setaf 2)
+  #local -r GREEN=$(tput -Txterm setaf 2)
+  local -r GREEN=''
   echo -e "${GREEN}${1}${RESET}"
 }
 
 stderr()
 {
-  local -r RED=$(tput -Txterm setaf 1)
+  #local -r RED=$(tput -Txterm setaf 1)
+  local -r RED=''
   >&2 echo -e "${RED}${1}${RESET}"
 }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 base_image_name()
 {
