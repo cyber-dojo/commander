@@ -93,16 +93,9 @@ echo_env_var_error()
   local -r name="${1}"
   local -r path="${2}"
   local -r where="${3}"
-  echo_red 'ERROR: bad environment variable'
-  echo_red "${name}=${path}"
-  echo_red "does not exist (${where})"
-}
-
-echo_red()
-{
-  local -r red=$(tput -Txterm setaf 1)
-  local -r reset=$(tput -Txterm sgr0)
-  >&2 echo -e "${red}${1}${reset}"
+  >&2 echo 'ERROR: bad environment variable'
+  >&2 echo "${name}=${path}"
+  >&2 echo "does not exist (${where})"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
