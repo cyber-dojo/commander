@@ -249,23 +249,24 @@ build_image_from_context_dir()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-RESET=$(tput -Txterm sgr0)
+export TERM=xterm-256color
+RESET=$(tput sgr0)
 
 bold()
 {
-  local -r BOLD=$(tput -Txterm bold)
+  local -r BOLD=$(tput bold)
   echo -e "${BOLD}${1}${RESET}"
 }
 
 green()
 {
-  local -r GREEN=$(tput -Txterm setaf 2)
+  local -r GREEN=$(tput setaf 2)
   echo -e "${GREEN}${1}${RESET}"
 }
 
 stderr()
 {
-  local -r RED=$(tput -Txterm setaf 1)
+  local -r RED=$(tput setaf 1)
   >&2 echo -e "${RED}${1}${RESET}"
 }
 
