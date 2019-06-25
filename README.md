@@ -11,7 +11,7 @@ $ cyber-dojo up
 ...
 $ cyber-dojo version
 Version: 1.0.19
-Type: public
+   Type: public
 ...
 ```
 
@@ -20,7 +20,7 @@ To update the server to the latest version:
 $ cyber-dojo update latest
 $ cyber-dojo version
 Version: 1.0.23
-Type: public
+   Type: public
 ...
 $ cyber-dojo up
 Using version=1.0.23 (public)
@@ -33,7 +33,7 @@ To update the server to a specific version:
 $ cyber-dojo update 1.0.21
 $ cyber-dojo version
 Version: 1.0.21
-Type: public
+   Type: public
 ...
 $ cyber-dojo up
 Using version=1.0.21 (public)
@@ -111,10 +111,10 @@ There are default .env files for three of the core-services:
 - web.env
 
 You can override these .env files as follows:
-- Create your own .env file, eg nginx.env
+- Create your own .env file, eg my_nginx.env
 - Set an environment-variable to its absolute path. For example:
   ```bash
-  $ export CYBER_DOJO_NGINX_ENV=/home/fred/nginx.env
+  $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
   $ # export CYBER_DOJO_GRAFANA_ENV=...
   $ # export CYBER_DOJO_WEB_ENV=...
   ```
@@ -126,7 +126,7 @@ You can override these .env files as follows:
   ```text
   ...
   Using grafana.env=default
-  Using nginx.env=/home/fred/nginx.env (custom)
+  Using nginx.env=/home/fred/my_nginx.env (custom)
   Using web.env=default
   ...
   ```
