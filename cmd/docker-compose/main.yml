@@ -3,6 +3,14 @@ version: '2.2'
 
 services:
 
+  versioner:
+    user: nobody
+    init: true
+    container_name: cyber-dojo-versioner
+    read_only: true
+    tmpfs: /tmp    
+    restart: on-failure
+
   # - - - - - - - - - - - - - - - - - - - - - - -
   # multi-threaded front-end with http caching
   nginx:

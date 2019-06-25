@@ -2,27 +2,21 @@
 version: '2.2'
 
 services:
-  # custom:
-  # differ:
-  # exercises:
-  # languages:
-  # mapper:
-  # prometheus:
-  # runner:
 
   nginx:
     depends_on:
       - web
   web:
     depends_on:
-      - differ
       - custom
+      - differ
       - exercises
       - languages
       - mapper
       - ragger
       - runner
       - saver
+      - versioner
       - zipper
   ragger:
     depends_on:

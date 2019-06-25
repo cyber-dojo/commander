@@ -2,6 +2,9 @@
 version: '2.2'
 
 services:
+  versioner:
+    image: cyberdojo/versioner:latest
+
   # start-points (overridable)
   custom:
     image: ${CYBER_DOJO_CUSTOM}
