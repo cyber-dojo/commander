@@ -47,6 +47,6 @@ end
 
 def cyber_dojo_server_version
   puts "Version: #{server_version}"
-  puts "Type: #{server_type}"
+  puts "   Type: #{server_type}"
   puts "Created: #{ymd_hms(server_date)}"
 end
