@@ -32,7 +32,7 @@ show_use()
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
-            file:///user/fred/.../fizz_buzz \\\\
+            file:///user/fred/.../fizz_buzz
 
   Example 2: non-local git-repo <url>
 
@@ -70,7 +70,7 @@ show_use()
   https://github.com/.../ruby-minitest.git
 
 EOF
-  echo "${TEXT}"
+  echo -e "${TEXT}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
