@@ -18,7 +18,7 @@ test___success() { :; }
 test_____help_arg_prints_use()
 {
   local -r line1='Creates a cyber-dojo start-point image named <name>'
-  local -r line2='It will contain git clones of all the specified git-repo <url>s'
+  local -r line2='containing git clones of the specified git-repo <url>s.'
 
   assertStartPointCreate
   assertStdoutIncludes "${line1}"
