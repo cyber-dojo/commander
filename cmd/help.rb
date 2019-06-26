@@ -12,7 +12,8 @@ def cyber_dojo_help
     tab + 'sh           Shells into a service container',
     tab + 'start-point  Manages cyber-dojo start-points',
     tab + 'up           Brings up the server',
-    tab + 'update       Updates the server and languages to the latest images',
+    tab + 'update       Updates the server to latest or to a given version',
+    tab + 'version      Displays the current version',
     '',
     "Run '#{me} COMMAND --help' for more information on a command."
   ].join("\n") + "\n"

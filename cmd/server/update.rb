@@ -26,9 +26,33 @@ end
 def exit_success_if_update_help
   help = [
     '',
-    'Use: cyber-dojo update [latest|TAG]',
+    'Use: cyber-dojo update [latest|RELEASE|TAG]',
     '',
-    'Updates all cyber-dojo server images and the cyber-dojo script file'
+    'Updates image tags ready for the next [cyber-dojo up] command.',
+    '',
+    'Example 1: update to latest',
+    '',
+    'cyber-dojo update',
+    'cyber-dojo version',
+    '...',
+    'Version: 1.0.34',
+    '   Type: public',
+    '...',
+    '',
+    'Example 2: update to a given public release',
+    '',
+    'cyber-dojo update 1.0.23', 
+    'cyber-dojo version',
+    'Version: 1.0.23',
+    '   Type: public',
+    '',
+    'Example 3: update to a given development tag',
+    '',
+    'cyber-dojo update 677df27',
+    'cyber-dojo version',
+    'Version: 677df27',
+    '   Type: development',
+    ''
   ]
   if ['-h','--help'].include?(ARGV[1])
     show help
