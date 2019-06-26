@@ -29,14 +29,6 @@ test_____update_to_ABC_public_semantic_version()
   assertStdoutIncludes 'Version: 0.0.4'
   assertStdoutIncludes 'Type: public'
   assertStdoutIncludes 'Created: 2019-06-16 07:35:46'
-
-  unset COMMANDER_TAG
-  assertUpdate 0.0.8
-  assertVersion
-  export COMMANDER_TAG=latest
-  assertStdoutIncludes 'Version: 0.0.8'
-  assertStdoutIncludes '   Type: public' # indented
-  assertStdoutIncludes 'Created: 2019-06-25 15:46:45'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
