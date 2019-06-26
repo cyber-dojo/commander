@@ -32,9 +32,7 @@ show_use()
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
-            /user/fred/.../bowling_game.git \\\\
             file:///user/fred/.../fizz_buzz \\\\
-            file:///user/fred/.../game_of_life.git
 
   Example 2: non-local git-repo <url>
 
