@@ -251,9 +251,7 @@ build_image_from_context_dir()
 
 stderr()
 {
-  #local -r RED=$(tput -Txterm setaf 1)
-  local -r RED=''
-  >&2 echo -e "${RED}${1}${RESET}"
+  >&2 echo "${1}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
