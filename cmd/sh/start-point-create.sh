@@ -18,61 +18,61 @@ show_use()
   define TEXT <<- EOF
 
   Use:
-  $(bold "${MY_NAME} start-point create") <name> $(bold --custom)    <url> ...
-  $(bold "${MY_NAME} start-point create") <name> $(bold --exercises) <url> ...
-  $(bold "${MY_NAME} start-point create") <name> $(bold --languages) <url> ...
+  ${MY_NAME} start-point create <name> --custom    <url> ...
+  ${MY_NAME} start-point create <name> --exercises <url> ...
+  ${MY_NAME} start-point create <name> --languages <url> ...
 
   Creates a cyber-dojo start-point image named <name>
-  Its base image will be $(bold cyberdojo/starter-base:STARTER_BASE_TAG)
+  Its base image will be cyberdojo/starter-base:STARTER_BASE_TAG
   It will contain git clones of all the specified git-repo <url>s
 
-  Example 1: local git-repo urls
+  Example 1: local git-repo <url>s
 
-  $(bold "${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point create \\\\
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
             /user/fred/.../bowling_game.git \\\\
             file:///user/fred/.../fizz_buzz \\\\
-            file:///user/fred/.../game_of_life.git")
+            file:///user/fred/.../game_of_life.git
 
   Example 2: non-local git-repo <url>
 
-  $(bold "${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point create \\\\
         eg/second \\\\
           --exercises \\\\
-            https://github.com/.../my-exercises.git")
+            https://github.com/.../my-exercises.git
 
   Example 3: local and non-local git-repo <url>s
 
-  $(bold "${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point create \\\\
         eg/third \\\\
           --languages \\\\
             /user/fred/.../asm-assert \\\\
-            https://github.com/.../my-languages.git")
+            https://github.com/.../my-languages.git
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  $(bold "${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point create \\\\
         eg/fourth \\\\
           --languages \\\\
-            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)")
+            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
   Example 5: read git-repo <url>s from a local file
 
-  $(bold "${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point create \\\\
         eg/fifth \\\\
           --languages \\\\
-            \$(< my-language-selection.txt)")
+            \$(< my-language-selection.txt)
 
-  $(bold "cat my-language-selection.txt")
+  cat my-language-selection.txt
   https://github.com/.../java-junit.git
   https://github.com/.../javascript-jasmine.git
   https://github.com/.../python-pytest.git
   https://github.com/.../ruby-minitest.git
 
 EOF
-  echo -e "${TEXT}"
+  echo "${TEXT}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -243,29 +243,11 @@ build_image_from_context_dir()
     docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
-    echo -e "$(green "Successfully built ${IMAGE_NAME}")"
+    echo "Successfully built ${IMAGE_NAME}"
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Turn off terminal colours till I can get them working on CircleCI
-# readonly RESET=$(tput -Txterm sgr0)
-
-readonly RESET=''
-
-bold()
-{
-  #local -r BOLD=$(tput -Txterm bold)
-  local -r BOLD=''
-  echo -e "${BOLD}${1}${RESET}"
-}
-
-green()
-{
-  #local -r GREEN=$(tput -Txterm setaf 2)
-  local -r GREEN=''
-  echo -e "${GREEN}${1}${RESET}"
-}
 
 stderr()
 {
