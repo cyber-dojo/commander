@@ -47,15 +47,6 @@ def env_root; '/app/env_files'; end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def service_running(name)
-  space = '\s'
-  end_of_line = '$'
-  service = `docker ps --quiet --filter "name=#{name}" | grep "#{space}#{name}#{end_of_line}`
-  "#{service}" != ''
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
 def dot_env
   $dot_env ||= begin
     src = `docker run --rm -i cyberdojo/versioner:latest sh -c 'cat /app/.env'`

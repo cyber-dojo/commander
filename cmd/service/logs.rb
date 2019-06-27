@@ -28,3 +28,10 @@ def cyber_dojo_service_logs
 
   `docker logs #{name}`
 end
+
+# - - - - - - - - - - - - - - - - - - - - -
+
+def service_running(name)
+  service = `docker ps --format '{{.Names}}' --filter "name=#{name}"`
+  service != ''
+end
