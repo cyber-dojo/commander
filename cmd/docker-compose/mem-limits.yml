@@ -40,8 +40,8 @@ services:
     mem_limit: 32M
     memswap_limit: 32M
   prometheus:
-    mem_limit: 32M
-    memswap_limit: 32M
+    mem_limit: 128M
+    memswap_limit: 128M
   zipper:
     mem_limit: 32M
     memswap_limit: 32M
