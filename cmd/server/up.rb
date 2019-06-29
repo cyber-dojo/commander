@@ -24,7 +24,8 @@ def cyber_dojo_server_up
   pull_all_images_named_in(languages)
   STDOUT.puts
 
-  env_vars = {
+  env_vars = dot_env
+  env_vars.merge!({
     'ENV_ROOT' => env_root,
     'CYBER_DOJO_PORT' => port,
     'CYBER_DOJO_CUSTOM'    => custom,
@@ -32,8 +33,7 @@ def cyber_dojo_server_up
     'CYBER_DOJO_LANGUAGES' => languages,
     'CYBER_DOJO_SHA' => sha,
     'CYBER_DOJO_RELEASE' => release
-  }
-  add_services_image_tags(env_vars)
+  })
 
   use_any_custom_env_files
 
@@ -106,24 +106,6 @@ def use_any_custom_env_files
       puts "Using #{name}.env=default"
     end
   end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def add_services_image_tags(env_vars)
-  # cmd/docker-compose/images.yml has entries such as
-  # services:
-  #   differ:
-  #     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
-  # and unfortunately you cannot do this:
-  #     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_SHA:0:7}
-  service_names.each do |service|
-    name = service.upcase
-    key = "CYBER_DOJO_#{name}_SHA"
-    sha = dot_env[key]
-    env_vars["CYBER_DOJO_#{name}_TAG"] = sha[0...7] # '5c95484'
-  end
-  env_vars
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
