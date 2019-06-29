@@ -27,8 +27,6 @@ def failed; 1; end
 
 def me; 'cyber-dojo'; end
 
-def cyber_dojo_hub; 'cyberdojo'; end
-
 def space; ' '; end
 
 def tab; space * 4; end
@@ -39,17 +37,13 @@ def show(lines); lines.each { |line| puts line }; print "\n"; end
 
 def quoted(s); '"' + s + '"'; end
 
-def cyber_dojo_commander; "cyberdojo/commander"; end
-
-def read_only; 'ro'; end
-
 def env_root; '/app/env_files'; end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def dot_env
   $dot_env ||= begin
-    src = `docker run --rm cyberdojo/versioner:latest ruby /app/src/echo_env_vars.rb`    
+    src = `docker run --rm cyberdojo/versioner:latest ruby /app/src/echo_env_vars.rb`
     env_file_to_h(src)
   end
 end
