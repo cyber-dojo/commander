@@ -54,7 +54,6 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=${languages_name} --custom=${custom_name}
-  export COMMANDER_TAG=latest
 
   assertStdoutIncludes 'Using grafana.env=default'
   assertStdoutIncludes 'Using nginx.env=default'
@@ -77,8 +76,8 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
   assertNoStderr
 
-  assertUpdate latest
   assertDown
+  export COMMANDER_TAG=latest
   assertStartPointRm ${custom_name}
   assertStartPointRm ${languages_name}
 }
