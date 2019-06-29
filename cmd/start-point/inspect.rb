@@ -1,4 +1,6 @@
 
+require_relative 'exit_unless_start_point_image'
+
 def cyber_dojo_start_point_inspect
   exit_success_if_show_start_point_inspect_help
   exit_failure_if_start_point_inspect_unknown_arguments

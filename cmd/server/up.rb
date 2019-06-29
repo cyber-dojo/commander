@@ -1,4 +1,6 @@
 
+require_relative 'start_point_type'
+
 def cyber_dojo_server_up
   exit_success_if_up_help
 

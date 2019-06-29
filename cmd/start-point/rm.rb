@@ -1,4 +1,6 @@
 
+require_relative 'exit_unless_start_point_image'
+
 def cyber_dojo_start_point_rm
   help = [
     '',
