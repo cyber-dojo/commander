@@ -13,6 +13,7 @@ test___success() { :; }
 
 test_____up_prints_start_points_and_port_and_creates_containers()
 {
+  assertUpdate latest
   local -r custom_name=test_up_custom_1
   assertStartPointCreate ${custom_name}    --custom $(custom_urls)
   local -r exercises_name=test_up_exercises_1

@@ -41,7 +41,7 @@ def exit_success_if_update_help
     '',
     'Example 2: update to a given public release',
     '',
-    'cyber-dojo update 1.0.23', 
+    'cyber-dojo update 1.0.23',
     'cyber-dojo version',
     'Version: 1.0.23',
     '   Type: public',
