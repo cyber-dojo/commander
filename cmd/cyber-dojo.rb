@@ -12,7 +12,7 @@ require 'tempfile'
 
 $exit_status = 0
 
-if ARGV[0] == '--debug'
+if ARGV[0] === '--debug'
   $debug_on = true
   ARGV.shift
 else

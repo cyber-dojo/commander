@@ -14,10 +14,4 @@ def failed; 1; end
 
 def me; 'cyber-dojo'; end
 
-def space; ' '; end
-
-def tab; space * 4; end
-
-def minitab; space * 2; end
-
 def show(lines); lines.each { |line| puts line }; print "\n"; end

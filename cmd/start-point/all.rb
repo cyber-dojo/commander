@@ -27,6 +27,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - -
 
 def exit_success_if_show_start_point_help
+  minitab = ' ' * 2
   help = [
     '',
     "Use: #{me} start-point [COMMAND]",

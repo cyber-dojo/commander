@@ -1,5 +1,6 @@
 
 def cyber_dojo_help
+  tab = ' ' * 4
   puts [
     '',
     "Use: #{me} [--debug] COMMAND",

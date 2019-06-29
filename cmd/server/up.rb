@@ -111,6 +111,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def exit_success_if_up_help
+  minitab = ' ' * 2
   help = [
     '',
     "Use: #{me} up [OPTIONS]",
