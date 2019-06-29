@@ -21,5 +21,3 @@ def tab; space * 4; end
 def minitab; space * 2; end
 
 def show(lines); lines.each { |line| puts line }; print "\n"; end
-
-def quoted(s); '"' + s + '"'; end
