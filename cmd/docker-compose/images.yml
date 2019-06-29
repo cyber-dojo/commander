@@ -2,10 +2,14 @@
 version: '2.2'
 
 services:
+  # always use latest tag for versioner
+  # use [cyber-dojo update] command to 'checkout' latest|RELEASE|tag
   versioner:
     image: cyberdojo/versioner:latest
 
-  # start-points (overridable)
+  # - - - - - - - - - - - - - - - - - - - - - - - -
+  # start-points
+  # see [cyber-dojo up --help] for details on how to override these
   custom:
     image: ${CYBER_DOJO_CUSTOM}
   exercises:
@@ -13,7 +17,9 @@ services:
   languages:
     image: ${CYBER_DOJO_LANGUAGES}
 
+  # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services
+  # tags come from cyberdojo/versioner:latest
   differ:
     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
   mapper:
@@ -31,7 +37,9 @@ services:
   zipper:
     image: cyberdojo/zipper:${CYBER_DOJO_ZIPPER_TAG}
 
+  # - - - - - - - - - - - - - - - - - - - - - - - -
   # monitoring
+  # tags come from cyberdojo/versioner:latest
   grafana:
     image: cyberdojo/grafana:${CYBER_DOJO_GRAFANA_TAG}
   prometheus:
