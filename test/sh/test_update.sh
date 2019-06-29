@@ -49,7 +49,7 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   unset COMMANDER_TAG
   # cyberdojo/versioner:5e3bc0b pulls cyberdojo/commander:b291513
   # but keep that pull out of stdout/stderr assertions
-  docker pull cyberdojo/commander:b291513
+  docker pull cyberdojo/commander:b291513 &> /dev/null
 
   assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
@@ -77,6 +77,7 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
   assertNoStderr
 
+  assertUpdate latest
   assertDown
   assertStartPointRm ${custom_name}
   assertStartPointRm ${languages_name}

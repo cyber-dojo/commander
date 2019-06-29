@@ -37,16 +37,5 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def down_env_vars
-  vars = {
-    'ENV_ROOT' => env_root,
-    'CYBER_DOJO_CUSTOM'    => dot_env['CYBER_DOJO_CUSTOM'],
-    'CYBER_DOJO_EXERCISES' => dot_env['CYBER_DOJO_EXERCISES'],
-    'CYBER_DOJO_LANGUAGES' => dot_env['CYBER_DOJO_LANGUAGES'],
-    'CYBER_DOJO_PORT'      => dot_env['CYBER_DOJO_PORT'],
-  }
-  service_names.each do |name|
-    key = "CYBER_DOJO_#{name.upcase}_TAG"
-    vars[key] = 'avoid-warning-about-tag-not-being-set'
-  end
-  vars
+  dot_env.merge({ 'ENV_ROOT' => env_root })
 end
