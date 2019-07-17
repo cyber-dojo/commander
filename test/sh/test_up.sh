@@ -99,7 +99,7 @@ environment variables holding the .env file's absolute path.
   CYBER_DOJO_WEB_ENV=PATH
 
 Example 3: specify .env file for nginx
-  export CYBER_DOJO_GRAFANA_ENV=/Users/fred/nginx.env
+  export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env
   cyber-dojo up"
 
   assertUp --help
