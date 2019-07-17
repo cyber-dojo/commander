@@ -87,16 +87,7 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def use_any_custom_env_files
-  unless File.exist?("#{env_root}/custom.grafana.env")
-    puts 'WARNING: Using default grafana admin password.'
-    puts 'To set your own password and remove this warning:'
-    puts '   1. Create a file with contents'
-    puts '      GF_SECURITY_ADMIN_PASSWORD=mypassword'
-    puts '   2. export CYBER_DOJO_GRAFANA_ENV=<its-fully-pathed-filename>'
-    puts '   3. Re-issue the command [cyber-dojo up ...]'
-    puts '   4. Verify you do not get this warning'
-  end
-  %w( grafana nginx web ).each do |name|
+  %w( nginx web ).each do |name|
     path = ENV["CYBER_DOJO_#{name.upcase}_ENV"]
     from = "#{env_root}/custom.#{name}.env"
       to = "#{env_root}/#{name}.env"
@@ -153,15 +144,14 @@ def exit_success_if_up_help
     minitab + '    --languages \\',
     minitab + '      $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)',
     '',
-    'Additionally, .env files for grafana, nginx, and web can be overriden using',
+    'Additionally, .env files for nginx, and web can be overriden using',
     "environment variables holding the .env file's absolute path.",
     '',
-    minitab + 'CYBER_DOJO_GRAFANA_ENV=PATH',
     minitab + 'CYBER_DOJO_NGINX_ENV=PATH',
     minitab + 'CYBER_DOJO_WEB_ENV=PATH',
     '',
-    'Example 3: specify .env file for grafana',
-    '  export CYBER_DOJO_GRAFANA_ENV=/Users/fred/grafana.env',
+    'Example 3: specify .env file for nginx',
+    '  export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env',
     "  #{me} up",
   ]
   if ['-h','--help'].include?(ARGV[1])

@@ -27,9 +27,6 @@ services:
   exercises:
     mem_limit: 32M
     memswap_limit: 32M
-  grafana:
-    mem_limit: 32M
-    memswap_limit: 32M
   languages:
     mem_limit: 32M
     memswap_limit: 32M
@@ -39,9 +36,6 @@ services:
   mapper:
     mem_limit: 32M
     memswap_limit: 32M
-  prometheus:
-    mem_limit: 128M
-    memswap_limit: 128M
   zipper:
     mem_limit: 32M
     memswap_limit: 32M

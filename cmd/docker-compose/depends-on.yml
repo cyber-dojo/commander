@@ -27,6 +27,3 @@ services:
   zipper:
     depends_on:
       - saver
-  grafana:
-    depends_on:
-      - prometheus

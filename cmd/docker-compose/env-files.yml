@@ -1,12 +1,11 @@
 
 version: '2.2'
 
-# Three services have their own .env files
+# Two services have their own .env files
 # These can be overriden by exporting an env-var
 # to the .env files new absolute path before
 # doing a [cyber-dojo up]
 # eg
-# $ export CYBER_DOJO_GRAFANA_ENV=/Users/fred/grafana.env
 # $ export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env
 # $ export CYBER_DOJO_WEB_ENV=/Users/fred/web.env
 # $ cyber-dojo up
@@ -14,9 +13,6 @@ version: '2.2'
 # See use_any_custom_env_files() in cmd/server/up.rb
 
 services:
-  grafana:
-    env_file:
-      - ${ENV_ROOT}/grafana.env
   nginx:
     env_file:
       - ${ENV_ROOT}/nginx.env

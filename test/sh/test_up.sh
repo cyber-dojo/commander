@@ -27,7 +27,6 @@ test_____up_prints_start_points_and_port_and_creates_containers()
            --languages=${languages_name} \
            --port=${port}
 
-  assertStdoutIncludes 'Using grafana.env=default'
   assertStdoutIncludes 'Using nginx.env=default'
   assertStdoutIncludes 'Using web.env=default'
   assertStdoutIncludes "Using port=${port}"
@@ -93,15 +92,14 @@ The default start-points were created using:
       --languages \\
         \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)
 
-Additionally, .env files for grafana, nginx, and web can be overriden using
+Additionally, .env files for nginx, and web can be overriden using
 environment variables holding the .env file's absolute path.
 
-  CYBER_DOJO_GRAFANA_ENV=PATH
   CYBER_DOJO_NGINX_ENV=PATH
   CYBER_DOJO_WEB_ENV=PATH
 
-Example 3: specify .env file for grafana
-  export CYBER_DOJO_GRAFANA_ENV=/Users/fred/grafana.env
+Example 3: specify .env file for nginx
+  export CYBER_DOJO_GRAFANA_ENV=/Users/fred/nginx.env
   cyber-dojo up"
 
   assertUp --help

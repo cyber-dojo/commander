@@ -1,9 +1,6 @@
 
 version: '2.2'
 
-volumes:
-  grafana_data: {}
-
 services:
   runner:
     volumes:
@@ -14,6 +11,3 @@ services:
   mapper:
     volumes:
       - /porter:/porter:ro
-  grafana:
-    volumes:
-      - grafana_data:/var/lib/grafana

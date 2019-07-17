@@ -55,7 +55,6 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=${languages_name} --custom=${custom_name}
 
-  assertStdoutIncludes 'Using grafana.env=default'
   assertStdoutIncludes 'Using nginx.env=default'
   assertStdoutIncludes 'Using web.env=default'
   #
@@ -65,10 +64,8 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertStdoutIncludes "Using languages=${languages_name}"
   #
   assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
-  assertStdoutIncludes 'Using grafana=cyberdojo/grafana:449370c'
   assertStdoutIncludes 'Using mapper=cyberdojo/mapper:5729d56'
   assertStdoutIncludes 'Using nginx=cyberdojo/nginx:380c557'
-  assertStdoutIncludes 'Using prometheus=cyberdojo/prometheus:f0f7978'
   assertStdoutIncludes 'Using ragger=cyberdojo/ragger:5998a76'
   assertStdoutIncludes 'Using runner=cyberdojo/runner:1b06f00'
   assertStdoutIncludes 'Using saver=cyberdojo/saver:8485ef3'

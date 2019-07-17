@@ -106,9 +106,8 @@ You can override these start-point images in two ways:
   ```
 
 # overriding the default .env files
-There are default .env files for three of the core-services:
+There are default .env files for two of the core-services:
 - nginx.env
-- grafana.env
 - web.env
 
 You can override these .env files as follows:
@@ -126,7 +125,6 @@ You can override these .env files as follows:
 - Verify the **up** information messages name your .env file(s):
   ```text
   ...
-  Using grafana.env=default
   Using nginx.env=/home/fred/my_nginx.env (custom)
   Using web.env=default
   ...

@@ -36,11 +36,3 @@ services:
     image: cyberdojo/web:${CYBER_DOJO_WEB_TAG}
   zipper:
     image: cyberdojo/zipper:${CYBER_DOJO_ZIPPER_TAG}
-
-  # - - - - - - - - - - - - - - - - - - - - - - - -
-  # monitoring
-  # tags come from cyberdojo/versioner:latest
-  grafana:
-    image: cyberdojo/grafana:${CYBER_DOJO_GRAFANA_TAG}
-  prometheus:
-    image: cyberdojo/prometheus:${CYBER_DOJO_PROMETHEUS_TAG}

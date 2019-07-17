@@ -66,10 +66,8 @@ languages_urls()
 
 declare -a service_names=(
   differ
-  grafana
   mapper
   nginx
-  prometheus
   ragger
   runner
   saver
