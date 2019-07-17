@@ -39,7 +39,7 @@ def cyber_dojo_server_up
 
   use_any_custom_env_files
 
-  system(env_vars, "#{docker_compose_cmd} up -d 2>&1")
+  system(env_vars, "#{docker_compose_cmd} up -d --remove-orphans 2>&1")
   # A successful [docker-compose ... up] writes to stderr !?
   # See https://github.com/docker/compose/issues/3267
 end
