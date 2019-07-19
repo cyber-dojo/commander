@@ -3,6 +3,8 @@ version: '2.2'
 
 services:
 
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # image tags used in images.yml
   versioner:
     user: nobody
     init: true
@@ -36,6 +38,8 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-custom
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -44,6 +48,8 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-exercises
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -52,6 +58,8 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-languages
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -62,6 +70,8 @@ services:
     user: root
     init: true
     container_name: cyber-dojo-runner
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -72,26 +82,8 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-ragger
-    read_only: true
-    tmpfs: /tmp
-    restart: on-failure
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-  # stores groups/katas and code+tests for every test event
-  saver:
-    user: saver
-    init: true
-    container_name: cyber-dojo-saver
-    read_only: true
-    tmpfs: /tmp
-    restart: on-failure
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-  # holds storer->saver id mappings created by porter
-  mapper:
-    user: nobody
-    init: true
-    container_name: cyber-dojo-mapper
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -102,6 +94,32 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-differ
+    environment:
+      - NO_PROMETHEUS
+    read_only: true
+    tmpfs: /tmp
+    restart: on-failure
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # stores groups/katas and code+tests for every test event
+  saver:
+    user: saver
+    init: true
+    container_name: cyber-dojo-saver
+    environment:
+      - NO_PROMETHEUS
+    read_only: true
+    tmpfs: /tmp
+    restart: on-failure
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # holds storer->saver id mappings created by porter
+  mapper:
+    user: nobody
+    init: true
+    container_name: cyber-dojo-mapper
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
@@ -112,6 +130,8 @@ services:
     user: nobody
     init: true
     container_name: cyber-dojo-zipper
+    environment:
+      - NO_PROMETHEUS
     read_only: true
     tmpfs: /tmp
     restart: on-failure
