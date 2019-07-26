@@ -41,11 +41,10 @@ commander_image_name()
   # Tests set COMMANDER_TAG to :latest
   local -r VERSIONER=cyberdojo/versioner:latest
   local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-  # TODO: use direct CYBER_DOJO_COMMANDER_TAG= 
-  local -r ENV_VAR_NAME=CYBER_DOJO_COMMANDER_SHA=
+  local -r ENV_VAR_NAME=CYBER_DOJO_COMMANDER_TAG=
   local -r ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
-  local -r SHA7=${ENV_VAR:${#ENV_VAR_NAME}:7}
-  local -r COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
+  local -r TAG=${ENV_VAR:${#ENV_VAR_NAME}:7}
+  local -r COMMANDER_TAG=${COMMANDER_TAG:-${TAG}}
   echo "cyberdojo/commander:${COMMANDER_TAG}"
 }
 
