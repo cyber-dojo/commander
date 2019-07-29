@@ -9,3 +9,5 @@ docker build \
   --file="${ROOT_DIR}/Dockerfile" \
   --tag=cyberdojo/commander \
   "${ROOT_DIR}"
+
+docker tag cyberdojo/commander:latest cyberdojo/commander:${SHA:0:7}
