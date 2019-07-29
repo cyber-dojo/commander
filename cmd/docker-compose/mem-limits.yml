@@ -12,15 +12,16 @@ services:
     memswap_limit: 256M
 
   nginx:
-    mem_limit: 128M
-    memswap_limit: 128M
-  runner:
-    mem_limit: 128M
-    memswap_limit: 128M
-  differ:
-    mem_limit: 128M
-    memswap_limit: 128M
+    mem_limit: 64M
+    memswap_limit: 64M
 
+  runner:
+    mem_limit: 64M
+    memswap_limit: 64M
+
+  differ:
+    mem_limit: 32M
+    memswap_limit: 32M
   custom:
     mem_limit: 32M
     memswap_limit: 32M
