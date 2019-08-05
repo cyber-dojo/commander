@@ -65,6 +65,18 @@ services:
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
+  # 64 animals
+  avatars:
+    user: nobody
+    init: true
+    container_name: cyber-dojo-avatars
+    environment:
+      - NO_PROMETHEUS
+    read_only: true
+    tmpfs: /tmp
+    restart: on-failure
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
   # runs cyber-dojo.sh in time-boxed container
   runner:
     user: root

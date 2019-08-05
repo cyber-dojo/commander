@@ -28,6 +28,8 @@ services:
   languages:
     cpu_shares: 64
 
+  avatars:
+    cpu_shares: 32
   versioner:
     cpu_shares: 32
 

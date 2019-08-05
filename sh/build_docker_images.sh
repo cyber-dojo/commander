@@ -10,4 +10,6 @@ docker build \
   --tag=cyberdojo/commander \
   "${ROOT_DIR}"
 
-docker tag cyberdojo/commander:latest cyberdojo/commander:${SHA:0:7}
+readonly IMAGE=cyberdojo/commander
+docker tag ${IMAGE}:latest ${IMAGE}:${SHA:0:7}
+docker run --rm ${IMAGE}:latest sh -c 'echo ${SHA}'

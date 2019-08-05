@@ -1,6 +1,7 @@
 
 def service_names
   %w(
+    avatars
     commander
     differ
     mapper

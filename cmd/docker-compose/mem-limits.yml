@@ -19,9 +19,6 @@ services:
     mem_limit: 64M
     memswap_limit: 64M
 
-  differ:
-    mem_limit: 32M
-    memswap_limit: 32M
   custom:
     mem_limit: 32M
     memswap_limit: 32M
@@ -29,6 +26,12 @@ services:
     mem_limit: 32M
     memswap_limit: 32M
   languages:
+    mem_limit: 32M
+    memswap_limit: 32M
+  avatars:
+    mem_limit: 32M
+    memswap_limit: 32M
+  differ:
     mem_limit: 32M
     memswap_limit: 32M
   ragger:

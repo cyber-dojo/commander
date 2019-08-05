@@ -20,6 +20,8 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services
   # tags come from cyberdojo/versioner:latest
+  avatars:
+    image: cyberdojo/avatars:${CYBER_DOJO_AVATARS_TAG}
   differ:
     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
   mapper:
