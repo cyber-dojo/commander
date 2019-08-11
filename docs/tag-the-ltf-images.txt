@@ -1,0 +1,134 @@
+
+The puller related issues are getting complex.
+
+I think a better approach is to start tagging the LTF images.
+Possible design...
+
+$ cyber-dojo start-point create pp --languages \
+      https://github.com/cyber-dojo-languages/python-unittest.git?tag=TAG
+
+would be implicitly using a default of "?tag=master"
+(for initial backward compatibility)
+Viz the command
+
+$ cyber-dojo start-point create pp --languages \
+      https://github.com/cyber-dojo-languages/python-unittest.git
+
+would become...
+
+$ cyber-dojo start-point create pp --languages \
+      https://github.com/cyber-dojo-languages/python-unittest.git?tag=master
+
+Which would result in...
+
+$ git clone \
+   --single-branch \
+   --depth 1 \
+   --branch master \
+   https://github.com/cyber-dojo-languages/python-unittest.git \
+
+But you would then progress to using explicit tags, eg, 3.7.4
+
+$ cyber-dojo start-point create pp --languages \
+      https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4
+
+You can check if a tag exists via...
+
+$ git ls-remote \
+    --tags \
+    https://github.com/cyber-dojo-languages/python-unittest.git \
+    3.7.4
+
+Note that this works for local repos too. Eg if the current dir is a git repo
+
+$ git ls-remote --tags $PWD 3.7.4
+
+Then it would get just that tag (git clone's --branch can take tags as well as 'master')
+
+$ git clone \
+   --single-branch \
+   --depth 1 \
+   --branch 3.7.4 \
+   https://github.com/cyber-dojo-languages/python-unittest.git \
+
+And the [start-point create] would check its correctness as usual.
+
+The cloned tag would contain manifest.json looking like this...
+{
+  "display_name": "Python (3.7.4), unittest",
+  "visible_filenames": [...],
+  "image_name": "cyberdojofoundation/python_unittest:3.7.4",
+  ...
+}
+
+The idea is to apply immutability to LTFs just as for the services.
+If and when python 3.7.5 is released you simply
+o) make sure python 3.7.5 is actually inside the docker image
+o) edit the manifest's display_name to (3.7.5)
+o) edit the manifest's image_name tag to :3.7.5
+
+Now you can update the master list of URLs in languages to...
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.5
+
+And when creating a new session you will get both options in the setup
+Python (3.7.4), pytest
+Python (3.7.4), unittest
+Python (3.7.5), pytest
+Python (3.7.5), unittest
+
+Now, existing sessions will continue to use their image:tag, eg :3.7.4
+And new sessions will be using their image:tag, eg :3.7.5
+
+This means you don't need a puller so urgently.
+It becomes more likely that languages will, eg, only show a display-name
+once its image is ready...(still the issue of Daemonsets on k8s though).
+Perhaps it is best to just ignore puller for now.
+Do pull on demand inside the runner when its the first time for the image...
+
+Versioning issues go further...
+1) what about when you update just the test-framework?
+2) what about when you update just the starting files?
+
+I think the key issue is
+o) already existing sessions have their image_name:tag saved and use that
+o) new sessions will use their image_name:tag
+
+I think a good approach is
+
+$ cyber-dojo start-point create pp --languages \
+      https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4-18
+
+And languages contains...
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4-18
+
+And the manifest for it is...
+{
+  "display_name": "Python (3.7.4), unittest",
+  "visible_filenames": [...],
+  "image_name": "cyberdojofoundation/python_unittest:3.7.4-18",
+  ...
+}
+
+Now, if I want to make an update to, eg, just the starting files...
+I make the change to the starting files.
+I edit the manifest to...
+{
+  "display_name": "Python (3.7.4), unittest",
+  "visible_filenames": [...],
+  "image_name": "cyberdojofoundation/python_unittest:3.7.4-19",
+  ...
+}
+
+This is committed, git tagged as 3.7.4-19 and pushed
+The CI then creates a docker image tagged to 3.7.4-19
+
+Then I update languages from...
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.3-2
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4-18
+to
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.3-2
+https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4-19
+
+Old sessions will use 3.7.4-18 which they started with
+New sessions will use 3.7.4-19
