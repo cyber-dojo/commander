@@ -132,3 +132,193 @@ https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4-19
 
 Old sessions will use 3.7.4-18 which they started with
 New sessions will use 3.7.4-19
+
+
+How does the image-dependent notification work?
+At the moment there is a dependents.json file with entries such as...
+
+"python": {
+  "from": "python",
+  "image_name": "cyberdojofoundation/python",
+  "test_framework": false
+},
+"python-assert": {
+  "from": "cyberdojofoundation/python",
+  "image_name": "cyberdojofoundation/python_assert",
+  "test_framework": true
+},
+
+I think the keys are the display_names.
+This will need to be modified to accommodate tags.... eg
+
+"python": {
+  "from": "python",
+  "image_name": "cyberdojofoundation/python:3.7.4",
+  "test_framework": false
+},
+"python-assert (3.7.4)": {
+  "from": "cyberdojofoundation/python:3.7.4",
+  "image_name": "cyberdojofoundation/python_assert:3.7.4-22",
+  "test_framework": true
+},
+
+If there is a cron job every 24 hours, how will this work?
+Suppose there is a new python image, which of course is really python:latest
+Should I use a specific version?
+Eg
+"python": {
+  "from": "python:3.7.4",
+  "image_name": "cyberdojofoundation/python:3.7.4",
+  "test_framework": false
+},
+
+And have some other mechanism to see if python:latest has a
+different version to python:3.7.4
+
+Then, how do I update the dependents.json file???
+First, put tag into base image display_name
+Then add new entry...
+
+"python (3.7.4)": {
+  "from": "python:3.7.4",
+  "image_name": "cyberdojofoundation/python:3.7.4",
+  "test_framework": false
+},
+"python (3.7.5)": {
+  "from": "python:3.7.5",
+  "image_name": "cyberdojofoundation/python:3.7.5",
+  "test_framework": false
+},
+
+This will allow the new base python repo to complete its CI run.
+But no dependents will be seen yet.
+Then add dependents...
+
+"python-assert (3.7.4)": {
+  "from": "cyberdojofoundation/python:3.7.4",
+  "image_name": "cyberdojofoundation/python_assert:3.7.4-22",
+  "test_framework": true
+},
+"python-assert (3.7.5)": {
+  "from": "cyberdojofoundation/python:3.7.5",
+  "image_name": "cyberdojofoundation/python_assert:3.7.5-1",
+  "test_framework": true
+},
+
+
+Are there downsides to this idea.
+The main one is security...
+If an existing session uses cyberdojofoundation/python_assert:latest
+then if that is updated regularly rejoining an old session will
+automatically use the updated image.
+Otherwise it will carry on using the one that may be compromised...
+Can I get the best of both?
+One idea is to somehow limit the lifetime of a session....
+If you rejoin an old session, it will see it was created
+more than 1 week ago (say), and turn off [test]
+Not good. Suppose you prepare a session a week ahead of time...
+Another problem with this is forking....
+Forking attempts to create a new session from an old session...
+This has always been a tricky feature...
+Suppose you try to fork from an session which has [test] disabled,
+this could be detected and you could be asked to choose which
+display_name in setup to use instead....
+Or, simpler, fork always switches to "latest"...???
+That feels promising...
+
+Another issue. If there is a puller, it gets the image names from
+languages+custom.
+There is no guarantee that these still contain old image names.
+Suppose an old session was created with an image_name that is no
+longer served by languages?
+Well, it would be old. So its [test] would be disabled anyway...
+How about only the latest display_name entry uses a latest tag?
+
+What are basic tensions?
+
+1) it would be nice to have specific versions to choose from in the setup
+   - better for users
+   - better for upgrading
+   - immutability
+   - this suggests tagging the LTF images, eg :3.7.4  :3.7.5
+   - but this hurts security
+
+2) if we have everything using :latest then security is better
+   as long as you repull :latest periodically then
+   - sessions can last forever
+   - forking is trivial
+
+
+========================================================
+
+When a session is created, limit the time it's [test] will be enabled.
+Eg 24 hours.
+Clearly state this time-limit as it is created.
+
+When you fork from a traffic-light...
+Always switch the tag of image_name of the created session to :latest
+If this is a different image to the original issue a warning as part
+of the fork. This means if you fork from 3.7.4 and the latest is 3.7.5
+then you will switch to 3.7.5. There is no way you can fork and retain 3.7.4
+
+Tag all LTF images, eg
+python_pytest:3.7.4-11
+python_pytest:3.7.5-3
+and update latest as you move forward...
+
+Update display_names to, eg
+Python (3.7.4), assert
+Python (3.7.5), assert
+Python (3.7.4), pytest
+Python (3.7.5), pytest
+
+Change the setup screens to split display_name into 2 selections...
+
+o) Python (3.7.4)
+o) Python (3.7.5)
+and then
+o) assert
+o) pytest
+
+A crucial aspect of this design is that a session will only last 24 hours.
+Suppose you create a session and its image:tag is python_pytest:3.7.4-11
+Then a security issue is discovered in this image.
+You create a new image:tag python_pytest:3.7.4-12 which is also latest
+and you put this into the manifest.json file
+and you install this into languages.
+Now new sessions will now use 3.7.4-12
+Old sessions will lose [test] after 24 hours regardless.
+Forked sessions will switch to latest which is now 3.7.4.12
+So puller has to still pull python_pytest:latest regularly.
+
+
+Suppose you have
+Python (3.7.4), pytest -> python_pytest:3.7.4-11
+Python (3.7.5), pytest -> python_pytest:3.7.5-3
+
+If a security issue is discovered which affects both images,
+then you need to repeat the above process twice, once for each image.
+This why we don't have, eg
+python_pytest:3.7.4-11
+python_pytest:3.7.5-12
+Viz, the finest granularity of change is per version.
+
+This is too much complexity for too little gain.
+Keep it as it is now. Only latest.
+But, the idea of being notified that the image has changed
+when you fork is a useful idea. Could the manifest contain
+the image_name and the commit-sha. Then the sha in the
+manifest could be compared with the sha in the image.
+This also raises the possibility of being told about a change
+to the underlying image at other times, eg simply between [test]s.
+
+
+========================================================
+
+When choosing the file to display when opening a diff page.
+Prefer any file that matches the filename prefix.
+Viz, if report-style.txt is large but there is a change
+to a .py file, then prefer the .py file.
+Specifically, when opening a diff page for the latest avatar's
+traffic-light, the diff checkbox is off. So in this case
+the largest file is very likely to be report-style.txt
