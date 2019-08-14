@@ -37,7 +37,8 @@ def cyber_dojo_server_up
     'CYBER_DOJO_RELEASE' => release
   })
 
-  use_any_custom_env_files
+  apply_user_defined_env_vars(env_vars)
+  create_user_defined_env_files
 
   system(env_vars, "#{docker_compose_cmd} up -d --remove-orphans 2>&1")
   # A successful [docker-compose ... up] writes to stderr !?
@@ -55,10 +56,11 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def tagged_image_name(service)
-  key = "CYBER_DOJO_#{service.upcase}_SHA"
-  sha = dot_env[key]
-  tag = sha[0...7]
-  "cyberdojo/#{service}:#{tag}"
+  key = "CYBER_DOJO_#{service.upcase}_IMAGE"
+  image_name = ENV[key] || "cyberdojo/#{service}"
+  key = "CYBER_DOJO_#{service.upcase}_TAG"
+  tag = ENV[key] || dot_env[key]
+  "#{image_name}:#{tag}"
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -86,7 +88,7 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def use_any_custom_env_files
+def create_user_defined_env_files
   %w( nginx web ).each do |name|
     path = ENV["CYBER_DOJO_#{name.upcase}_ENV"]
     from = "#{env_root}/custom.#{name}.env"
@@ -97,6 +99,17 @@ def use_any_custom_env_files
       File.open(to, 'w') { |file| file.write(content) }
     else
       puts "Using #{name}.env=default"
+    end
+  end
+end
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
+
+def apply_user_defined_env_vars(env_vars)
+  keys = %w( CYBER_DOJO_WEB_IMAGE CYBER_DOJO_WEB_TAG )
+  keys.each do |key|
+    if ENV[key]
+      env_vars[key] = ENV[key]
     end
   end
 end
