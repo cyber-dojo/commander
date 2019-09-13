@@ -51,7 +51,7 @@ services:
 # https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources
 #
 # mem_limit:
-# Totoal memory limit not including swap.
+# Total memory limit not including swap.
 # corresponds to [docker run --memory]
 #
 # memswap_limit:
