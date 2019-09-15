@@ -2,10 +2,6 @@
 version: '2.2'
 
 services:
-  # always use latest tag for versioner
-  # use [cyber-dojo update] command to 'checkout' latest|RELEASE|tag
-  versioner:
-    image: cyberdojo/versioner:latest
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # start-points

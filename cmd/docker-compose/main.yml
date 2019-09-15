@@ -4,16 +4,6 @@ version: '2.2'
 services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # image tags used in images.yml
-  versioner:
-    user: nobody
-    init: true
-    container_name: cyber-dojo-versioner
-    read_only: true
-    tmpfs: /tmp
-    restart: on-failure
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
   # multi-threaded front-end with http caching
   nginx:
     user: root

@@ -43,9 +43,6 @@ services:
   zipper:
     mem_limit: 32M
     memswap_limit: 32M
-  versioner:
-    mem_limit: 32M
-    memswap_limit: 32M
 
 # memory limits
 # https://docs.docker.com/engine/reference/run/#runtime-constraints-on-resources

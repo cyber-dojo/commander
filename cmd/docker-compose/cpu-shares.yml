@@ -30,8 +30,6 @@ services:
 
   avatars:
     cpu_shares: 32
-  versioner:
-    cpu_shares: 32
 
 # cpu_shares
 # https://docs.docker.com/engine/reference/run/#cpu-share-constraint
