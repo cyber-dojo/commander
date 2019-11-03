@@ -1,5 +1,5 @@
 
-version: '2.2'
+version: '3.7'
 
 # Two services have their own .env files
 # These can be overriden by exporting an env-var

@@ -1,5 +1,5 @@
 
-version: '2.2'
+version: '3.7'
 
 services:
 
@@ -31,7 +31,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   exercises:
@@ -41,7 +40,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   languages:
@@ -51,7 +49,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -63,7 +60,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -75,7 +71,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -87,7 +82,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,7 +93,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -111,7 +104,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -123,7 +115,6 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,5 +126,4 @@ services:
     environment:
       - NO_PROMETHEUS
     read_only: true
-    tmpfs: /tmp
     restart: on-failure

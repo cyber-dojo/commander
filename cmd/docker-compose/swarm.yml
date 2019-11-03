@@ -1,0 +1,128 @@
+
+version: '3.7'
+
+services:
+
+  saver:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.5'
+
+  mapper:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.1'
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  nginx:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.5'
+  web:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.5'
+
+  runner:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.75'
+
+  custom:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
+  exercises:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
+  languages:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
+  avatars:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
+  differ:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.5'
+
+  ragger:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.25'
+
+  zipper:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.1'

@@ -1,5 +1,5 @@
 require_relative 'clean'
-require_relative 'docker_compose_cmd'
+require_relative 'docker_yml_files'
 require_relative 'down'
 require_relative 'env_root'
 require_relative 'service_names'

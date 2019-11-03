@@ -1,5 +1,5 @@
 
-version: '2.2'
+version: '3.7'
 
 services:
 
@@ -15,7 +15,9 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services
-  # tags come from cyberdojo/versioner:latest
+  # variables come from cyberdojo/versioner:latest
+  web:
+    image: ${CYBER_DOJO_WEB_IMAGE}:${CYBER_DOJO_WEB_TAG}
   avatars:
     image: cyberdojo/avatars:${CYBER_DOJO_AVATARS_TAG}
   differ:
@@ -30,7 +32,5 @@ services:
     image: cyberdojo/runner:${CYBER_DOJO_RUNNER_TAG}
   saver:
     image: cyberdojo/saver:${CYBER_DOJO_SAVER_TAG}
-  web:
-    image: ${CYBER_DOJO_WEB_IMAGE}:${CYBER_DOJO_WEB_TAG}
   zipper:
     image: cyberdojo/zipper:${CYBER_DOJO_ZIPPER_TAG}
