@@ -17,21 +17,30 @@ $ docker-machine ssh swarm-master
 5. init the swarm
 > docker swarm init --advertise-addr=192.168.99.101
 Make note of token SWMTKN...
-# docker swarm join --token \
-    SWMTKN-1-..... \
-    192.168.99.101:2377
 
-6. setup dir required by saver service.
+6. setup dir required by saver service (on swarm-master)
 > sudo mkdir /cyber-dojo
 > sudo chown 19663:65533 /cyber-dojo
 
 7. come out of new VM
 > exit
 
-8. Check we have a node
-$ docker node ls
+8. create new node and add it to swarm
+$ docker-machine create -d virtualbox swarm-node-1
+$ eval $(docker-machine env swarm-node-1)
+$ docker swarm join --token \
+    SWMTKN-1-..... \
+    192.168.99.101:2377
+
+9. Check we have nodes
+$ docker-machine ssh swarm-master docker node ls
 ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
-s8ixuho8dbplmnym9ne41xk0m *   swarm-master        Ready               Active              Leader              18.09.9
+7oqi2ew9iy8xzwq7w4q2tkmre *   swarm-master        Ready               Active              Leader              19.03.4
+dlz5lj7exxxjrgg9uox81y5ep     swarm-node-1        Ready               Active                                  19.03.4
+t43s2r1jj4zqeeplvx0f03yvh     swarm-node-2        Ready               Active                                  19.03.4
+
+
+------------------------------
 
 9. Rebuild commander source
 $ ./sh/build_docker_images.sh
