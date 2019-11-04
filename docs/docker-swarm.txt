@@ -49,7 +49,7 @@ $ ./sh/build_docker_images.sh
 $ export COMMANDER_TAG=latest
 
 11. Bring up swarm server
-$ ./cyber-dojo up
+$ CYBER_DOJO_SWARM=true ./cyber-dojo up
 
 12. What's running?
 $ docker stack ps cyber-dojo

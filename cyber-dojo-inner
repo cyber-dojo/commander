@@ -19,14 +19,15 @@ delegate_to_commander()
   check_env_file_exists CYBER_DOJO_WEB_ENV     "${CYBER_DOJO_WEB_ENV}"
 
   docker run \
-    --env CYBER_DOJO_CUSTOM \
+    --env CYBER_DOJO_SWARM     \
+    --env CYBER_DOJO_CUSTOM    \
     --env CYBER_DOJO_EXERCISES \
     --env CYBER_DOJO_LANGUAGES \
-    --env CYBER_DOJO_PORT \
+    --env CYBER_DOJO_PORT      \
     --env CYBER_DOJO_NGINX_ENV \
     --env CYBER_DOJO_WEB_IMAGE \
-    --env CYBER_DOJO_WEB_TAG \
-    --env CYBER_DOJO_WEB_ENV \
+    --env CYBER_DOJO_WEB_TAG   \
+    --env CYBER_DOJO_WEB_ENV   \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
