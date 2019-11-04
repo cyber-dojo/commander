@@ -1,0 +1,46 @@
+
+1. create new VM on which to try swarm...
+
+$ docker-machine create -d virtualbox swarm-master
+
+2. Ensure local docker commands go to this new VM
+$ eval $(docker-machine env swarm-master)
+
+3. Find out the new VM's ip address
+
+$ docker-machine ip swarm-master
+192.168.99.101
+
+4. Shell into the new VM
+$ docker-machine ssh swarm-master
+
+5. init the swarm
+> docker swarm init --advertise-addr=192.168.99.101
+Make note of token SWMTKN...
+# docker swarm join --token \
+    SWMTKN-1-..... \
+    192.168.99.101:2377
+
+6. setup dir required by saver service.
+> sudo mkdir /cyber-dojo
+> sudo chown 19663:65533 /cyber-dojo
+
+7. come out of new VM
+> exit
+
+8. Check we have a node
+$ docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+s8ixuho8dbplmnym9ne41xk0m *   swarm-master        Ready               Active              Leader              18.09.9
+
+9. Rebuild commander source
+$ ./sh/build_docker_images.sh
+
+10. Make sure we use commander:latest
+$ export COMMANDER_TAG=latest
+
+11. Bring up swarm server
+$ ./cyber-dojo up
+
+12. What's running?
+$ docker stack ps cyber-dojo
