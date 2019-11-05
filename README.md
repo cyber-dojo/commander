@@ -11,7 +11,7 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 - [update the server to a specific version](#update-the-server-to-a-specific-version )
 - [overriding the default port](#overriding-the-default-port)
 - [overriding the default start-point images](#overriding-the-default-start-point-images)
-- [overriding the rails web service image](#overriding-the-rails-web-service-image)
+- [overriding the default rails web service image](#overriding-the-default-rails-web-service-image)
 - [overriding the default dot env files](#overriding-the-default-dot-env-files)
 
 # bring up a default server
@@ -101,7 +101,7 @@ You can override these start-point images in two ways:
   ...
   ```
 
-# overriding the rails web service image
+# overriding the default rails web service image
 By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
 You can override this using environment variables to specify the image name and its tag:
   ```bash
