@@ -31,6 +31,7 @@ $ cyber-dojo version
 Version: 1.0.23
    Type: public
 ...
+# Now make it live...
 $ cyber-dojo up
 Using version=1.0.23 (public)
 ...
@@ -43,6 +44,7 @@ $ cyber-dojo version
 Version: 1.0.21
    Type: public
 ...
+# Now make it live...
 $ cyber-dojo up
 Using version=1.0.21 (public)
 ...
@@ -55,6 +57,13 @@ You can override the port in two ways:
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
+  ...
+  Using port=81
+  ...
+  ```
+  or
+  ```bash
+  $ CYBER_DOJO_PORT=81 cyber-dojo up
   ...
   Using port=81
   ...
@@ -93,11 +102,8 @@ You can override these start-point images in two ways:
   ```
 
 # overriding the rails web service image
-By default your cyber-dojo server will use cyberdojo/web as its web service image (tagged appropriately)
-- [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags)
-
+By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
 You can override this using environment variables to specify the image name and its tag:
-*
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
@@ -123,19 +129,12 @@ There are default .env files for two of the core-services:
 - nginx.env
 - web.env
 
-You can override these .env files as follows:
-- Create your own .env file, eg my_nginx.env
-- Set an environment-variable to its absolute path. For example:
+You can override these .env files by creating your own .env file,
+setting an environment-variable to its absolute path,
+and re-issuing the up. For example:
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
-  $ # export CYBER_DOJO_WEB_ENV=...
-  ```
-- Re-issue the **up** command:
-  ```bash
   $ cyber-dojo up
-  ```
-- Verify the **up** information messages name your .env file(s):
-  ```text
   ...
   Using nginx.env=/home/fred/my_nginx.env (custom)
   Using web.env=default
