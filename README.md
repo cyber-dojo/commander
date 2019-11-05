@@ -5,7 +5,16 @@
 
 Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
 
-To bring up a default server:
+#
+- [bring up a default server](#bring-up-a-default-server)
+- [update the server to the latest version](#update-the-server-to-the-latest-version)
+- [update the server to a specific version](#update-the-server-to-a-specific-version )
+- [overriding the default port](#overriding-the-default-port)
+- [overriding the default start-point images](#overriding-the-default-start-point-images)
+- [overriding the rails web service image](#overriding-the-rails-web-service-image)
+- [overriding the default dot env files](#overriding-the-default-dot-env-files)
+
+# bring up a default server
 ```bash
 $ cyber-dojo up
 ...
@@ -15,7 +24,7 @@ Version: 1.0.19
 ...
 ```
 
-To update the server to the latest version:
+# update the server to the latest version
 ```bash
 $ cyber-dojo update latest
 $ cyber-dojo version
@@ -24,11 +33,10 @@ Version: 1.0.23
 ...
 $ cyber-dojo up
 Using version=1.0.23 (public)
-Using port=80
 ...
 ```
 
-To update the server to a specific version:
+# update the server to a specific version
 ```bash
 $ cyber-dojo update 1.0.21
 $ cyber-dojo version
@@ -37,28 +45,7 @@ Version: 1.0.21
 ...
 $ cyber-dojo up
 Using version=1.0.21 (public)
-Using port=80
 ...
-```
-
-
-To see an overview of available commands:
-```bash
-$ cyber-dojo --help
-Use: cyber-dojo [--debug] COMMAND
-     cyber-dojo --help
-
-Commands:
-    clean        Removes old images/volumes/containers
-    down         Brings down the server
-    logs         Prints the logs from a service container
-    sh           Shells into a service container
-    start-point  Manages cyber-dojo start-points
-    up           Brings up the server
-    update       Updates the server to latest or to a given version
-    version      Displays the current version
-
-Run 'cyber-dojo COMMAND --help' for more information on a command.
 ```
 
 # overriding the default port
@@ -105,7 +92,33 @@ You can override these start-point images in two ways:
   ...
   ```
 
-# overriding the default .env files
+# overriding the rails web service image
+By default your cyber-dojo server will use cyberdojo/web as its web service image (tagged appropriately)
+- [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags)
+
+You can override this using environment variables to specify the image name and its tag:
+*
+  ```bash
+  $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
+  $ export CYBER_DOJO_WEB_TAG=84d6d0e
+  $ cyber-dojo up ...
+  Using avatars=cyberdojo/avatars:47dd256
+  Using differ=cyberdojo/differ:610f484
+  Using nginx=cyberdojo/nginx:02183dc
+  Using ragger=cyberdojo/runner:f03228c
+  ...
+  Using web=turtlesec/web:84d6d0e
+  ...
+  ```
+  ```yml
+  # docker-compose.yml (used by cyber-dojo script)
+  services:
+    web:
+      image: ${CYBER_DOJO_WEB_IMAGE}:${CYBER_DOJO_WEB_TAG}
+      ...
+  ```  
+
+# overriding the default dot env files
 There are default .env files for two of the core-services:
 - nginx.env
 - web.env
