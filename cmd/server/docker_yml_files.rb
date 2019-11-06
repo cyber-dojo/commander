@@ -4,10 +4,17 @@ def docker_swarm?
 end
 
 def docker_swarm_yml_files
-  docker_yml_files + ' ' + compose_file('swarm.yml')
+  docker_common_yml_files +
+    ' ' + compose_file('swarm.yml')
 end
 
 def docker_yml_files
+  docker_common_yml_files +
+    ' ' + compose_file('restart.yml')
+    ' ' + compose_file('container-name.yml') 
+end
+
+def docker_common_yml_files
   [
     compose_file('depends-on.yml'),
     compose_file('env-files.yml'),

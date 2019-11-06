@@ -8,122 +8,98 @@ services:
   nginx:
     user: root
     init: true
-    container_name: cyber-dojo-nginx
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # main server (rails)
   web:
     user: nobody
     init: true
-    container_name: cyber-dojo-web
     environment:
       - CYBER_DOJO_SHA
       - CYBER_DOJO_RELEASE
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
   custom:
     user: nobody
     init: true
-    container_name: cyber-dojo-custom
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   exercises:
     user: nobody
     init: true
-    container_name: cyber-dojo-exercises
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   languages:
     user: nobody
     init: true
-    container_name: cyber-dojo-languages
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # 64 animals
   avatars:
     user: nobody
     init: true
-    container_name: cyber-dojo-avatars
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # runs cyber-dojo.sh in time-boxed container
   runner:
     user: root
     init: true
-    container_name: cyber-dojo-runner
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # convert runner's [stdout,stderr,status] to red/amber/green
   ragger:
     user: nobody
     init: true
-    container_name: cyber-dojo-ragger
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # diffs all the files in two test events
   differ:
     user: nobody
     init: true
-    container_name: cyber-dojo-differ
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # stores groups/katas and code+tests for every test event
   saver:
     user: saver
     init: true
-    container_name: cyber-dojo-saver
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # holds storer->saver id mappings created by porter
   mapper:
     user: nobody
     init: true
-    container_name: cyber-dojo-mapper
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # provides tgz files of practice sessions
   zipper:
     user: nobody
     init: true
-    container_name: cyber-dojo-zipper
     environment:
       - NO_PROMETHEUS
     read_only: true
-    restart: on-failure

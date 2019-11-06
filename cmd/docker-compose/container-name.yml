@@ -1,0 +1,40 @@
+
+version: '3.7'
+
+services:
+
+  nginx:
+    container_name: cyber-dojo-nginx
+
+  web:
+    container_name: cyber-dojo-web
+
+  custom:
+    container_name: cyber-dojo-custom
+
+  exercises:
+    container_name: cyber-dojo-exercises
+
+  languages:
+    container_name: cyber-dojo-languages
+
+  avatars:
+    container_name: cyber-dojo-avatars
+
+  runner:
+    container_name: cyber-dojo-runner
+
+  ragger:
+    container_name: cyber-dojo-ragger
+
+  differ:
+    container_name: cyber-dojo-differ
+
+  saver:
+    container_name: cyber-dojo-saver
+
+  mapper:
+    container_name: cyber-dojo-mapper
+
+  zipper:
+    container_name: cyber-dojo-zipper

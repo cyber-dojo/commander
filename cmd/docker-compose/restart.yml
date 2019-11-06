@@ -1,0 +1,40 @@
+
+version: '3.7'
+
+services:
+
+  nginx:
+    restart: on-failure
+
+  web:
+    restart: on-failure
+
+  custom:
+    restart: on-failure
+
+  exercises:
+    restart: on-failure
+
+  languages:
+    restart: on-failure
+
+  avatars:
+    restart: on-failure
+
+  runner:
+    restart: on-failure
+
+  ragger:
+    restart: on-failure
+
+  differ:
+    restart: on-failure
+
+  saver:
+    restart: on-failure
+
+  mapper:
+    restart: on-failure
+
+  zipper:
+    restart: on-failure
