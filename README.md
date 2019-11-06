@@ -5,18 +5,21 @@
 
 Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
 
-#
-- [bring up a server](#bring-up-a-server)
-- [bring up a server on docker swarm](#bring-up-a-server-on-docker-swarm)
-- [update the server to the latest version](#update-the-server-to-the-latest-version)
-- [reset the server to a specific version](#reset-the-server-to-a-specific-version )
-- [overriding the default port](#overriding-the-default-port)
-- [overriding the default start-point images](#overriding-the-default-start-point-images)
-- [overriding the default rails web service image](#overriding-the-default-rails-web-service-image)
-- [overriding the default dot env files](#overriding-the-default-dot-env-files)
-- [environment variables can be set inline](#environment-variables-can-be-set-inline)
+- Bringing up a server
+  * [on docker](#bringing-up-a-server-on-docker)
+  * [on docker swarm](#bringing-up-a-server-on-docker-swarm)
+- Versioning
+  * [updating the server to the latest version](#updating-the-server-to-the-latest-version)
+  * [resetting the server to a specific version](#resetting-the-server-to-a-specific-version )
+- Overriding the defaults  
+  * [the port](#overriding-the-default-port)
+  * [the start-point images](#overriding-the-default-start-point-images)
+  * [the rails web service image](#overriding-the-default-rails-web-service-image)
+  * [the dot env files](#overriding-the-default-dot-env-files)
+- Notes  
+  * [environment variables can be set inline](#environment-variables-can-be-set-inline)
 
-# bring up a server
+# bringing up a server on docker
 ```bash
 $ cyber-dojo up
 ...
@@ -26,14 +29,14 @@ Version: 0.1.19
 ...
 ```
 
-# bring up a server on docker swarm
+# bringing up a server on docker swarm
 This is currently in beta!
 ```bash
 $ export CYBER_DOJO_SWARM=true
 $ cyber-dojo up
 ```
 
-# update the server to the latest version
+# updating the server to the latest version
 ```bash
 $ cyber-dojo update latest
 $ cyber-dojo version
@@ -46,7 +49,7 @@ Using version=0.1.23 (public)
 ...
 ```
 
-# reset the server to a specific version
+# resetting the server to a specific version
 ```bash
 $ cyber-dojo version
 Version: 0.1.35
