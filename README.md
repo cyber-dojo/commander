@@ -8,7 +8,7 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 #
 - [bring up a default server](#bring-up-a-default-server)
 - [update the server to the latest version](#update-the-server-to-the-latest-version)
-- [update the server to a specific version](#update-the-server-to-a-specific-version )
+- [reset the server to a specific version](#reset-the-server-to-a-specific-version )
 - [overriding the default port](#overriding-the-default-port)
 - [overriding the default start-point images](#overriding-the-default-start-point-images)
 - [overriding the default rails web service image](#overriding-the-default-rails-web-service-image)
@@ -37,8 +37,12 @@ Using version=1.0.23 (public)
 ...
 ```
 
-# update the server to a specific version
+# reset the server to a specific version
 ```bash
+$ cyber-dojo version
+Version: 1.0.35
+   Type: public
+...
 $ cyber-dojo update 1.0.21
 $ cyber-dojo version
 Version: 1.0.21
