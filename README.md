@@ -14,6 +14,7 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 - [overriding the default start-point images](#overriding-the-default-start-point-images)
 - [overriding the default rails web service image](#overriding-the-default-rails-web-service-image)
 - [overriding the default dot env files](#overriding-the-default-dot-env-files)
+- [environment variables can be set inline](#environment-variables-can-be-set-inline)
 
 # bring up a server
 ```bash
@@ -28,12 +29,8 @@ Version: 0.1.19
 # bring up a server on docker swarm
 This is currently in beta!
 ```bash
-$ CYBER_DOJO_SWARM=true cyber-dojo up
-...
-# or
 $ export CYBER_DOJO_SWARM=true
 $ cyber-dojo up
-...
 ```
 
 # update the server to the latest version
@@ -73,13 +70,6 @@ You can override the port in two ways:
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
-  ...
-  Using port=81
-  ...
-  ```
-  or
-  ```bash
-  $ CYBER_DOJO_PORT=81 cyber-dojo up
   ...
   Using port=81
   ...
@@ -155,6 +145,18 @@ and re-issuing the up. For example:
   Using nginx.env=/home/fred/my_nginx.env (custom)
   Using web.env=default
   ...
+  ```
+
+# environment variables can be set inline
+Environment variables can be set directly in a bash command.
+For example, instead of writing:
+  ```bash
+  $ export CYBER_DOJO_PORT=81
+  $ cyber-dojo up
+  ```
+you can write:
+  ```bash
+  $ CYBER_DOJO_PORT=81 cyber-dojo up
   ```
 
 - - - -
