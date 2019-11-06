@@ -10,8 +10,8 @@ end
 
 def docker_yml_files
   docker_common_yml_files +
-    ' ' + compose_file('restart.yml')
-    ' ' + compose_file('container-name.yml') 
+    ' ' + compose_file('restart.yml') +
+    ' ' + compose_file('container-name.yml')
 end
 
 def docker_common_yml_files
