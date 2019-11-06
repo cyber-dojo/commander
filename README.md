@@ -6,7 +6,8 @@
 Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the main cyber-dojo bash script to control a [cyber-dojo](https://cyber-dojo.org) server.
 
 #
-- [bring up a default server](#bring-up-a-default-server)
+- [bring up a server](#bring-up-a-server)
+- [bring up a server on docker swarm](#bring-up-a-server-on-docker-swarm)
 - [update the server to the latest version](#update-the-server-to-the-latest-version)
 - [reset the server to a specific version](#reset-the-server-to-a-specific-version )
 - [overriding the default port](#overriding-the-default-port)
@@ -14,13 +15,24 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 - [overriding the default rails web service image](#overriding-the-default-rails-web-service-image)
 - [overriding the default dot env files](#overriding-the-default-dot-env-files)
 
-# bring up a default server
+# bring up a server
 ```bash
 $ cyber-dojo up
 ...
 $ cyber-dojo version
-Version: 1.0.19
+Version: 0.1.19
    Type: public
+...
+```
+
+# bring up a server on docker swarm
+This is currently in beta!
+```bash
+$ CYBER_DOJO_SWARM=true cyber-dojo up
+...
+# or
+$ export CYBER_DOJO_SWARM=true
+$ cyber-dojo up
 ...
 ```
 
@@ -28,29 +40,29 @@ Version: 1.0.19
 ```bash
 $ cyber-dojo update latest
 $ cyber-dojo version
-Version: 1.0.23
+Version: 0.1.23
    Type: public
 ...
 # Now make it live...
 $ cyber-dojo up
-Using version=1.0.23 (public)
+Using version=0.1.23 (public)
 ...
 ```
 
 # reset the server to a specific version
 ```bash
 $ cyber-dojo version
-Version: 1.0.35
+Version: 0.1.35
    Type: public
 ...
-$ cyber-dojo update 1.0.21
+$ cyber-dojo update 0.1.21
 $ cyber-dojo version
-Version: 1.0.21
+Version: 0.1.21
    Type: public
 ...
 # Now make it live...
 $ cyber-dojo up
-Using version=1.0.21 (public)
+Using version=0.1.21 (public)
 ...
 ```
 
@@ -129,7 +141,7 @@ You can override this using environment variables to specify the image name and 
   ```  
 
 # overriding the default dot env files
-There are default .env files for two of the core-services:
+There are default .env files for two services:
 - nginx.env
 - web.env
 
