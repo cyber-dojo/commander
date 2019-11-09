@@ -66,7 +66,6 @@ languages_urls()
 
 declare -a service_names=(
   differ
-  mapper
   nginx
   ragger
   runner

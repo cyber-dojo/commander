@@ -33,8 +33,5 @@ services:
   saver:
     restart: on-failure
 
-  mapper:
-    restart: on-failure
-
   zipper:
     restart: on-failure

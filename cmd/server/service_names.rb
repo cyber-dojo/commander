@@ -4,7 +4,6 @@ def service_names
     avatars
     commander
     differ
-    mapper
     nginx
     ragger
     runner

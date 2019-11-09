@@ -25,8 +25,6 @@ services:
     image: cyberdojo/avatars:${CYBER_DOJO_AVATARS_TAG}
   differ:
     image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
-  mapper:
-    image: cyberdojo/mapper:${CYBER_DOJO_MAPPER_TAG}
   ragger:
     image: cyberdojo/ragger:${CYBER_DOJO_RAGGER_TAG}
   runner:

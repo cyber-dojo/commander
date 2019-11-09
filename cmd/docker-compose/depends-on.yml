@@ -13,7 +13,6 @@ services:
       - differ
       - exercises
       - languages
-      - mapper
       - ragger
       - runner
       - saver
@@ -21,9 +20,6 @@ services:
   ragger:
     depends_on:
       - runner
-  saver:
-    depends_on:
-      - mapper
   zipper:
     depends_on:
       - saver

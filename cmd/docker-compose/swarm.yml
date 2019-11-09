@@ -15,18 +15,6 @@ services:
           memory: 64M
           cpus: '0.5'
 
-  mapper:
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          memory: 32M
-          cpus: '0.1'
-
   # - - - - - - - - - - - - - - - - - - - - - - -
   nginx:
     deploy:

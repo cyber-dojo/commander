@@ -8,6 +8,3 @@ services:
   saver:
     volumes:
       - /cyber-dojo:/cyber-dojo:rw
-  mapper:
-    volumes:
-      - /porter:/porter:ro

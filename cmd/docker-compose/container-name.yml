@@ -33,8 +33,5 @@ services:
   saver:
     container_name: cyber-dojo-saver
 
-  mapper:
-    container_name: cyber-dojo-mapper
-
   zipper:
     container_name: cyber-dojo-zipper

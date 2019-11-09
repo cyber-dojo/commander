@@ -14,15 +14,13 @@ $ helm install /Users/jonjagger/repos/cyber-dojo/orbit-helm-charts/cyber-dojo \
     --version 0.2.0 \
     --name cyberdojo \
     --set persistence.storageClassName=standard \
-    --set persistence.saverVolumeSize=10G \
-    --set persistence.mapperVolumeSize=5G
+    --set persistence.saverVolumeSize=10G
 
 
 $ kubectl get pods -w
 
 NAME                                            READY   STATUS              RESTARTS   AGE
 cyberdojo-cyber-dojo-differ-8889ff9c5-996rb     0/1     ContainerCreating   0          3m25s
-cyberdojo-cyber-dojo-mapper-77565ddc46-pgsx5    0/1     ContainerCreating   0          3m25s
 cyberdojo-cyber-dojo-nginx-77cfdc7595-jvx9w     0/1     ContainerCreating   0          3m25s
 cyberdojo-cyber-dojo-runner-75c7d66986-w4jjl    0/1     ContainerCreating   0          3m24s
 cyberdojo-cyber-dojo-saver-589dc58456-p7hzc     0/1     ContainerCreating   0          3m24s

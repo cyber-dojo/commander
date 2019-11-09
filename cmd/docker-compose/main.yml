@@ -87,15 +87,6 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # holds storer->saver id mappings created by porter
-  mapper:
-    user: nobody
-    init: true
-    environment:
-      - NO_PROMETHEUS
-    read_only: true
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
   # provides tgz files of practice sessions
   zipper:
     user: nobody
