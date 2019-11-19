@@ -112,7 +112,8 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def apply_user_defined_env_vars(env_vars)
-  keys = %w( CYBER_DOJO_WEB_IMAGE CYBER_DOJO_WEB_TAG )
+  keys  = %w( CYBER_DOJO_WEB_IMAGE CYBER_DOJO_WEB_TAG )
+  keys += %w( CYBER_DOJO_NGINX_IMAGE CYBER_DOJO_NGINX_TAG )
   keys.each do |key|
     if ENV[key]
       env_vars[key] = ENV[key]
