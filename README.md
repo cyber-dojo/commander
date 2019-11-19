@@ -170,12 +170,13 @@ and re-issuing the up. For example:
 Environment variables can be set directly in a bash command.
 For example, instead of writing:
   ```bash
+  $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
   ```
 you can write:
   ```bash
-  $ CYBER_DOJO_PORT=81 cyber-dojo up
+  $ CYBER_DOJO_CUSTOM=acme/my_custom:latest CYBER_DOJO_PORT=81 cyber-dojo up
   ```
 
 - - - -
