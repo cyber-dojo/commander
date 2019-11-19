@@ -112,8 +112,8 @@ You can override these start-point images in two ways:
   ```
 
 # overriding the default nginx image
-By default your cyber-dojo server will use [cyberdojo/nginx](https://hub.docker.com/r/cyberdojo/nginx/tags) as its nginx service image (tagged appropriately).
-From 0.1.47 onwards you can override this using environment variables to specify the image name and its tag:
+* By default your cyber-dojo server will use [cyberdojo/nginx](https://hub.docker.com/r/cyberdojo/nginx/tags) as its nginx service image (tagged appropriately).
+* From 0.1.47 onwards you can override this using environment variables to specify the image name and its tag:
   ```bash
   $ export CYBER_DOJO_NGINX_IMAGE=cucumber/nginx
   $ export CYBER_DOJO_NGINX_TAG=efd7e37
@@ -131,8 +131,8 @@ From 0.1.47 onwards you can override this using environment variables to specify
   ```
 
 # overriding the default rails web image
-By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
-From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag:
+* By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
+* From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag:
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
