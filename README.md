@@ -11,11 +11,12 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
 - Versioning
   * [updating the server to the latest version](#updating-the-server-to-the-latest-version)
   * [resetting the server to a specific version](#resetting-the-server-to-a-specific-version )
-- Overriding the defaults  
-  * [the port](#overriding-the-default-port)
-  * [the start-point images](#overriding-the-default-start-point-images)
-  * [the rails web service image](#overriding-the-default-rails-web-service-image)
-  * [the dot env files](#overriding-the-default-dot-env-files)
+- Overriding the default...
+  * [port](#overriding-the-default-port)
+  * [start-point images](#overriding-the-default-start-point-images)
+  * [nginx image](#overriding-the-default-nginx-image)
+  * [rails web image](#overriding-the-default-rails-web-image)
+  * [dot env files](#overriding-the-default-dot-env-files)
 - Notes  
   * [environment variables can be set inline](#environment-variables-can-be-set-inline)
 
@@ -110,17 +111,32 @@ You can override these start-point images in two ways:
   ...
   ```
 
-# overriding the default rails web service image
+# overriding the default nginx image
+By default your cyber-dojo server will use [cyberdojo/nginx](https://hub.docker.com/r/cyberdojo/nginx/tags) as its nginx service image (tagged appropriately).
+From 0.1.47 onwards you can override this using environment variables to specify the image name and its tag:
+  ```bash
+  $ export CYBER_DOJO_NGINX_IMAGE=cucumber/nginx
+  $ export CYBER_DOJO_NGINX_TAG=efd7e37
+  $ cyber-dojo up ...
+  ...
+  Using nginx=cucumber/nginx:efd7e37
+  ...
+  ```
+  ```yml
+  # docker-compose.yml (used by cyber-dojo script)
+  services:
+    nginx:
+      image: ${CYBER_DOJO_NGINX_IMAGE}:${CYBER_DOJO_NGINX_TAG}
+      ...
+  ```
+
+# overriding the default rails web image
 By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
-You can override this using environment variables to specify the image name and its tag:
+From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag:
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
   $ cyber-dojo up ...
-  Using avatars=cyberdojo/avatars:47dd256
-  Using differ=cyberdojo/differ:610f484
-  Using nginx=cyberdojo/nginx:02183dc
-  Using ragger=cyberdojo/runner:f03228c
   ...
   Using web=turtlesec/web:84d6d0e
   ...
