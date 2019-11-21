@@ -15,8 +15,8 @@ set -e
 
 delegate_to_commander()
 {
-  check_env_file_exists CYBER_DOJO_NGINX_ENV   "${CYBER_DOJO_NGINX_ENV}"
-  check_env_file_exists CYBER_DOJO_WEB_ENV     "${CYBER_DOJO_WEB_ENV}"
+  exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV}"
+  exit_unless_env_file_exists CYBER_DOJO_WEB_ENV   "${CYBER_DOJO_WEB_ENV}"
 
   docker run \
     --env CYBER_DOJO_SWARM       \
@@ -55,20 +55,20 @@ commander_image_name()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-check_env_file_exists()
+exit_unless_env_file_exists()
 {
   local -r name="${1}"
   local -r path="${2}"
   if [ -n "${path}" ]; then
     if [ -z "${DOCKER_MACHINE_NAME}" ]; then
-      check_env_file_exists_on_host "${name}" "${path}"
+      exit_unless_env_file_exists_on_host "${name}" "${path}"
     else
-      check_env_file_exists_on_machine "${name}" "${path}"
+      exit_unless_env_file_exists_on_machine "${name}" "${path}"
     fi
   fi
 }
 
-check_env_file_exists_on_host()
+exit_unless_env_file_exists_on_host()
 {
   local -r name="${1}"
   local -r path="${2}"
@@ -79,7 +79,7 @@ check_env_file_exists_on_host()
   fi
 }
 
-check_env_file_exists_on_machine()
+exit_unless_env_file_exists_on_machine()
 {
   local -r name="${1}"
   local -r path="${2}"
