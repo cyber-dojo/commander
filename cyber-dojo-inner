@@ -116,17 +116,16 @@ volume_env_file()
 extract_and_run()
 {
   # We want cat-start-point-create.sh to derive its
-  # STARTER_BASE_TAG from CYBER_DOJO_STARTER_BASE_SHA
-  # which comes from versioner's /app/.env file.
+  # CYBER_DOJO_STARTER_BASE_TAG from versioner's /app/.env file.
   # However, there is one case where we don't want this.
   # That is when we are doing development on the
   # starter-base repo and need this script to create start-point
   # images (like custom) built from the local cyberdojo/starter-base
-  # image.
+  # image. See starter-base/sh/build_test_derived_images.sh
   local -r script="${1}"
   shift
   docker run \
-    --env STARTER_BASE_TAG=${STARTER_BASE_TAG} \
+    --env CYBER_DOJO_STARTER_BASE_TAG=${CYBER_DOJO_STARTER_BASE_TAG} \
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \

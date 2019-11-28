@@ -258,7 +258,7 @@ base_image_name()
 {
   # The uppercase-tag in this replaced by the actual tag for the
   # specified/defaulted RELEASE by the cat-start-point-create.sh script.
-  echo 'cyberdojo/starter-base:STARTER_BASE_TAG'
+  echo 'cyberdojo/starter-base:CYBER_DOJO_STARTER_BASE_TAG'
 }
 
 image_type()
