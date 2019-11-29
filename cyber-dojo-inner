@@ -126,6 +126,9 @@ extract_and_run()
   shift
   docker run \
     --env CYBER_DOJO_STARTER_BASE_TAG=${CYBER_DOJO_STARTER_BASE_TAG} \
+    --env CYBER_DOJO_CUSTOM_PORT=${CYBER_DOJO_CUSTOM_PORT} \
+    --env CYBER_DOJO_EXERCISES_PORT=${CYBER_DOJO_EXERCISES_PORT} \
+    --env CYBER_DOJO_LANGUAGES_PORT=${CYBER_DOJO_LANGUAGES_PORT} \
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \

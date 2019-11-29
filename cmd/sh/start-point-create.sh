@@ -186,13 +186,7 @@ git_clone_one_url_into_context_dir()
 
 build_image_from_context_dir()
 {
-  case "$(image_type)" in
-       custom) PORT=4526;;
-    exercises) PORT=4525;;
-    languages) PORT=4524;;
-  esac
-
-  local env_vars="PORT=${PORT} IMAGE_TYPE=$(image_type)"
+  local env_vars="PORT=$(image_port_number) IMAGE_TYPE=$(image_type)"
   if [ -n "${SHA}" ]; then
     env_vars="${env_vars} SHA=${SHA}"
   fi
@@ -202,7 +196,7 @@ build_image_from_context_dir()
     echo "COPY . /app/repos"
     echo "RUN /app/src/from_script/check_all.rb /app/repos $(image_type)"
     echo "ENV ${env_vars}"
-    echo "EXPOSE ${PORT}"
+    echo "EXPOSE $(image_port_number)"
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
@@ -256,7 +250,7 @@ stderr()
 
 base_image_name()
 {
-  # The uppercase-tag in this replaced by the actual tag for the
+  # The uppercase-tag in this are replaced by the actual tag for the
   # specified/defaulted RELEASE by the cat-start-point-create.sh script.
   echo 'cyberdojo/starter-base:CYBER_DOJO_STARTER_BASE_TAG'
 }
@@ -264,6 +258,17 @@ base_image_name()
 image_type()
 {
   echo "${IMAGE_TYPE:2}" # '--languages' => 'languages'
+}
+
+image_port_number()
+{
+  # The uppercase-ports in this are replaced by the actual port numbers for the
+  # specified/defaulted RELEASE by the cat-start-point-create.sh script.
+  case "$(image_type)" in
+       custom) echo 'CYBER_DOJO_CUSTOM_PORT';;
+    exercises) echo 'CYBER_DOJO_EXERCISES_PORT';;
+    languages) echo 'CYBER_DOJO_LANGUAGES_PORT';;
+  esac
 }
 
 #==========================================================
