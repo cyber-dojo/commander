@@ -12,7 +12,7 @@ services:
   custom-start-points:
     restart: on-failure
 
-  exercises:
+  exercises-start-points:
     restart: on-failure
 
   languages:

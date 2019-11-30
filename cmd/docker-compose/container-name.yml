@@ -8,8 +8,8 @@ services:
 
   custom-start-points:
     container_name: cyber-dojo-custom-start-points
-  exercises:
-    container_name: cyber-dojo-exercises
+  exercises-start-points:
+    container_name: cyber-dojo-exercises-start-points
   languages:
     container_name: cyber-dojo-languages
 

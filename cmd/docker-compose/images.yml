@@ -11,7 +11,7 @@ services:
   # see [cyber-dojo up --help] for details on how to override these
   custom-start-points:
     image: ${CYBER_DOJO_CUSTOM}
-  exercises:
+  exercises-start-points:
     image: ${CYBER_DOJO_EXERCISES}
   languages:
     image: ${CYBER_DOJO_LANGUAGES}

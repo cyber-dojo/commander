@@ -10,9 +10,9 @@ services:
   web:
     depends_on:
       - custom-start-points
-      - differ
-      - exercises
+      - exercises-start-points
       - languages
+      - differ
       - ragger
       - runner
       - saver

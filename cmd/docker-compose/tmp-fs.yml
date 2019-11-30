@@ -10,7 +10,7 @@ services:
         tmpfs:
           size: 10485760 # 10MB
 
-  exercises:
+  exercises-start-points:
     volumes:
       - type: tmpfs
         target: /tmp

@@ -26,7 +26,7 @@ services:
     environment: [ NO_PROMETHEUS ]
     read_only: true
 
-  exercises:
+  exercises-start-points:
     user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]

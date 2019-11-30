@@ -55,7 +55,7 @@ services:
           memory: 32M
           cpus: '0.2'
 
-  exercises:
+  exercises-start-points:
     deploy:
       mode: global
       restart_policy:
