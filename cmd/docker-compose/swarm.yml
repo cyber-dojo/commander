@@ -45,7 +45,7 @@ services:
           memory: 256M
           cpus: '0.75'
 
-  custom:
+  custom-start-points:
     deploy:
       mode: global
       restart_policy:

@@ -20,25 +20,22 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
-  custom:
+  custom-start-points:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   exercises:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   languages:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,8 +43,7 @@ services:
   avatars:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -55,8 +51,7 @@ services:
   runner:
     user: root
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,8 +59,7 @@ services:
   ragger:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,8 +67,7 @@ services:
   differ:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -82,8 +75,7 @@ services:
   saver:
     user: saver
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,6 +83,5 @@ services:
   zipper:
     user: nobody
     init: true
-    environment:
-      - NO_PROMETHEUS
+    environment: [ NO_PROMETHEUS ]
     read_only: true

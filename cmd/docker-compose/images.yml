@@ -9,7 +9,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
   # see [cyber-dojo up --help] for details on how to override these
-  custom:
+  custom-start-points:
     image: ${CYBER_DOJO_CUSTOM}
   exercises:
     image: ${CYBER_DOJO_EXERCISES}

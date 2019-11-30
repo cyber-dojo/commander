@@ -3,7 +3,7 @@ version: '3.7'
 
 services:
 
-  custom:
+  custom-start-points:
     volumes:
       - type: tmpfs
         target: /tmp

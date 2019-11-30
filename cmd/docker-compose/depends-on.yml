@@ -9,7 +9,7 @@ services:
       - web
   web:
     depends_on:
-      - custom
+      - custom-start-points
       - differ
       - exercises
       - languages

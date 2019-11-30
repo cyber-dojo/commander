@@ -6,20 +6,18 @@ services:
   nginx:
     container_name: cyber-dojo-nginx
 
-  web:
-    container_name: cyber-dojo-web
-
-  custom:
-    container_name: cyber-dojo-custom
-
+  custom-start-points:
+    container_name: cyber-dojo-custom-start-points
   exercises:
     container_name: cyber-dojo-exercises
-
   languages:
     container_name: cyber-dojo-languages
 
   avatars:
     container_name: cyber-dojo-avatars
+
+  web:
+    container_name: cyber-dojo-web
 
   runner:
     container_name: cyber-dojo-runner

@@ -9,7 +9,7 @@ services:
   web:
     restart: on-failure
 
-  custom:
+  custom-start-points:
     restart: on-failure
 
   exercises:
