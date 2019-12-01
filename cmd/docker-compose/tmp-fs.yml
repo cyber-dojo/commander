@@ -17,7 +17,7 @@ services:
         tmpfs:
           size: 10485760 # 10MB
 
-  languages:
+  languages-start-points:
     volumes:
       - type: tmpfs
         target: /tmp

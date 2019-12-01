@@ -11,7 +11,7 @@ services:
     depends_on:
       - custom-start-points
       - exercises-start-points
-      - languages
+      - languages-start-points
       - differ
       - ragger
       - runner

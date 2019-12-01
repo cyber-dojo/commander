@@ -15,7 +15,7 @@ services:
   exercises-start-points:
     restart: on-failure
 
-  languages:
+  languages-start-points:
     restart: on-failure
 
   avatars:

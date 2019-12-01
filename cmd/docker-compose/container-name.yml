@@ -10,8 +10,8 @@ services:
     container_name: cyber-dojo-custom-start-points
   exercises-start-points:
     container_name: cyber-dojo-exercises-start-points
-  languages:
-    container_name: cyber-dojo-languages
+  languages-start-points:
+    container_name: cyber-dojo-languages-start-points
 
   avatars:
     container_name: cyber-dojo-avatars

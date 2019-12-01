@@ -65,7 +65,7 @@ services:
           memory: 32M
           cpus: '0.2'
 
-  languages:
+  languages-start-points:
     deploy:
       mode: global
       restart_policy:

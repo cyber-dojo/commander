@@ -13,7 +13,7 @@ services:
     image: ${CYBER_DOJO_CUSTOM}
   exercises-start-points:
     image: ${CYBER_DOJO_EXERCISES}
-  languages:
+  languages-start-points:
     image: ${CYBER_DOJO_LANGUAGES}
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
