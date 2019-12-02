@@ -262,12 +262,10 @@ image_type()
 
 image_port_number()
 {
-  # The uppercase-ports in this are replaced by the actual port numbers for the
-  # specified/defaulted RELEASE by the cat-start-point-create.sh script.
   case "$(image_type)" in
-       custom) echo 'CYBER_DOJO_CUSTOM_PORT';;
-    exercises) echo 'CYBER_DOJO_EXERCISES_PORT';;
-    languages) echo 'CYBER_DOJO_LANGUAGES_PORT';;
+       custom) echo '4526';;
+    exercises) echo '4525';;
+    languages) echo '4524';;
   esac
 }
 
