@@ -61,7 +61,7 @@ test_____named_start_point_does_not_exist()
 
 test_____named_start_point_is_not_a_cyber_dojo_image()
 {
-  local -r name=cyberdojo/starter-base
+  local -r name=cyberdojo/start-points-base
   refuteStartPointRm ${name}
   assertNoStdout
   assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point image."

@@ -96,7 +96,7 @@ test_____absent_start_point()
 
 test_____present_but_not_a_start_point()
 {
-  local -r name=cyberdojo/starter-base
+  local -r name=cyberdojo/start-points-base
   refuteStartPointInspect ${name}
   assertNoStdout
   assertStderrEquals "ERROR: ${name} is not a cyber-dojo start-point image."
