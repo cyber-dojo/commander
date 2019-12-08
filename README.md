@@ -9,9 +9,10 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
   * [on docker](#bringing-up-a-server-on-docker)
   * [on docker swarm](#bringing-up-a-server-on-docker-swarm)
 - Versioning
+  * [listing the current version](#listing-the-current-version)
+  * [listing installed versions](#listing-installed-versions)
   * [updating the server to the latest version](#updating-the-server-to-the-latest-version)
   * [resetting the server to a specific version](#resetting-the-server-to-a-specific-version)
-  * [listing installed versions](#listing-installed-versions)
 - Overriding the default...
   * [port](#overriding-the-default-port)
   * [start-point images](#overriding-the-default-start-point-images)
@@ -38,34 +39,11 @@ $ export CYBER_DOJO_SWARM=true
 $ cyber-dojo up
 ```
 
-# updating the server to the latest version
+# listing the current version
 ```bash
-$ cyber-dojo update latest
 $ cyber-dojo version
 Version: 0.1.23
    Type: public
-...
-# Now make it live...
-$ cyber-dojo up
-Using version=0.1.23 (public)
-...
-```
-
-# resetting the server to a specific version
-```bash
-$ cyber-dojo version
-Version: 0.1.35
-   Type: public
-...
-$ cyber-dojo update 0.1.21
-$ cyber-dojo version
-Version: 0.1.21
-   Type: public
-...
-# Now make it live...
-$ cyber-dojo up
-Using version=0.1.21 (public)
-...
 ```
 
 # listing installed versions
@@ -76,6 +54,32 @@ $ cyber-dojo version ls
 0.1.48              2019-11-20 12:52:04 +0000 UTC
 ...
 0.1.21              2019-08-07 11:51:48 +0000 UTC
+...
+```
+
+# updating the server to the latest version
+```bash
+$ cyber-dojo update latest
+$ cyber-dojo version
+Version: 0.1.49
+   Type: public
+...
+# Now make it live...
+$ cyber-dojo up
+Using version=0.1.49 (public)
+...
+```
+
+# resetting the server to a specific version
+```bash
+$ cyber-dojo update 0.1.21
+$ cyber-dojo version
+Version: 0.1.21
+   Type: public
+...
+# Now make it live...
+$ cyber-dojo up
+Using version=0.1.21 (public)
 ...
 ```
 
