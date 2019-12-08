@@ -250,9 +250,9 @@ stderr()
 
 base_image_name()
 {
-  # The uppercase-tag in this are replaced by the actual tag for the
+  # The uppercase names in this are replaced by the actual values for the
   # specified/defaulted RELEASE by the cat-start-point-create.sh script.
-  echo 'cyberdojo/starter-base:CYBER_DOJO_STARTER_BASE_TAG'
+  echo 'CYBER_DOJO_STARTER_BASE_IMAGE:CYBER_DOJO_STARTER_BASE_TAG'
 }
 
 image_type()

@@ -116,6 +116,7 @@ volume_env_file()
 extract_and_run()
 {
   # We want cat-start-point-create.sh to derive its
+  # CYBER_DOJO_STARTER_BASE_IMAGE and
   # CYBER_DOJO_STARTER_BASE_TAG from versioner's /app/.env file.
   # However, there is one case where we don't want this.
   # That is when we are doing development on the
@@ -125,6 +126,7 @@ extract_and_run()
   local -r script="${1}"
   shift
   docker run \
+    --env CYBER_DOJO_STARTER_BASE_IMAGE=${CYBER_DOJO_STARTER_BASE_IMAGE} \
     --env CYBER_DOJO_STARTER_BASE_TAG=${CYBER_DOJO_STARTER_BASE_TAG} \
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
