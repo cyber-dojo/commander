@@ -44,9 +44,9 @@ custom_urls()
 exercises_urls()
 {
   if on_CI; then
-    echo -n "${github_cyber_dojo}/exercises"
+    echo -n "${github_cyber_dojo}/exercises-start-points"
   else
-    echo -n "$(CD_DIR)/exercises"
+    echo -n "$(CD_DIR)/exercises-start-points"
   fi
 }
 
