@@ -6,7 +6,7 @@
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
-readonly OVERRIDE_CYBER_DOJO_STARTER_BASE_IMAGE=${CYBER_DOJO_STARTER_BASE_IMAGE:-cyberdojo/start-points-base}
+readonly OVERRIDE_CYBER_DOJO_STARTER_BASE_IMAGE=${CYBER_DOJO_STARTER_BASE_IMAGE}
 readonly OVERRIDE_CYBER_DOJO_STARTER_BASE_TAG=${CYBER_DOJO_STARTER_BASE_TAG}
 VERSIONER=cyberdojo/versioner:latest
 export $(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
