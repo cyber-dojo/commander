@@ -145,8 +145,11 @@ You can override these start-point images in two ways:
   ```
 
 # overriding the default rails web image
-* By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
-* From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag. Eg
+* By default your cyber-dojo server will use
+[cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags)
+as its web service image (tagged appropriately).
+* From 0.1.28 onwards you can override this using
+senvironment variables to specify the image name and its tag. Eg
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
@@ -169,7 +172,7 @@ There are default .env files for two services:
 - web.env
 
 You can override these .env files by creating your own .env file,
-setting an environment-variable to its absolute path,
+setting an environment-variable (CYBER_DOJO_NGINX_ENV or CYBER_DOJO_WEB_ENV) to its absolute path,
 and re-issuing the up. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
