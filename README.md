@@ -86,7 +86,7 @@ Using version=0.1.21 (public)
 # overriding the default port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
-* an environment-variable
+* The environment-variable CYBER_DOJO_PORT. Eg
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
@@ -94,7 +94,7 @@ You can override the port in two ways:
   Using port=81
   ...
   ```
-* a command-line argument
+* The command-line argument --port. Eg
   ```bash
   $ cyber-dojo up --port=82
   ...
@@ -109,17 +109,15 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - [cyberdojo/languages-start-points-common](https://hub.docker.com/r/cyberdojo/languages-start-points-common/tags)
 
 You can override these start-point images in two ways:
-* an environment-variable
+* The environment-variables [CYBER_DOJO_CUSTOM CYBER_DOJO_EXERCISES CYBER_DOJO_LANGUAGES]. Eg
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
-  $ # export CYBER_DOJO_EXERCISES=...
-  $ # export CYBER_DOJO_LANGUAGES=...
   $ cyber-dojo up
   ...
   Using custom=acme/my_custom:latest
   ...
   ```
-* a command-line argument
+* The command-line arguments [--custom --exercises --languages]. Eg
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
@@ -129,7 +127,7 @@ You can override these start-point images in two ways:
 
 # overriding the default nginx image
 * By default your cyber-dojo server will use [cyberdojo/nginx](https://hub.docker.com/r/cyberdojo/nginx/tags) as its nginx service image (tagged appropriately).
-* From 0.1.47 onwards you can override this using environment variables to specify the image name and its tag:
+* From 0.1.47 onwards you can override this using environment variables to specify the image name and its tag. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_IMAGE=cucumber/nginx
   $ export CYBER_DOJO_NGINX_TAG=efd7e37
@@ -148,7 +146,7 @@ You can override these start-point images in two ways:
 
 # overriding the default rails web image
 * By default your cyber-dojo server will use [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags) as its web service image (tagged appropriately).
-* From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag:
+* From 0.1.28 onwards you can override this using environment variables to specify the image name and its tag. Eg
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
@@ -172,7 +170,7 @@ There are default .env files for two services:
 
 You can override these .env files by creating your own .env file,
 setting an environment-variable to its absolute path,
-and re-issuing the up. For example:
+and re-issuing the up. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
   $ cyber-dojo up
