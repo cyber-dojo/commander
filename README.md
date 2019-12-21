@@ -104,9 +104,9 @@ You can override the port in two ways:
 
 # overriding the default start-point images
 By default your cyber-dojo server will use these start-point images (tagged appropriately)
-- [cyberdojo/custom](https://hub.docker.com/r/cyberdojo/custom/tags)
-- [cyberdojo/exercises](https://hub.docker.com/r/cyberdojo/exercises/tags)
-- [cyberdojo/languages-common](https://hub.docker.com/r/cyberdojo/languages-common/tags)
+- [cyberdojo/custom-start-points](https://hub.docker.com/r/cyberdojo/custom-start-points/tags)
+- [cyberdojo/exercises-start-points](https://hub.docker.com/r/cyberdojo/exercises-start-points/tags)
+- [cyberdojo/languages-start-points-common](https://hub.docker.com/r/cyberdojo/languages-start-points-common/tags)
 
 You can override these start-point images in two ways:
 * an environment-variable
