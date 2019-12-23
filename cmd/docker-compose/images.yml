@@ -2,6 +2,7 @@
 version: '3.7'
 
 services:
+# env-vars come from cyberdojo/versioner:latest
 
   nginx:
     image: ${CYBER_DOJO_NGINX_IMAGE}:${CYBER_DOJO_NGINX_TAG}
@@ -18,18 +19,17 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services
-  # variables come from cyberdojo/versioner:latest
   web:
     image: ${CYBER_DOJO_WEB_IMAGE}:${CYBER_DOJO_WEB_TAG}
   avatars:
-    image: cyberdojo/avatars:${CYBER_DOJO_AVATARS_TAG}
+    image: ${CYBER_DOJO_AVATARS_IMAGE}:${CYBER_DOJO_AVATARS_TAG}
   differ:
-    image: cyberdojo/differ:${CYBER_DOJO_DIFFER_TAG}
+    image: ${CYBER_DOJO_DIFFER_IMAGE}:${CYBER_DOJO_DIFFER_TAG}
   ragger:
-    image: cyberdojo/ragger:${CYBER_DOJO_RAGGER_TAG}
+    image: ${CYBER_DOJO_RAGGER_IMAGE}:${CYBER_DOJO_RAGGER_TAG}
   runner:
-    image: cyberdojo/runner:${CYBER_DOJO_RUNNER_TAG}
+    image: ${CYBER_DOJO_RUNNER_IMAGE}:${CYBER_DOJO_RUNNER_TAG}
   saver:
-    image: cyberdojo/saver:${CYBER_DOJO_SAVER_TAG}
+    image: ${CYBER_DOJO_SAVER_IMAGE}:${CYBER_DOJO_SAVER_TAG}
   zipper:
-    image: cyberdojo/zipper:${CYBER_DOJO_ZIPPER_TAG}
+    image: ${CYBER_DOJO_ZIPPER_IMAGE}:${CYBER_DOJO_ZIPPER_TAG}

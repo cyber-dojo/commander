@@ -6,11 +6,11 @@ version: '3.7'
 # to the .env files new absolute path before
 # doing a [cyber-dojo up]
 # eg
-# $ export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env
-# $ export CYBER_DOJO_WEB_ENV=/Users/fred/web.env
+# $ export CYBER_DOJO_NGINX_ENV=/users/fred/nginx.env
+# $ export CYBER_DOJO_WEB_ENV=/users/fred/web.env
 # $ cyber-dojo up
 # See check_env_file_exists() in cyber-dojo-inner
-# See use_any_custom_env_files() in cmd/server/up.rb
+# See apply_user_defined_env_vars() in cmd/server/up.rb
 
 services:
   nginx:

@@ -40,7 +40,6 @@ delegate_to_commander()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 commander_image_name()
 {
   # Tests set COMMANDER_TAG to :latest
@@ -54,7 +53,6 @@ commander_image_name()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_unless_env_file_exists()
 {
   local -r name="${1}"
@@ -68,6 +66,7 @@ exit_unless_env_file_exists()
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 exit_unless_env_file_exists_on_host()
 {
   local -r name="${1}"
@@ -79,6 +78,7 @@ exit_unless_env_file_exists_on_host()
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 exit_unless_env_file_exists_on_machine()
 {
   local -r name="${1}"
@@ -90,6 +90,7 @@ exit_unless_env_file_exists_on_machine()
   fi
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 echo_env_var_error()
 {
   local -r name="${1}"
@@ -101,7 +102,6 @@ echo_env_var_error()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 volume_env_file()
 {
   local -r name="${1}"
@@ -112,7 +112,6 @@ volume_env_file()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 extract_and_run()
 {
   # We want cat-start-point-create.sh to derive its
@@ -139,8 +138,7 @@ extract_and_run()
   exit $?
 }
 
-#==========================================================
-
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if [ "$1" = '--debug' ]; then
   shift
   debug_option='--debug'
