@@ -109,8 +109,8 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - [cyberdojo/languages-start-points-common](https://hub.docker.com/r/cyberdojo/languages-start-points-common/tags)
 
 You can override these start-point images in two ways:
-* The environment-variables (`CYBER_DOJO_CUSTOM` and `CYBER_DOJO_EXERCISES`
-and `CYBER_DOJO_LANGUAGES`). Eg
+* The environment-variables `CYBER_DOJO_CUSTOM` and `CYBER_DOJO_EXERCISES`
+and `CYBER_DOJO_LANGUAGES`. Eg
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
   $ cyber-dojo up
@@ -118,7 +118,7 @@ and `CYBER_DOJO_LANGUAGES`). Eg
   Using custom=acme/my_custom:latest
   ...
   ```
-* The command-line arguments (`--custom` and `--exercises` and `--languages`). Eg
+* The command-line arguments `--custom` and `--exercises` and `--languages`. Eg
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
@@ -175,8 +175,8 @@ There are default .env files for two services:
 - nginx.env
 - web.env
 
-You can override these by setting an environment-variable
-(`CYBER_DOJO_NGINX_ENV` and `CYBER_DOJO_WEB_ENV`)
+You can override these by setting the environment-variables
+`CYBER_DOJO_NGINX_ENV` and `CYBER_DOJO_WEB_ENV`
 to the absolute path of your own .env file, and re-issuing the up. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
