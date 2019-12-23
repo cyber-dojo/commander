@@ -11,11 +11,11 @@ services:
   # start-points
   # see [cyber-dojo up --help] for details on how to override these
   custom-start-points:
-    image: ${CYBER_DOJO_CUSTOM}
+    image: ${CYBER_DOJO_CUSTOM_START_POINTS}
   exercises-start-points:
-    image: ${CYBER_DOJO_EXERCISES}
+    image: ${CYBER_DOJO_EXERCISES_START_POINTS}
   languages-start-points:
-    image: ${CYBER_DOJO_LANGUAGES}
+    image: ${CYBER_DOJO_LANGUAGES_START_POINTS}
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services

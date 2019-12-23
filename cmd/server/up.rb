@@ -56,7 +56,12 @@ end
 def up_argument(name)
   key = "CYBER_DOJO_#{name.upcase}"
   option = "--#{name}"
-  ENV[key] || up_command_line[option] || dot_env[key]
+  if name === 'port'
+    new_key = key
+  else
+    new_key = key + '_START_POINTS'
+  end
+  ENV[key] || up_command_line[option] || dot_env[new_key] || dot_env[key]
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
