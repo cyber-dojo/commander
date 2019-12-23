@@ -30,9 +30,9 @@ def cyber_dojo_server_up
   env_vars.merge!({
     'ENV_ROOT' => env_root,
     'CYBER_DOJO_PORT' => port,
-    'CYBER_DOJO_CUSTOM'    => custom,
-    'CYBER_DOJO_EXERCISES' => exercises,
-    'CYBER_DOJO_LANGUAGES' => languages,
+    'CYBER_DOJO_CUSTOM_START_POINTS'    => custom,
+    'CYBER_DOJO_EXERCISES_START_POINTS' => exercises,
+    'CYBER_DOJO_LANGUAGES_START_POINTS' => languages,
     'CYBER_DOJO_SHA' => sha,
     'CYBER_DOJO_RELEASE' => release
   })
