@@ -86,7 +86,7 @@ Using version=0.1.21 (public)
 # overriding the default port
 By default your cyber-dojo server will be on port 80.
 You can override the port in two ways:
-* The environment-variable ```CYBER_DOJO_PORT```. Eg
+* The environment-variable `CYBER_DOJO_PORT`. Eg
   ```bash
   $ export CYBER_DOJO_PORT=81
   $ cyber-dojo up
@@ -94,7 +94,7 @@ You can override the port in two ways:
   Using port=81
   ...
   ```
-* The command-line argument ```--port```. Eg
+* The command-line argument `--port`. Eg
   ```bash
   $ cyber-dojo up --port=82
   ...
@@ -109,8 +109,8 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - [cyberdojo/languages-start-points-common](https://hub.docker.com/r/cyberdojo/languages-start-points-common/tags)
 
 You can override these start-point images in two ways:
-* The environment-variables (```CYBER_DOJO_CUSTOM``` and ```CYBER_DOJO_EXERCISES```
-and ```CYBER_DOJO_LANGUAGES```). Eg
+* The environment-variables (`CYBER_DOJO_CUSTOM` and `CYBER_DOJO_EXERCISES`
+and `CYBER_DOJO_LANGUAGES`). Eg
   ```bash
   $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
   $ cyber-dojo up
@@ -118,7 +118,7 @@ and ```CYBER_DOJO_LANGUAGES```). Eg
   Using custom=acme/my_custom:latest
   ...
   ```
-* The command-line arguments (```--custom``` and ```--exercises``` and ```--languages```). Eg
+* The command-line arguments (`--custom` and `--exercises` and `--languages`). Eg
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
@@ -175,8 +175,8 @@ There are default .env files for two services:
 - nginx.env
 - web.env
 
-You can override these by setting an environment-variable 
-(```CYBER_DOJO_NGINX_ENV``` and ```CYBER_DOJO_WEB_ENV```)
+You can override these by setting an environment-variable
+(`CYBER_DOJO_NGINX_ENV` and `CYBER_DOJO_WEB_ENV`)
 to the absolute path of your own .env file, and re-issuing the up. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
