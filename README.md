@@ -19,8 +19,6 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
   * [nginx image](#overriding-the-default-nginx-image)
   * [rails web image](#overriding-the-default-rails-web-image)
   * [dot env files](#overriding-the-default-dot-env-files)
-- Notes  
-  * [environment variables can be set inline](#environment-variables-can-be-set-inline)
 
 # bringing up a server on docker
 ```bash
@@ -85,20 +83,11 @@ Using version=0.1.21 (public)
 
 # overriding the default port
 By default your cyber-dojo server will be on port 80.
-You can override the port in two ways:
-* The environment-variable `CYBER_DOJO_PORT`. Eg
+* Override this port using the command-line argument `--port`. Eg
   ```bash
-  $ export CYBER_DOJO_PORT=81
-  $ cyber-dojo up
+  $ cyber-dojo up --port=8000
   ...
-  Using port=81
-  ...
-  ```
-* The command-line argument `--port`. Eg
-  ```bash
-  $ cyber-dojo up --port=82
-  ...
-  Using port=82
+  Using port=8000
   ...
   ```
 
@@ -108,17 +97,7 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 - [cyberdojo/exercises-start-points](https://hub.docker.com/r/cyberdojo/exercises-start-points/tags)
 - [cyberdojo/languages-start-points-common](https://hub.docker.com/r/cyberdojo/languages-start-points-common/tags)
 
-You can override these start-point images in two ways:
-* The environment-variables `CYBER_DOJO_CUSTOM` and `CYBER_DOJO_EXERCISES`
-and `CYBER_DOJO_LANGUAGES`. Eg
-  ```bash
-  $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
-  $ cyber-dojo up
-  ...
-  Using custom=acme/my_custom:latest
-  ...
-  ```
-* The command-line arguments `--custom` and `--exercises` and `--languages`. Eg
+* Override these start-point using the command-line arguments `--custom` and `--exercises` and `--languages`. Eg
   ```bash
   $ cyber-dojo up --custom=acme/my_custom:latest
   ...
@@ -185,19 +164,6 @@ to the absolute path of your own .env file, and re-issuing the up. Eg
   Using nginx.env=/home/fred/my_nginx.env (custom)
   Using web.env=default
   ...
-  ```
-
-# environment variables can be set inline
-Environment variables can be set directly in a bash command.
-For example, instead of writing:
-  ```bash
-  $ export CYBER_DOJO_CUSTOM=acme/my_custom:latest
-  $ export CYBER_DOJO_PORT=81
-  $ cyber-dojo up
-  ```
-you can write:
-  ```bash
-  $ CYBER_DOJO_CUSTOM=acme/my_custom:latest CYBER_DOJO_PORT=81 cyber-dojo up
   ```
 
 - - - -

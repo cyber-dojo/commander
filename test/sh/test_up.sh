@@ -58,37 +58,28 @@ test_____help_arg_prints_use()
 Use: cyber-dojo up [OPTIONS]
 
 Creates and starts a cyber-dojo server using default/named port,
-and start-points. Settings can be specified with environment variables
-and command-line arguments, with the former taking precedence.
+and start-points unless overridden with command-line options.
 
-Environment-variable        Command-line-arg     Default
-CYBER_DOJO_PORT=NUMBER      --port=NUMBER        NUMBER=80
-CYBER_DOJO_CUSTOM=NAME      --custom=NAME        NAME=cyberdojo/custom
-CYBER_DOJO_EXERCISES=NAME   --exercises=NAME     NAME=cyberdojo/exercises
-CYBER_DOJO_LANGUAGES=NAME   --languages=NAME     NAME=cyberdojo/languages-common
+Command-line-arg           Default
+--port=NUMBER              80
+--custom=IMAGE_NAME        cyberdojo/custom-start-points
+--exercises=IMAGE_NAME     cyberdojo/exercises-start-points
+--languages=IMAGE_NAME     cyberdojo/languages-start-points-common
 
-Example 1: specify port with environment variable:
+The default start-point images were created using:
 
-  export CYBER_DOJO_PORT=81
-  cyber-dojo up
-
-Example 2: specify port and languages start-point with command-line arguments
-
-  cyber-dojo up --port=81 --languages=cyberdojo/languages-all
-
-The default start-points were created using:
   cyber-dojo start-point create \\
-    cyberdojo/custom \\
+    cyberdojo/custom-start-points \\
       --custom \\
-        https://github.com/cyber-dojo/custom.git
+        https://github.com/cyber-dojo/custom-start-points.git
 
   cyber-dojo start-point create \\
-    cyberdojo/exercises \\
+    cyberdojo/exercises-start-points \\
       --exercises \\
-        https://github.com/cyber-dojo/exercises.git
+        https://github.com/cyber-dojo/exercises-start-points.git
 
   cyber-dojo start-point create \\
-    cyberdojo/languages-common \\
+    cyberdojo/languages-start-points-common \\
       --languages \\
         \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)
 
@@ -98,7 +89,11 @@ environment variables holding the .env file's absolute path.
   CYBER_DOJO_NGINX_ENV=PATH
   CYBER_DOJO_WEB_ENV=PATH
 
-Example 3: specify .env file for nginx
+Example: specify the port and custom start-point with command-line arguments
+
+  cyber-dojo up --port=8000 --custom=acme/my-custom:latest
+
+Example: specify .env file for nginx
   export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env
   cyber-dojo up"
 

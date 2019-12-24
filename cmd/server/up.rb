@@ -4,10 +4,10 @@ require_relative 'start_point_type'
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-       port = up_argument('port')
-     custom = up_argument('custom')
-  exercises = up_argument('exercises')
-  languages = up_argument('languages')
+       port = up_command_line['--port'] || dot_env['CYBER_DOJO_NGINX_PORT']
+     custom = cel_argument('custom')
+  exercises = cel_argument('exercises')
+  languages = cel_argument('languages')
 
   exit_failure_unless_start_point_exists(   'custom', custom   )
   exit_failure_unless_start_point_exists('exercises', exercises)
@@ -29,7 +29,7 @@ def cyber_dojo_server_up
   env_vars = dot_env
   env_vars.merge!({
     'ENV_ROOT' => env_root,
-    'CYBER_DOJO_PORT' => port,
+    'CYBER_DOJO_NGINX_PORT' => port,
     'CYBER_DOJO_CUSTOM_START_POINTS'    => custom,
     'CYBER_DOJO_EXERCISES_START_POINTS' => exercises,
     'CYBER_DOJO_LANGUAGES_START_POINTS' => languages,
@@ -53,15 +53,9 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def up_argument(name)
-  key = "CYBER_DOJO_#{name.upcase}"
-  option = "--#{name}"
-  if name === 'port'
-    new_key = key
-  else
-    new_key = key + '_START_POINTS'
-  end
-  ENV[key] || up_command_line[option] || dot_env[new_key] || dot_env[key]
+def cel_argument(name)
+  env_var_name = "CYBER_DOJO_#{name.upcase}_START_POINTS"
+  up_command_line["--#{name}"] || dot_env[env_var_name]
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,37 +129,28 @@ def exit_success_if_up_help
     "Use: #{me} up [OPTIONS]",
     '',
     'Creates and starts a cyber-dojo server using default/named port,',
-    'and start-points. Settings can be specified with environment variables',
-    'and command-line arguments, with the former taking precedence.',
+    'and start-points unless overridden with command-line options.',
     '',
-    'Environment-variable        Command-line-arg     Default',
-    'CYBER_DOJO_PORT=NUMBER      --port=NUMBER        NUMBER=80',
-    'CYBER_DOJO_CUSTOM=NAME      --custom=NAME        NAME=cyberdojo/custom',
-    'CYBER_DOJO_EXERCISES=NAME   --exercises=NAME     NAME=cyberdojo/exercises',
-    'CYBER_DOJO_LANGUAGES=NAME   --languages=NAME     NAME=cyberdojo/languages-common',
+    'Command-line-arg           Default',
+    '--port=NUMBER              80',
+    '--custom=IMAGE_NAME        cyberdojo/custom-start-points',
+    '--exercises=IMAGE_NAME     cyberdojo/exercises-start-points',
+    '--languages=IMAGE_NAME     cyberdojo/languages-start-points-common',
     '',
-    'Example 1: specify port with environment variable:',
+    'The default start-point images were created using:',
     '',
-    '  export CYBER_DOJO_PORT=81',
-    "  #{me} up",
-    '',
-    'Example 2: specify port and languages start-point with command-line arguments',
-    '',
-    "  #{me} up --port=81 --languages=cyberdojo/languages-all",
-    '',
-    'The default start-points were created using:',
     minitab + "#{me} start-point create \\",
-    minitab + '  cyberdojo/custom \\',
+    minitab + '  cyberdojo/custom-start-points \\',
     minitab + '    --custom \\',
-    minitab + '      https://github.com/cyber-dojo/custom.git',
+    minitab + '      https://github.com/cyber-dojo/custom-start-points.git',
     '',
     minitab + "#{me} start-point create \\",
-    minitab + '  cyberdojo/exercises \\',
+    minitab + '  cyberdojo/exercises-start-points \\',
     minitab + '    --exercises \\',
-    minitab + '      https://github.com/cyber-dojo/exercises.git',
+    minitab + '      https://github.com/cyber-dojo/exercises-start-points.git',
     '',
     minitab + "#{me} start-point create \\",
-    minitab + '  cyberdojo/languages-common \\',
+    minitab + '  cyberdojo/languages-start-points-common \\',
     minitab + '    --languages \\',
     minitab + '      $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)',
     '',
@@ -175,7 +160,11 @@ def exit_success_if_up_help
     minitab + 'CYBER_DOJO_NGINX_ENV=PATH',
     minitab + 'CYBER_DOJO_WEB_ENV=PATH',
     '',
-    'Example 3: specify .env file for nginx',
+    'Example: specify the port and custom start-point with command-line arguments',
+    '',
+    "  #{me} up --port=8000 --custom=acme/my-custom:latest",
+    '',
+    'Example: specify .env file for nginx',
     '  export CYBER_DOJO_NGINX_ENV=/Users/fred/nginx.env',
     "  #{me} up",
   ]

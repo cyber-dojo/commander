@@ -1,5 +1,0 @@
-
-# Would be nice to colour bash fragments in the help text
-# green examples stand out. Similarly, errors can be in red.
-
-# Currently only in cmd/sh/update.sh
