@@ -42,5 +42,11 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def down_env_vars
-  dot_env.merge({ 'ENV_ROOT' => env_root })
+  dot_env.merge({
+    'ENV_ROOT' => env_root,
+    # set these to prevent warnings messages
+    'CYBER_DOJO_CUSTOM_START_POINTS'    => 'dummy',
+    'CYBER_DOJO_EXERCISES_START_POINTS' => 'dummy',
+    'CYBER_DOJO_LANGUAGES_START_POINTS' => 'dummy'
+  })
 end
