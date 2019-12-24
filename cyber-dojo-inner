@@ -6,7 +6,7 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Most commands delegate to a commander container.
 # However, a few commands are handled locally, on the host.
-#   1) ./cyber-dojo start-point create NAME --custom <url> ...
+#   1) ./cyber-dojo start-point create NAME --custom <url>...
 #      This is to allow the <url>s to be local.
 #   2) ./cyber-dojo sh web
 #      This is because the delegation is to a ruby script
@@ -38,12 +38,12 @@ delegate_to_commander()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 commander_image_name()
 {
-  # Tests set COMMANDER_TAG to :latest
   local -r VERSIONER=cyberdojo/versioner:latest
   local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
   local -r ENV_VAR_NAME=CYBER_DOJO_COMMANDER_TAG=
   local -r ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
   local -r TAG=${ENV_VAR:${#ENV_VAR_NAME}:7}
+  # Tests set COMMANDER_TAG to latest
   local -r COMMANDER_TAG=${COMMANDER_TAG:-${TAG}}
   echo "cyberdojo/commander:${COMMANDER_TAG}"
 }
@@ -115,8 +115,8 @@ extract_and_run()
   # CYBER_DOJO_START_POINTS_BASE_TAG from versioner's /app/.env file.
   # However, there is one case where we don't want this.
   # That is when we are doing development on the
-  # starter-base repo and need this script to create start-point
-  # images (like custom) built from the local cyberdojo/start-points-base
+  # start-points-base repo and need this script to create start-point
+  # images built from the local cyberdojo/start-points-base
   # image. See start-points-base/sh/build_test_derived_images.sh
   local -r script="${1}"
   shift
