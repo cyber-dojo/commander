@@ -43,7 +43,7 @@ test_____no_args_stops_and_removes_server_containers()
            --languages=${languages_name}
 
   assertDown
-
+  refuteStdoutIncludes 'variable is not set. Defaulting to a blank string.'
   for service in custom exercises languages "${service_names[@]}"
   do
     assertStdoutIncludes "Stopping cyber-dojo-${service}"
