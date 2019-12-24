@@ -8,17 +8,21 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 readonly VERSIONER=cyberdojo/versioner:latest
 
-readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-readonly ENV_VAR_NAME=CYBER_DOJO_COMMANDER_SHA=
-readonly ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
-readonly SHA7=${ENV_VAR:${#ENV_VAR_NAME}:7}
-readonly COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
+export $(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+# There are [cyber-dojo update] tests that predate CYBER_DOJO_COMMANDER_TAG
+readonly TAG=${COMMANDER_TAG:-${CYBER_DOJO_COMMANDER_SHA:0:7}}
+
+#readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+#readonly ENV_VAR_NAME=CYBER_DOJO_COMMANDER_SHA=
+#readonly ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
+#readonly SHA7=${ENV_VAR:${#ENV_VAR_NAME}:7}
+#readonly COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
 readonly SCRIPT=cyber-dojo-inner
 
 docker run \
   --entrypoint cat \
   --rm \
-  cyberdojo/commander:${COMMANDER_TAG} \
+  cyberdojo/commander:${TAG} \
     /app/${SCRIPT} \
       > /tmp/${SCRIPT}
 
