@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
@@ -26,28 +27,26 @@ delegate_to_commander()
     --env CYBER_DOJO_WEB_IMAGE   \
     --env CYBER_DOJO_WEB_TAG     \
     --env CYBER_DOJO_WEB_ENV     \
-    --env COMMANDER_TAG=$(commander_tag) \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     $(volume_env_file nginx   "${CYBER_DOJO_NGINX_ENV}") \
     $(volume_env_file web     "${CYBER_DOJO_WEB_ENV}") \
-      "$(commander_image):$(commander_tag)" \
+      "$(commander_image_name)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-commander_image()
+commander_image_name()
 {
-  # cyber-dojo has exported versioner's .env env-vars
-  echo "${CYBER_DOJO_COMMANDER_IMAGE}"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-commander_tag()
-{
-   # cyber-dojo has exported versioner's .env env-vars
-   echo "${COMMANDER_TAG:-${CYBER_DOJO_COMMANDER_TAG}}"
+  local -r VERSIONER=cyberdojo/versioner:latest
+  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local -r ENV_VAR_NAME=CYBER_DOJO_COMMANDER_TAG=
+  local -r ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
+  local -r TAG=${ENV_VAR:${#ENV_VAR_NAME}:7}
+  # Tests set COMMANDER_TAG to latest
+  local -r COMMANDER_TAG=${COMMANDER_TAG:-${TAG}}
+  echo "cyberdojo/commander:${COMMANDER_TAG}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,7 +127,7 @@ extract_and_run()
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
-    "$(commander_image):$(commander_tag)" \
+    "$(commander_image_name)" \
     sh -c "/app/cmd/sh/cat-${script}" \
       > /tmp/${script}
   chmod 700 /tmp/${script}

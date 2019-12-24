@@ -77,6 +77,8 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   export COMMANDER_TAG=latest
   assertStartPointRm ${custom_name}
   assertStartPointRm ${languages_name}
+  # go back to latest
+  assertUpdate latest
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,7 +90,7 @@ test_____unknown_tag_prints_to_stderr()
   local -r arg=salmon
   refuteUpdate ${arg}
   assertNoStdout
-  assertStderrEquals "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
+  assertStderrIncludes "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

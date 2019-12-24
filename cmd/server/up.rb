@@ -65,11 +65,7 @@ def tagged_image_name(service)
   key = "CYBER_DOJO_#{service.upcase}_IMAGE"
   image_name = ENV[key] || "cyberdojo/#{service}"
   key = "CYBER_DOJO_#{service.upcase}_TAG"
-  if service === 'commander'
-    tag = ENV['COMMANDER_TAG'] || dot_env[key]
-  else
-    tag = ENV[key] || dot_env[key]
-  end
+  tag = ENV[key] || dot_env[key]
   "#{image_name}:#{tag}"
 end
 
@@ -104,7 +100,7 @@ def create_user_defined_env_files
     from = "#{env_root}/custom.#{name}.env"
       to = "#{env_root}/#{name}.env"
     if File.exist?(from)
-      puts "Using #{name}.env=#{path} (non-default)"
+      puts "Using #{name}.env=#{path} (custom)"
       content = IO.read(from)
       File.open(to, 'w') { |file| file.write(content) }
     else

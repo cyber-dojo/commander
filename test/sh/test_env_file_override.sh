@@ -23,8 +23,8 @@ test_____env_files_exist_seen_as_custom___docker_machine()
     unset CYBER_DOJO_WEB_ENV
     unset CYBER_DOJO_NGINX_ENV
     docker-machine ssh "${DOCKER_MACHINE_NAME}" "rm ${nginx_env} ${web_env}"
-    assertStdoutIncludes "Using nginx.env=${nginx_env} (non-default)"
-    assertStdoutIncludes "Using web.env=${web_env} (non-default)"
+    assertStdoutIncludes "Using nginx.env=${nginx_env} (custom)"
+    assertStdoutIncludes "Using web.env=${web_env} (custom)"
     down
   fi
 }
@@ -41,8 +41,8 @@ test_____web_env_file_exists_seen_as_custom___host()
     unset CYBER_DOJO_WEB_ENV
     unset CYBER_DOJO_NGINX_ENV
     rm "${nginx_env}" "${web_env}"
-    assertStdoutIncludes "Using nginx.env=${nginx_env} (non-default)"
-    assertStdoutIncludes "Using web.env=${web_env} (non-default)"
+    assertStdoutIncludes "Using nginx.env=${nginx_env} (custom)"
+    assertStdoutIncludes "Using web.env=${web_env} (custom)"
     down
   fi
 }
