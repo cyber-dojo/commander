@@ -4,35 +4,35 @@ require_relative 'start_point_type'
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-       port = up_command_line['--port'] || dot_env['CYBER_DOJO_NGINX_PORT']
-     custom = cel_argument('custom')
-  exercises = cel_argument('exercises')
-  languages = cel_argument('languages')
+          port = up_command_line['--port']      || dot_env['CYBER_DOJO_NGINX_PORT']
+     custom_sp = up_command_line['--custom']    || start_point_image_name('CUSTOM')
+  exercises_sp = up_command_line['--exercises'] || start_point_image_name('EXERCISES')
+  languages_sp = up_command_line['--languages'] || start_point_image_name('LANGUAGES')
 
-  exit_failure_unless_start_point_exists(   'custom', custom   )
-  exit_failure_unless_start_point_exists('exercises', exercises)
-  exit_failure_unless_start_point_exists('languages', languages)
+  exit_failure_unless_start_point_exists(   'custom', custom_sp   )
+  exit_failure_unless_start_point_exists('exercises', exercises_sp)
+  exit_failure_unless_start_point_exists('languages', languages_sp)
 
   STDOUT.puts "Using version=#{server_version} (#{server_type})"
   STDOUT.puts "Using port=#{port}"
-  STDOUT.puts "Using custom=#{custom}"
-  STDOUT.puts "Using exercises=#{exercises}"
-  STDOUT.puts "Using languages=#{languages}"
+  STDOUT.puts "Using custom-start-points=#{custom_sp}"
+  STDOUT.puts "Using exercises-start-points=#{exercises_sp}"
+  STDOUT.puts "Using languages-start-points=#{languages_sp}"
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
 
-  pull_all_images_named_in(custom)
-  pull_all_images_named_in(languages)
+  pull_all_images_named_in(custom_sp)
+  pull_all_images_named_in(languages_sp)
   STDOUT.puts
 
   env_vars = dot_env
   env_vars.merge!({
     'ENV_ROOT' => env_root,
     'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_CUSTOM_START_POINTS'    => custom,
-    'CYBER_DOJO_EXERCISES_START_POINTS' => exercises,
-    'CYBER_DOJO_LANGUAGES_START_POINTS' => languages,
+    'CYBER_DOJO_CUSTOM_START_POINTS'    => custom_sp,
+    'CYBER_DOJO_EXERCISES_START_POINTS' => exercises_sp,
+    'CYBER_DOJO_LANGUAGES_START_POINTS' => languages_sp,
     'CYBER_DOJO_SHA' => sha,
     'CYBER_DOJO_RELEASE' => release
   })
@@ -53,9 +53,10 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def cel_argument(name)
-  env_var_name = "CYBER_DOJO_#{name.upcase}_START_POINTS"
-  up_command_line["--#{name}"] || dot_env[env_var_name]
+def start_point_image_name(name)
+  image = dot_env["CYBER_DOJO_#{name}_START_POINTS_IMAGE"]
+  tag = dot_env["CYBER_DOJO_#{name}_START_POINTS_TAG"]
+  "#{image}:#{tag}"
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
