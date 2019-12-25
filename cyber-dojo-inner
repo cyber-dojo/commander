@@ -6,21 +6,17 @@ set -e
 # commander container and runs it locally.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Most commands delegate to a commander container.
-# However, a few commands are handled locally, on the host.
+# A few commands are handled locally, on the host.
 #   1) ./cyber-dojo start-point create NAME --custom <url>...
 #      This is to allow the <url>s to be local.
 #   2) ./cyber-dojo sh web
 #      This is because the delegation is to a ruby script
 #      and not a bash script.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# This script must take great care exporting env-vars as
-# they are visible to scripts from extract_and_run().
+# Does not export env-vars as they are visible to scripts
+# from extract_and_run().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-commander_name() { echo cyberdojo/commander; }
-commander_tag() { echo "${CYBER_DOJO_COMMANDER_TAG}"; } # set in cyber-dojo script
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 delegate_to_commander()
 {
   exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV}"
@@ -42,6 +38,17 @@ delegate_to_commander()
     $(volume_env_file web     "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_name):$(commander_tag)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
+}
+
+commander_name()
+{
+  echo cyberdojo/commander
+}
+
+commander_tag()
+{
+  # Set in main cyber-dojo script
+  echo "${CYBER_DOJO_COMMANDER_TAG}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
