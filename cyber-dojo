@@ -2,12 +2,17 @@
 set -e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# The main cyber-dojo script.
 # Delegates to cyber-dojo-inner.
 # A [cyber-dojo update] does not update this script.
 # Does not export any env-vars as they'd be visible to,
 # and easily break, previous versions of cyber-dojo-inner
 # (and scripts it extracts and runs) in regression tests.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CYBER_DOJO_TMP_DIR=$(mktemp -d /tmp/commander.XXXXXXX)
+rm_tmp_dir() { rm -rf ${CYBER_DOJO_TMP_DIR} > /dev/null; }
+trap rm_tmp_dir INT EXIT
 
 commander_tag()
 {
@@ -16,7 +21,7 @@ commander_tag()
   # to versioner's .env file so this function is careful
   # to use the earlier CYBER_DOJO_COMMANDER_SHA
   local -r VERSIONER=cyberdojo/versioner:latest
-  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local -r ENV_VARS=$(docker run --entrypoint "" --rm ${VERSIONER} sh -c 'cat /app/.env')
   [[ "${ENV_VARS}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
   echo "${BASH_REMATCH[1]:0:7}"
 }
@@ -24,14 +29,17 @@ commander_tag()
 readonly COMMANDER_TAG="${COMMANDER_TAG:-$(commander_tag)}"
 readonly SCRIPT=cyber-dojo-inner
 
+cd "${CYBER_DOJO_TMP_DIR}"
+
 docker run \
   --entrypoint cat \
   --rm \
   cyberdojo/commander:${COMMANDER_TAG} \
     /app/${SCRIPT} \
-      > /tmp/${SCRIPT}
+      > ./${SCRIPT}
 
-chmod 700 /tmp/${SCRIPT}
+chmod 700 ./${SCRIPT}
 
+CYBER_DOJO_TMP_DIR=${CYBER_DOJO_TMP_DIR} \
 CYBER_DOJO_COMMANDER_TAG=${COMMANDER_TAG} \
-  /tmp/${SCRIPT} "$@"
+  ./${SCRIPT} "$@"

@@ -14,7 +14,9 @@ set -e
 #      This is because the shell is interactive.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does not export env-vars as they'd be visible to
-# extract_and_run() scripts.
+# extract_and_run() scripts. The main script passes 2 env-vars
+# CYBER_DOJO_COMMANDER_TAG
+# CYBER_DOJO_TMP_DIR
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "${1}" == '--debug' ]; then
@@ -52,7 +54,6 @@ commander_name()
 
 commander_tag()
 {
-  # Set in main cyber-dojo script
   echo "${CYBER_DOJO_COMMANDER_TAG}"
 }
 
@@ -136,9 +137,9 @@ extract_and_run()
     --rm \
     "$(commander_name):$(commander_tag)" \
     sh -c "/app/cmd/sh/cat-${script}" \
-      > /tmp/${script}
-  chmod 700 /tmp/${script}
-  /tmp/${script} "$@"
+      > ${CYBER_DOJO_TMP_DIR}/${script}
+  chmod 700 ${CYBER_DOJO_TMP_DIR}/${script}
+  ${CYBER_DOJO_TMP_DIR}/${script} "$@"
   exit $?
 }
 
@@ -149,9 +150,9 @@ env_var()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ "${1} ${2}" = 'start-point create' ]; then
+if [ "${1} ${2}" == 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
-elif [ "${1}" = 'sh' ]; then
+elif [ "${1}" == 'sh' ]; then
   extract_and_run sh.sh "$@"
 elif ! delegate_to_commander "$@"; then
   exit 5
