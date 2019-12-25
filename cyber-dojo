@@ -4,7 +4,7 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Delegates to cyber-dojo-inner.
 # A [cyber-dojo update] does not update this script.
-# Does not export any env-vars as they are visible to,
+# Does not export any env-vars as they'd be visible to,
 # and easily break, previous versions of cyber-dojo-inner
 # (and scripts it extracts and runs) in regression tests.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -

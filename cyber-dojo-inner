@@ -5,7 +5,8 @@ set -e
 # The main cyber-dojo script cats this out of a
 # commander container and runs it locally.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Most commands delegate to a commander container.
+# Most commands delegate to back to a commander container
+# and can pick up and forward local env-vars.
 # A few commands are handled locally, on the host.
 #   1) ./cyber-dojo start-point create NAME --custom <url>...
 #      This is to allow the <url>s to be local.
@@ -13,9 +14,14 @@ set -e
 #      This is because the delegation is to a ruby script
 #      and not a bash script.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Does not export env-vars as they are visible to scripts
-# from extract_and_run().
+# Does not export env-vars as they'd be visible to
+# extract_and_run() scripts.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+if [ "${1}" == '--debug' ]; then
+  shift
+  readonly debug_option='--debug'
+fi
 
 delegate_to_commander()
 {
@@ -34,8 +40,8 @@ delegate_to_commander()
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    $(volume_env_file nginx   "${CYBER_DOJO_NGINX_ENV}") \
-    $(volume_env_file web     "${CYBER_DOJO_WEB_ENV}") \
+    $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
+    $(volume_env_file web   "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_name):$(commander_tag)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
 }
@@ -114,18 +120,18 @@ volume_env_file()
 extract_and_run()
 {
   # We want cat-start-point-create.sh to derive its
-  # CYBER_DOJO_START_POINTS_BASE_IMAGE and
-  # CYBER_DOJO_START_POINTS_BASE_TAG from versioner's /app/.env file.
-  # However, there is one case where we don't want this.
-  # That is when we are doing development on the
-  # start-points-base repo when we this script to create start-point
-  # images built from the local cyberdojo/start-points-base
-  # image. See start-points-base/sh/build_test_derived_images.sh
+  #   CYBER_DOJO_START_POINTS_BASE_IMAGE
+  #   CYBER_DOJO_START_POINTS_BASE_TAG
+  # env-vars from from versioner's /app/.env file except in
+  # one case; when doing development on the start-points-base
+  # repo - when we use this script to create start-point images
+  # built from the local cyberdojo/start-points-base image.
+  # See https://github.com/cyber-dojo/start-points-base/blob/master/sh/build_test_derived_images.sh
   local -r script="${1}"
   shift
   docker run \
-    --env CYBER_DOJO_START_POINTS_BASE_IMAGE=${CYBER_DOJO_START_POINTS_BASE_IMAGE} \
-    --env CYBER_DOJO_START_POINTS_BASE_TAG=${CYBER_DOJO_START_POINTS_BASE_TAG} \
+    env_var CYBER_DOJO_START_POINTS_BASE_IMAGE \
+    env_var CYBER_DOJO_START_POINTS_BASE_TAG \
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
@@ -137,12 +143,13 @@ extract_and_run()
   exit $?
 }
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ "${1}" = '--debug' ]; then
-  shift
-  debug_option='--debug'
-fi
+env_var()
+{
+  local -r name="${1}"
+  echo "--env ${name}=${!name}"
+}
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if [ "${1} ${2}" = 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
 elif [ "${1}" = 'sh' ]; then
