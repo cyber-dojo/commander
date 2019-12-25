@@ -13,12 +13,12 @@ export COMMANDER_TAG=latest
 
 CD_DIR()
 {
-  echo "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
+  printf "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
 }
 
 CDL_DIR()
 {
-  echo "$(cd "${MY_DIR}/../../../../cyber-dojo-languages" && pwd )"
+  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-languages" && pwd )"
 }
 
 
@@ -33,9 +33,9 @@ custom_urls()
 {
   # A single Alpine-based url to help make tests faster
   if on_CI; then
-    echo -n https://github.com/cyber-dojo-languages/java-junit
+    printf https://github.com/cyber-dojo-languages/java-junit
   else
-    echo -n "$(CDL_DIR)/java-junit"
+    printf "$(CDL_DIR)/java-junit"
   fi
 }
 
@@ -44,9 +44,9 @@ custom_urls()
 exercises_urls()
 {
   if on_CI; then
-    echo -n "${github_cyber_dojo}/exercises-start-points"
+    printf "${github_cyber_dojo}/exercises-start-points"
   else
-    echo -n "$(CD_DIR)/exercises-start-points"
+    printf "$(CD_DIR)/exercises-start-points"
   fi
 }
 
@@ -56,9 +56,9 @@ languages_urls()
 {
   # A single Alpine-based url to help make tests faster
   if on_CI; then
-    echo -n https://github.com/cyber-dojo-languages/ruby-minitest
+    printf https://github.com/cyber-dojo-languages/ruby-minitest
   else
-    echo -n "$(CDL_DIR)/ruby-minitest"
+    printf "$(CDL_DIR)/ruby-minitest"
   fi
 }
 
@@ -165,7 +165,7 @@ stdout_stderr()
 
 assert()
 {
-  if [ "$1" != "0" ]; then
+  if [ "${1}" != '0' ]; then
     assertTrue "$(stdout_stderr)" 1
     exit 1
   fi
@@ -173,7 +173,7 @@ assert()
 
 refute()
 {
-  if [ "$1" == "0" ]; then
+  if [ "${1}" == '0' ]; then
     assertFalse "$(stdout_stderr)" 0
     exit 1
   fi
