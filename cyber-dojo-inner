@@ -11,8 +11,7 @@ set -e
 #   1) ./cyber-dojo start-point create NAME --custom <url>...
 #      This is to allow the <url>s to be local.
 #   2) ./cyber-dojo sh web
-#      This is because the delegation is to a ruby script
-#      and not a bash script.
+#      This is because the shell is interactive.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does not export env-vars as they'd be visible to
 # extract_and_run() scripts.

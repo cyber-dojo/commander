@@ -16,13 +16,6 @@ git-repo-urls volume-mounted to the default VM under /Users/<user>
 are accessible in the default VM.
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-This is needed for update.sh, the script handling
-
-  $ ./cyber-dojo update [OPTIONS]
-
-because that involves cyber-dojo replacing itself.
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 This is needed for sh.sh, the script handling
 
   $ ./cyber-dojo sh [NAME]

@@ -140,7 +140,7 @@ There are default .env files for two services:
 - nginx.env
 - web.env
 
-You can override these by exporting two environment-variables
+You can override these by exporting two environment variables
 set to the absolute path of your own .env file. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
