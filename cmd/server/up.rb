@@ -4,35 +4,35 @@ require_relative 'start_point_type'
 def cyber_dojo_server_up
   exit_success_if_up_help
 
-          port = up_command_line['--port']      || dot_env['CYBER_DOJO_NGINX_PORT']
-     custom_sp = up_command_line['--custom']    || start_point_image_name('CUSTOM')
-  exercises_sp = up_command_line['--exercises'] || start_point_image_name('EXERCISES')
-  languages_sp = up_command_line['--languages'] || start_point_image_name('LANGUAGES')
+       port = up_command_line['--port']      || dot_env['CYBER_DOJO_NGINX_PORT']
+     custom = up_command_line['--custom']    || tagged_image_name('CUSTOM_START_POINTS')
+  exercises = up_command_line['--exercises'] || tagged_image_name('EXERCISES_START_POINTS')
+  languages = up_command_line['--languages'] || tagged_image_name('LANGUAGES_START_POINTS')
 
-  exit_failure_unless_start_point_exists(   'custom', custom_sp   )
-  exit_failure_unless_start_point_exists('exercises', exercises_sp)
-  exit_failure_unless_start_point_exists('languages', languages_sp)
+  exit_failure_unless_start_point_exists(   'custom', custom   )
+  exit_failure_unless_start_point_exists('exercises', exercises)
+  exit_failure_unless_start_point_exists('languages', languages)
 
   STDOUT.puts "Using version=#{server_version} (#{server_type})"
   STDOUT.puts "Using port=#{port}"
-  STDOUT.puts "Using custom-start-points=#{custom_sp}"
-  STDOUT.puts "Using exercises-start-points=#{exercises_sp}"
-  STDOUT.puts "Using languages-start-points=#{languages_sp}"
+  STDOUT.puts "Using custom-start-points=#{custom}"
+  STDOUT.puts "Using exercises-start-points=#{exercises}"
+  STDOUT.puts "Using languages-start-points=#{languages}"
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
 
-  pull_all_images_named_in(custom_sp)
-  pull_all_images_named_in(languages_sp)
+  pull_all_images_named_in(custom)
+  pull_all_images_named_in(languages)
   STDOUT.puts
 
   env_vars = dot_env
   env_vars.merge!({
     'ENV_ROOT' => env_root,
     'CYBER_DOJO_NGINX_PORT' => port,
-    'CYBER_DOJO_CUSTOM_START_POINTS'    => custom_sp,
-    'CYBER_DOJO_EXERCISES_START_POINTS' => exercises_sp,
-    'CYBER_DOJO_LANGUAGES_START_POINTS' => languages_sp,
+    'CYBER_DOJO_CUSTOM_START_POINTS'    => custom,
+    'CYBER_DOJO_EXERCISES_START_POINTS' => exercises,
+    'CYBER_DOJO_LANGUAGES_START_POINTS' => languages,
     'CYBER_DOJO_SHA' => sha,
     'CYBER_DOJO_RELEASE' => release
   })
@@ -53,20 +53,16 @@ end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def start_point_image_name(name)
-  image = dot_env["CYBER_DOJO_#{name}_START_POINTS_IMAGE"]
-  tag = dot_env["CYBER_DOJO_#{name}_START_POINTS_TAG"]
-  "#{image}:#{tag}"
+def tagged_image_name(service)
+  name = env_var_value("CYBER_DOJO_#{service.upcase}_IMAGE")
+   tag = env_var_value("CYBER_DOJO_#{service.upcase}_TAG")
+  "#{name}:#{tag}"
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-def tagged_image_name(service)
-  key = "CYBER_DOJO_#{service.upcase}_IMAGE"
-  image_name = ENV[key] || "cyberdojo/#{service}"
-  key = "CYBER_DOJO_#{service.upcase}_TAG"
-  tag = ENV[key] || dot_env[key]
-  "#{image_name}:#{tag}"
+def env_var_value(key)
+  ENV[key] || dot_env[key]
 end
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

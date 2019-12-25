@@ -9,17 +9,17 @@ set -e
 #     So this script must take great care exporting any
 #     env-vars as they are visible to, and easily break,
 #     previous versions of cyber-dojo-inner (and scripts it
-#     extracts and runs) which could be run as regression
-#     tests.
+#     extracts and runs) running as regression tests.
 # NB: There are [cyber-dojo update] tests that predate the
 #     CYBER_DOJO_COMMANDER_TAG env-var being added to
-#     versioner's .env file.
+#     versioner's .env file so this script is careful to
+#     use the earlier CYBER_DOJO_COMMANDER_SHA
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 readonly VERSIONER=cyberdojo/versioner:latest
 readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
 [[ "${ENV_VARS}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
-export COMMANDER_TAG="${COMMANDER_TAG:-${BASH_REMATCH[1]:0:7}}"
+readonly COMMANDER_TAG="${COMMANDER_TAG:-${BASH_REMATCH[1]:0:7}}"
 readonly SCRIPT=cyber-dojo-inner
 
 docker run \
@@ -31,4 +31,5 @@ docker run \
 
 chmod 700 /tmp/${SCRIPT}
 
-/tmp/${SCRIPT} "$@"
+CYBER_DOJO_COMMANDER_TAG=${COMMANDER_TAG} \
+  /tmp/${SCRIPT} "$@"

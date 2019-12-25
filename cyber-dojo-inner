@@ -18,7 +18,7 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 commander_name() { echo cyberdojo/commander; }
-commander_tag() { echo "${COMMANDER_TAG}"; } # set in cyber-dojo script
+commander_tag() { echo "${CYBER_DOJO_COMMANDER_TAG}"; } # set in cyber-dojo script
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 delegate_to_commander()
@@ -27,13 +27,14 @@ delegate_to_commander()
   exit_unless_env_file_exists CYBER_DOJO_WEB_ENV   "${CYBER_DOJO_WEB_ENV}"
 
   docker run \
-    --env CYBER_DOJO_SWARM       \
+    --env CYBER_DOJO_COMMANDER_TAG \
+    --env CYBER_DOJO_SWARM \
     --env CYBER_DOJO_NGINX_IMAGE \
     --env CYBER_DOJO_NGINX_TAG   \
     --env CYBER_DOJO_NGINX_ENV   \
-    --env CYBER_DOJO_WEB_IMAGE   \
-    --env CYBER_DOJO_WEB_TAG     \
-    --env CYBER_DOJO_WEB_ENV     \
+    --env CYBER_DOJO_WEB_IMAGE \
+    --env CYBER_DOJO_WEB_TAG   \
+    --env CYBER_DOJO_WEB_ENV   \
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
