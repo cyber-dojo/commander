@@ -130,8 +130,8 @@ extract_and_run()
   local -r script="${1}"
   shift
   docker run \
-    env_var CYBER_DOJO_START_POINTS_BASE_IMAGE \
-    env_var CYBER_DOJO_START_POINTS_BASE_TAG \
+    $(env_var CYBER_DOJO_START_POINTS_BASE_IMAGE) \
+    $(env_var CYBER_DOJO_START_POINTS_BASE_TAG) \
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
