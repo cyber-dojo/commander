@@ -3,7 +3,7 @@
 
 # cyber-dojo
 
-Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the [cyber-dojo](https://github.com/cyber-dojo/commander/blob/master/cyber-dojo) bas script to control a [cyber-dojo server](https://cyber-dojo.org).
+Assuming you have followed [these setup instructions](https://blog.cyber-dojo.org/2014/09/setting-up-your-own-cyber-dojo-server.html) you use the [cyber-dojo](https://github.com/cyber-dojo/commander/blob/master/cyber-dojo) bash script to control a [cyber-dojo server](https://cyber-dojo.org).
 
 - Bringing up a server
   * [on docker](#bringing-up-a-server-on-docker)
