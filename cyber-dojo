@@ -18,7 +18,7 @@ commander_tag()
   local -r VERSIONER=cyberdojo/versioner:latest
   local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
   [[ "${ENV_VARS}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
-  echo "${BASH_REMATCH[1]:0:7}}"
+  echo "${BASH_REMATCH[1]:0:7}"
 }
 
 readonly COMMANDER_TAG="${COMMANDER_TAG:-$(commander_tag)}"
