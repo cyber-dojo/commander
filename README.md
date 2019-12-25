@@ -109,8 +109,8 @@ By default your cyber-dojo server will use these start-point images (tagged appr
 * By default your cyber-dojo server will use
 [cyberdojo/nginx](https://hub.docker.com/r/cyberdojo/nginx/tags) as its nginx
 service image (tagged appropriately).
-* From 0.1.47 onwards you can override this using environment variables
-to specify the image name and tag. Eg
+* From 0.1.47 onwards you can override this by exporting two
+environment variables. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_IMAGE=cucumber/nginx
   $ export CYBER_DOJO_NGINX_TAG=efd7e37
@@ -119,20 +119,13 @@ to specify the image name and tag. Eg
   Using nginx=cucumber/nginx:efd7e37
   ...
   ```
-  ```yml
-  # docker-compose.yml (used by cyber-dojo script)
-  services:
-    nginx:
-      image: ${CYBER_DOJO_NGINX_IMAGE}:${CYBER_DOJO_NGINX_TAG}
-      ...
-  ```
 
 # overriding the default rails web image
 * By default your cyber-dojo server will use
 [cyberdojo/web](https://hub.docker.com/r/cyberdojo/web/tags)
 as its web service image (tagged appropriately).
-* From 0.1.28 onwards you can override this using
-environment variables to specify the image name and tag. Eg
+* From 0.1.28 onwards you can override this by exporting two
+environment variables. Eg
   ```bash
   $ export CYBER_DOJO_WEB_IMAGE=turtlesec/web
   $ export CYBER_DOJO_WEB_TAG=84d6d0e
@@ -141,28 +134,21 @@ environment variables to specify the image name and tag. Eg
   Using web=turtlesec/web:84d6d0e
   ...
   ```
-  ```yml
-  # docker-compose.yml (used by cyber-dojo script)
-  services:
-    web:
-      image: ${CYBER_DOJO_WEB_IMAGE}:${CYBER_DOJO_WEB_TAG}
-      ...
-  ```  
 
 # overriding the default dot env files
 There are default .env files for two services:
 - nginx.env
 - web.env
 
-You can override these by setting the environment-variables
-`CYBER_DOJO_NGINX_ENV` and `CYBER_DOJO_WEB_ENV`
-to the absolute path of your own .env file, and re-issuing the up. Eg
+You can override these by exporting two environment-variables
+set to the absolute path of your own .env file. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env
+  $ export CYBER_DOJO_WEB_ENV=/home/fred/my_web.env
   $ cyber-dojo up
   ...
   Using nginx.env=/home/fred/my_nginx.env (custom)
-  Using web.env=default
+  Using web.env=/home/fred/my_web.env (custom)
   ...
   ```
 
