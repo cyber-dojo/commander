@@ -5,19 +5,21 @@ set -e
 # Uses straight delegation (to cyber-dojo-inner script) so
 # this script can remain minimal and (hopefully) never need
 # updating, even after you've run a [cyber-dojo update].
-# NB: There are [cyber-dojo update] tests that predate
-#     CYBER_DOJO_COMMANDER_TAG so you can't use that.
-# NB: A [cyber-dojo update] command does not update this script.
-#     This script must take great care if it exports any env-vars
-#     as they would be visible to, and break, previous versions of
-#     cyber-dojo-inner (and any scripts it extracts and runs).
+# NB: A [cyber-dojo update] does not update this script.
+#     So this script must take great care exporting any
+#     env-vars as they are visible to, and easily break,
+#     previous versions of cyber-dojo-inner (and scripts it
+#     extracts and runs) which could be run as regression
+#     tests.
+# NB: There are [cyber-dojo update] tests that predate the
+#     CYBER_DOJO_COMMANDER_TAG env-var being added to
+#     versioner's .env file.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 readonly VERSIONER=cyberdojo/versioner:latest
 readonly ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-readonly ENV_VAR_NAME=CYBER_DOJO_COMMANDER_SHA=
-readonly ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
-readonly SHA7=${ENV_VAR:${#ENV_VAR_NAME}:7}
-readonly COMMANDER_TAG=${COMMANDER_TAG:-${SHA7}}
+[[ "${ENV_VARS}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
+export COMMANDER_TAG="${COMMANDER_TAG:-${BASH_REMATCH[1]:0:7}}"
 readonly SCRIPT=cyber-dojo-inner
 
 docker run \

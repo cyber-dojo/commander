@@ -13,11 +13,14 @@ set -e
 #      This is because the delegation is to a ruby script
 #      and not a bash script.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# This script extracts and runs other scripts so it must
-# take great care if it ever exports any env-vars since
-# would be visible to these scripts.
+# This script must take great care exporting env-vars as
+# they are visible to scripts from extract_and_run().
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+commander_name() { echo cyberdojo/commander; }
+commander_tag() { echo "${COMMANDER_TAG}"; } # set in cyber-dojo script
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 delegate_to_commander()
 {
   exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV}"
@@ -36,21 +39,8 @@ delegate_to_commander()
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     $(volume_env_file nginx   "${CYBER_DOJO_NGINX_ENV}") \
     $(volume_env_file web     "${CYBER_DOJO_WEB_ENV}") \
-      "$(commander_image_name)" \
+      "$(commander_name):$(commander_tag)" \
         /app/cmd/cyber-dojo.rb ${debug_option} "$@"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-commander_image_name()
-{
-  local -r VERSIONER=cyberdojo/versioner:latest
-  local -r ENV_VARS=$(docker run --rm ${VERSIONER} sh -c 'cat /app/.env')
-  local -r ENV_VAR_NAME=CYBER_DOJO_COMMANDER_TAG=
-  local -r ENV_VAR=$(echo "${ENV_VARS}" | grep ${ENV_VAR_NAME})
-  local -r TAG=${ENV_VAR:${#ENV_VAR_NAME}:7}
-  # Tests set COMMANDER_TAG to latest
-  local -r COMMANDER_TAG=${COMMANDER_TAG:-${TAG}}
-  echo "cyberdojo/commander:${COMMANDER_TAG}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -120,7 +110,7 @@ extract_and_run()
   # CYBER_DOJO_START_POINTS_BASE_TAG from versioner's /app/.env file.
   # However, there is one case where we don't want this.
   # That is when we are doing development on the
-  # start-points-base repo and need this script to create start-point
+  # start-points-base repo when we this script to create start-point
   # images built from the local cyberdojo/start-points-base
   # image. See start-points-base/sh/build_test_derived_images.sh
   local -r script="${1}"
@@ -131,7 +121,7 @@ extract_and_run()
     --interactive \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
-    "$(commander_image_name)" \
+    "$(commander_name):$(commander_tag)" \
     sh -c "/app/cmd/sh/cat-${script}" \
       > /tmp/${script}
   chmod 700 /tmp/${script}
@@ -140,14 +130,14 @@ extract_and_run()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ "$1" = '--debug' ]; then
+if [ "${1}" = '--debug' ]; then
   shift
   debug_option='--debug'
 fi
 
-if [ "$1 $2" = 'start-point create' ]; then
+if [ "${1} ${2}" = 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
-elif [ "$1" = 'sh' ]; then
+elif [ "${1}" = 'sh' ]; then
   extract_and_run sh.sh "$@"
 elif ! delegate_to_commander "$@"; then
   exit 5
