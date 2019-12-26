@@ -67,7 +67,7 @@ o) make sure python 3.7.5 is actually inside the docker image
 o) edit the manifest's display_name to (3.7.5)
 o) edit the manifest's image_name tag to :3.7.5
 
-Now you can update the master list of URLs in languages to...
+Now you can update the master list of URLs in language-start-points to...
 https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.4
 https://github.com/cyber-dojo-languages/python-unittest.git?tag=3.7.5
 

@@ -4,7 +4,7 @@ commander runs its tests against commander:latest
 ./cyber-dojo commands related to versioning
 
 update [latest|TAG]
-version [history]
+version [ls]
 
 So commander needs tests...
 

@@ -1,4 +1,14 @@
 
+Instead of
+$ cyber-dojo start-point create NAME --languages URL...
+allow
+$ cyber-dojo start-point create --languages=NAME URL...
+
+=========================================================
+
+
+=========================================================
+
 Do [update] directly in cyber-dojo inner.
 Do [sh] directly in cyber-dojo inner.
 Do [start-point create] on host but put it directly in

@@ -10,10 +10,6 @@ set -e
 # (and scripts it extracts and runs) in regression tests.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CYBER_DOJO_TMP_DIR=$(mktemp -d /tmp/commander.XXXXXXX)
-rm_tmp_dir() { rm -rf ${CYBER_DOJO_TMP_DIR} > /dev/null; }
-trap rm_tmp_dir INT EXIT
-
 commander_tag()
 {
   # There are [cyber-dojo update] tests that predate
@@ -21,13 +17,17 @@ commander_tag()
   # to versioner's .env file so this function is careful
   # to use the earlier CYBER_DOJO_COMMANDER_SHA
   local -r VERSIONER=cyberdojo/versioner:latest
-  local -r ENV_VARS=$(docker run --entrypoint "" --rm ${VERSIONER} sh -c 'cat /app/.env')
+  local -r ENV_VARS=$(docker run --entrypoint cat --rm ${VERSIONER} /app/.env)
   [[ "${ENV_VARS}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
   echo "${BASH_REMATCH[1]:0:7}"
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 readonly COMMANDER_TAG="${COMMANDER_TAG:-$(commander_tag)}"
 readonly SCRIPT=cyber-dojo-inner
+readonly CYBER_DOJO_TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
+remove_tmp_dir() { rm -rf "${CYBER_DOJO_TMP_DIR}" > /dev/null; }
+trap remove_tmp_dir INT EXIT
 
 cd "${CYBER_DOJO_TMP_DIR}"
 
@@ -40,6 +40,5 @@ docker run \
 
 chmod 700 ./${SCRIPT}
 
-CYBER_DOJO_TMP_DIR=${CYBER_DOJO_TMP_DIR} \
 CYBER_DOJO_COMMANDER_TAG=${COMMANDER_TAG} \
   ./${SCRIPT} "$@"

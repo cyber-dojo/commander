@@ -2,8 +2,8 @@
 set -e
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# The main cyber-dojo script cats this out of a
-# commander container and runs it locally.
+# The cyber-dojo script cats this out of a commander
+# container and runs it locally from a /tmp dir.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Most commands delegate to back to a commander container
 # and can pick up and forward local env-vars.
@@ -14,9 +14,8 @@ set -e
 #      This is because the shell is interactive.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does not export env-vars as they'd be visible to
-# extract_and_run() scripts. The main script passes 2 env-vars
-# CYBER_DOJO_COMMANDER_TAG
-# CYBER_DOJO_TMP_DIR
+# extract_and_run() scripts. The main script passes
+# the env-var CYBER_DOJO_COMMANDER_TAG
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "${1}" == '--debug' ]; then
@@ -24,12 +23,19 @@ if [ "${1}" == '--debug' ]; then
   readonly debug_option='--debug'
 fi
 
+commander_image()
+{
+  echo "cyberdojo/commander:${CYBER_DOJO_COMMANDER_TAG}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 delegate_to_commander()
 {
   exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV}"
   exit_unless_env_file_exists CYBER_DOJO_WEB_ENV   "${CYBER_DOJO_WEB_ENV}"
 
   docker run \
+    --entrypoint "" \
     --env CYBER_DOJO_COMMANDER_TAG \
     --env CYBER_DOJO_SWARM \
     --env CYBER_DOJO_NGINX_IMAGE \
@@ -43,18 +49,8 @@ delegate_to_commander()
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
     $(volume_env_file web   "${CYBER_DOJO_WEB_ENV}") \
-      "$(commander_name):$(commander_tag)" \
+      "$(commander_image)" \
         /app/cyber-dojo.rb ${debug_option} "$@"
-}
-
-commander_name()
-{
-  echo cyberdojo/commander
-}
-
-commander_tag()
-{
-  echo "${CYBER_DOJO_COMMANDER_TAG}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -124,22 +120,23 @@ extract_and_run()
   #   CYBER_DOJO_START_POINTS_BASE_TAG
   # env-vars from from versioner's /app/.env file except in
   # one case; when doing development on the start-points-base
-  # repo - when we use this script to create start-point images
+  # repo, when we use this script to create start-point images
   # built from the local cyberdojo/start-points-base image.
   # See https://github.com/cyber-dojo/start-points-base/blob/master/sh/build_test_derived_images.sh
   local -r script="${1}"
   shift
   docker run \
+    --entrypoint "" \
     $(env_var CYBER_DOJO_START_POINTS_BASE_IMAGE) \
     $(env_var CYBER_DOJO_START_POINTS_BASE_TAG) \
     --interactive \
-    --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
-    "$(commander_name):$(commander_tag)" \
-    sh -c "/app/sh/cat-${script}" \
-      > ${CYBER_DOJO_TMP_DIR}/${script}
-  chmod 700 ${CYBER_DOJO_TMP_DIR}/${script}
-  ${CYBER_DOJO_TMP_DIR}/${script} "$@"
+    --volume=/var/run/docker.sock:/var/run/docker.sock \
+    "$(commander_image)" \
+      sh -c "/app/sh/cat-${script}" \
+        > ./${script}
+  chmod 700 ./${script}
+  ./${script} "$@"
   exit $?
 }
 
