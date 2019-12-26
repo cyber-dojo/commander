@@ -12,7 +12,7 @@ Assuming you have followed [these setup instructions](https://blog.cyber-dojo.or
   * [listing the current version](#listing-the-current-version)
   * [listing installed versions](#listing-installed-versions)
   * [updating the server to the latest version](#updating-the-server-to-the-latest-version)
-  * [resetting the server to a specific version](#resetting-the-server-to-a-specific-version)
+  * [setting the server to a specific version](#setting-the-server-to-a-specific-version)
 - Overriding the default...
   * [port](#overriding-the-default-port)
   * [start-point images](#overriding-the-default-start-point-images)
@@ -68,7 +68,7 @@ Using version=0.1.49 (public)
 ...
 ```
 
-# resetting the server to a specific version
+# setting the server to a specific version
 ```bash
 $ cyber-dojo update 0.1.21
 $ cyber-dojo version
@@ -136,11 +136,8 @@ environment variables. Eg
   ```
 
 # overriding the default dot env files
-There are default .env files for two services:
-- nginx.env
-- web.env
-
-You can override these by exporting two environment variables
+* There are default .env files for the `web` and `nginx` services.
+* You can override these by exporting two environment variables
 set to the absolute path of your own .env file. Eg
   ```bash
   $ export CYBER_DOJO_NGINX_ENV=/home/fred/my_nginx.env

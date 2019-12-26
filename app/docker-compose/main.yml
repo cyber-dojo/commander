@@ -55,7 +55,7 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # convert runner's [stdout,stderr,status] to red/amber/green
+  # converts runner's [stdout,stderr,status] to red/amber/green
   ragger:
     user: nobody
     init: true
