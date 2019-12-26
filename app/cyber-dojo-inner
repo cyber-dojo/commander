@@ -44,7 +44,7 @@ delegate_to_commander()
     $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
     $(volume_env_file web   "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_name):$(commander_tag)" \
-        /app/cmd/cyber-dojo.rb ${debug_option} "$@"
+        /app/cyber-dojo.rb ${debug_option} "$@"
 }
 
 commander_name()
@@ -136,7 +136,7 @@ extract_and_run()
     --volume=/var/run/docker.sock:/var/run/docker.sock \
     --rm \
     "$(commander_name):$(commander_tag)" \
-    sh -c "/app/cmd/sh/cat-${script}" \
+    sh -c "/app/sh/cat-${script}" \
       > ${CYBER_DOJO_TMP_DIR}/${script}
   chmod 700 ${CYBER_DOJO_TMP_DIR}/${script}
   ${CYBER_DOJO_TMP_DIR}/${script} "$@"
