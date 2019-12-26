@@ -148,8 +148,14 @@ git_clone_urls_into_context_dir()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+# Two or more git-repo-urls could have the same repo name
+# but be from different repositories.
+# So git clone each repo into its own unique directory
+# based on a simple incrementing index.
 URL_INDEX=0
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+GIT_COMMIT_SHA=''
 
 git_clone_one_url_into_context_dir()
 {
@@ -171,14 +177,11 @@ git_clone_one_url_into_context_dir()
 
   chmod -R +rX "${URL_INDEX}"
   local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
+  GIT_COMMIT_SHA=${sha}
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
   rm -rf "${CONTEXT_DIR}/${URL_INDEX}/docker"
-  # Two or more git-repo-urls could have the same repo name
-  # but be from different repositories.
-  # So git clone each repo into its own unique directory
-  # based on a simple incrementing index.
   URL_INDEX=$((URL_INDEX + 1))
 }
 
@@ -186,16 +189,14 @@ git_clone_one_url_into_context_dir()
 
 build_image_from_context_dir()
 {
-  local env_vars="PORT=$(image_port_number) IMAGE_TYPE=$(image_type)"
-  if [ -n "${SHA}" ]; then
-    env_vars="${env_vars} SHA=${SHA}"
-  fi
   {
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
     echo "RUN /app/src/from_script/check_all.rb /app/repos $(image_type)"
-    echo "ENV ${env_vars}"
+    echo "ENV IMAGE_TYPE=$(image_type)"
+    echo "ENV SHA=${GIT_COMMIT_SHA}"
+    echo "ENV PORT=$(image_port_number)"
     echo "EXPOSE $(image_port_number)"
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
