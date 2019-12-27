@@ -154,9 +154,6 @@ git_clone_urls_into_context_dir()
 # based on a simple incrementing index.
 URL_INDEX=0
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-GIT_COMMIT_SHA=''
-
 git_clone_one_url_into_context_dir()
 {
   # git-clone directly, from this script, into the
@@ -177,7 +174,6 @@ git_clone_one_url_into_context_dir()
 
   chmod -R +rX "${URL_INDEX}"
   local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
-  GIT_COMMIT_SHA=${sha}
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
@@ -186,6 +182,10 @@ git_clone_one_url_into_context_dir()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# There is a special case for the GIT_COMMIT_SHA env-var.
+# This is needed for cyberdojo/versioner which relies on being
+# able to get the SHA out of an 'official' start-point image
+# with a :latest tag.
 
 build_image_from_context_dir()
 {
@@ -195,7 +195,9 @@ build_image_from_context_dir()
     echo "COPY . /app/repos"
     echo "RUN /app/src/from_script/check_all.rb /app/repos $(image_type)"
     echo "ENV IMAGE_TYPE=$(image_type)"
-    echo "ENV SHA=${GIT_COMMIT_SHA}"
+    if [ -n "${GIT_COMMIT_SHA}" ]; then
+      echo "ENV SHA=${GIT_COMMIT_SHA}"
+    fi
     echo "ENV PORT=$(image_port_number)"
     echo "EXPOSE $(image_port_number)"
     echo 'CMD [ "./up.sh" ]'
@@ -226,8 +228,8 @@ build_image_from_context_dir()
 
     echo "${output}" \
       | grep --invert-match 'Sending build context to Docker'  \
-      | grep --invert-match '\-\-\-'                           \
       | grep --invert-match 'Step'                             \
+      | grep --invert-match '\-\-\-'                           \
       | grep --invert-match 'Removing intermediate container'  \
       | >&2 grep --invert-match "The command '/bin/sh -c"      \
       || :
