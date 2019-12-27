@@ -185,7 +185,7 @@ git_clone_one_url_into_context_dir()
 # There is a special case for the GIT_COMMIT_SHA env-var.
 # This is needed for cyberdojo/versioner which relies on being
 # able to get the SHA out of an 'official' start-point image
-# with a :latest tag.
+# with a :latest tag to create it's .env file.
 
 build_image_from_context_dir()
 {
