@@ -34,11 +34,27 @@ build_fake_versioner()
   docker cp /tmp/.env "${fake}:/app/.env"
   docker commit "${fake}" cyberdojo/versioner:latest > /dev/null 2>&1
   docker rm --force "${fake}" > /dev/null 2>&1
-  # show it
-  docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA
-  docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG
-  echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}"
-  echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}"
+  # check it
+  expected="CYBER_DOJO_COMMANDER_SHA=${fake_sha}"
+  actual=$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA)
+  assert_equal "${expected}" "${actual}"
+
+  expected="CYBER_DOJO_COMMANDER_TAG=${fake_tag}"
+  actual=$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG)
+  assert_equal "${expected}" "${actual}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
+assert_equal()
+{
+  local -r expected="${1}"
+  local -r actual="${2}"
+  if [ "${expected}" != "${actual}" ]; then
+    echo "ERROR"
+    echo "expected:${expected}"
+    echo "  actual:${actual}"
+    exit 42
+  fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
