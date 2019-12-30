@@ -35,11 +35,11 @@ Removes dangling docker images/volumes and exited containers"
 
 test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers()
 {
-  local -r dangling_images=`docker image ls --quiet --filter='dangling=true'`
-  local -r exited_containers=`docker ps --all --quiet --filter='status=exited'`
   assertClean
   assertNoStdout
   assertNoStderr
+  local -r dangling_images=`docker image ls --quiet --filter='dangling=true'`
+  local -r exited_containers=`docker ps --all --quiet --filter='status=exited'`
   assertEquals '' "${dangling_images}"
   assertEquals '' "${exited_containers}"
 }

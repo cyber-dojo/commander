@@ -45,8 +45,6 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   local -r languages_name=test_up_languages_246
   assertStartPointCreate ${languages_name} --languages $(languages_urls)
 
-  # don't use cyberdojo/commander:latest
-  unset COMMANDER_TAG
   # cyberdojo/versioner:5e3bc0b pulls cyberdojo/commander:b291513
   # but keep that pull out of stdout/stderr assertions
   docker pull cyberdojo/commander:b291513 &> /dev/null
@@ -74,7 +72,6 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertNoStderr
 
   assertDown
-  export COMMANDER_TAG=latest
   assertStartPointRm ${custom_name}
   assertStartPointRm ${languages_name}
   # go back to latest

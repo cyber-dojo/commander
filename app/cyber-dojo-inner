@@ -15,7 +15,7 @@ set -e
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does not export env-vars as they'd be visible to
 # extract_and_run() scripts. The main script passes
-# the env-var CYBER_DOJO_COMMANDER_TAG
+# the env-var CYBER_DOJO_COMMANDER_TAG.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "${1}" == '--debug' ]; then
@@ -115,20 +115,10 @@ volume_env_file()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 extract_and_run()
 {
-  # We want cat-start-point-create.sh to derive its
-  #   CYBER_DOJO_START_POINTS_BASE_IMAGE
-  #   CYBER_DOJO_START_POINTS_BASE_TAG
-  # env-vars from from versioner's /app/.env file except in
-  # one case; when doing development on the start-points-base
-  # repo, when we use this script to create start-point images
-  # built from the local cyberdojo/start-points-base image.
-  # See https://github.com/cyber-dojo/start-points-base/blob/master/sh/build_test_derived_images.sh
   local -r script="${1}"
   shift
   docker run \
     --entrypoint "" \
-    $(env_var CYBER_DOJO_START_POINTS_BASE_IMAGE) \
-    $(env_var CYBER_DOJO_START_POINTS_BASE_TAG) \
     --interactive \
     --rm \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
@@ -138,13 +128,6 @@ extract_and_run()
   chmod 700 ./${script}
   ./${script} "$@"
   exit $?
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-env_var()
-{
-  local -r name="${1}"
-  echo "--env ${name}=${!name}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

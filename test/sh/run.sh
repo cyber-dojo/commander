@@ -1,12 +1,8 @@
-#!/bin/bash
-set -e
+#!/bin/bash -e
 
-MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-
-# pull here so stdout messages do not intefere with
-# tests asserting on contents of stdout
-docker pull cyberdojo/versioner:latest
+readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 for file in ${MY_DIR}/test_*.sh; do
+  echo "Running ${file}"
   ${file}
 done

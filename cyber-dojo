@@ -23,7 +23,7 @@ commander_tag()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-readonly COMMANDER_TAG="${COMMANDER_TAG:-$(commander_tag)}"
+readonly COMMANDER_TAG="$(commander_tag)"
 readonly SCRIPT=cyber-dojo-inner
 readonly CYBER_DOJO_TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
 remove_tmp_dir() { rm -rf "${CYBER_DOJO_TMP_DIR}" > /dev/null; }
