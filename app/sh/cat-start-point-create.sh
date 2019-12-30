@@ -20,6 +20,8 @@ versioner_env_vars()
 export $(versioner_env_vars)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
+replace_in_script CYBER_DOJO_START_POINTS_BASE_IMAGE
+replace_in_script CYBER_DOJO_START_POINTS_BASE_TAG
 replace_in_script CYBER_DOJO_CUSTOM_START_POINTS_PORT
 replace_in_script CYBER_DOJO_EXERCISES_START_POINTS_PORT
 replace_in_script CYBER_DOJO_LANGUAGES_START_POINTS_PORT
