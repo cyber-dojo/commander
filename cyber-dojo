@@ -16,11 +16,8 @@ commander_tag()
   # the CYBER_DOJO_COMMANDER_TAG env-var being added
   # to versioner's .env file so this function is careful
   # to use the earlier CYBER_DOJO_COMMANDER_SHA.
-  # It carefully gets the last match in the /app/.env file.
-  # See comments in build_test_tag_publish.sh
   local -r versioner=cyberdojo/versioner:latest
-  local -r env_var=$(docker run --entrypoint "" --rm ${versioner} \
-    grep COMMANDER_SHA /app/.env | tail -1)
+  local -r env_var=$(docker run --entrypoint cat --rm "${versioner}" /app/.env)
   [[ "${env_var}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
   echo "${BASH_REMATCH[1]:0:7}"
 }

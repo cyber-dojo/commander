@@ -11,38 +11,35 @@ cat_env_vars()
 # - - - - - - - - - - - - - - - - - - - - - - - -
 build_fake_versioner()
 {
-  local -r env_vars="${1}"
-  local -r sha="$(git_commit_sha)"
-  local -r tag="${sha:0:7}"
+  local env_vars="${1}"
+  local -r fake_sha="$(git_commit_sha)"
+  local -r fake_tag="${fake_sha:0:7}"
   local -r fake=fake_versioner
 
   docker rm --force "${fake}" > /dev/null 2>&1 | true
   docker run                  \
     --detach                  \
     --env RELEASE=999.999.999 \
-    --env SHA="${sha}"        \
+    --env SHA="${fake_sha}"   \
     --name "${fake}"          \
     alpine:latest             \
     sh -c 'mkdir /app' > /dev/null
 
-  # Append the fake env-vars to the end of the .env file.
-  # Export the file and later entries will overrite earlier ones.
-  #   export $(docker run ... cyberdojo/versioner:latest sh -c 'cat /app/.env')
-  # If extracting env-vars individually get the last entry.
-  #   local -r env_var=$(docker run ... ${versioner} grep COMMANDER_SHA /app/.env | tail -1)
-  #   [[ "${env_var}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
-  #   echo "${BASH_REMATCH[1]:0:7}"
+  # Replace commander env-vars with fakes.
+  env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_SHA)
+  env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_TAG)
   echo "${env_vars}" >  /tmp/.env
-  echo "CYBER_DOJO_COMMANDER_SHA=${sha}" >> /tmp/.env
-  echo "CYBER_DOJO_COMMANDER_TAG=${tag}" >> /tmp/.env
+  echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}" >> /tmp/.env
+  echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}" >> /tmp/.env
 
   docker cp /tmp/.env "${fake}:/app/.env"
   docker commit "${fake}" cyberdojo/versioner:latest > /dev/null 2>&1
   docker rm --force "${fake}" > /dev/null 2>&1
   # show it
-  docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | tail -n -2
-  echo "CYBER_DOJO_COMMANDER_SHA=${sha}:"
-  echo "CYBER_DOJO_COMMANDER_TAG=${tag}:"
+  docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA
+  docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG
+  echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}"
+  echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
