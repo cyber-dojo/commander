@@ -25,19 +25,18 @@ build_fake_versioner()
     alpine:latest             \
     sh -c 'mkdir /app' > /dev/null
 
-  # Replace commander env-vars with fakes.
+  # Replace COMMANDER env-vars with fakes.
   env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_SHA)
   env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_TAG)
   echo "${env_vars}" >  /tmp/.env
   echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}" >> /tmp/.env
   echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}" >> /tmp/.env
-
   docker cp /tmp/.env "${fake}:/app/.env"
   docker commit "${fake}" cyberdojo/versioner:latest > /dev/null 2>&1
   docker rm --force "${fake}" > /dev/null 2>&1
   # show it
-  docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA
-  docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG
+  docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA
+  docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG
   echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}"
   echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}"
 }
