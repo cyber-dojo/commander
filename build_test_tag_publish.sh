@@ -14,8 +14,6 @@ build_fake_versioner()
   local -r env_vars="${1}"
   local -r sha="$(git_commit_sha)"
   local -r tag="${sha:0:7}"
-  local -r fake_sha="CYBER_DOJO_COMMANDER_SHA=${sha}"
-  local -r fake_tag="CYBER_DOJO_COMMANDER_TAG=${tag}"
   local -r fake=fake_versioner
 
   docker rm --force "${fake}" > /dev/null 2>&1 | true
@@ -27,17 +25,24 @@ build_fake_versioner()
     alpine:latest             \
     sh -c 'mkdir /app' > /dev/null
 
+  # Append the fake env-vars to the end of the .env file.
+  # Export the file and later entries will overrite earlier ones.
+  #   export $(docker run ... cyberdojo/versioner:latest sh -c 'cat /app/.env')
+  # If extracting env-vars individually get the last entry.
+  #   local -r env_var=$(docker run ... ${versioner} grep COMMANDER_SHA /app/.env | tail -1)
+  #   [[ "${env_var}" =~ CYBER_DOJO_COMMANDER_SHA=(.*) ]]
+  #   echo "${BASH_REMATCH[1]:0:7}"
   echo "${env_vars}" >  /tmp/.env
-  echo "${fake_sha}" >> /tmp/.env # replaces earlier entry when exported
-  echo "${fake_tag}" >> /tmp/.env # replaces earlier entry when exported
+  echo "CYBER_DOJO_COMMANDER_SHA=${sha}" >> /tmp/.env
+  echo "CYBER_DOJO_COMMANDER_TAG=${tag}" >> /tmp/.env
 
   docker cp /tmp/.env "${fake}:/app/.env"
   docker commit "${fake}" cyberdojo/versioner:latest > /dev/null 2>&1
   docker rm --force "${fake}" > /dev/null 2>&1
   # show it
   docker run --rm -it cyberdojo/versioner:latest sh -c 'cat /app/.env' | tail -n -2
-  echo "${fake_sha}:"
-  echo "${fake_tag}:"
+  echo "CYBER_DOJO_COMMANDER_SHA=${sha}:"
+  echo "CYBER_DOJO_COMMANDER_TAG=${tag}:"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
