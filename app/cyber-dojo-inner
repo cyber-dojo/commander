@@ -36,7 +36,6 @@ delegate_to_commander()
 
   docker run \
     --entrypoint "" \
-    --env CYBER_DOJO_COMMANDER_TAG \
     --env CYBER_DOJO_SWARM \
     --env CYBER_DOJO_NGINX_IMAGE \
     --env CYBER_DOJO_NGINX_TAG   \
