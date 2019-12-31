@@ -1,23 +1,23 @@
 #!/bin/bash -e
 
+# Script to replace entries in start-point-create.sh
+# Does not export any env-vars as they could be
+# affected by existing exported env-vars.
+
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly ENV_VARS="$(docker run --entrypoint cat --rm cyberdojo/versioner:latest /app/.env)"
 
 SCRIPT=$(cat "${MY_DIR}/start-point-create.sh")
 
 replace_in_script()
 {
   local -r name="${1}"
-  SCRIPT="${SCRIPT//${name}/${!name}}"
+  local -r env_var=$(echo "${ENV_VARS}" | grep "${name}")
+  local -r prefix="${name}="
+  local -r prefix_size="${#prefix}"
+  local -r value="${env_var:${prefix_size}:999}"
+  SCRIPT="${SCRIPT//${name}/${value}}"
 }
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - -
-versioner_env_vars()
-{
-  local -r versioner=cyberdojo/versioner:latest
-  docker run --rm "${versioner}" sh -c 'cat /app/.env'
-}
-
-export $(versioner_env_vars)
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
 replace_in_script CYBER_DOJO_START_POINTS_BASE_IMAGE

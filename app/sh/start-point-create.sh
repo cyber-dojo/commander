@@ -255,7 +255,7 @@ base_image_name()
 {
   # The uppercase names in this are replaced by their
   # env-var values by the cat-start-point-create.sh script.
-  echo 'CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG'
+  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 }
 
 image_type()
@@ -268,9 +268,9 @@ image_port_number()
   # The uppercase names in this are replaced by their
   # env-var values by the cat-start-point-create.sh script.
   case "$(image_type)" in
-       custom) echo 'CYBER_DOJO_CUSTOM_START_POINTS_PORT';;
-    exercises) echo 'CYBER_DOJO_EXERCISES_START_POINTS_PORT';;
-    languages) echo 'CYBER_DOJO_LANGUAGES_START_POINTS_PORT';;
+       custom) echo CYBER_DOJO_CUSTOM_START_POINTS_PORT;;
+    exercises) echo CYBER_DOJO_EXERCISES_START_POINTS_PORT;;
+    languages) echo CYBER_DOJO_LANGUAGES_START_POINTS_PORT;;
   esac
 }
 
