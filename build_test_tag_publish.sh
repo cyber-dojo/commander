@@ -11,37 +11,51 @@ cat_env_vars()
 # - - - - - - - - - - - - - - - - - - - - - - - -
 build_fake_versioner()
 {
-  local env_vars="${1}"
+  local -r sha_var_name=CYBER_DOJO_COMMANDER_SHA
+  local -r tag_var_name=CYBER_DOJO_COMMANDER_TAG
+
   local -r fake_sha="$(git_commit_sha)"
   local -r fake_tag="${fake_sha:0:7}"
-  local -r fake=fake_versioner
 
-  docker rm --force "${fake}" > /dev/null 2>&1 | true
-  docker run                  \
-    --detach                  \
-    --env RELEASE=999.999.999 \
-    --env SHA="${fake_sha}"   \
-    --name "${fake}"          \
-    alpine:latest             \
-    sh -c 'mkdir /app' > /dev/null
+  local env_vars="${1}"
+  env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
+  env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
 
-  # Replace COMMANDER env-vars with fakes.
-  env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_SHA)
-  env_vars=$(echo "${env_vars}" | grep --invert-match CYBER_DOJO_COMMANDER_TAG)
+  local -r fake_container=fake_versioner
+  local -r fake_image=cyberdojo/versioner:latest
+
+  docker rm --force "${fake_container}" > /dev/null 2>&1 | true
+  docker run                   \
+    --detach                   \
+    --env RELEASE=999.999.999  \
+    --env SHA="${fake_sha}"    \
+    --name "${fake_container}" \
+    alpine:latest              \
+      sh -c 'mkdir /app' > /dev/null
+
   echo "${env_vars}" >  /tmp/.env
-  echo "CYBER_DOJO_COMMANDER_SHA=${fake_sha}" >> /tmp/.env
-  echo "CYBER_DOJO_COMMANDER_TAG=${fake_tag}" >> /tmp/.env
-  docker cp /tmp/.env "${fake}:/app/.env"
-  docker commit "${fake}" cyberdojo/versioner:latest > /dev/null 2>&1
-  docker rm --force "${fake}" > /dev/null 2>&1
+  docker cp /tmp/.env "${fake_container}:/app/.env"
+  docker commit "${fake_container}" "${fake_image}" > /dev/null 2>&1
+  docker rm --force "${fake_container}" > /dev/null 2>&1
+
   # check it
-  expected="CYBER_DOJO_COMMANDER_SHA=${fake_sha}"
-  actual=$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_SHA)
+  expected="${sha_var_name}=${fake_sha}"
+  actual=$(docker run --rm "${fake_image}" sh -c 'cat /app/.env' | grep "${sha_var_name}")
   assert_equal "${expected}" "${actual}"
 
-  expected="CYBER_DOJO_COMMANDER_TAG=${fake_tag}"
-  actual=$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env' | grep CYBER_DOJO_COMMANDER_TAG)
+  expected="${tag_var_name}=${fake_tag}"
+  actual=$(docker run --rm "${fake_image}" sh -c 'cat /app/.env' | grep "${tag_var_name}")
   assert_equal "${expected}" "${actual}"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
+replace_with()
+{
+  local -r env_vars="${1}"
+  local -r name="${2}"
+  local -r fake_value="${3}"
+  local -r all_except=$(echo "${env_vars}" | grep --invert-match "${name}")
+  printf "${all_except}\n${name}=${fake_value}\n"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -131,8 +145,8 @@ on_ci_publish_tagged_images()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
-build_fake_versioner "$(cat_env_vars)"
 trap 'docker image rm --force cyberdojo/versioner:latest' EXIT
+build_fake_versioner "$(cat_env_vars)"
 build_image
 tag_the_image
 on_ci_prepare_saver_volume_mount_dir
