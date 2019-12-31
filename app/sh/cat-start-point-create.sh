@@ -13,9 +13,7 @@ replace_in_script()
 {
   local -r name="${1}"
   local -r env_var=$(echo "${ENV_VARS}" | grep "${name}")
-  local -r prefix="${name}="
-  local -r prefix_size="${#prefix}"
-  local -r value="${env_var:${prefix_size}:999}"
+  local -r value="${env_var:${#name}+1:999}"
   SCRIPT="${SCRIPT//${name}/${value}}"
 }
 
