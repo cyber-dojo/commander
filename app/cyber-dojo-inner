@@ -14,8 +14,7 @@ set -e
 #      This is because the shell is interactive.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Does not export env-vars as they'd be visible to
-# extract_and_run() scripts. The main script passes
-# the env-var CYBER_DOJO_COMMANDER_TAG.
+# extract_and_run() scripts.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 if [ "${1}" == '--debug' ]; then
@@ -25,6 +24,7 @@ fi
 
 commander_image()
 {
+  # The cyber-dojo script passes the CYBER_DOJO_COMMANDER_TAG env-var.
   echo "cyberdojo/commander:${CYBER_DOJO_COMMANDER_TAG}"
 }
 
