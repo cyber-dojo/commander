@@ -9,7 +9,7 @@ def versioner_env_vars
 end
 
 def read_versioner_env_vars
-  src = `docker run --rm #{versioner} sh -c 'env'`
+  src = `docker run --entrypoint "" --rm #{versioner} sh -c 'env'`
   env_file_to_h(src)
 end
 

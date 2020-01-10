@@ -4,18 +4,24 @@
 # The main cyber-dojo script.
 # Delegates to cyber-dojo-inner.
 # A [cyber-dojo update] does not update this script.
-# Does not export any env-vars as they'd be visible to,
-# and easily break, previous versions of cyber-dojo-inner
-# (and scripts it extracts and runs) in regression tests.
+#
+# NB: Does not export any env-vars as they'd be visible to,
+#     and easily break, older versions of cyber-dojo-inner
+#     (and scripts it extracts+runs), eg in regression tests.
+# NB: There are [cyber-dojo update] regression tests which
+#     move back in time to old versioner images predating:
+#     o) the CYBER_DOJO_COMMANDER_TAG env-var being added
+#        to the .env file; so commander_tag() is careful
+#        to use the original CYBER_DOJO_COMMANDER_SHA.
+#     o) the versioner image having its own ENTRYPOINT;
+#        so commander() tag is very careful in how it extracts
+#        the env-vars.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 commander_tag()
 {
-  # There are [cyber-dojo update] tests that predate
-  # the CYBER_DOJO_COMMANDER_TAG env-var being added
-  # to versioner's .env file so this function is careful
-  # to use the earlier CYBER_DOJO_COMMANDER_SHA.
-  local -r env_vars=$(docker run --rm cyberdojo/versioner:latest)
+  local -r versioner=cyberdojo/versioner:latest
+  local -r env_vars=$(docker run --entrypoint "" --rm ${versioner} sh -c 'cat /app/.env')
   local -r name=CYBER_DOJO_COMMANDER_SHA # 24 chars long
   local -r env_var=$(echo "${env_vars}" | grep "${name}")
   printf "${env_var:25:7}" # +1 for the =

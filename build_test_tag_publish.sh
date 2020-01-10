@@ -1,12 +1,15 @@
 #!/bin/bash -Ee
 
 readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
-cat_env_vars()
+remove_resources()
 {
-  docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env'
+  docker image rm --force cyberdojo/versioner:latest
+  rm -rf "${TMP_DIR}"
 }
+trap remove_resources EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
 build_fake_versioner()
@@ -17,34 +20,44 @@ build_fake_versioner()
   local -r fake_sha="$(git_commit_sha)"
   local -r fake_tag="${fake_sha:0:7}"
 
-  local env_vars="${1}"
+  local env_vars="$(docker run --rm cyberdojo/versioner:latest)"
   env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
 
-  local -r fake_container=fake_versioner
+  echo "${env_vars}" > ${TMP_DIR}/.env
+
   local -r fake_image=cyberdojo/versioner:latest
+  {
+    echo 'FROM alpine:latest'
+    echo 'COPY . /app'
+    echo 'ARG SHA'
+    echo 'ENV SHA=${SHA}'
+    echo 'ARG RELEASE'
+    echo 'ENV RELEASE=${RELEASE}'
+    echo 'ENTRYPOINT [ "cat", "/app/.env" ]'
+  } > ${TMP_DIR}/Dockerfile
+  docker build \
+    --build-arg SHA="${fake_sha}" \
+    --build-arg RELEASE=999.999.999 \
+    --tag "${fake_image}" \
+    "${TMP_DIR}"
 
-  docker rm --force "${fake_container}" > /dev/null 2>&1 | true
-  docker run                   \
-    --detach                   \
-    --env RELEASE=999.999.999  \
-    --env SHA="${fake_sha}"    \
-    --name "${fake_container}" \
-    alpine:latest              \
-      sh -c 'mkdir /app' > /dev/null
+  echo "Checking fake ${fake_image}"
 
-  echo "${env_vars}" >  /tmp/.env
-  docker cp /tmp/.env "${fake_container}:/app/.env"
-  docker commit "${fake_container}" "${fake_image}" > /dev/null 2>&1
-  docker rm --force "${fake_container}" > /dev/null 2>&1
-
-  # check it
   expected="${sha_var_name}=${fake_sha}"
-  actual=$(docker run --rm "${fake_image}" sh -c 'cat /app/.env' | grep "${sha_var_name}")
+  actual=$(docker run --rm "${fake_image}" | grep "${sha_var_name}")
   assert_equal "${expected}" "${actual}"
 
   expected="${tag_var_name}=${fake_tag}"
-  actual=$(docker run --rm "${fake_image}" sh -c 'cat /app/.env' | grep "${tag_var_name}")
+  actual=$(docker run --rm "${fake_image}" | grep "${tag_var_name}")
+  assert_equal "${expected}" "${actual}"
+
+  expected='RELEASE=999.999.999'
+  actual=RELEASE=$(docker run --entrypoint "" --rm "${fake_image}" sh -c 'echo ${RELEASE}')
+  assert_equal "${expected}" "${actual}"
+
+  expected="SHA=${fake_sha}"
+  actual=SHA=$(docker run --entrypoint "" --rm "${fake_image}" sh -c 'echo ${SHA}')
   assert_equal "${expected}" "${actual}"
 }
 
@@ -63,10 +76,10 @@ assert_equal()
 {
   local -r expected="${1}"
   local -r actual="${2}"
+  echo "expected: '${expected}'"
+  echo "  actual: '${actual}'"
   if [ "${expected}" != "${actual}" ]; then
-    echo "ERROR"
-    echo "expected:${expected}"
-    echo "  actual:${actual}"
+    echo "ERROR: assert_equal failed"
     exit 42
   fi
 }
@@ -123,8 +136,6 @@ tag_the_image()
   local -r tag="$(image_tag)"
   docker tag "${image}:latest" "${image}:${tag}"
   echo "${image}:latest tagged to ${image}:${tag}"
-  echo "end of fake cyberdojo/versioner:latest's /app/.env is..."
-  docker run --rm cyberdojo/versioner:latest sh -c 'tail -n -2 /app/.env'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -135,18 +146,15 @@ on_ci_publish_tagged_images()
     return
   fi
   echo 'on CI so publishing tagged images'
-  local -r image="$(image_name)"
-  local -r tag="$(image_tag)"
   # DOCKER_USER, DOCKER_PASS are in ci context
   echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
-  docker push "${image}:latest"
-  docker push "${image}:${tag}"
+  docker push "$(image_name):latest"
+  docker push "$(image_name):$(image_tag)"
   docker logout
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
-trap 'docker image rm --force cyberdojo/versioner:latest' EXIT
-build_fake_versioner "$(cat_env_vars)"
+build_fake_versioner
 build_image
 tag_the_image
 on_ci_prepare_saver_volume_mount_dir

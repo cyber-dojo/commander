@@ -5,11 +5,11 @@ def cyber_dojo_server_update
 
   # set tag for outgoing :latest
   versioner = 'cyberdojo/versioner:latest'
-  was = `docker run --rm #{versioner} sh -c 'echo -n ${RELEASE}'`
+  was = `docker run --entrypoint "" --rm #{versioner} sh -c 'echo -n ${RELEASE}'`
   if !was.empty?
     `docker tag #{versioner} cyberdojo/versioner:#{was}`
   else
-    was_sha = `docker run --rm #{versioner} sh -c 'echo -n ${SHA}'`
+    was_sha = `docker run --entrypoint "" --rm #{versioner} sh -c 'echo -n ${SHA}'`
     was_tag = was_sha[0...7]
     `docker tag #{versioner} cyberdojo/versioner:#{was_tag}`
   end

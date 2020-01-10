@@ -8,6 +8,30 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 test_UPDATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Run failure cases first. Tests that do an actual update need to be last.
+
+test___failure() { :; }
+
+test_____unknown_tag_prints_to_stderr()
+{
+  local -r arg=salmon
+  refuteUpdate ${arg}
+  assertNoStdout
+  assertStderrIncludes "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____too_many_args_prints_to_stderr()
+{
+  local -r arg1=salmon
+  local -r arg2=parr
+  refuteUpdate ${arg1} ${arg2}
+  assertNoStdout
+  assertStderrIncludes "ERROR: too many arguments [${arg1} ${arg2}]"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test___success() { :; }
 
@@ -49,6 +73,7 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   # but keep that pull out of stdout/stderr assertions
   docker pull cyberdojo/commander:b291513 &> /dev/null
 
+  # This replaces the fake versioner so must be the last test using it.
   assertUpdate 5e3bc0b
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=${languages_name} --custom=${custom_name}
@@ -74,31 +99,6 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertDown
   assertStartPointRm ${custom_name}
   assertStartPointRm ${languages_name}
-  # go back to latest
-  assertUpdate latest
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test___failure() { :; }
-
-test_____unknown_tag_prints_to_stderr()
-{
-  local -r arg=salmon
-  refuteUpdate ${arg}
-  assertNoStdout
-  assertStderrIncludes "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-test_____too_many_args_prints_to_stderr()
-{
-  local -r arg1=salmon
-  local -r arg2=parr
-  refuteUpdate ${arg1} ${arg2}
-  assertNoStdout
-  assertStderrIncludes "ERROR: too many arguments [${arg1} ${arg2}]"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

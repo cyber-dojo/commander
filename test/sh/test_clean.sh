@@ -35,6 +35,8 @@ Removes dangling docker images/volumes and exited containers"
 
 test_____no_args_produces_no_output_leaves_no_dangling_images_or_exited_containers()
 {
+  # if this test fails it is typically because there are other containers
+  # already running preventing an otherwise dangling image from being removed.
   assertClean
   assertNoStdout
   assertNoStderr
