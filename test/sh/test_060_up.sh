@@ -14,9 +14,9 @@ test___success() { :; }
 test_____up_prints_start_points_and_port_and_creates_containers()
 {
   # Do not do an [assertUpdate latest] here as we need the fake versioner
-  # Must run before test/test_update.sh as that replaces the fake versioner
+  # Must run before test_065_update.sh as that replaces the fake versioner
   local -r custom_name=test_up_custom_1
-  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  assertStartPointCreate ${custom_name}    --custom    $(custom_urls)
   local -r exercises_name=test_up_exercises_1
   assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
   local -r languages_name=test_up_languages_1

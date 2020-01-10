@@ -8,7 +8,8 @@ MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 test_UPDATE() { :; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Run failure cases first. Tests that do an actual update need to be last.
+# Run failure cases first. Tests that do an actual update need to be last
+# as they replace the fake versioner with a real one.
 
 test___failure() { :; }
 
