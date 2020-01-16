@@ -5,7 +5,6 @@ def service_names
     commander
     differ
     nginx
-    ragger
     runner
     saver
     web

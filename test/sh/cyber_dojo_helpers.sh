@@ -63,7 +63,6 @@ languages_urls()
 declare -a service_names=(
   differ
   nginx
-  ragger
   runner
   saver
   web

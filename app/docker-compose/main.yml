@@ -47,17 +47,9 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # runs cyber-dojo.sh in time-boxed container
+  # runs cyber-dojo.sh in time-boxed container, returns traffic-light colour
   runner:
     user: root
-    init: true
-    environment: [ NO_PROMETHEUS ]
-    read_only: true
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-  # converts runner's [stdout,stderr,status] to red/amber/green
-  ragger:
-    user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true

@@ -95,16 +95,6 @@ services:
           memory: 32M
           cpus: '0.5'
 
-  ragger:
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          memory: 32M
-          cpus: '0.25'
-
   zipper:
     deploy:
       mode: global

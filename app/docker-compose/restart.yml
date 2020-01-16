@@ -24,9 +24,6 @@ services:
   runner:
     restart: on-failure
 
-  ragger:
-    restart: on-failure
-
   differ:
     restart: on-failure
 

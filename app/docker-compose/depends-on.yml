@@ -13,13 +13,9 @@ services:
       - exercises-start-points
       - languages-start-points
       - differ
-      - ragger
       - runner
       - saver
       - zipper
-  ragger:
-    depends_on:
-      - runner
   zipper:
     depends_on:
       - saver

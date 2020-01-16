@@ -22,9 +22,6 @@ services:
   runner:
     container_name: cyber-dojo-runner
 
-  ragger:
-    container_name: cyber-dojo-ragger
-
   differ:
     container_name: cyber-dojo-differ
 
