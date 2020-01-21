@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e
+#!/bin/bash -Ee
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The cyber-dojo script cats this out of a commander

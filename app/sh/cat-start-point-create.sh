@@ -1,11 +1,11 @@
-#!/bin/bash -e
+#!/bin/bash -Ee
 
 # Script to replace entries in start-point-create.sh
 # Does not export any env-vars as they could be
 # affected by existing exported env-vars.
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-readonly ENV_VARS="$(docker run --rm cyberdojo/versioner:latest)"
+readonly ENV_VARS="$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env')"
 
 SCRIPT=$(cat "${MY_DIR}/start-point-create.sh")
 
