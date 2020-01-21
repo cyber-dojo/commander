@@ -5,7 +5,7 @@
 # affected by existing exported env-vars.
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
-readonly ENV_VARS="$(docker run --rm cyberdojo/versioner:latest sh -c 'cat /app/.env')"
+readonly ENV_VARS="$(docker run --entrypoint=cat --rm cyberdojo/versioner:latest /app/.env)"
 
 SCRIPT=$(cat "${MY_DIR}/start-point-create.sh")
 
