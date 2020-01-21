@@ -1,4 +1,4 @@
-#!/bin/bash -Eeu
+#!/bin/bash -Ee
 shift # start-point
 shift # create
 readonly IMAGE_NAME="${1}"

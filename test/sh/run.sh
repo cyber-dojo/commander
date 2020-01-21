@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -Ee
 
 readonly MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
