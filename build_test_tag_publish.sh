@@ -14,6 +14,8 @@ trap remove_resources EXIT
 # - - - - - - - - - - - - - - - - - - - - - - - -
 build_fake_versioner()
 {
+  # Build a fake cyberdojo/versioner:latest image that serves
+  # COMMANDER SHA/TAG values for the local repo.
   local -r sha_var_name=CYBER_DOJO_COMMANDER_SHA
   local -r tag_var_name=CYBER_DOJO_COMMANDER_TAG
 

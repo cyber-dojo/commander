@@ -1,4 +1,4 @@
-#!/bin/bash -Ee
+#!/bin/bash -Eeu
 
 # Script to replace entries in start-point-create.sh
 # Does not export any env-vars as they could be

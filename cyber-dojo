@@ -21,20 +21,20 @@
 commander_tag()
 {
   local -r versioner=cyberdojo/versioner:latest
-  local -r env_vars=$(docker run --entrypoint "" --rm ${versioner} sh -c 'cat /app/.env')
-  local -r name=CYBER_DOJO_COMMANDER_SHA # 24 chars long
+  local -r env_vars=$(docker run --entrypoint=cat --rm ${versioner} /app/.env)
+  local -r name=CYBER_DOJO_COMMANDER_SHA
   local -r env_var=$(echo "${env_vars}" | grep "${name}")
-  printf "${env_var:25:7}" # +1 for the =
+  printf "${env_var:${#name}+1:7}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 readonly COMMANDER_TAG="$(commander_tag)"
 readonly SCRIPT=cyber-dojo-inner
-readonly CYBER_DOJO_TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
-remove_tmp_dir() { rm -rf "${CYBER_DOJO_TMP_DIR}" > /dev/null; }
+readonly TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
+remove_tmp_dir() { rm -rf "${TMP_DIR}" > /dev/null; }
 trap remove_tmp_dir INT EXIT
 
-cd "${CYBER_DOJO_TMP_DIR}"
+cd "${TMP_DIR}"
 
 docker run \
   --entrypoint cat \

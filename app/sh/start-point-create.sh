@@ -1,4 +1,4 @@
-#!/bin/bash -Ee
+#!/bin/bash -Eeu
 shift # start-point
 shift # create
 readonly IMAGE_NAME="${1}"
@@ -69,11 +69,10 @@ show_use()
   https://github.com/.../ruby-minitest.git
 
 EOF
-  echo -e "${TEXT}"
+  printf "${TEXT}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 define()
 {
   o=;
