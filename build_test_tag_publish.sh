@@ -141,6 +141,15 @@ tag_the_image()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
+pull_start_points_base_image()
+{
+  # To prevent stdout pull messages interfering with tests
+  local -r image=$(docker run --rm --entrypoint="" cyberdojo/versioner:latest sh -c 'export $(cat /app/.env) && echo ${CYBER_DOJO_START_POINTS_BASE_IMAGE}')
+  local -r tag=$(docker run --rm --entrypoint="" cyberdojo/versioner:latest sh -c 'export $(cat /app/.env) && echo ${CYBER_DOJO_START_POINTS_BASE_TAG}')
+  docker pull ${image}:${tag}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - -
 on_ci_publish_tagged_images()
 {
   if ! on_ci; then
@@ -160,6 +169,7 @@ build_fake_versioner
 build_image
 tag_the_image
 on_ci_prepare_saver_volume_mount_dir
+pull_start_points_base_image
 if [ "${1}" != '--no-test' ]; then
   "${ROOT_DIR}/test/sh/run.sh"
 fi
