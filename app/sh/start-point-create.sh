@@ -6,9 +6,9 @@ readonly IMAGE_TYPE="${2}"
 declare -ar GIT_REPO_URLS="(${@:3})"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo start-point create <name> --custom    <url> ...
-# cyber-dojo start-point create <name> --exercises <url> ...
-# cyber-dojo start-point create <name> --languages <url> ...
+# cyber-dojo start-point create <name> --custom    <url>...
+# cyber-dojo start-point create <name> --exercises <url>...
+# cyber-dojo start-point create <name> --languages <url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 show_use()
@@ -17,13 +17,13 @@ show_use()
   define TEXT <<- EOF
 
   Use:
-  ${MY_NAME} start-point create <name> --custom    <url> ...
-  ${MY_NAME} start-point create <name> --exercises <url> ...
-  ${MY_NAME} start-point create <name> --languages <url> ...
+  ${MY_NAME} start-point create <name> --custom    <url>...
+  ${MY_NAME} start-point create <name> --exercises <url>...
+  ${MY_NAME} start-point create <name> --languages <url>...
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
-  Its base image will be cyberdojo/starter-base:STARTER_BASE_TAG
+  Its base image will be cyberdojo/starter-base:CYBER_DOJO_START_POINTS_BASE_TAG
 
   Example 1: local git-repo <url>s
 
@@ -38,7 +38,7 @@ show_use()
   ${MY_NAME} start-point create \\\\
         eg/second \\\\
           --exercises \\\\
-            https://github.com/.../my-exercises.git
+            https://github.com/.../my-exercises
 
   Example 3: local and non-local git-repo <url>s
 
@@ -46,7 +46,7 @@ show_use()
         eg/third \\\\
           --languages \\\\
             /user/fred/.../asm-assert \\\\
-            https://github.com/.../my-languages.git
+            https://github.com/.../my-languages
 
   Example 4: read git-repo <url>s from a curl'd file
 
@@ -63,10 +63,10 @@ show_use()
             \$(< my-language-selection.txt)
 
   cat my-language-selection.txt
-  https://github.com/.../java-junit.git
-  https://github.com/.../javascript-jasmine.git
-  https://github.com/.../python-pytest.git
-  https://github.com/.../ruby-minitest.git
+  https://github.com/.../java-junit
+  https://github.com/.../javascript-jasmine
+  https://github.com/.../python-pytest
+  https://github.com/.../ruby-minitest
 
 EOF
   printf "${TEXT}"
