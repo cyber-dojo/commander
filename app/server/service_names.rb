@@ -1,6 +1,8 @@
 
 def service_names
   %w(
+    creator
+    custom-chooser
     avatars
     commander
     differ

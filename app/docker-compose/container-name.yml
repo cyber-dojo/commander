@@ -13,6 +13,12 @@ services:
   languages-start-points:
     container_name: cyber-dojo-languages-start-points
 
+  custom-chooser:
+    container_name: cyber-dojo-custom-chooser
+
+  creator:
+    container_name: cyber-dojo-creator
+
   avatars:
     container_name: cyber-dojo-avatars
 

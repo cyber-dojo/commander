@@ -54,8 +54,9 @@ end
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 def tagged_image_name(service)
-  name = env_var_value("CYBER_DOJO_#{service.upcase}_IMAGE")
-   tag = env_var_value("CYBER_DOJO_#{service.upcase}_TAG")
+  s = service.sub('-','_').upcase
+  name = env_var_value("CYBER_DOJO_#{s}_IMAGE")
+   tag = env_var_value("CYBER_DOJO_#{s}_TAG")
   "#{name}:#{tag}"
 end
 

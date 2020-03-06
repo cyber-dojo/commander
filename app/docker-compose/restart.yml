@@ -9,6 +9,12 @@ services:
   web:
     restart: on-failure
 
+  creator:
+    restart: on-failure
+
+  custom-chooser:
+    restart: on-failure
+
   custom-start-points:
     restart: on-failure
 

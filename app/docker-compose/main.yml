@@ -19,6 +19,14 @@ services:
       - CYBER_DOJO_RELEASE
 
   # - - - - - - - - - - - - - - - - - - - - - - -
+  # choosers
+  custom-chooser:
+    user: nobody
+    init: true
+    environment: [ NO_PROMETHEUS ]
+    read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
   custom-start-points:
     user: nobody
@@ -33,6 +41,14 @@ services:
     read_only: true
 
   languages-start-points:
+    user: nobody
+    init: true
+    environment: [ NO_PROMETHEUS ]
+    read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # creator
+  creator:
     user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]
