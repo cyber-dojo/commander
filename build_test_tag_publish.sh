@@ -16,41 +16,18 @@ build_fake_versioner()
 {
   # Build a fake cyberdojo/versioner:latest image that serves
   # COMMANDER SHA/TAG values for the local repo.
-  local sha_var_name=CYBER_DOJO_COMMANDER_SHA
-  local tag_var_name=CYBER_DOJO_COMMANDER_TAG
+  # This breaks the [commander <-> versioner] circular dependency.
+  # You can edit this function to insert fake SHA/TAG values for any service.
+  # See for example:
+  # https://github.com/cyber-dojo/commander/blob/b205967be70f11fb80f02a123a36287b66d98bd3/build_test_tag_publish.sh#L29
 
-  local fake_sha="$(git_commit_sha)"
-  local fake_tag="${fake_sha:0:7}"
+  local -r sha_var_name=CYBER_DOJO_COMMANDER_SHA
+  local -r tag_var_name=CYBER_DOJO_COMMANDER_TAG
+
+  local -r fake_sha="$(git_commit_sha)"
+  local -r fake_tag="${fake_sha:0:7}"
 
   local env_vars="$(docker run --rm cyberdojo/versioner:latest)"
-  env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
-  env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
-
-  sha_var_name=CYBER_DOJO_CUSTOM_CHOOSER_SHA
-  fake_sha=8bbb58feffc2e0d995481205537289fcc2bc18de
-  tag_var_name=CYBER_DOJO_CUSTOM_CHOOSER_TAG
-  fake_tag="${fake_sha:0:7}"
-  env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
-  env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
-
-  sha_var_name=CYBER_DOJO_CREATOR_SHA
-  fake_sha=63aaaed86f0f5fd45a48b6f7d85fa9384b8f1b55
-  tag_var_name=CYBER_DOJO_CREATOR_TAG
-  fake_tag="${fake_sha:0:7}"
-  env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
-  env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
-
-  sha_var_name=CYBER_DOJO_NGINX_SHA
-  fake_sha=e7e9926ac9646fb6ae6315d3633e56fc67c24765
-  tag_var_name=CYBER_DOJO_NGINX_TAG
-  fake_tag="${fake_sha:0:7}"
-  env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
-  env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
-
-  sha_var_name=CYBER_DOJO_WEB_SHA
-  fake_sha=d3fb9ffcfd01c0f1edbf65c6efcae313979e4b8d
-  tag_var_name=CYBER_DOJO_WEB_TAG
-  fake_tag="${fake_sha:0:7}"
   env_vars=$(replace_with "${env_vars}" "${sha_var_name}" "${fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${tag_var_name}" "${fake_tag}")
 

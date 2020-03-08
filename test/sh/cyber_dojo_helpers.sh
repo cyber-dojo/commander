@@ -61,6 +61,8 @@ languages_urls()
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 declare -a service_names=(
+  creator
+  custom-chooser
   differ
   nginx
   runner
