@@ -4,6 +4,7 @@ def service_names
     creator
     custom-chooser
     exercises-chooser
+    languages-chooser
     avatars
     commander
     differ
