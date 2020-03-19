@@ -95,6 +95,16 @@ services:
           memory: 32M
           cpus: '0.2'
 
+  languages-chooser:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
   languages-start-points:
     deploy:
       mode: global

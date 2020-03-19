@@ -14,16 +14,15 @@ services:
 
   custom-chooser:
     restart: on-failure
-
   exercises-chooser:
+    restart: on-failure
+  languages-chooser:
     restart: on-failure
 
   custom-start-points:
     restart: on-failure
-
   exercises-start-points:
     restart: on-failure
-
   languages-start-points:
     restart: on-failure
 
