@@ -2,6 +2,8 @@
 version: '3.7'
 
 services:
+  repler:
+    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   runner:
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   saver:

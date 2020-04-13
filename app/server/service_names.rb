@@ -9,9 +9,9 @@ def service_names
     commander
     differ
     nginx
+    repler
     runner
     saver
     web
-    zipper
   )
 end

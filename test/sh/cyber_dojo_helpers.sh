@@ -67,10 +67,10 @@ declare -a service_names=(
   languages-chooser
   differ
   nginx
+  repler
   runner
   saver
   web
-  zipper
 )
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

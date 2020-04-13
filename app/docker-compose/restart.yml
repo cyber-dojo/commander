@@ -29,6 +29,9 @@ services:
   avatars:
     restart: on-failure
 
+  repler:
+    restart: on-failure
+
   runner:
     restart: on-failure
 
@@ -36,7 +39,4 @@ services:
     restart: on-failure
 
   saver:
-    restart: on-failure
-
-  zipper:
     restart: on-failure

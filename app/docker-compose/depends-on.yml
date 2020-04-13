@@ -17,9 +17,6 @@ services:
       - exercises-start-points
       - languages-start-points
       - differ
+      - repler
       - runner
-      - saver
-      - zipper
-  zipper:
-    depends_on:
       - saver

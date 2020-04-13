@@ -75,6 +75,14 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
+  # provides access to repl via web-socket
+  repler:
+    user: root
+    init: true
+    environment: [ NO_PROMETHEUS ]
+    read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
   # runs cyber-dojo.sh in time-boxed container, returns traffic-light colour
   runner:
     user: root
@@ -94,14 +102,6 @@ services:
   # stores groups/katas and code+tests for every test event
   saver:
     user: saver
-    init: true
-    environment: [ NO_PROMETHEUS ]
-    read_only: true
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
-  # provides tgz files of practice sessions
-  zipper:
-    user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true

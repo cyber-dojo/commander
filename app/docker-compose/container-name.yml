@@ -29,6 +29,9 @@ services:
   web:
     container_name: cyber-dojo-web
 
+  repler:
+    container_name: cyber-dojo-repler
+
   runner:
     container_name: cyber-dojo-runner
 
@@ -37,6 +40,3 @@ services:
 
   saver:
     container_name: cyber-dojo-saver
-
-  zipper:
-    container_name: cyber-dojo-zipper
