@@ -40,3 +40,6 @@ services:
 
   saver:
     container_name: cyber-dojo-saver
+
+  shas:
+    container_name: cyber-dojo-shas

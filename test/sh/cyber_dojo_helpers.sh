@@ -70,6 +70,7 @@ declare -a service_names=(
   repler
   runner
   saver
+  shas
   web
 )
 

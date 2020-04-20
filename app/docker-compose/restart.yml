@@ -40,3 +40,6 @@ services:
 
   saver:
     restart: on-failure
+
+  shas:
+    restart: on-failure

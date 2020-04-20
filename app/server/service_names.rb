@@ -12,6 +12,7 @@ def service_names
     repler
     runner
     saver
+    shas
     web
   )
 end

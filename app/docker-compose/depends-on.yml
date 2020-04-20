@@ -20,3 +20,4 @@ services:
       - repler
       - runner
       - saver
+      - shas

@@ -105,3 +105,11 @@ services:
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # shows shas of each service
+  shas:
+    user: nobody
+    init: true
+    environment: [ NO_PROMETHEUS ]
+    read_only: true
