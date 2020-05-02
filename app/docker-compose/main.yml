@@ -1,6 +1,11 @@
 
 version: '3.7'
 
+networks:
+  cyber-dojo:
+    driver: bridge
+    name: cyber-dojo
+
 services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -81,6 +86,9 @@ services:
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true
+    networks:
+      - cyber-dojo
+      - default
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # runs cyber-dojo.sh in time-boxed container, returns traffic-light colour
