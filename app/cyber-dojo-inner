@@ -123,8 +123,7 @@ extract_and_run()
     "$(commander_image)" \
       sh -c "/app/sh/cat-${script}" \
         > ./${script}
-  chmod 700 ./${script}
-  ./${script} "$@"
+  bash ./${script} "$@"
   exit $?
 }
 
