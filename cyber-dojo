@@ -43,7 +43,5 @@ docker run \
     /app/${SCRIPT} \
       > ./${SCRIPT}
 
-chmod 700 ./${SCRIPT}
-
 CYBER_DOJO_COMMANDER_TAG=${COMMANDER_TAG} \
-  ./${SCRIPT} "$@"
+  bash ./${SCRIPT} "$@"
