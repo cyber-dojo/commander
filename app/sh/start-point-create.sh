@@ -172,6 +172,8 @@ git_clone_one_url_into_context_dir()
 
   chmod -R +rX "${URL_INDEX}"
   local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
+  echo "${sha}" > "${CONTEXT_DIR}/${URL_INDEX}/commit_sha"
+  echo "${url}" > "${CONTEXT_DIR}/${URL_INDEX}/commit_url"
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
