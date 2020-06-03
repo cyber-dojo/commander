@@ -130,6 +130,8 @@ extract_and_run()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 if [ "${1} ${2}" == 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
+elif [ "${1} ${2}" == 'start-point build' ]; then
+  extract_and_run start-point-build.sh "$@"
 elif [ "${1}" == 'sh' ]; then
   extract_and_run sh.sh "$@"
 elif ! delegate_to_commander "$@"; then

@@ -177,7 +177,7 @@ build_image
 tag_the_image
 on_ci_prepare_saver_volume_mount_dir
 pull_start_points_base_image
-if [ "${1}" != '--no-test' ]; then
-  "${ROOT_DIR}/test/sh/run.sh"
+if [ "${1}" == --build-only ] || [ "${1}" == -bo ]; then
+  exit 0
 fi
 on_ci_publish_tagged_images

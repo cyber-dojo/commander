@@ -1,14 +1,14 @@
 #!/bin/bash -Ee
 shift # start-point
-shift # create
+shift # build
 readonly IMAGE_NAME="${1}"
 readonly IMAGE_TYPE="${2}"
 declare -ar GIT_REPO_URLS="(${@:3})"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo start-point create <name> --custom    <url>...
-# cyber-dojo start-point create <name> --exercises <url>...
-# cyber-dojo start-point create <name> --languages <url>...
+# cyber-dojo start-point build <name> --custom    <url>...
+# cyber-dojo start-point build <name> --exercises <url>...
+# cyber-dojo start-point build <name> --languages <url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 show_use()
@@ -17,17 +17,17 @@ show_use()
   define TEXT <<- EOF
 
   Use:
-  ${MY_NAME} start-point create <name> --custom    <url>...
-  ${MY_NAME} start-point create <name> --exercises <url>...
-  ${MY_NAME} start-point create <name> --languages <url>...
+  ${MY_NAME} start-point build <name> --custom    <url>...
+  ${MY_NAME} start-point build <name> --exercises <url>...
+  ${MY_NAME} start-point build <name> --languages <url>...
 
-  Creates a cyber-dojo start-point image named <name>
+  Builds a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
   Its base image will be cyberdojo/starter-base:CYBER_DOJO_START_POINTS_BASE_TAG
 
   Example 1: local git-repo <url>s
 
-  ${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point build \\\\
         eg/first \\\\
           --custom \\\\
             /user/fred/.../yahtzee \\\\
@@ -35,14 +35,14 @@ show_use()
 
   Example 2: non-local git-repo <url>
 
-  ${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point build \\\\
         eg/second \\\\
           --exercises \\\\
             https://github.com/.../my-exercises
 
   Example 3: local and non-local git-repo <url>s
 
-  ${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point build \\\\
         eg/third \\\\
           --languages \\\\
             /user/fred/.../asm-assert \\\\
@@ -50,14 +50,14 @@ show_use()
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  ${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point build \\\\
         eg/fourth \\\\
           --languages \\\\
             \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
   Example 5: read git-repo <url>s from a local file
 
-  ${MY_NAME} start-point create \\\\
+  ${MY_NAME} start-point build \\\\
         eg/fifth \\\\
           --languages \\\\
             \$(< my-language-selection.txt)
@@ -123,9 +123,10 @@ exit_non_zero_unless_git_installed()
 
 CONTEXT_DIR=''
 
-prepare_context_dir()
+set_context_dir()
 {
-  CONTEXT_DIR=$(mktemp -d)
+  # When running Docker Toolbox /tmp cannot be docker volume-mounted.
+  CONTEXT_DIR=$(mktemp -d ~/tmp.XXX)
   trap remove_context_dir EXIT
 }
 
@@ -140,9 +141,11 @@ remove_context_dir()
 
 git_clone_urls_into_context_dir()
 {
+  set_context_dir
   for url in "${GIT_REPO_URLS[@]}"; do
     git_clone_one_url_into_context_dir "${url}"
   done
+  echo -e "$(image_type)" > "${CONTEXT_DIR}/image.type"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -170,12 +173,27 @@ git_clone_one_url_into_context_dir()
     exit 3
   fi
 
-  chmod -R +rX "${URL_INDEX}"
-  local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
+  # get the image_name from start_point/manifest.json
+  local -r ltf_dir="${CONTEXT_DIR}/${URL_INDEX}"
+  local -r image_name=$(docker run --rm --volume ${ltf_dir}:/data:ro cyberdojofoundation/image_namer)
+  # ensure we have the latest
+  docker pull ${image_name} &> /dev/null
+  # get the commit SHA from the image's env-var
+  local -r SHA_ENV_VAR=$(docker run --rm "${image_name}" bash -c 'env | grep SHA=')
+  local -r SHA="${SHA_ENV_VAR:4}"
+  local -r TAG="${SHA:0:7}"
+  # ensure the tagged image exists
+  docker pull ${image_name}:${TAG} &> /dev/null
+  # checkout the start_point's commit SHA
+  cd "${ltf_dir}"
+  git reset --hard HEAD &> /dev/null
+  git checkout "${SHA}" &> /dev/null # lose detached head warning
+  # remove unneeded files
+  rm -rf "${ltf_dir}"/docker
+  rm -rf "${ltf_dir}"/.git
+
   echo -e "${IMAGE_TYPE} \t ${url}"
-  echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
-  rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
-  rm -rf "${CONTEXT_DIR}/${URL_INDEX}/docker"
+  echo -e "${URL_INDEX} \t ${SHA} \t ${url}" >> "${CONTEXT_DIR}/build.shas"
   URL_INDEX=$((URL_INDEX + 1))
 }
 
@@ -277,6 +295,5 @@ image_port_number()
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed
-prepare_context_dir
 git_clone_urls_into_context_dir
 build_image_from_context_dir
