@@ -1,13 +1,13 @@
 #!/bin/bash -Ee
 # [cyber-dojo] start-point build cyberdojo/language-start-points --languages <image>...
 
-shift # start-point
-shift # build
-readonly IMAGE_NAME="${1}"          # cyberdojo/language-start-points
-readonly IMAGE_TYPE="${2}"          # --languages
-declare -ar IMAGE_NAMES="(${@:3})"  # <image>...
+shift                                # start-point
+shift                                # build
+readonly IMAGE_NAME="${1}"           # cyberdojo/language-start-points
+readonly IMAGE_TYPE="${2}"           # --languages
+declare -ar IMAGE_NAMES="(${@:3})"   # <image>...
 
-# When running Docker Toolbox /tmp cannot be docker volume-mounted. So ~
+# In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXX)
 readonly TMP_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.XXXXXX)
 remove_tmp_dirs()
@@ -100,7 +100,6 @@ copy_images_into_context_dir()
 {
   # Copy each image's start_point/ into its own unique
   # directory based on a simple incrementing index.
-  local -r count="$((${#IMAGE_NAMES[@]}-1))"
   for i in "${!IMAGE_NAMES[@]}"; do
     copy_one_image_into_context_dir "${IMAGE_NAMES[$i]}" "${i}"
   done

@@ -1,9 +1,19 @@
 #!/bin/bash -Ee
-shift # start-point
-shift # create
-readonly IMAGE_NAME="${1}"
-readonly IMAGE_TYPE="${2}"
-declare -ar GIT_REPO_URLS="(${@:3})"
+# [cyber-dojo] start-point create cyberdojo/language-start-points --languages <url>...
+
+shift                                # start-point
+shift                                # create
+readonly IMAGE_NAME="${1}"           # cyberdojo/language-start-points
+readonly IMAGE_TYPE="${2}"           # --languages
+declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
+
+# In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
+readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.create.context-dir.XXX)
+remove_tmp_dirs()
+{
+  rm -rf "${CONTEXT_DIR}" > /dev/null
+}
+trap remove_tmp_dirs EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # cyber-dojo start-point create <name> --custom    <url>...
@@ -14,7 +24,7 @@ declare -ar GIT_REPO_URLS="(${@:3})"
 show_use()
 {
   local -r MY_NAME=cyber-dojo
-  define TEXT <<- EOF
+  cat <<- EOF
 
   Use:
   ${MY_NAME} start-point create <name> --custom    <url>...
@@ -69,23 +79,9 @@ show_use()
   https://github.com/.../ruby-minitest
 
 EOF
-  printf "${TEXT}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-define()
-{
-  o=;
-  while IFS="\n" read -r a
-  do
-    o="$o$a"'
-';
-  done
-  eval "$1=\$o"
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_zero_if_show_use()
 {
   if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
@@ -95,7 +91,6 @@ exit_zero_if_show_use()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
@@ -110,7 +105,6 @@ exit_non_zero_if_bad_args()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_unless_git_installed()
 {
   if ! hash git 2> /dev/null; then
@@ -120,38 +114,18 @@ exit_non_zero_unless_git_installed()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-CONTEXT_DIR=''
-
-prepare_context_dir()
-{
-  CONTEXT_DIR=$(mktemp -d)
-  trap remove_context_dir EXIT
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-remove_context_dir()
-{
-  rm -rf "${CONTEXT_DIR}" > /dev/null
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 git_clone_urls_into_context_dir()
 {
-  for url in "${GIT_REPO_URLS[@]}"; do
-    git_clone_one_url_into_context_dir "${url}"
+  # Two or more git-repo-urls could have the same repo name
+  # but be from different repositories.
+  # So git clone each repo into its own unique directory
+  # based on a simple incrementing index.
+  for i in "${!GIT_REPO_URLS[@]}"; do
+    git_clone_one_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
   done
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Two or more git-repo-urls could have the same repo name
-# but be from different repositories.
-# So git clone each repo into its own unique directory
-# based on a simple incrementing index.
-URL_INDEX=0
-
 git_clone_one_url_into_context_dir()
 {
   # git-clone directly, from this script, into the
@@ -159,9 +133,10 @@ git_clone_one_url_into_context_dir()
   # Viz, run [git clone] on the host rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
   local -r url="${1}"
+  local -r url_index="${2}"
   cd "${CONTEXT_DIR}"
   local stderr
-  if ! stderr="$(git clone --single-branch --branch master --depth 1 "${url}" "${URL_INDEX}" 2>&1)"; then
+  if ! stderr="$(git clone --single-branch --branch master --depth 1 "${url}" "${url_index}" 2>&1)"; then
     local newline=$'\n'
     local msg="ERROR: bad git clone <url>${newline}"
     msg+="${IMAGE_TYPE} ${url}${newline}"
@@ -170,23 +145,21 @@ git_clone_one_url_into_context_dir()
     exit 3
   fi
 
-  chmod -R +rX "${URL_INDEX}"
-  local -r sha=$(cd ${URL_INDEX} && git rev-parse HEAD)
+  chmod -R +rX "${url_index}"
+  local -r sha=$(cd ${url_index} && git rev-parse HEAD)
   echo -e "${IMAGE_TYPE} \t ${url}"
-  echo -e "${URL_INDEX} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
-  rm -rf "${CONTEXT_DIR}/${URL_INDEX}/.git"
-  rm -rf "${CONTEXT_DIR}/${URL_INDEX}/docker"
-  URL_INDEX=$((URL_INDEX + 1))
+  echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
+  rm -rf "${CONTEXT_DIR}/${url_index}/.git"
+  rm -rf "${CONTEXT_DIR}/${url_index}/docker"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# There is a special case for the GIT_COMMIT_SHA env-var.
-# This is needed for cyberdojo/versioner which relies on being
-# able to get the SHA out of an 'official' start-point image
-# with a :latest tag to create it's .env file.
-
 build_image_from_context_dir()
 {
+  # There is a special case for the GIT_COMMIT_SHA env-var.
+  # This is needed for cyberdojo/versioner which relies on being
+  # able to get the SHA out of an 'official' start-point image
+  # with a :latest tag to create it's .env file.
   {
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
@@ -241,14 +214,12 @@ build_image_from_context_dir()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 stderr()
 {
   >&2 echo "${1}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 base_image_name()
 {
   # The uppercase names in this are replaced by their
@@ -256,11 +227,13 @@ base_image_name()
   echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 image_type()
 {
   echo "${IMAGE_TYPE:2}" # '--languages' => 'languages'
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 image_port_number()
 {
   # The uppercase names in this are replaced by their
@@ -277,6 +250,5 @@ image_port_number()
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed
-prepare_context_dir
 git_clone_urls_into_context_dir
 build_image_from_context_dir
