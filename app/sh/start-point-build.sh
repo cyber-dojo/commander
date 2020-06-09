@@ -17,7 +17,6 @@ trap remove_tmp_dirs EXIT
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # cyber-dojo start-point build <name> --languages <image>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 show_use()
 {
   local -r MY_NAME=cyber-dojo
@@ -62,7 +61,6 @@ EOF
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_zero_if_show_use()
 {
   if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
@@ -72,7 +70,6 @@ exit_zero_if_show_use()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
@@ -87,7 +84,6 @@ exit_non_zero_if_bad_args()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 exit_non_zero_unless_git_installed()
 {
   if ! hash git 2> /dev/null; then
@@ -97,32 +93,31 @@ exit_non_zero_unless_git_installed()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 copy_images_into_context_dir()
 {
-  for image_name in "${IMAGE_NAMES[@]}"; do
-    copy_one_image_into_context_dir "${image_name}"
+  # Copy each image's start_point/ into its own unique
+  # directory based on a simple incrementing index.
+  local -r count="$((${#IMAGE_NAMES[@]}-1))"
+  for i in "${!IMAGE_NAMES[@]}"; do
+    copy_one_image_into_context_dir "${IMAGE_NAMES[$i]}" "${i}"
   done
   echo -e "$(image_type)" > "${CONTEXT_DIR}/image.type"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# Copy each image's start_point/ into its own unique directory
-# based on a simple incrementing index.
-IMAGE_INDEX=0
-
 copy_one_image_into_context_dir()
 {
   local stderr
   local -r image_name="${1}"
-  local -r cidfile="${TMP_DIR}/${IMAGE_INDEX}"
+  local -r image_index="${2}"
+  local -r cidfile="${TMP_DIR}/${image_index}"
   if ! stderr=$(docker create --cidfile="${cidfile}" "${image_name}" 2>&1); then
     stderr "ERROR: cannot create container from ${image_name}"
     stderr "${stderr}"
     exit 3
   fi
   local -r cid=$(cat "${cidfile}")
-  if ! stderr=$(docker cp "${cid}:/start_point/." "${CONTEXT_DIR}/${IMAGE_INDEX}" 2>&1); then
+  if ! stderr=$(docker cp "${cid}:/start_point/." "${CONTEXT_DIR}/${image_index}" 2>&1); then
     stderr "ERROR: cannot copy start_point/ out of ${image_name}"
     stderr "${stderr}"
     exit 4
@@ -130,18 +125,16 @@ copy_one_image_into_context_dir()
   stderr=$(docker rm --force "${cid}" 2>&1)
 
   echo -e "${IMAGE_TYPE} \t ${image_name}"
-  echo -e "${IMAGE_INDEX} \t ${image_name}" >> "${CONTEXT_DIR}/build.shas"
-  IMAGE_INDEX=$((IMAGE_INDEX + 1))
+  echo -e "${image_index} \t ${image_name}" >> "${CONTEXT_DIR}/build.shas"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# There is a special case for the GIT_COMMIT_SHA env-var.
-# This is needed for cyberdojo/versioner which relies on being
-# able to get the SHA out of an 'official' start-point image
-# with a :latest tag to create it's .env file.
-
 build_image_from_context_dir()
 {
+  # There is a special case for the GIT_COMMIT_SHA env-var.
+  # This is needed for cyberdojo/versioner which relies on being
+  # able to get the SHA out of an 'official' start-point image
+  # with a :latest tag to create it's .env file.
   {
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
@@ -196,14 +189,12 @@ build_image_from_context_dir()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 stderr()
 {
   >&2 echo "${1}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 base_image_name()
 {
   # The uppercase names in this are replaced by their
@@ -211,11 +202,13 @@ base_image_name()
   echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 image_type()
 {
   echo "${IMAGE_TYPE:2}" # '--languages' => 'languages'
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 image_port_number()
 {
   # The uppercase names in this are replaced by their
