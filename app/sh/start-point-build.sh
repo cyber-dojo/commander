@@ -1,9 +1,12 @@
 #!/bin/bash -Ee
+# [cyber-dojo] start-point build cyberdojo/language-start-points --languages <image>...
+
 shift # start-point
 shift # build
-readonly IMAGE_NAME="${1}"
-readonly IMAGE_TYPE="${2}"
-declare -ar IMAGE_NAMES="(${@:3})"
+readonly IMAGE_NAME="${1}"          # cyberdojo/language-start-points
+readonly IMAGE_TYPE="${2}"          # --languages
+declare -ar IMAGE_NAMES="(${@:3})"  # <image>...
+
 # When running Docker Toolbox /tmp cannot be docker volume-mounted. So ~
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXX)
 readonly TMP_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.XXXXXX)
@@ -29,23 +32,23 @@ show_use()
 
   Builds a cyber-dojo start-point image named <name>
   containing start_point/ dirs of the specified <image> names.
-  Its base image will be cyberdojo/starter-base:CYBER_DOJO_START_POINTS_BASE_TAG
+  Its base image will be cyberdojo/start-points-base:CYBER_DOJO_START_POINTS_BASE_TAG
 
-  Example 1: local git-repo <url>s
+  Example 1: read <image> names directly from args
 
   ${MY_NAME} start-point build \\\\
         eg/first \\\\
           --languages \\\\
             cyberdojostartpoints/python_behave
 
-  Example 2: read <image> names from a curl'd file
+  Example 2: read <image> names from curl output
 
   ${MY_NAME} start-point build \\\\
         eg/fourth \\\\
           --languages \\\\
             \$(curl --silent https://raw.githubusercontent.com/.../image_list/all)
 
-  Example 3: read <image> names from a local file
+  Example 3: read <image> names from a file
 
   ${MY_NAME} start-point build \\\\
         eg/fifth \\\\

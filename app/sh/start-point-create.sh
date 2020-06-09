@@ -23,7 +23,7 @@ show_use()
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
-  Its base image will be cyberdojo/starter-base:CYBER_DOJO_START_POINTS_BASE_TAG
+  Its base image will be cyberdojo/start-points-base:CYBER_DOJO_START_POINTS_BASE_TAG
 
   Example 1: local git-repo <url>s
 
