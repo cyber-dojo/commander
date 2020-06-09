@@ -1,6 +1,6 @@
 #!/bin/bash -Ee
 
-readonly ROOT_DIR="$( cd "$( dirname "${0}" )" && pwd )"
+readonly ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 readonly TMP_DIR="$(mktemp -d /tmp/commander.XXXXXXX)"
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
@@ -179,5 +179,7 @@ on_ci_prepare_saver_volume_mount_dir
 pull_start_points_base_image
 if [ "${1}" == --build-only ] || [ "${1}" == -bo ]; then
   exit 0
+else
+  "${ROOT_DIR}/test/sh/run.sh"
 fi
 on_ci_publish_tagged_images
