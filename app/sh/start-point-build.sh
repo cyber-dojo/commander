@@ -1,11 +1,11 @@
 #!/bin/bash -Ee
-# [cyber-dojo] start-point build cyberdojo/language-start-points --languages <image>...
+# [cyber-dojo] start-point build cyberdojo/languages-start-points --languages <url>...
 
 shift                                # start-point
 shift                                # build
-readonly IMAGE_NAME="${1}"           # cyberdojo/language-start-points
+readonly IMAGE_NAME="${1}"           # cyberdojo/languages-start-points
 readonly IMAGE_TYPE="${2}"           # --languages
-declare -ar IMAGE_NAMES="(${@:3})"   # <image>...
+declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
 # In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXX)
@@ -18,7 +18,7 @@ remove_tmp_dirs()
 trap remove_tmp_dirs EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo start-point build <name> --languages <image>...
+# cyber-dojo start-point build <name> --languages <url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 show_use()
 {
@@ -26,29 +26,47 @@ show_use()
   cat <<- EOF
 
   Use:
-  ${MY_NAME} start-point build <name> --custom    <image>...
-  ${MY_NAME} start-point build <name> --exercises <image>...
-  ${MY_NAME} start-point build <name> --languages <image>...
+  ${MY_NAME} start-point build <name> --custom    <url>...
+  ${MY_NAME} start-point build <name> --exercises <url>...
+  ${MY_NAME} start-point build <name> --languages <url>...
 
   Builds a cyber-dojo start-point image named <name>
-  containing start_point/ dirs of the specified <image> names.
+  containing git clones of the specified git-repo <url>s.
   Its base image will be cyberdojo/start-points-base:CYBER_DOJO_START_POINTS_BASE_TAG
+  The image_name in each <url>'s start_point/manifest.json file is
+  tagged with the first seven chars of the commit sha (of HEAD on master).
 
-  Example 1: read <image> names directly from args
+  Example 1: local git-repo <url>s
 
   ${MY_NAME} start-point build \\\\
         eg/first \\\\
-          --languages \\\\
-            cyberdojostartpoints/python_behave
+          --custom \\\\
+            /user/fred/.../yahtzee \\\\
+            file:///user/fred/.../fizz_buzz
 
-  Example 2: read <image> names from curl output
+  Example 2: non-local git-repo <url>
+
+  ${MY_NAME} start-point build \\\\
+        eg/second \\\\
+          --exercises \\\\
+            https://github.com/.../my-exercises
+
+  Example 3: local and non-local git-repo <url>s
+
+  ${MY_NAME} start-point build \\\\
+        eg/third \\\\
+          --languages \\\\
+            /user/fred/.../asm-assert \\\\
+            https://github.com/.../my-languages
+
+  Example 4: read git-repo <url>s from a curl'd file
 
   ${MY_NAME} start-point build \\\\
         eg/fourth \\\\
           --languages \\\\
-            \$(curl --silent https://raw.githubusercontent.com/.../image_list/all)
+            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
-  Example 3: read <image> names from a file
+  Example 5: read git-repo <url>s from a local file
 
   ${MY_NAME} start-point build \\\\
         eg/fifth \\\\
@@ -56,9 +74,10 @@ show_use()
             \$(< my-language-selection.txt)
 
   cat my-language-selection.txt
-  cyberdojostartpoints/java_junit
-  cyberdojostartpoints/python_pytest
-  cyberdojostartpoints/ruby_minitest
+  https://github.com/.../java-junit
+  https://github.com/.../javascript-jasmine
+  https://github.com/.../python-pytest
+  https://github.com/.../ruby-minitest
 
 EOF
 }
@@ -96,38 +115,58 @@ exit_non_zero_unless_git_installed()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-copy_images_into_context_dir()
+git_clone_urls_into_context_dir()
 {
-  # Copy each image's start_point/ into its own unique
-  # directory based on a simple incrementing index.
-  for i in "${!IMAGE_NAMES[@]}"; do
-    copy_one_image_into_context_dir "${IMAGE_NAMES[$i]}" "${i}"
+  # Two or more git-repo-urls could have the same repo name
+  # but be from different repositories.
+  # So git clone each repo into its own unique directory
+  # based on a simple incrementing index.
+  for i in "${!GIT_REPO_URLS[@]}"; do
+    git_clone_one_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
   done
   echo -e "$(image_type)" > "${CONTEXT_DIR}/image.type"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-copy_one_image_into_context_dir()
+git_clone_one_url_into_context_dir()
 {
-  local stderr
-  local -r image_name="${1}"
-  local -r image_index="${2}"
-  local -r cidfile="${TMP_DIR}/${image_index}"
-  if ! stderr=$(docker create --cidfile="${cidfile}" "${image_name}" 2>&1); then
-    stderr "ERROR: cannot create container from ${image_name}"
-    stderr "${stderr}"
+  # git-clone directly, from this script, into the
+  # context dir before running [docker image build].
+  # Run [git clone] on the _host_ rather than wherever
+  # the docker daemon is (via a command in the Dockerfile).
+  local output
+  local -r url="${1}"
+  local -r url_index="${2}"
+
+  cd "${CONTEXT_DIR}"
+  echo "Git cloning ${url}"
+  if ! output="$(git clone --single-branch --branch master --depth 1 "${url}" "${url_index}" 2>&1)"
+  then
+    stderr "ERROR: bad git clone <url>"
+    stderr "${IMAGE_TYPE} ${url}"
+    stderr "${output}"
     exit 3
   fi
-  local -r cid=$(cat "${cidfile}")
-  if ! stderr=$(docker cp "${cid}:/start_point/." "${CONTEXT_DIR}/${image_index}" 2>&1); then
-    stderr "ERROR: cannot copy start_point/ out of ${image_name}"
-    stderr "${stderr}"
-    exit 4
-  fi
-  stderr=$(docker rm --force "${cid}" 2>&1)
 
-  echo -e "${IMAGE_TYPE} \t ${image_name}"
-  echo -e "${image_index} \t ${image_name}" >> "${CONTEXT_DIR}/build.shas"
+  local -r sha=$(cd "${CONTEXT_DIR}/${url_index}" && git rev-parse HEAD)
+  local -r tag="${sha:0:7}"
+
+  if ! output="$(docker run \
+      --volume "${CONTEXT_DIR}/${url_index}/start_point:/start_point:rw" \
+      --rm \
+      cyberdojofoundation/image_manifest_tagger \
+      "${tag}" 2>&1)"
+  then
+    stderr "ERROR: failed to tag image_name inside .../start_point/manifest.json"
+    stderr "${IMAGE_TYPE} ${url}"
+    stderr "${output}"
+    exit 3
+  fi
+
+  echo -e "${IMAGE_TYPE} \t ${url}"
+  echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
+  rm -rf "${CONTEXT_DIR}/${url_index}/.git"
+  rm -rf "${CONTEXT_DIR}/${url_index}/docker"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -153,6 +192,7 @@ build_image_from_context_dir()
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
   local output
   if ! output=$(docker image build \
+        --compress                 \
         --quiet                    \
         --rm                       \
         --tag "${IMAGE_NAME}"      \
@@ -183,7 +223,6 @@ build_image_from_context_dir()
       || :
     local -r last_line="${output##*$'\n'}"
     local -r last_word="${last_line##* }"
-    docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
     echo "Successfully built ${IMAGE_NAME}"
@@ -200,7 +239,7 @@ stderr()
 base_image_name()
 {
   # The uppercase names in this are replaced by their
-  # env-var values by the cat-start-point-create.sh script.
+  # env-var values by the cat-start-point-build.sh script.
   echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 }
 
@@ -214,7 +253,7 @@ image_type()
 image_port_number()
 {
   # The uppercase names in this are replaced by their
-  # env-var values by the cat-start-point-create.sh script.
+  # env-var values by the cat-start-point-build.sh script.
   case "$(image_type)" in
        custom) echo CYBER_DOJO_CUSTOM_START_POINTS_PORT;;
     exercises) echo CYBER_DOJO_EXERCISES_START_POINTS_PORT;;
@@ -227,5 +266,5 @@ image_port_number()
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed
-copy_images_into_context_dir
+git_clone_urls_into_context_dir
 build_image_from_context_dir
