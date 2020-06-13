@@ -115,41 +115,49 @@ exit_non_zero_unless_git_installed()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-git_clone_urls_into_context_dir()
+git_clone_tagged_urls_into_context_dir()
 {
   # Two or more git-repo-urls could have the same repo name
   # but be from different repositories.
   # So git clone each repo into its own unique directory
   # based on a simple incrementing index.
   for i in "${!GIT_REPO_URLS[@]}"; do
-    git_clone_one_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
+    git_clone_one_tagged_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
   done
   echo -e "$(image_type)" > "${CONTEXT_DIR}/image.type"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-git_clone_one_url_into_context_dir()
+git_clone_one_tagged_url_into_context_dir()
 {
   # git-clone directly, from this script, into the
   # context dir before running [docker image build].
   # Run [git clone] on the _host_ rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
   local output
-  local -r url="${1}"
-  local -r url_index="${2}"
+  local -r tagged_url="${1}"       # bbd75a1@https://github.com/cyber-dojo-languages/gcc-assert
+  local -r url_index="${2}"        # 0
+  local -r tag="${tagged_url:0:7}" # bbd75a1
+  local -r url="${tagged_url:8}"   # https://github.com/cyber-dojo-languages/gcc-assert
 
   cd "${CONTEXT_DIR}"
   echo "Git cloning ${url}"
   if ! output="$(git clone --single-branch --branch master --depth 1 "${url}" "${url_index}" 2>&1)"
   then
-    stderr "ERROR: bad git clone <url>"
-    stderr "${IMAGE_TYPE} ${url}"
+    stderr "ERROR: git clone ... ${url}"
+    stderr "${IMAGE_TYPE}"
     stderr "${output}"
     exit 3
   fi
 
-  local -r sha=$(cd "${CONTEXT_DIR}/${url_index}" && git rev-parse HEAD)
-  local -r tag="${sha:0:7}"
+  cd "${CONTEXT_DIR}/${url_index}"
+  if ! output=$(git checkout "${tag}" 2>&1)
+  then
+    stderr "ERROR: git checkout ${tag}"
+    stderr "${IMAGE_TYPE}"
+    stderr "${output}"
+    exit 3
+  fi
 
   if ! output="$(docker run \
       --volume "${CONTEXT_DIR}/${url_index}/start_point:/start_point:rw" \
@@ -163,6 +171,7 @@ git_clone_one_url_into_context_dir()
     exit 3
   fi
 
+  local -r sha="$(git rev-parse HEAD)"
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${url_index}/.git"
@@ -266,5 +275,5 @@ image_port_number()
 exit_zero_if_show_use "${@}"
 exit_non_zero_if_bad_args "${@}"
 exit_non_zero_unless_git_installed
-git_clone_urls_into_context_dir
+git_clone_tagged_urls_into_context_dir
 build_image_from_context_dir
