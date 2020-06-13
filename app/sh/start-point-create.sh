@@ -9,11 +9,11 @@ declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
 # In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.create.context-dir.XXX)
-remove_tmp_dirs()
+remove_tmp_dir()
 {
   rm -rf "${CONTEXT_DIR}" > /dev/null
 }
-trap remove_tmp_dirs EXIT
+trap remove_tmp_dir EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # cyber-dojo start-point create <name> --custom    <url>...
@@ -33,43 +33,43 @@ show_use()
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
-  Its base image will be cyberdojo/start-points-base:CYBER_DOJO_START_POINTS_BASE_TAG
+  Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 
   Example 1: local git-repo <url>s
 
-  ${MY_NAME} start-point create \\\\
-        eg/first \\\\
-          --custom \\\\
-            /user/fred/.../yahtzee \\\\
+  ${MY_NAME} start-point create \\
+        eg/first \\
+          --custom \\
+            /user/fred/.../yahtzee \\
             file:///user/fred/.../fizz_buzz
 
   Example 2: non-local git-repo <url>
 
-  ${MY_NAME} start-point create \\\\
-        eg/second \\\\
-          --exercises \\\\
+  ${MY_NAME} start-point create \\
+        eg/second \\
+          --exercises \\
             https://github.com/.../my-exercises
 
   Example 3: local and non-local git-repo <url>s
 
-  ${MY_NAME} start-point create \\\\
-        eg/third \\\\
-          --languages \\\\
-            /user/fred/.../asm-assert \\\\
+  ${MY_NAME} start-point create \\
+        eg/third \\
+          --languages \\
+            /user/fred/.../asm-assert \\
             https://github.com/.../my-languages
 
   Example 4: read git-repo <url>s from a curl'd file
 
-  ${MY_NAME} start-point create \\\\
-        eg/fourth \\\\
-          --languages \\\\
+  ${MY_NAME} start-point create \\
+        eg/fourth \\
+          --languages \\
             \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
 
   Example 5: read git-repo <url>s from a local file
 
-  ${MY_NAME} start-point create \\\\
-        eg/fifth \\\\
-          --languages \\\\
+  ${MY_NAME} start-point create \\
+        eg/fifth \\
+          --languages \\
             \$(< my-language-selection.txt)
 
   cat my-language-selection.txt
@@ -91,6 +91,24 @@ exit_zero_if_show_use()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+exit_non_zero_unless_docker_installed()
+{
+  if ! hash docker 2> /dev/null; then
+    stderr 'ERROR: docker is not installed!'
+    exit 3
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+exit_non_zero_unless_git_installed()
+{
+  if ! hash git 2> /dev/null; then
+    stderr 'ERROR: git is not installed!'
+    exit 3
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
@@ -101,15 +119,6 @@ exit_non_zero_if_bad_args()
   set -e
   if [ "${status}" != '0' ]; then
     exit "${status}"
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-exit_non_zero_unless_git_installed()
-{
-  if ! hash git 2> /dev/null; then
-    stderr 'ERROR: git is not installed!'
-    exit 3
   fi
 }
 
@@ -248,7 +257,8 @@ image_port_number()
 #==========================================================
 
 exit_zero_if_show_use "${@}"
-exit_non_zero_if_bad_args "${@}"
+exit_non_zero_unless_docker_installed
 exit_non_zero_unless_git_installed
+exit_non_zero_if_bad_args "${@}"
 git_clone_urls_into_context_dir
 build_image_from_context_dir
