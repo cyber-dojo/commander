@@ -131,7 +131,7 @@ git_clone_one_tagged_url_into_context_dir()
 
   cd "${CONTEXT_DIR}"
   echo "Git cloning ${url}"
-  if ! output="$(git clone --single-branch --branch master --depth 1 "${url}" "${url_index}" 2>&1)"
+  if ! output="$(git clone --single-branch --branch master "${url}" "${url_index}" 2>&1)"
   then
     stderr "ERROR: git clone ... ${url}"
     stderr "${IMAGE_TYPE}"
