@@ -148,18 +148,6 @@ git_clone_one_tagged_url_into_context_dir()
     exit 3
   fi
 
-  if ! output="$(docker run \
-      --volume "${CONTEXT_DIR}/${url_index}/start_point:/start_point:rw" \
-      --rm \
-      cyberdojofoundation/image_manifest_tagger \
-      "${tag}" 2>&1)"
-  then
-    stderr "ERROR: failed to tag image_name inside .../start_point/manifest.json"
-    stderr "${IMAGE_TYPE} ${url}"
-    stderr "${output}"
-    exit 3
-  fi
-
   local -r sha="$(git rev-parse HEAD)"
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
