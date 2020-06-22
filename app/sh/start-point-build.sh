@@ -131,7 +131,7 @@ git_clone_one_tagged_url_into_context_dir()
   local -r url="${tagged_url:8}"   # https://github.com/cyber-dojo-languages/gcc-assert
 
   cd "${CONTEXT_DIR}"
-  echo "Git cloning ${url}"
+  echo "git clone ${url}"
   if ! output="$(git clone --single-branch --branch master "${url}" "${url_index}" 2>&1)"
   then
     stderr "ERROR: git clone ... ${url}"
@@ -141,6 +141,7 @@ git_clone_one_tagged_url_into_context_dir()
   fi
 
   cd "${CONTEXT_DIR}/${url_index}"
+  echo "git checkout ${tag}"
   if ! output=$(git checkout "${tag}" 2>&1)
   then
     stderr "ERROR: git checkout ${tag}"
