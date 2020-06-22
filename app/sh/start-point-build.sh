@@ -29,8 +29,9 @@ show_use()
   Builds a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
   Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
-  The image_name in each <url>'s start_point/manifest.json file is
-  tagged. The tag is the first seven chars of the <tag-url>.
+  <tag-url> is a git-repo url with an optional 7-character tag prefix. Eg
+    https://github.com/cyber-dojo-start-points/gcc-assert
+    7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
 
   Example 1: non local <tag-url>
 
