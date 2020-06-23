@@ -36,6 +36,25 @@ test_____too_many_args_prints_to_stderr()
 
 test___success() { :; }
 
+test_____no_arg_prints_use()
+{
+  local -r line1='Use: cyber-dojo update [latest|RELEASE|TAG]'
+  local -r line2='Updates image tags ready for the next [cyber-dojo up] command.'
+  local -r line3='Example 1: update to latest'
+  local -r line4='Example 2: update to a given public release'
+  local -r line5='Example 3: update to a given development tag'
+
+  assertUpdate
+  assertStdoutIncludes "${line1}"
+  assertStdoutIncludes "${line2}"
+  assertStdoutIncludes "${line3}"
+  assertStdoutIncludes "${line4}"
+  assertStdoutIncludes "${line5}"
+  assertNoStderr
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test_____help_arg_prints_use()
 {
   local -r line1='Use: cyber-dojo update [latest|RELEASE|TAG]'

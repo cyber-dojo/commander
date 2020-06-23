@@ -14,7 +14,7 @@ def cyber_dojo_server_update
     `docker tag #{versioner} cyberdojo/versioner:#{was_tag}`
   end
 
-  tag = ARGV[1] || 'latest'
+  tag = ARGV[1]
   run "docker pull cyberdojo/versioner:#{tag}"
   exit(5) if $exit_status != 0
   run "docker tag cyberdojo/versioner:#{tag} cyberdojo/versioner:latest"
@@ -32,7 +32,7 @@ def exit_success_if_update_help
     '',
     'Example 1: update to latest',
     '',
-    'cyber-dojo update',
+    'cyber-dojo update latest',
     'cyber-dojo version',
     '...',
     'Version: 1.0.34',
@@ -54,7 +54,7 @@ def exit_success_if_update_help
     '   Type: development',
     ''
   ]
-  if ['-h','--help'].include?(ARGV[1])
+  if ['-h','--help',nil].include?(ARGV[1])
     show help
     exit succeeded
   end
