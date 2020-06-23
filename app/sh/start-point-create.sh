@@ -1,14 +1,14 @@
 #!/bin/bash -Ee
-# [cyber-dojo] start-point create cyberdojo/language-start-points --languages <url>...
+# [cyber-dojo] start-point create cyberdojo/languages-start-points --languages <url>...
 
 shift                                # start-point
 shift                                # create
-readonly IMAGE_NAME="${1}"           # cyberdojo/language-start-points
+readonly IMAGE_NAME="${1}"           # cyberdojo/languages-start-points
 readonly IMAGE_TYPE="${2}"           # --languages
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
 # In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
-readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.create.context-dir.XXX)
+readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXX)
 remove_tmp_dir()
 {
   rm -rf "${CONTEXT_DIR}" > /dev/null
@@ -16,67 +16,50 @@ remove_tmp_dir()
 trap remove_tmp_dir EXIT
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo start-point create <name> --custom    <url>...
-# cyber-dojo start-point create <name> --exercises <url>...
-# cyber-dojo start-point create <name> --languages <url>...
+# cyber-dojo start-point create <name> --custom    <tag-url>...
+# cyber-dojo start-point create <name> --exercises <tag-url>...
+# cyber-dojo start-point create <name> --languages <tag-url>...
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 show_use()
 {
   local -r MY_NAME=cyber-dojo
   cat <<- EOF
 
   Use:
-  ${MY_NAME} start-point create <name> --custom    <url>...
-  ${MY_NAME} start-point create <name> --exercises <url>...
   ${MY_NAME} start-point create <name> --languages <url>...
 
-  Creates a cyber-dojo start-point image named <name>
+  Builds a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
   Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
+  <url> can be a plain git-repo url
+        Eg https://github.com/cyber-dojo-start-points/gcc-assert
+  <url> can be prefixed with a 7-character tag.
+        This will git checkout the tag after the git clone.
+        Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
 
-  Example 1: local git-repo <url>s
+  Example 1: non local tagged <url>
+    ${MY_NAME} start-point create \\
+      eg/first \\
+        --languages \\
+          384f486@https://github.com/cyber-dojo-start-points/java-junit
 
-  ${MY_NAME} start-point create \\
-        eg/first \\
-          --custom \\
-            /user/fred/.../yahtzee \\
-            file:///user/fred/.../fizz_buzz
+  Example 2: read tagged git-repo <url>s from a local file
+    ${MY_NAME} start-point create \\
+      eg/second \\
+        --languages \\
+          \$(< my-language-selection.txt)
 
-  Example 2: non-local git-repo <url>
+    cat my-language-selection.txt
+    384f486@https://github.com/cyber-dojo-start-points/java-junit
+    cfbd925@https://github.com/cyber-dojo-start-points/javascript-jasmine
+    c14a87e@https://github.com/cyber-dojo-start-points/python-pytest
+    8fe0d11@https://github.com/cyber-dojo-start-points/ruby-minitest
 
-  ${MY_NAME} start-point create \\
-        eg/second \\
-          --exercises \\
-            https://github.com/.../my-exercises
-
-  Example 3: local and non-local git-repo <url>s
-
-  ${MY_NAME} start-point create \\
-        eg/third \\
-          --languages \\
-            /user/fred/.../asm-assert \\
-            https://github.com/.../my-languages
-
-  Example 4: read git-repo <url>s from a curl'd file
-
-  ${MY_NAME} start-point create \\
-        eg/fourth \\
-          --languages \\
-            \$(curl --silent https://raw.githubusercontent.com/.../url_list/all)
-
-  Example 5: read git-repo <url>s from a local file
-
-  ${MY_NAME} start-point create \\
-        eg/fifth \\
-          --languages \\
-            \$(< my-language-selection.txt)
-
-  cat my-language-selection.txt
-  https://github.com/.../java-junit
-  https://github.com/.../javascript-jasmine
-  https://github.com/.../python-pytest
-  https://github.com/.../ruby-minitest
+  Example 3: read tagged git-repo <url>s from a curl'd file
+    ${MY_NAME} start-point create \\
+      eg/third \\
+        --languages \\
+          \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/start-points/git_repo_urls.all.tagged)
 
 EOF
 }
@@ -91,20 +74,21 @@ exit_zero_if_show_use()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-exit_non_zero_unless_docker_installed()
+exit_non_zero_unless_installed()
 {
-  if ! hash docker 2> /dev/null; then
-    stderr 'ERROR: docker is not installed!'
-    exit 3
+  if ! installed "${1}" ; then
+    stderr 'ERROR: ${1} is not installed!'
+    exit 42
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-exit_non_zero_unless_git_installed()
+installed()
 {
-  if ! hash git 2> /dev/null; then
-    stderr 'ERROR: git is not installed!'
-    exit 3
+  if hash "${1}" 2> /dev/null; then
+    true
+  else
+    false
   fi
 }
 
@@ -123,39 +107,58 @@ exit_non_zero_if_bad_args()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-git_clone_urls_into_context_dir()
+git_clone_tagged_urls_into_context_dir()
 {
   # Two or more git-repo-urls could have the same repo name
   # but be from different repositories.
   # So git clone each repo into its own unique directory
   # based on a simple incrementing index.
   for i in "${!GIT_REPO_URLS[@]}"; do
-    git_clone_one_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
+    git_clone_one_tagged_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
   done
+  echo -e "$(image_type)" > "${CONTEXT_DIR}/image.type"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-git_clone_one_url_into_context_dir()
+git_clone_one_tagged_url_into_context_dir()
 {
   # git-clone directly, from this script, into the
   # context dir before running [docker image build].
-  # Viz, run [git clone] on the host rather than wherever
+  # Run [git clone] on the _host_ rather than wherever
   # the docker daemon is (via a command in the Dockerfile).
-  local -r url="${1}"
-  local -r url_index="${2}"
+  local output
+  local -r url="${1}"          # bbd75a1@https://github.com/cyber-dojo-languages/gcc-assert
+  local -r url_index="${2}"    # 0
+
+  if [ "${url:7:1}" == "@" ]; then
+    local -r detagged_url="${url:8}"  # "https://github.com/cyber-dojo-languages/gcc-assert"
+    local -r tag="${url:0:7}"         # "bbd75a1"
+  else
+    local -r detagged_url="${url}"    # "https://github.com/cyber-dojo-languages/gcc-assert"
+    local -r tag=""                   # ""
+  fi
+
   cd "${CONTEXT_DIR}"
-  local stderr
-  if ! stderr="$(git clone --single-branch --branch master --depth 1 "${url}" "${url_index}" 2>&1)"; then
-    local newline=$'\n'
-    local msg="ERROR: bad git clone <url>${newline}"
-    msg+="${IMAGE_TYPE} ${url}${newline}"
-    msg+="${stderr}"
-    stderr "${msg}"
+  echo "git clone ${detagged_url}"
+  if ! output="$(git clone --single-branch --branch master "${detagged_url}" "${url_index}" 2>&1)"; then
+    stderr "ERROR: git clone ... ${detagged_url}"
+    stderr "${IMAGE_TYPE}"
+    stderr "${output}"
     exit 3
   fi
 
-  chmod -R +rX "${url_index}"
-  local -r sha=$(cd ${url_index} && git rev-parse HEAD)
+  cd "${CONTEXT_DIR}/${url_index}"
+  if [ "${tag}" != "" ]; then
+    echo "git checkout ${tag}"
+    if ! output=$(git checkout "${tag}" 2>&1); then
+      stderr "ERROR: git checkout ${tag}"
+      stderr "${IMAGE_TYPE}"
+      stderr "${output}"
+      exit 3
+    fi
+  fi
+
+  local -r sha="$(git rev-parse HEAD)"
   echo -e "${IMAGE_TYPE} \t ${url}"
   echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
   rm -rf "${CONTEXT_DIR}/${url_index}/.git"
@@ -185,6 +188,7 @@ build_image_from_context_dir()
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
   local output
   if ! output=$(docker image build \
+        --compress                 \
         --quiet                    \
         --rm                       \
         --tag "${IMAGE_NAME}"      \
@@ -215,7 +219,6 @@ build_image_from_context_dir()
       || :
     local -r last_line="${output##*$'\n'}"
     local -r last_word="${last_line##* }"
-    docker system prune --force > /dev/null
     exit "${last_word}" # eg 16
   else
     echo "Successfully built ${IMAGE_NAME}"
@@ -257,8 +260,8 @@ image_port_number()
 #==========================================================
 
 exit_zero_if_show_use "${@}"
-exit_non_zero_unless_docker_installed
-exit_non_zero_unless_git_installed
+exit_non_zero_unless_installed docker
+exit_non_zero_unless_installed git
 exit_non_zero_if_bad_args "${@}"
-git_clone_urls_into_context_dir
+git_clone_tagged_urls_into_context_dir
 build_image_from_context_dir

@@ -1,4 +1,3 @@
-require_relative 'build'
 require_relative 'create'
 require_relative 'inspect'
 require_relative 'ls'
@@ -11,7 +10,6 @@ def cyber_dojo_start_point
   exit_success_if_show_start_point_help
   command = ARGV[1]
   case command
-    when 'build'   then cyber_dojo_start_point_build
     when 'create'  then cyber_dojo_start_point_create
     when 'inspect' then cyber_dojo_start_point_inspect
     when 'ls'      then cyber_dojo_start_point_ls
