@@ -12,11 +12,10 @@ CD_DIR()
   printf "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
 }
 
-CDL_DIR()
+CDSP_DIR()
 {
-  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-languages" && pwd )"
+  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-start-points" && pwd )"
 }
-
 
 on_CI()
 {
@@ -29,9 +28,9 @@ custom_urls()
 {
   # A single Alpine-based url to help make tests faster
   if on_CI; then
-    printf https://github.com/cyber-dojo-languages/java-junit
+    printf https://github.com/cyber-dojo-start-points/java-junit
   else
-    printf "$(CDL_DIR)/java-junit"
+    printf "$(CDSP_DIR)/java-junit"
   fi
 }
 
@@ -52,9 +51,9 @@ languages_urls()
 {
   # A single Alpine-based url to help make tests faster
   if on_CI; then
-    printf https://github.com/cyber-dojo-languages/ruby-minitest
+    printf https://github.com/cyber-dojo-start-points/ruby-minitest
   else
-    printf "$(CDL_DIR)/ruby-minitest"
+    printf "$(CDSP_DIR)/ruby-minitest"
   fi
 }
 

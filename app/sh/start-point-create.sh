@@ -28,7 +28,7 @@ show_use()
   Use:
   ${MY_NAME} start-point create <name> --languages <url>...
 
-  Builds a cyber-dojo start-point image named <name>
+  Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
   Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
   <url> can be a plain git-repo url
