@@ -37,7 +37,7 @@ test_____custom_start_point_prints_details()
   assertStdoutIncludes '  "Java, JUnit": {'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
-  assertStdoutIncludes '    "image_name": "cyberdojofoundation/java_junit"'
+  assertStdoutIncludes '    "image_name": "cyberdojofoundation/java_junit'
   assertStdoutIncludes '  }'
   assertStdoutIncludes '}'
   assertNoStderr
@@ -73,7 +73,7 @@ test_____languages_start_point_prints_details()
   assertStdoutIncludes '  "Ruby, MiniTest": {'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
-  assertStdoutIncludes '    "image_name": "cyberdojofoundation/ruby_mini_test"'
+  assertStdoutIncludes '    "image_name": "cyberdojofoundation/ruby_mini_test'
   assertStdoutIncludes '  }'
   assertStdoutIncludes '}'
   assertNoStderr
