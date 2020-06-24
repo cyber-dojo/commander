@@ -161,7 +161,7 @@ git_clone_one_tagged_url_into_context_dir()
 
   local -r sha="$(git rev-parse HEAD)"
   echo -e "${IMAGE_TYPE} \t ${url}"
-  echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/shas.txt"
+  echo -e "${url_index} \t ${sha} \t ${url}" >> "${CONTEXT_DIR}/build.shas"
   rm -rf "${CONTEXT_DIR}/${url_index}/.git"
   rm -rf "${CONTEXT_DIR}/${url_index}/docker"
 }
