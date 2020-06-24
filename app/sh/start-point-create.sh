@@ -9,23 +9,17 @@ declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
 # In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
-remove_tmp_dir()
-{
-  rm -rf "${CONTEXT_DIR}" > /dev/null
-}
+remove_tmp_dir() { rm -rf "${CONTEXT_DIR}" > /dev/null; }
 trap remove_tmp_dir EXIT
 
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# cyber-dojo start-point create <name> --custom    <tag-url>...
-# cyber-dojo start-point create <name> --exercises <tag-url>...
-# cyber-dojo start-point create <name> --languages <tag-url>...
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 show_use()
 {
   local -r MY_NAME=cyber-dojo
   cat <<- EOF
 
   Use:
+  ${MY_NAME} start-point create <name> --custom    <url>...
+  ${MY_NAME} start-point create <name> --exercises <url>...
   ${MY_NAME} start-point create <name> --languages <url>...
 
   Creates a cyber-dojo start-point image named <name>
