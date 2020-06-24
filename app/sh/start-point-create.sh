@@ -8,7 +8,7 @@ readonly IMAGE_TYPE="${2}"           # --languages
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
 # In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
-readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXX)
+readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
 remove_tmp_dir()
 {
   rm -rf "${CONTEXT_DIR}" > /dev/null
