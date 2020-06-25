@@ -21,9 +21,6 @@ def cyber_dojo_server_up
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
-
-  pull_all_images_named_in(custom)
-  pull_all_images_named_in(languages)
   STDOUT.puts
 
   env_vars = dot_env
@@ -39,6 +36,7 @@ def cyber_dojo_server_up
 
   apply_user_defined_env_vars(env_vars)
   create_user_defined_env_files
+  STDOUT.puts
 
   if docker_swarm?
     command = "docker stack up #{docker_swarm_yml_files} cyber-dojo"
@@ -150,7 +148,7 @@ def exit_success_if_up_help
     minitab + "#{me} start-point create \\",
     minitab + '  cyberdojo/languages-start-points-common \\',
     minitab + '    --languages \\',
-    minitab + '      $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)',
+    minitab + '      $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/start-points/git_repo_urls.common.tagged})',
     '',
     'Additionally, .env files for nginx, and web can be overriden using',
     "environment variables holding the .env file's absolute path.",
@@ -192,30 +190,4 @@ def exit_failure_unless_start_point_exists(type, image_name)
     STDERR.puts "ERROR: the type of #{image_name} is #{image_type} (not #{type})"
     exit failed
   end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def pull_all_images_named_in(start_point_image_name)
-  image_names = get_image_names
-  get_manifests_image_names(start_point_image_name).each do |ltf|
-    STDOUT.print('.')
-    unless image_names.include?(ltf)
-      system("docker pull #{ltf}")
-    end
-  end
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def get_image_names
-  `docker image ls --format {{.Repository}}`.split.sort.uniq - ['<none>']
-end
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-def get_manifests_image_names(image_name)
-  stdout = cyber_dojo_start_point_inspection(image_name)
-  json = JSON.parse!(stdout)
-  json.values.collect { |value| value['image_name'] }.sort.uniq
 end

@@ -85,7 +85,7 @@ The default start-point images were created using:
   cyber-dojo start-point create \\
     cyberdojo/languages-start-points-common \\
       --languages \\
-        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages/master/url_list/common)
+        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/start-points/git_repo_urls.common.tagged})
 
 Additionally, .env files for nginx, and web can be overriden using
 environment variables holding the .env file's absolute path.
