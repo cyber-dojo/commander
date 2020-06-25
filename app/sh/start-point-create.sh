@@ -91,8 +91,8 @@ exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
   set +e
-  docker container run --rm $(base_image_name) \
-    /app/src/from_script/bad_args.rb ${args}
+  docker container run --entrypoint="" --rm $(base_image_name) \
+    bash -c "ruby /app/src/from_script/bad_args.rb ${args}"
   local -r status=$?
   set -e
   if [ "${status}" != '0' ]; then
@@ -172,7 +172,7 @@ build_image_from_context_dir()
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
-    echo "RUN /app/src/from_script/check_all.rb /app/repos $(image_type)"
+    echo "RUN ruby /app/src/from_script/check_all.rb /app/repos $(image_type)"
     echo "ENV IMAGE_TYPE=$(image_type)"
     if [ -n "${GIT_COMMIT_SHA}" ]; then
       echo "ENV SHA=${GIT_COMMIT_SHA}"
