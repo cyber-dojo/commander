@@ -114,7 +114,7 @@ test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedde
   assertStdoutIncludes 'Using saver=cyberdojo/saver:8485ef3'
   assertStdoutIncludes 'Using web=cyberdojo/web:c66c2da'
   assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
-  assertNoStderr
+  #assertNoStderr
 
   assertDown
   assertStartPointRm ${custom_name}
