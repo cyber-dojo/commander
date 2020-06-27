@@ -50,10 +50,12 @@ show_use()
     8fe0d11@https://github.com/cyber-dojo-start-points/ruby-minitest
 
   Example 3: read tagged git-repo <url>s from a curl'd file
+    ORG=https://raw.githubusercontent.com/cyber-dojo
+    REPO=languages-start-points
     ${MY_NAME} start-point create \\
       eg/third \\
         --languages \\
-          \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/start-points/git_repo_urls.all.tagged)
+          \$(curl --silent ${ORG}/${REPO}/master/start-points/git_repo_urls.all.tagged)
 
 EOF
 }
