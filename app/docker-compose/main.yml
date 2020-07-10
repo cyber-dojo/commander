@@ -46,7 +46,7 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
   custom-start-points:
-    user: root
+    user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true
@@ -58,7 +58,7 @@ services:
     read_only: true
 
   languages-start-points:
-    user: root
+    user: nobody
     init: true
     environment: [ NO_PROMETHEUS ]
     read_only: true
