@@ -68,7 +68,7 @@ Command-line-arg           Default
 --port=NUMBER              80
 --custom=IMAGE_NAME        cyberdojo/custom-start-points
 --exercises=IMAGE_NAME     cyberdojo/exercises-start-points
---languages=IMAGE_NAME     cyberdojo/languages-start-points-common
+--languages=IMAGE_NAME     cyberdojo/languages-start-points
 
 The default start-point images were created using:
 
@@ -83,9 +83,9 @@ The default start-point images were created using:
         https://github.com/cyber-dojo/exercises-start-points.git
 
   cyber-dojo start-point create \\
-    cyberdojo/languages-start-points-common \\
+    cyberdojo/languages-start-points \\
       --languages \\
-        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/start-points/git_repo_urls.common.tagged})
+        \$(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/git_repo_urls.tagged})
 
 Additionally, .env files for nginx, and web can be overriden using
 environment variables holding the .env file's absolute path.
