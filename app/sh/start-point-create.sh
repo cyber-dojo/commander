@@ -174,11 +174,12 @@ build_image_from_context_dir()
     echo "COPY . /app/repos"
     echo "RUN ruby /app/src/from_script/check_all.rb /app/repos $(image_type)"
     echo "ENV IMAGE_TYPE=$(image_type)"
-    if [ -n "${GIT_COMMIT_SHA}" ]; then
+    if [ -n "${GIT_COMMIT_SHA:-}" ]; then
       echo "ENV SHA=${GIT_COMMIT_SHA}"
     fi
     echo "ENV PORT=$(image_port_number)"
     echo "EXPOSE $(image_port_number)"
+    echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
