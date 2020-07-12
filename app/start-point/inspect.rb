@@ -14,10 +14,11 @@ def cyber_dojo_start_point_inspection(name)
   command =
   [
     'docker run',
-    '--rm',
+    '--entrypoint=ruby',
     '--interactive',
+    '--rm',
     name,
-    "sh -c 'ruby /app/repos/inspect.rb'"
+    '/app/repos/inspect.rb'
   ].join(' ')
   run(command)
 end
