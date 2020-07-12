@@ -84,17 +84,19 @@ test_____help_arg_prints_use()
 
 test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
 {
-  local -r custom_name=test_up_custom_246
-  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
-  local -r languages_name=test_up_languages_246
-  assertStartPointCreate ${languages_name} --languages $(languages_urls)
-
   # cyberdojo/versioner:5e3bc0b pulls cyberdojo/commander:b291513
   # but keep that pull out of stdout/stderr assertions
   docker pull cyberdojo/commander:b291513 &> /dev/null
 
   # This replaces the fake versioner so must be the last test using it.
   assertUpdate 5e3bc0b
+
+  # Create custom images *after* doing the update
+  local -r custom_name=test_up_custom_246
+  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
+  local -r languages_name=test_up_languages_246
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
+
   # use languages-small to minimize language-test-framework pulls
   assertUp --languages=${languages_name} --custom=${custom_name}
 
