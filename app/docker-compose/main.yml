@@ -25,12 +25,6 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # choosers
-  custom-chooser:
-    user: nobody
-    init: true
-    environment: [ NO_PROMETHEUS ]
-    read_only: true
-
   exercises-chooser:
     user: nobody
     init: true

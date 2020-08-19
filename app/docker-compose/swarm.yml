@@ -65,16 +65,6 @@ services:
           memory: 32M
           cpus: '0.2'
 
-  custom-chooser:
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          memory: 32M
-          cpus: '0.2'
-
   custom-start-points:
     deploy:
       mode: global

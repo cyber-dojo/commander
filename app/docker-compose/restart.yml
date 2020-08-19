@@ -12,8 +12,6 @@ services:
   creator:
     restart: on-failure
 
-  custom-chooser:
-    restart: on-failure
   exercises-chooser:
     restart: on-failure
   languages-chooser:

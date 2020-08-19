@@ -10,7 +10,6 @@ services:
   web:
     depends_on:
       - creator
-      - custom-chooser
       - exercises-chooser
       - languages-chooser
       - custom-start-points

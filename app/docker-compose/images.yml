@@ -19,8 +19,6 @@ services:
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # choosers
-  custom-chooser:
-    image: ${CYBER_DOJO_CUSTOM_CHOOSER_IMAGE}:${CYBER_DOJO_CUSTOM_CHOOSER_TAG}
   exercises-chooser:
     image: ${CYBER_DOJO_EXERCISES_CHOOSER_IMAGE}:${CYBER_DOJO_EXERCISES_CHOOSER_TAG}
   languages-chooser:

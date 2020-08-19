@@ -61,7 +61,6 @@ languages_urls()
 
 declare -a service_names=(
   creator
-  custom-chooser
   exercises-chooser
   languages-chooser
   differ

@@ -2,7 +2,6 @@
 def service_names
   %w(
     creator
-    custom-chooser
     exercises-chooser
     languages-chooser
     avatars
