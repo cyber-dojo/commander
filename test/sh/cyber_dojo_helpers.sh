@@ -61,12 +61,11 @@ languages_urls()
 
 declare -a service_names=(
   creator
-  exercises-chooser
-  languages-chooser
   differ
   nginx
   repler
   runner
+  puller
   saver
   shas
   web

@@ -12,11 +12,6 @@ services:
   creator:
     restart: on-failure
 
-  exercises-chooser:
-    restart: on-failure
-  languages-chooser:
-    restart: on-failure
-
   custom-start-points:
     restart: on-failure
   exercises-start-points:

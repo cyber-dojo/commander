@@ -24,20 +24,6 @@ services:
       - CYBER_DOJO_RELEASE
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # choosers
-  exercises-chooser:
-    user: nobody
-    init: true
-    environment: [ NO_PROMETHEUS ]
-    read_only: true
-
-  languages-chooser:
-    user: nobody
-    init: true
-    environment: [ NO_PROMETHEUS ]
-    read_only: true
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
   # start-points
   custom-start-points:
     user: nobody

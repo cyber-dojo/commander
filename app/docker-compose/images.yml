@@ -18,12 +18,6 @@ services:
     image: ${CYBER_DOJO_LANGUAGES_START_POINTS}
 
   # - - - - - - - - - - - - - - - - - - - - - - - -
-  # choosers
-  exercises-chooser:
-    image: ${CYBER_DOJO_EXERCISES_CHOOSER_IMAGE}:${CYBER_DOJO_EXERCISES_CHOOSER_TAG}
-  languages-chooser:
-    image: ${CYBER_DOJO_LANGUAGES_CHOOSER_IMAGE}:${CYBER_DOJO_LANGUAGES_CHOOSER_TAG}
-
   creator:
     image: ${CYBER_DOJO_CREATOR_IMAGE}:${CYBER_DOJO_CREATOR_TAG}
 

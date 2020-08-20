@@ -13,11 +13,6 @@ services:
   languages-start-points:
     container_name: cyber-dojo-languages-start-points
 
-  exercises-chooser:
-    container_name: cyber-dojo-exercises-chooser
-  languages-chooser:
-    container_name: cyber-dojo-languages-chooser
-
   creator:
     container_name: cyber-dojo-creator
 
