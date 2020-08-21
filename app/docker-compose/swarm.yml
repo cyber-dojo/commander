@@ -55,6 +55,16 @@ services:
           memory: 256M
           cpus: '0.75'
 
+  puller:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.2'
+
   creator:
     deploy:
       mode: global

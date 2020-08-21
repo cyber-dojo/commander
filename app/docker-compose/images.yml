@@ -33,6 +33,8 @@ services:
     image: ${CYBER_DOJO_REPLER_IMAGE}:${CYBER_DOJO_REPLER_TAG}
   runner:
     image: ${CYBER_DOJO_RUNNER_IMAGE}:${CYBER_DOJO_RUNNER_TAG}
+  puller:
+    image: ${CYBER_DOJO_PULLER_IMAGE}:${CYBER_DOJO_PULLER_TAG}
   saver:
     image: ${CYBER_DOJO_SAVER_IMAGE}:${CYBER_DOJO_SAVER_TAG}
   shas:

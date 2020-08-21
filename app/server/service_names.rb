@@ -8,6 +8,7 @@ def service_names
     nginx
     repler
     runner
+    puller
     saver
     shas
     web

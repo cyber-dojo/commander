@@ -28,6 +28,9 @@ services:
   runner:
     restart: on-failure
 
+  puller:
+    restart: on-failure
+
   differ:
     restart: on-failure
 
