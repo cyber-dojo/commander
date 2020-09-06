@@ -52,13 +52,6 @@ services:
         tmpfs:
           size: 52428800 # 50MB
 
-  puller:
-    volumes:
-      - type: tmpfs
-        target: /tmp
-        tmpfs:
-          size: 52428800 # 50MB
-
   differ:
     volumes:
       - type: tmpfs

@@ -6,7 +6,5 @@ services:
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   runner:
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
-  puller:
-    volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   saver:
     volumes: [ "/cyber-dojo:/cyber-dojo:rw" ]

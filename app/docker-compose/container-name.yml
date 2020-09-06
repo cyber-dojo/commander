@@ -28,9 +28,6 @@ services:
   runner:
     container_name: cyber-dojo-runner
 
-  puller:
-    container_name: cyber-dojo-puller
-
   differ:
     container_name: cyber-dojo-differ
 

@@ -16,6 +16,5 @@ services:
       - differ
       - repler
       - runner
-      - puller
       - saver
       - shas
