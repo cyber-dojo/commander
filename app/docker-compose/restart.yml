@@ -12,6 +12,9 @@ services:
   creator:
     restart: on-failure
 
+  model:
+    restart: on-failure
+
   custom-start-points:
     restart: on-failure
   exercises-start-points:

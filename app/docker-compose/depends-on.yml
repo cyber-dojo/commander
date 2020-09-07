@@ -18,3 +18,7 @@ services:
       - runner
       - saver
       - shas
+
+  model:
+    depends_on:
+      - saver

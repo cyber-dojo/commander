@@ -28,27 +28,28 @@ services:
   custom-start-points:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   exercises-start-points:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   languages-start-points:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # creator
   creator:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
+    read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  model:
+    user: nobody
+    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,7 +57,6 @@ services:
   avatars:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,7 +64,6 @@ services:
   repler:
     user: root
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
     networks:
       - cyber-dojo
@@ -75,7 +74,6 @@ services:
   runner:
     user: root
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,7 +81,6 @@ services:
   differ:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -91,7 +88,6 @@ services:
   saver:
     user: saver
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,5 +95,4 @@ services:
   shas:
     user: nobody
     init: true
-    environment: [ NO_PROMETHEUS ]
     read_only: true

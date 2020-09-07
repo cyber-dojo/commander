@@ -1,10 +1,11 @@
 
 def service_names
   %w(
-    creator
     avatars
     commander
+    creator
     differ
+    model
     nginx
     repler
     runner

@@ -21,6 +21,9 @@ services:
   creator:
     image: ${CYBER_DOJO_CREATOR_IMAGE}:${CYBER_DOJO_CREATOR_TAG}
 
+  model:
+    image: ${CYBER_DOJO_MODEL_IMAGE}:${CYBER_DOJO_MODEL_TAG}
+
   # - - - - - - - - - - - - - - - - - - - - - - - -
   # main services
   web:

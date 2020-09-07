@@ -16,6 +16,9 @@ services:
   creator:
     container_name: cyber-dojo-creator
 
+  model:
+    container_name: cyber-dojo-model
+
   avatars:
     container_name: cyber-dojo-avatars
 
