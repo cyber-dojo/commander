@@ -26,17 +26,14 @@ services:
   # start-points
   custom-start-points:
     user: nobody
-    init: true
     read_only: true
 
   exercises-start-points:
     user: nobody
-    init: true
     read_only: true
 
   languages-start-points:
     user: nobody
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
