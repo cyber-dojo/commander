@@ -18,7 +18,6 @@ services:
   # main server (rails)
   web:
     user: nobody
-    init: true
     environment:
       - CYBER_DOJO_SHA
       - CYBER_DOJO_RELEASE
