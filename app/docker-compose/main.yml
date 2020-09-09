@@ -43,20 +43,17 @@ services:
   # - - - - - - - - - - - - - - - - - - - - - - -
   creator:
     user: nobody
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   model:
     user: nobody
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # 64 animals
   avatars:
     user: nobody
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,14 +70,12 @@ services:
   # runs cyber-dojo.sh in time-boxed container, returns traffic-light colour
   runner:
     user: root
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
   # diffs all the files in two test events
   differ:
     user: nobody
-    init: true
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
@@ -94,5 +89,4 @@ services:
   # shows shas of each service
   shas:
     user: nobody
-    init: true
     read_only: true
