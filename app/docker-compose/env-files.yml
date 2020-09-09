@@ -16,9 +16,11 @@ services:
   nginx:
     env_file:
       - ${ENV_ROOT}/nginx.env
+      - .env
   web:
     env_file:
       - ${ENV_ROOT}/web.env
+      - .env
 
   custom-start-points:
     env_file:
