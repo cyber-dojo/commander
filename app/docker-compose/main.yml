@@ -47,12 +47,6 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # 64 animals
-  avatars:
-    user: nobody
-    read_only: true
-
-  # - - - - - - - - - - - - - - - - - - - - - - -
   # provides access to repl via web-socket
   repler:
     user: root

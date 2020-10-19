@@ -5,7 +5,6 @@ services:
 
   nginx:
     depends_on:
-      - avatars
       - web
   web:
     depends_on:

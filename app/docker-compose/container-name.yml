@@ -19,9 +19,6 @@ services:
   model:
     container_name: cyber-dojo-model
 
-  avatars:
-    container_name: cyber-dojo-avatars
-
   web:
     container_name: cyber-dojo-web
 

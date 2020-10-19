@@ -38,9 +38,6 @@ services:
   model:
     env_file:
       - .env
-  avatars:
-    env_file:
-      - .env
   differ:
     env_file:
       - .env

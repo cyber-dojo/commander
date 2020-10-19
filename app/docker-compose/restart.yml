@@ -22,9 +22,6 @@ services:
   languages-start-points:
     restart: on-failure
 
-  avatars:
-    restart: on-failure
-
   repler:
     restart: on-failure
 
