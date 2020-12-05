@@ -13,7 +13,10 @@ jobs:
           name: Build image, test it, tag it, publish it
           command: |
             set -e
-            ./build_test_tag_publish.sh
+            # DOCKER_USER, DOCKER_PASS are in ci context
+            echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
+            ./build_test_publish.sh
+            docker logout
 
 workflows:
   version: 2
