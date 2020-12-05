@@ -12,6 +12,7 @@ services:
       - custom-start-points
       - exercises-start-points
       - languages-start-points
+      - dashboard
       - differ
       - repler
       - runner

@@ -23,33 +23,25 @@ services:
       - .env
 
   custom-start-points:
-    env_file:
-      - .env
+    env_file: [ .env ]
   exercises-start-points:
-    env_file:
-      - .env
+    env_file: [ .env ]
   languages-start-points:
-    env_file:
-      - .env
+    env_file: [ .env ]
 
   creator:
-    env_file:
-      - .env
+    env_file: [ .env ]
   model:
-    env_file:
-      - .env
+    env_file: [ .env ]
+  dashboard:
+    env_file: [ .env ]
   differ:
-    env_file:
-      - .env
+    env_file: [ .env ]
   repler:
-    env_file:
-      - .env
+    env_file: [ .env ]
   runner:
-    env_file:
-      - .env
+    env_file: [ .env ]
   saver:
-    env_file:
-      - .env
+    env_file: [ .env ]
   shas:
-    env_file:
-      - .env
+    env_file: [ .env ]

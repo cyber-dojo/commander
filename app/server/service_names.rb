@@ -3,6 +3,7 @@ def service_names
   %w(
     commander
     creator
+    dashboard
     differ
     model
     nginx

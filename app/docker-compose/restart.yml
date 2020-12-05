@@ -28,6 +28,9 @@ services:
   runner:
     restart: on-failure
 
+  dashboard:
+    restart: on-failure
+
   differ:
     restart: on-failure
 

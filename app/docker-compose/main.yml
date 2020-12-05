@@ -63,7 +63,13 @@ services:
     read_only: true
 
   # - - - - - - - - - - - - - - - - - - - - - - -
-  # diffs all the files in two test events
+  # group dashboard
+  dashboard:
+    user: nobody
+    read_only: true
+
+  # - - - - - - - - - - - - - - - - - - - - - - -
+  # diff the files in two test events (used by review/show)
   differ:
     user: nobody
     read_only: true

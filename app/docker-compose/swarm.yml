@@ -105,6 +105,16 @@ services:
           memory: 32M
           cpus: '0.2'
 
+  dashboard:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 32M
+          cpus: '0.5'
+
   differ:
     deploy:
       mode: global

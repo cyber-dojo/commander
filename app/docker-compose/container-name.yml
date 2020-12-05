@@ -28,6 +28,9 @@ services:
   runner:
     container_name: cyber-dojo-runner
 
+  dashboard:
+    container_name: cyber-dojo-dashboard
+
   differ:
     container_name: cyber-dojo-differ
 
