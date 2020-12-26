@@ -45,7 +45,7 @@ test_____arg_is_not_a_running_container()
   local -r arg=wibble
   refuteSh ${arg}
   assertNoStdout
-  assertStderrEquals "ERROR: cyber-dojo-${arg} is not a running container"
+  assertStderrEquals "ERROR: cyber_dojo_${arg} is not a running container"
 }
 
 test_____extra_arg_prints_use()

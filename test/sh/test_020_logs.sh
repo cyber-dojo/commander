@@ -45,7 +45,7 @@ test_____unknown_arg()
   local -r arg=salmon
   refuteLogs ${arg}
   assertNoStdout
-  assertStderrEquals "ERROR: cyber-dojo-${arg} is not a running container"
+  assertStderrEquals "ERROR: cyber_dojo_${arg} is not a running container"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

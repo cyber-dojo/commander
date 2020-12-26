@@ -39,12 +39,12 @@ test_____up_prints_start_points_and_port_and_creates_containers()
     assertStdoutIncludes "Using ${service}=cyberdojo/${service}:"
   done
 
-  assertStdoutIncludes "Creating cyber-dojo-custom-start-points"
-  assertStdoutIncludes "Creating cyber-dojo-exercises-start-points"
-  assertStdoutIncludes "Creating cyber-dojo-languages-start-points"
+  assertStdoutIncludes "Creating cyber_dojo_custom_start_points"
+  assertStdoutIncludes "Creating cyber_dojo_exercises_start_points"
+  assertStdoutIncludes "Creating cyber_dojo_languages_start_points"
   for service in "${service_names[@]}"
   do
-    assertStdoutIncludes "Creating cyber-dojo-${service}"
+    assertStdoutIncludes "Creating cyber_dojo_${service}"
   done
   assertNoStderr
 
