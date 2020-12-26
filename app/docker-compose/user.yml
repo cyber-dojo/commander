@@ -1,0 +1,43 @@
+
+version: '3.7'
+
+services:
+
+  nginx:
+    user: root
+
+  web:
+    user: nobody
+
+  custom-start-points:
+    user: nobody
+
+  exercises-start-points:
+    user: nobody
+
+  languages-start-points:
+    user: nobody
+
+  creator:
+    user: nobody
+
+  model:
+    user: nobody
+
+  repler:
+    user: root
+
+  runner:
+    user: root
+
+  dashboard:
+    user: nobody
+
+  differ:
+    user: nobody
+
+  saver:
+    user: saver
+
+  shas:
+    user: nobody

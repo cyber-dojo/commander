@@ -1,0 +1,15 @@
+
+# These docker images do not (yet) specify /sbin/tini in their ENTRYPOINT
+
+version: '3.7'
+
+services:
+
+  nginx:
+    init: true
+
+  repler:
+    init: true
+
+  saver:
+    init: true

@@ -1,0 +1,37 @@
+
+version: '3.7'
+
+services:
+
+  custom-start-points:
+    read_only: true
+
+  exercises-start-points:
+    read_only: true
+
+  languages-start-points:
+    read_only: true
+
+  creator:
+    read_only: true
+
+  model:
+    read_only: true
+
+  repler:
+    read_only: true
+
+  runner:
+    read_only: true
+
+  dashboard:
+    read_only: true
+
+  differ:
+    read_only: true
+
+  saver:
+    read_only: true
+
+  shas:
+    read_only: true
