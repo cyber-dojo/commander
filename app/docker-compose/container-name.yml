@@ -4,38 +4,38 @@ version: '3.7'
 services:
 
   nginx:
-    container_name: cyber-dojo-nginx
+    container_name: cyber_dojo_nginx
 
   custom-start-points:
-    container_name: cyber-dojo-custom-start-points
+    container_name: cyber_dojo_custom_start_points
   exercises-start-points:
-    container_name: cyber-dojo-exercises-start-points
+    container_name: cyber_dojo_exercises_start_points
   languages-start-points:
-    container_name: cyber-dojo-languages-start-points
+    container_name: cyber_dojo_languages_start_points
 
   creator:
-    container_name: cyber-dojo-creator
+    container_name: cyber_dojo_creator
 
   model:
-    container_name: cyber-dojo-model
+    container_name: cyber_dojo_model
 
   web:
-    container_name: cyber-dojo-web
+    container_name: cyber_dojo_web
 
   repler:
-    container_name: cyber-dojo-repler
+    container_name: cyber_dojo_repler
 
   runner:
-    container_name: cyber-dojo-runner
+    container_name: cyber_dojo_runner
 
   dashboard:
-    container_name: cyber-dojo-dashboard
+    container_name: cyber_dojo_dashboard
 
   differ:
-    container_name: cyber-dojo-differ
+    container_name: cyber_dojo_differ
 
   saver:
-    container_name: cyber-dojo-saver
+    container_name: cyber_dojo_saver
 
   shas:
-    container_name: cyber-dojo-shas
+    container_name: cyber_dojo_shas

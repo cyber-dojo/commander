@@ -29,7 +29,7 @@ error()
 shell_in()
 {
   local arg="$1"
-  local name="cyber-dojo-${arg}"
+  local name="cyber_dojo_${arg}"
   if running_container "${name}"; then
     echo "shelling into ${name}"
     local cmd="export PS1='[${arg}] \\w $ ';sh"
