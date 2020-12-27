@@ -178,7 +178,6 @@ build_image_from_context_dir()
       echo "ENV SHA=${GIT_COMMIT_SHA}"
     fi
     echo "ENV PORT=$(image_port_number)"
-    echo "EXPOSE $(image_port_number)"
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
