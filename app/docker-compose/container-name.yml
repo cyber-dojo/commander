@@ -16,9 +16,6 @@ services:
   creator:
     container_name: cyber_dojo_creator
 
-  model:
-    container_name: cyber_dojo_model
-
   web:
     container_name: cyber_dojo_web
 

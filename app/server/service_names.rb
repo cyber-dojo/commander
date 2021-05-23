@@ -5,7 +5,6 @@ def service_names
     creator
     dashboard
     differ
-    model
     nginx
     repler
     runner

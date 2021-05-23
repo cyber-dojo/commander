@@ -31,8 +31,6 @@ services:
 
   creator:
     env_file: [ .env ]
-  model:
-    env_file: [ .env ]
   dashboard:
     env_file: [ .env ]
   differ:

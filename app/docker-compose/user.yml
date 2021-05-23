@@ -21,9 +21,6 @@ services:
   creator:
     user: nobody
 
-  model:
-    user: nobody
-
   repler:
     user: root
 
