@@ -8,9 +8,10 @@ LABEL maintainer=jon@jaggersoft.com
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates && \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.32-r0/glibc-2.32-r0.apk && \
-    apk add glibc-2.32-r0.apk && \
-    rm glibc-2.32-r0.apk && \
+    VERSION=2.35-r0 && \
+    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk && \
+    apk add --force-overwrite glibc-${VERSION}.apk && \
+    rm glibc-${VERSION}.apk && \
     apk del --purge .deps
 
 # Required for docker-compose to find zlib.
@@ -19,10 +20,8 @@ ENV LD_LIBRARY_PATH=/lib:/usr/lib
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates && \
     apk add --no-cache zlib libgcc && \
-    DOCKER_COMPOSE_URL=https://github.com$(wget -q -O- https://github.com/docker/compose/releases/latest \
-        | grep -Eo 'href="[^"]+docker-compose-Linux-x86_64' \
-        | sed 's/^href="//' \
-        | head -n1) && \
+    VERSION=v2.16.0 && \
+    DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-linux-x86_64 && \
     wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL} && \
     chmod a+rx /usr/local/bin/docker-compose && \
     apk del --purge .deps && \

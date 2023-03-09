@@ -1,0 +1,24 @@
+name: Build Image and Publish to Dockerhub
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  pre-build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v3
+
+  build-test-push:
+    needs: [pre-build]
+    uses: cyber-dojo/reusable-actions-workflows/.github/workflows/kosli_build_test_push_dockerhub.yml@master
+    secrets:
+      DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+      DOCKER_USER: ${{ secrets.DOCKER_USER }}
+      KOSLI_API_TOKEN: ${{ secrets.KOSLI_API_TOKEN }}
+    with:
+      BUILD_COMMAND: build_test_publish.sh
+      KOSLI_PIPELINE: docker-base
+

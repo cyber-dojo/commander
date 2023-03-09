@@ -163,8 +163,10 @@ on_ci_publish_tagged_images()
     echo 'not on CI so not publishing tagged images'
   else
     echo 'on CI so publishing tagged images'
+    echo "${DOCKER_PASS}" | docker login --username "${DOCKER_USER}" --password-stdin
     docker push "$(image_name):latest"
     docker push "$(image_name):$(image_tag)"
+    docker logout
   fi
 }
 

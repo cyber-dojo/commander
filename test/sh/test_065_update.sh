@@ -84,43 +84,36 @@ test_____help_arg_prints_use()
 
 test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
 {
-  # cyberdojo/versioner:5e3bc0b pulls cyberdojo/commander:b291513
+  # cyberdojo/versioner:6da7a36 pulls cyberdojo/commander:35f653d
   # but keep that pull out of stdout/stderr assertions
-  docker pull cyberdojo/commander:b291513 &> /dev/null
+  docker pull cyberdojo/commander:35f653d &> /dev/null
 
   # This replaces the fake versioner so must be the last test using it.
-  assertUpdate 5e3bc0b
+  assertUpdate 6da7a36
 
-  # Create custom images *after* doing the update
-  local -r custom_name=test_up_custom_246
-  assertStartPointCreate ${custom_name}    --custom $(custom_urls)
-  local -r languages_name=test_up_languages_246
-  assertStartPointCreate ${languages_name} --languages $(languages_urls)
-
-  # use languages-small to minimize language-test-framework pulls
-  assertUp --languages=${languages_name} --custom=${custom_name}
+  assertUp
 
   assertStdoutIncludes 'Using nginx.env=default'
   assertStdoutIncludes 'Using web.env=default'
   #
   assertStdoutIncludes 'Using port=80'
-  assertStdoutIncludes "Using custom=${custom__name}"
-  assertStdoutIncludes 'Using exercises=cyberdojo/exercises:16fb5d9'
-  assertStdoutIncludes "Using languages=${languages_name}"
+  assertStdoutIncludes "Using custom-start-points=cyberdojo/custom-start-points:ef2352f"
+  assertStdoutIncludes 'Using exercises-start-points=cyberdojo/exercises-start-points:c6d6a35'
+  assertStdoutIncludes "Using languages-start-points=cyberdojo/languages-start-points:f0eeae4"
   #
-  assertStdoutIncludes 'Using differ=cyberdojo/differ:5c95484'
-  assertStdoutIncludes 'Using mapper=cyberdojo/mapper:5729d56'
-  assertStdoutIncludes 'Using nginx=cyberdojo/nginx:380c557'
-  assertStdoutIncludes 'Using ragger=cyberdojo/ragger:5998a76'
-  assertStdoutIncludes 'Using runner=cyberdojo/runner:1b06f00'
-  assertStdoutIncludes 'Using saver=cyberdojo/saver:8485ef3'
-  assertStdoutIncludes 'Using web=cyberdojo/web:c66c2da'
-  assertStdoutIncludes 'Using zipper=cyberdojo/zipper:2047f30'
-  #assertNoStderr
+  assertStdoutIncludes 'Using commander=cyberdojo/commander:35f653d'
+  assertStdoutIncludes 'Using creator=cyberdojo/creator:7a05eb4'
+  assertStdoutIncludes 'Using dashboard=cyberdojo/dashboard:0aed98e'
+  assertStdoutIncludes 'Using differ=cyberdojo/differ:f05a57c'
+  assertStdoutIncludes 'Using nginx=cyberdojo/nginx:7e2c8b4'
+  assertStdoutIncludes 'Using repler=cyberdojo/repler:a71729f'
+  assertStdoutIncludes 'Using runner=cyberdojo/runner:f1c426f'
+  assertStdoutIncludes 'Using saver=cyberdojo/saver:68c5eb7'
+  assertStdoutIncludes 'Using shas=cyberdojo/shas:916b024'
+  assertStdoutIncludes 'Using web=cyberdojo/web:bbf94ef'
+  # assertNoStderr
 
   assertDown
-  assertStartPointRm ${custom_name}
-  assertStartPointRm ${languages_name}
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

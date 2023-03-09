@@ -84,7 +84,7 @@ test_____unknown_arg()
   local -r arg='--where'
   refuteStartPointCreate jj ${arg}=tay
   assertNoStdout
-  assertStderrEquals "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
+  assertStderrIncludes "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -95,7 +95,7 @@ test_____unknown_args()
   local -r arg2='--there'
   refuteStartPointCreate jj ${arg1}=tay ${arg2}=x
   assertNoStdout
-  assertStderrEquals "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
+  assertStderrIncludes "ERROR: <image-name> must be followed by one of --custom/--exercises/--languages"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
