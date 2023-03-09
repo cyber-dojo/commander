@@ -1,5 +1,4 @@
-
-[![CircleCI](https://circleci.com/gh/cyber-dojo/commander.svg?style=svg)](https://circleci.com/gh/cyber-dojo/commander)
+[![Github Action (main)](https://github.com/cyber-dojo/commander/actions/workflows/main.yml/badge.svg)](https://github.com/cyber-dojo/commander/actions)
 
 # cyberdojo/commander docker image
 
