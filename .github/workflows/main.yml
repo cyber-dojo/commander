@@ -20,5 +20,5 @@ jobs:
       KOSLI_API_TOKEN: ${{ secrets.KOSLI_API_TOKEN }}
     with:
       BUILD_COMMAND: build_test_publish.sh
-      KOSLI_PIPELINE: docker-base
+      KOSLI_PIPELINE: commander
 
