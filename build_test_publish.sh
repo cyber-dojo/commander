@@ -120,7 +120,7 @@ on_ci_prepare_saver_volume_mount_dir()
 # - - - - - - - - - - - - - - - - - - - - - - - -
 on_ci()
 {
-  [ -n "${CIRCLECI}" ]
+  [ "${CI:-}" == true ]
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
