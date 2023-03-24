@@ -1,4 +1,4 @@
-FROM cyberdojo/docker-base
+FROM cyberdojo/docker-base:19116ed
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - - - - - -
