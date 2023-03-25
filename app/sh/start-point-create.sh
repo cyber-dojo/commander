@@ -136,13 +136,14 @@ git_clone_one_tagged_url_into_context_dir()
 
   cd "${CONTEXT_DIR}"
   if ! output="$(git clone --single-branch --branch master "${detagged_url}" "${url_index}" 2>&1)"; then
-    stderr "ERROR: bad git clone <url>"
-    stderr "${IMAGE_TYPE} ${detagged_url}"
-    stderr "${output}"
-    exit 3
-  else
-    echo "git clone ${detagged_url}"
+    if ! output="$(git clone --single-branch --branch main "${detagged_url}" "${url_index}" 2>&1)"; then
+      stderr "ERROR: bad git clone <url>"
+      stderr "${IMAGE_TYPE} ${detagged_url}"
+      stderr "${output}"
+      exit 3
+    fi
   fi
+  echo "git clone ${detagged_url}"
 
   cd "${CONTEXT_DIR}/${url_index}"
   if [ "${tag}" != "" ]; then
