@@ -1,0 +1,57 @@
+
+I've built a server on a digital ocean droplet.  Ubuntu 22.04
+These commands are handy...
+
+curl -sSL https://get.docker.com/ | sh
+sudo usermod -aG docker $USER
+sudo mkdir /cyber-dojo
+sudo chown 19663:65533 /cyber-dojo
+curl -O https://raw.githubusercontent.com/cyber-dojo/commander/master/cyber-dojo
+chmod 700 cyber-dojo
+
+The re-login for the usermode command to take effect.
+
+It starts, but from the browser, if you click the [create a new practice]
+button it does not work. The console log says...
+
+Uncaught Error: ArgumentError: could not find a temporary directory
+  (in /usr/local/lib/ruby/3.2.0/tmpdir.rb:38:in `tmpdir')
+    <anonymous> http://144.126.201.57/creator/assets/app.js:1
+
+The problem seems to be related to being able to write to the /tmp dir.
+I found this was very helpful.
+https://github.com/rubygems/rubygems/issues/3649
+
+I use the code below to create a file called probe.rb in /tmp
+
+cd /tmp
+
+{
+echo '#!/usr/bin/env ruby'
+echo
+echo 'require "tmpdir"'
+echo 'dir = File.expand_path("/tmp")'
+echo 'puts dir.inspect'
+echo 'stat = File.stat(dir)'
+echo 'puts "directory? #{stat.directory?}"'
+echo 'puts "writable? #{stat.writable?}"'
+echo 'puts "world_writable? #{stat.world_writable?}"'
+echo 'puts "sticky? #{stat.sticky?}"'
+echo 'puts Dir.tmpdir'
+echo 'puts Dir.mktmpdir'
+} >> probe.rb
+
+Then
+
+ruby ./probe.rb
+
+And it does indeed print the
+world_writeable 511
+sticky? false
+
+So I need to fix this properly.
+But for now I am simply removing the readonly settings from
+the yml file in commander.
+
+
+
