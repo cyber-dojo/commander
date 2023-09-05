@@ -19,6 +19,13 @@ else
   $debug_on = false
 end
 
+if ARGV[0] === '--on_mac'
+  $on_mac = true
+  ARGV.shift
+else
+  $on_mac = false
+end
+
 case ARGV[0]
   when nil            then cyber_dojo_help
   when '-h'           then cyber_dojo_help

@@ -15,6 +15,11 @@ def docker_yml_files
 end
 
 def docker_common_yml_files
+  if $on_mac
+    volumes_yml = 'volumes-mac.yml'
+  else
+    volumes_yml = 'volumes.yml'
+  end
   [
     compose_file('depends-on.yml'),
     compose_file('env-files.yml'),
@@ -25,7 +30,7 @@ def docker_common_yml_files
     compose_file('ports.yml'),
     compose_file('tmp-fs.yml'),
     compose_file('user.yml'),
-    compose_file('volumes.yml'),
+    compose_file(volumes_yml),
   ].join(' ')
 end
 

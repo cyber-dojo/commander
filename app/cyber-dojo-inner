@@ -20,6 +20,9 @@ if [ "${1}" == '--debug' ]; then
   shift
   readonly debug_option='--debug'
 fi
+if [ "$(uname)" == "Darwin" ]; then
+  readonly on_mac='--on_mac'
+fi
 
 commander_image()
 {
@@ -48,7 +51,7 @@ delegate_to_commander()
     $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
     $(volume_env_file web   "${CYBER_DOJO_WEB_ENV}") \
       "$(commander_image)" \
-        /app/cyber-dojo.rb ${debug_option} "$@"
+        /app/cyber-dojo.rb ${debug_option} ${on_mac} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

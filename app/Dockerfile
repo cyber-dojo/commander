@@ -22,10 +22,11 @@ RUN set -x && \
     apk add --no-cache zlib libgcc && \
     VERSION=v2.16.0 && \
     DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-linux-x86_64 && \
-    wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL} && \
-    chmod a+rx /usr/local/bin/docker-compose && \
-    apk del --purge .deps && \
-    docker-compose version
+    wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL}
+
+RUN chmod a+rx /usr/local/bin/docker-compose
+# RUN apk del --purge .deps   ### Fails...
+RUN docker-compose version
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
