@@ -172,3 +172,17 @@ bit set. (Do not confuse the sticky bit (t) with the seteuid/setgid bit (s)!)
 
 Seems I will also need to fix the sticky bit...
 
+Looking at
+https://serverfault.com/questions/1074904/why-even-my-root-user-cannot-write-in-the-tmp-directory
+
+Suspect I will need to use
+a --mount instead of a --tmpfs
+
+https://docs.docker.com/storage/tmpfs/#specify-tmpfs-options
+   --mount type=tmpfs,destination=/app,tmpfs-mode=1770
+
+https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
+
+
+
+

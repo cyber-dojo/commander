@@ -28,7 +28,6 @@ def docker_common_yml_files
     compose_file('init.yml'),
     compose_file('networks.yml'),
     compose_file('ports.yml'),
-    compose_file('read_only.yml'),
     compose_file('tmp-fs.yml'),
     compose_file('user.yml'),
     compose_file(volumes_yml),
