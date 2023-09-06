@@ -54,4 +54,20 @@ But for now I am simply removing the readonly settings from
 the yml file in commander.
 
 
+Trying on Ubuntu 22.04 droplet
+
+curl -sSL https://get.docker.com/ | sh
+docker run --rm -it alpine sh
+apk add bash
+apk add ruby
+
+
+Also Alpine 3.18, ruby 3.2.2 (2023-03-30 revision e51014f9c0) [aarch64-linux-musl]
+
+docker run --rm -it --read-only --tmpfs=/tmp ruby:alpine sh
+Then create probe.rb in /tmp and run it
+still says sticky? true
+
+
+
 
