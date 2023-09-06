@@ -5,10 +5,3 @@ networks:
   cyber-dojo:
     driver: bridge
     name: cyber-dojo
-
-services:
-
-  repler:
-    networks:
-      - cyber-dojo
-      - default

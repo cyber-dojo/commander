@@ -6,7 +6,6 @@ def service_names
     dashboard
     differ
     nginx
-    repler
     runner
     saver
     shas
