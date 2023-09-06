@@ -63,7 +63,6 @@ declare -a service_names=(
   creator
   differ
   nginx
-  repler
   runner
   saver
   shas
