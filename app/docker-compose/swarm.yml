@@ -35,16 +35,6 @@ services:
           memory: 128M
           cpus: '0.5'
 
-  repler:
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          memory: 256M
-          cpus: '0.50'
-
   runner:
     deploy:
       mode: global

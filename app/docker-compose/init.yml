@@ -8,8 +8,5 @@ services:
   nginx:
     init: true
 
-  repler:
-    init: true
-
   saver:
     init: true

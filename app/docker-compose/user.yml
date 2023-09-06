@@ -21,9 +21,6 @@ services:
   creator:
     user: nobody
 
-  repler:
-    user: root
-
   runner:
     user: root
 

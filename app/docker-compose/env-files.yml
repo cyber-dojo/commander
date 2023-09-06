@@ -35,8 +35,6 @@ services:
     env_file: [ .env ]
   differ:
     env_file: [ .env ]
-  repler:
-    env_file: [ .env ]
   runner:
     env_file: [ .env ]
   saver:

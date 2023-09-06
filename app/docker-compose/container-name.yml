@@ -19,9 +19,6 @@ services:
   web:
     container_name: cyber_dojo_web
 
-  repler:
-    container_name: cyber_dojo_repler
-
   runner:
     container_name: cyber_dojo_runner
 

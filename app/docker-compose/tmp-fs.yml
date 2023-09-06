@@ -45,13 +45,6 @@ services:
         tmpfs:
           size: 52428800 # 50MB
 
-  repler:
-    volumes:
-      - type: tmpfs
-        target: /tmp
-        tmpfs:
-          size: 52428800 # 50MB
-
   runner:
     volumes:
       - type: tmpfs
