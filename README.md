@@ -1,10 +1,7 @@
 [![Github Action (main)](https://github.com/cyber-dojo/commander/actions/workflows/main.yml/badge.svg)](https://github.com/cyber-dojo/commander/actions)
 
-# cyberdojo/commander docker image
-
-- The source for the [cyberdojo/commander](https://hub.docker.com/r/cyberdojo/commander/tags) Docker image.
-- Provides the main `cyber-dojo` bash script to control a cyber-dojo server
-- Provides the `cyberdojo/commander` docker image which receives commands delegated from the main `cyber-dojo` bash script.
+- The main [cyber-dojo](https://github.com/cyber-dojo/commander/blob/main/cyber-dojo) bash script to control a cyber-dojo server
+- The [cyberdojo/commander](https://hub.docker.com/r/cyberdojo/commander/tags) Docker image which receives commands delegated from the main `cyber-dojo` bash script.
 
 
 ```bash
