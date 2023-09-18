@@ -1,4 +1,4 @@
-#!/bin/bash -Eeu
+#!/usr/bin/env bash
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The main cyber-dojo script.
@@ -20,6 +20,8 @@
 
 commander_tag()
 {
+  # Note: do not add the flag '--platform linux/amd64' in the 'docker run'
+  # call below; it breaks repo whose tests create their own 'fake' cyberdojo/versioner:latest
   local -r versioner=cyberdojo/versioner:latest
   local -r env_vars=$(docker run --entrypoint=cat --rm ${versioner} /app/.env)
   local -r name=CYBER_DOJO_COMMANDER_SHA

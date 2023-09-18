@@ -183,10 +183,10 @@ build_image_from_context_dir()
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
+
   local output
   if ! output=$(docker image build \
         --compress                 \
-        --quiet                    \
         --rm                       \
         --tag "${IMAGE_NAME}"      \
         "${CONTEXT_DIR}" 2>&1)
@@ -205,15 +205,16 @@ build_image_from_context_dir()
     #   7 The command '/bin/sh -c ...' returned a non-zero code: 16
     #
     # We want only lines 5,6
-    # On CircleCI, stderr is not identical so the grep patterns are a little loose.
+    # On CI's, stderr may not be identical so the grep patterns are a little loose.
 
-    echo "${output}" \
-      | grep --invert-match 'Sending build context to Docker'  \
-      | grep --invert-match 'Step'                             \
-      | grep --invert-match '\-\-\-'                           \
-      | grep --invert-match 'Removing intermediate container'  \
-      | >&2 grep --invert-match "The command '/bin/sh -c"      \
-      || :
+    echo output
+    #    echo "${output}" \
+    #      | grep --invert-match 'Sending build context to Docker'  \
+    #      | grep --invert-match 'Step'                             \
+    #      | grep --invert-match '\-\-\-'                           \
+    #      | grep --invert-match 'Removing intermediate container'  \
+    #      | >&2 grep --invert-match "The command '/bin/sh -c"      \
+    #      || :
     local -r last_line="${output##*$'\n'}"
     local -r last_word="${last_line##* }"
     exit "${last_word}" # eg 16
