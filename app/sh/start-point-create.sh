@@ -17,13 +17,12 @@ trap remove_tmp_dir EXIT
 
 show_use()
 {
-  local -r MY_NAME=cyber-dojo
-  cat <<- EOF
+  cat <<-'EOF'
 
   Use:
-  ${MY_NAME} start-point create <name> --custom    <url>...
-  ${MY_NAME} start-point create <name> --exercises <url>...
-  ${MY_NAME} start-point create <name> --languages <url>...
+  cyber-dojo start-point create <name> --custom    <url>...
+  cyber-dojo start-point create <name> --exercises <url>...
+  cyber-dojo start-point create <name> --languages <url>...
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
@@ -35,13 +34,13 @@ show_use()
         Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
 
   Example 1: non local tagged <url>
-    ${MY_NAME} start-point create \\
+    cyber-dojo start-point create \\
       eg/first \\
         --languages \\
           384f486@https://github.com/cyber-dojo-start-points/java-junit
 
   Example 2: read tagged git-repo <url>s from a local file
-    ${MY_NAME} start-point create \\
+    cyber-dojo start-point create \\
       eg/second \\
         --languages \\
           \$(< my-language-selection.txt)
@@ -55,7 +54,7 @@ show_use()
   Example 3: read tagged git-repo <url>s from a curl'd file
     ORG=https://raw.githubusercontent.com/cyber-dojo
     REPO=languages-start-points
-    ${MY_NAME} start-point create \\
+    cyber-dojo start-point create \\
       eg/third \\
         --languages \\
           \$(curl --silent ${ORG}/${REPO}/master/start-points/git_repo_urls.all.tagged)

@@ -1,4 +1,5 @@
-#!/bin/bash -Ee
+#!/usr/bin/env bash
+set -Eeu
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # The cyber-dojo script cats this out of a commander
@@ -60,11 +61,7 @@ exit_unless_env_file_exists()
   local -r name="${1}"
   local -r path="${2}"
   if [ -n "${path}" ]; then
-    if [ -z "${DOCKER_MACHINE_NAME}" ]; then
-      exit_unless_env_file_exists_on_host "${name}" "${path}"
-    else
-      exit_unless_env_file_exists_on_machine "${name}" "${path}"
-    fi
+    exit_unless_env_file_exists_on_host "${name}" "${path}"
   fi
 }
 
@@ -77,18 +74,6 @@ exit_unless_env_file_exists_on_host()
     local -r where='on the host'
     echo_env_var_error "${name}" "${path}" "${where}"
     exit 3
-  fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-exit_unless_env_file_exists_on_machine()
-{
-  local -r name="${1}"
-  local -r path="${2}"
-  if ! docker-machine ssh "${DOCKER_MACHINE_NAME}" "[ -f ${path} ]" 2> /dev/null; then
-    local -r where="on VM '${DOCKER_MACHINE_NAME}'"
-    echo_env_var_error "${name}" "${path}" "${where}"
-    exit 4
   fi
 }
 
