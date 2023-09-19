@@ -10,7 +10,7 @@ readonly RAND=$(uuidgen)
 
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
-# Often /tmp cannot be docker volume-mounted, so ~/tmp
+# Often /tmp cannot be docker volume-mounted, so use ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
 remove_tmp_dir() { rm -rf "${CONTEXT_DIR}" > /dev/null; }
 trap remove_tmp_dir EXIT
@@ -66,7 +66,7 @@ EOF
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 exit_zero_if_show_use()
 {
-  if [ -z "${1}" ] || [ "${1}" = '-h' ] || [ "${1}" = '--help' ]; then
+  if [ -z "${1:-}" ] || [ "${1:-}" = '-h' ] || [ "${1:-}" = '--help' ]; then
     show_use
     exit 0
   fi
@@ -124,10 +124,7 @@ git_clone_tagged_urls_into_context_dir()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 git_clone_one_tagged_url_into_context_dir()
 {
-  # git-clone directly, from this script, into the
-  # context dir before running [docker image build]...
-  # Run [git clone] on the _host_ rather than wherever
-  # the docker daemon is.
+  # Run [git clone] directly, on the host, from this script, into the context dir
   local output
   local -r url="${1}"          # bbd75a1@https://github.com/cyber-dojo-languages/gcc-assert
   local -r url_index="${2}"    # 0
