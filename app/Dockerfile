@@ -1,4 +1,4 @@
-FROM cyberdojo/docker-base:19116ed
+FROM cyberdojo/docker-base:0b9a792
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - - - - - -
@@ -17,7 +17,7 @@ RUN set -x && \
 # Required for docker-compose to find zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
-RUN VERSION=v2.16.0 && \
+RUN VERSION=v2.21.0 && \
     DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-linux-x86_64 && \
     wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL} && \
     chmod a+rx /usr/local/bin/docker-compose

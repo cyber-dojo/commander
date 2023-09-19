@@ -1,13 +1,16 @@
-#!/bin/bash -Ee
-# [cyber-dojo] start-point create cyberdojo/languages-start-points --languages <url>...
+#!/usr/bin/env bash
+set -Eeu
 
 shift                                # start-point
 shift                                # create
-readonly IMAGE_NAME="${1}"           # cyberdojo/languages-start-points
-readonly IMAGE_TYPE="${2}"           # --languages
+readonly TMP_IMAGE_NAME=cyberdojo/temporary_start_points
+readonly IMAGE_NAME="${1:-}"         # cyberdojo/languages-start-points
+readonly IMAGE_TYPE="${2:-}"         # --languages
+readonly RAND=$(uuidgen)
+
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 
-# In Docker Toolbox /tmp cannot be docker volume-mounted, so ~/tmp
+# Often /tmp cannot be docker volume-mounted, so ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
 remove_tmp_dir() { rm -rf "${CONTEXT_DIR}" > /dev/null; }
 trap remove_tmp_dir EXIT
@@ -72,16 +75,19 @@ exit_zero_if_show_use()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 exit_non_zero_unless_installed()
 {
-  if ! installed "${1}" ; then
-    stderr 'ERROR: ${1} is not installed!'
-    exit 42
-  fi
+  for tool in "$@"; do
+    if ! installed "${tool}" ; then
+      stderr "ERROR: ${tool} is not installed!"
+      exit 42
+    fi
+  done
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 installed()
 {
-  if hash "${1}" 2> /dev/null; then
+  local -r tool="${1}"
+  if hash "${tool}" 2> /dev/null; then
     true
   else
     false
@@ -119,9 +125,9 @@ git_clone_tagged_urls_into_context_dir()
 git_clone_one_tagged_url_into_context_dir()
 {
   # git-clone directly, from this script, into the
-  # context dir before running [docker image build].
+  # context dir before running [docker image build]...
   # Run [git clone] on the _host_ rather than wherever
-  # the docker daemon is (via a command in the Dockerfile).
+  # the docker daemon is.
   local output
   local -r url="${1}"          # bbd75a1@https://github.com/cyber-dojo-languages/gcc-assert
   local -r url_index="${2}"    # 0
@@ -173,7 +179,6 @@ build_image_from_context_dir()
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
-    echo "RUN ruby /app/src/from_script/check_all.rb /app/repos $(image_type)"
     echo "ENV IMAGE_TYPE=$(image_type)"
     if [ -n "${GIT_COMMIT_SHA:-}" ]; then
       echo "ENV SHA=${GIT_COMMIT_SHA}"
@@ -182,51 +187,62 @@ build_image_from_context_dir()
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
     echo 'CMD [ "./up.sh" ]'
   } > "${CONTEXT_DIR}/Dockerfile"
+
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
 
-  local output
-  if ! output=$(docker image build \
-        --compress                 \
-        --rm                       \
-        --tag "${IMAGE_NAME}"      \
-        "${CONTEXT_DIR}" 2>&1)
-  then
-    # We are building FROM an image and we want any diagnostics
-    # but we do not want the output from the [docker build] itself.
-    # Hence the --quiet option.
-    # On a Macbook using Docker-Toolbox stderr looks like this:
-    #
-    #   1 Sending build context to Docker daemon  185.9kB
-    #   2 Step 1/N : FROM cyberdojo/start-points-base:...
-    #   3  ---> Running in fe6adeee193c
-    #   ...
-    #---5 ERROR: no manifest.json files in
-    #---6 --custom file:///Users/.../custom_no_manifests
-    #   7 The command '/bin/sh -c ...' returned a non-zero code: 16
-    #
-    # We want only lines 5,6
-    # On CI's, stderr may not be identical so the grep patterns are a little loose.
+  # Note: the following will not return the exit code
+  # local -r build_output=$(docker image build ...)
+  local build_output
+  build_output=$(docker image build \
+    --compress                \
+    --rm                      \
+    --tag "${TMP_IMAGE_NAME}" \
+    "${CONTEXT_DIR}" 2>&1     \
+  )
+  local -r build_status=$?
+  if [ "${build_status}" != 0 ]; then
+    # Should never happen...
+    stderr "${build_output}"
+    exit "${build_status}"
+  fi
+}
 
-    echo output
-    #    echo "${output}" \
-    #      | grep --invert-match 'Sending build context to Docker'  \
-    #      | grep --invert-match 'Step'                             \
-    #      | grep --invert-match '\-\-\-'                           \
-    #      | grep --invert-match 'Removing intermediate container'  \
-    #      | >&2 grep --invert-match "The command '/bin/sh -c"      \
-    #      || :
-    local -r last_line="${output##*$'\n'}"
-    local -r last_word="${last_line##* }"
-    exit "${last_word}" # eg 16
-  else
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+tag_clean_image_else_exit_non_zero()
+{
+  # /app/src/from_script/check_all.rb is in $(base_image_name)
+  # Note there is no --rm flag in this 'docker container run'
+  # because we need to do a subsequent 'docker inspect'
+  local -r check_output=$(docker container run \
+    --entrypoint=""                   \
+    --name="${RAND}"                  \
+    --tty                             \
+    "${TMP_IMAGE_NAME}"               \
+    ruby                              \
+    /app/src/from_script/check_all.rb \
+    /app/repos                        \
+    "$(image_type)" 2>&1              \
+  )
+  # Now get the exit code of check_all.rb; _not_ the exit code of the 'docker container run'
+  local -r check_status="$(docker inspect "${RAND}" --format='{{.State.ExitCode}}')"
+  docker container rm --force "${RAND}" &> /dev/null
+
+  if [ "${check_status}" == 0 ]; then
+    docker image tag "${TMP_IMAGE_NAME}" "${IMAGE_NAME}" &> /dev/null
+    docker image rm --force "${TMP_IMAGE_NAME}"          &> /dev/null
     echo "Successfully built ${IMAGE_NAME}"
+  else
+    docker image rm --force "${TMP_IMAGE_NAME}"          &> /dev/null
+    stderr "${check_output}"
+    exit "${check_status}"
   fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 stderr()
 {
-  >&2 echo "${1}"
+  local -r message="${1}"
+  >&2 echo "${message}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -258,8 +274,8 @@ image_port_number()
 #==========================================================
 
 exit_zero_if_show_use "${@}"
-exit_non_zero_unless_installed docker
-exit_non_zero_unless_installed git
+exit_non_zero_unless_installed docker git
 exit_non_zero_if_bad_args "${@}"
 git_clone_tagged_urls_into_context_dir
 build_image_from_context_dir
+tag_clean_image_else_exit_non_zero
