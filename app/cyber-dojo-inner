@@ -17,7 +17,7 @@ set -Eeu
 # extract_and_run() scripts.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-if [ "${1}" == '--debug' ]; then
+if [ "${1:-}" == '--debug' ]; then
   shift
   readonly debug_option='--debug'
 fi
@@ -34,8 +34,8 @@ commander_image()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 delegate_to_commander()
 {
-  exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV}"
-  exit_unless_env_file_exists CYBER_DOJO_WEB_ENV   "${CYBER_DOJO_WEB_ENV}"
+  exit_unless_env_file_exists CYBER_DOJO_NGINX_ENV "${CYBER_DOJO_NGINX_ENV:-}"
+  exit_unless_env_file_exists CYBER_DOJO_WEB_ENV   "${CYBER_DOJO_WEB_ENV:-}"
 
   docker run \
     --entrypoint "" \
@@ -49,10 +49,10 @@ delegate_to_commander()
     --rm \
     --user=root \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
-    $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV}") \
-    $(volume_env_file web   "${CYBER_DOJO_WEB_ENV}") \
+    $(volume_env_file nginx "${CYBER_DOJO_NGINX_ENV:-}") \
+    $(volume_env_file web   "${CYBER_DOJO_WEB_ENV:-}") \
       "$(commander_image)" \
-        /app/cyber-dojo.rb ${debug_option} ${on_mac} "$@"
+        /app/cyber-dojo.rb ${debug_option:-} ${on_mac:-} "$@"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,11 +116,11 @@ extract_and_run()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-if [ "${1} ${2}" == 'start-point create' ]; then
+if [ "${1:-} ${2:-}" == 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
-elif [ "${1} ${2}" == 'start-point build' ]; then
+elif [ "${1:-} ${2:-}" == 'start-point build' ]; then
   extract_and_run start-point-build.sh "$@"
-elif [ "${1}" == 'sh' ]; then
+elif [ "${1:-}" == 'sh' ]; then
   extract_and_run sh.sh "$@"
 elif ! delegate_to_commander "$@"; then
   exit 5

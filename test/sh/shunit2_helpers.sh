@@ -1,6 +1,6 @@
 
-assertStdoutEquals() { assertEquals 'stdout' "$1" "`cat ${stdoutF}`"; }
-assertStderrEquals() { assertEquals 'stderr' "$1" "`cat ${stderrF}`"; }
+assertStdoutEquals() { assertEquals 'stdout' "$1" "`de_warned_cat ${stdoutF}`"; }
+assertStderrEquals() { assertEquals 'stderr' "$1" "`de_warned_cat ${stderrF}`"; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -11,7 +11,7 @@ assertNoStderr() { assertStderrEquals ""; }
 
 assertStdoutIncludes()
 {
-  local stdout="`cat ${stdoutF}`"
+  local stdout="`de_warned_cat ${stdoutF}`"
   if [[ "${stdout}" != *"${1}"* ]]; then
     echo "<stdout>"
     cat ${stdoutF}
@@ -22,7 +22,7 @@ assertStdoutIncludes()
 
 refuteStdoutIncludes()
 {
-  local stdout=$(cat "${stdoutF}")
+  local stdout=$(de_warned_cat "${stdoutF}")
   if [[ "${stdout}" = *"${1}"* ]]; then
     echo "<stdout>"
     cat ${stdoutF}
@@ -33,7 +33,7 @@ refuteStdoutIncludes()
 
 assertStderrIncludes()
 {
-  local stderr=$(cat "${stderrF}")
+  local stderr=$(de_warned_cat "${stderrF}")
   if [[ "${stderr}" != *"${1}"* ]]; then
     echo "<stderr>"
     echo "${stderr}"
@@ -61,4 +61,13 @@ absPath()
   #use like this [ local resolved=`abspath ./../a/b/c` ]
   cd "$(dirname "$1")"
   printf "%s/%s\n" "$(pwd)" "$(basename "$1")"
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+de_warned_cat()
+{
+  local -r filename="${1}"
+  local -r warning="WARNING: The requested image's platform (linux/amd64) does not match the detected host platform (linux/arm64/v8) and no specific platform was requested"
+  cat "${filename}" | grep -v "${warning}"
 }
