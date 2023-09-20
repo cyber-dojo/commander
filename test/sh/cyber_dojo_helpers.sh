@@ -2,47 +2,47 @@
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
-readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
+#readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
-CD_DIR()
-{
-  printf "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
-}
+#CD_DIR()
+#{
+#  printf "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
+#}
 
-CDSP_DIR()
-{
-  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-start-points" && pwd )"
-}
+#CDSP_DIR()
+#{
+#  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-start-points" && pwd )"
+#}
 
-on_CI()
-{
-  [ "${CI:-}" == true ]
-}
+#on_CI()
+#{
+#  [ "${CI:-}" == true ]
+#}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 custom_urls()
 {
   # A single Alpine-based url to help make tests faster
-  if on_CI; then
-    printf https://github.com/cyber-dojo-start-points/java-junit
-  else
-    printf "$(CDSP_DIR)/java-junit"
-  fi
+  #if on_CI; then
+  printf https://github.com/cyber-dojo-start-points/java-junit
+  #else
+  #  printf "$(CDSP_DIR)/java-junit"
+  #fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 exercises_urls()
 {
-  if on_CI; then
-    printf "${github_cyber_dojo}/exercises-start-points"
-  else
-    printf "$(CD_DIR)/exercises-start-points"
-  fi
+  #if on_CI; then
+  printf "${github_cyber_dojo}/exercises-start-points"
+  #else
+  #  printf "$(CD_DIR)/exercises-start-points"
+  #fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -50,11 +50,11 @@ exercises_urls()
 languages_urls()
 {
   # A single Alpine-based url to help make tests faster
-  if on_CI; then
-    printf https://github.com/cyber-dojo-start-points/ruby-minitest
-  else
-    printf "$(CDSP_DIR)/ruby-minitest"
-  fi
+  #if on_CI; then
+  printf https://github.com/cyber-dojo-start-points/ruby-minitest
+  #else
+  #  printf "$(CDSP_DIR)/ruby-minitest"
+  #fi
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -

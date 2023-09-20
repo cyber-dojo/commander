@@ -16,5 +16,5 @@ tag_the_image
 exit_zero_if_build_only
 on_ci_prepare_saver_volume_mount_dir
 pull_start_points_base_image
-"$(root_dir)/test/sh/run.sh"
+run_tests
 # on_ci_publish_tagged_images
