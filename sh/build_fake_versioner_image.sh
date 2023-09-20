@@ -20,13 +20,13 @@ build_fake_versioner_image()
   env_vars=$(replace_with "${env_vars}" "${comm_sha_var_name}" "${comm_fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${comm_tag_var_name}" "${comm_fake_tag}")
 
-  local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
-  local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG
-  # local -r spb_fake_sha="d478ccb36cdbff25bb368506f0b2485c9cc87cc5" # current 'latest' from Dec 1st 2020
-  local -r spb_fake_sha="754f3e5b9a71d3779e40a3c8eed20ee5ed03e31f"   # current latest Sep 20 2023
-  local -r spb_fake_tag="${spb_fake_sha:0:7}"
-  env_vars=$(replace_with "${env_vars}" "${spb_sha_var_name}" "${spb_fake_sha}")
-  env_vars=$(replace_with "${env_vars}" "${spb_tag_var_name}" "${spb_fake_tag}")
+  # During development you sometimes need to fake start-points-base
+  #  local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
+  #  local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG
+  #  local -r spb_fake_sha="754f3e5b9a71d3779e40a3c8eed20ee5ed03e31f"   # current latest Sep 20 2023
+  #  local -r spb_fake_tag="${spb_fake_sha:0:7}"
+  #  env_vars=$(replace_with "${env_vars}" "${spb_sha_var_name}" "${spb_fake_sha}")
+  #  env_vars=$(replace_with "${env_vars}" "${spb_tag_var_name}" "${spb_fake_tag}")
 
   local -r tmp_dir="$(mktemp -d /tmp/commander.XXXXXXX)"
 
@@ -61,13 +61,13 @@ build_fake_versioner_image()
   actual=$(docker run --rm "${fake_image}" | grep "${comm_tag_var_name}")
   assert_equal "${expected}" "${actual}"
 
-  expected="${spb_sha_var_name}=${spb_fake_sha}"
-  actual=$(docker run --rm "${fake_image}" | grep "${spb_sha_var_name}")
-  assert_equal "${expected}" "${actual}"
-
-  expected="${spb_tag_var_name}=${spb_fake_tag}"
-  actual=$(docker run --rm "${fake_image}" | grep "${spb_tag_var_name}")
-  assert_equal "${expected}" "${actual}"
+  #  expected="${spb_sha_var_name}=${spb_fake_sha}"
+  #  actual=$(docker run --rm "${fake_image}" | grep "${spb_sha_var_name}")
+  #  assert_equal "${expected}" "${actual}"
+  #
+  #  expected="${spb_tag_var_name}=${spb_fake_tag}"
+  #  actual=$(docker run --rm "${fake_image}" | grep "${spb_tag_var_name}")
+  #  assert_equal "${expected}" "${actual}"
 
   expected='RELEASE=999.999.999'
   actual=RELEASE=$(docker run --entrypoint "" --rm "${fake_image}" sh -c 'echo ${RELEASE}')
