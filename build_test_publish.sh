@@ -17,4 +17,4 @@ exit_zero_if_build_only
 on_ci_prepare_saver_volume_mount_dir
 pull_start_points_base_image
 run_tests
-# on_ci_publish_tagged_images
+on_ci_publish_tagged_images
