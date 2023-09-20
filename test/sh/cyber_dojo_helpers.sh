@@ -2,60 +2,14 @@
 MY_DIR="$( cd "$( dirname "${0}" )" && pwd )"
 
 readonly github_cyber_dojo=https://github.com/cyber-dojo
-#readonly raw_github_cd_org=https://raw.githubusercontent.com/cyber-dojo
 readonly exe="${MY_DIR}/../../cyber-dojo"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
+# Use Alpine-based url to help make tests faster
 
-#CD_DIR()
-#{
-#  printf "$( cd "${MY_DIR}/../../../../cyber-dojo" && pwd )"
-#}
-
-#CDSP_DIR()
-#{
-#  printf "$(cd "${MY_DIR}/../../../../cyber-dojo-start-points" && pwd )"
-#}
-
-#on_CI()
-#{
-#  [ "${CI:-}" == true ]
-#}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-custom_urls()
-{
-  # A single Alpine-based url to help make tests faster
-  #if on_CI; then
-  printf https://github.com/cyber-dojo-start-points/java-junit
-  #else
-  #  printf "$(CDSP_DIR)/java-junit"
-  #fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-exercises_urls()
-{
-  #if on_CI; then
-  printf "${github_cyber_dojo}/exercises-start-points"
-  #else
-  #  printf "$(CD_DIR)/exercises-start-points"
-  #fi
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - -
-
-languages_urls()
-{
-  # A single Alpine-based url to help make tests faster
-  #if on_CI; then
-  printf https://github.com/cyber-dojo-start-points/ruby-minitest
-  #else
-  #  printf "$(CDSP_DIR)/ruby-minitest"
-  #fi
-}
+   custom_urls() { printf https://github.com/cyber-dojo-start-points/java-junit; }
+exercises_urls() { printf "${github_cyber_dojo}/exercises-start-points"; }
+languages_urls() { printf https://github.com/cyber-dojo-start-points/ruby-minitest; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -142,9 +96,11 @@ startPointExists()
 
 removeAllStartPoints()
 {
-  local -r startPoints=(`${exe} start-point ls --quiet`)
+  # Get rid of pesky WARNING: .... host platform mismatch ...
+  local -r startPoints=(`${exe} start-point ls --quiet 2>/dev/null`)
   for startPoint in "${startPoints[@]}"
   do
+    echo "Removing ... ${startPoint}"
     ${exe} start-point rm "${startPoint}"
   done
 }

@@ -8,7 +8,9 @@ def cyber_dojo_start_point_ls
     cmd = 'docker image ls'
     cmd += " --filter 'label=org.cyber-dojo.start-point=#{type}'"
     cmd += " --format '{{.Repository}}:{{.Tag}}'"
+
     image_names = run(cmd).split
+
     if image_names != []
       json[type] = image_names
       names += image_names
