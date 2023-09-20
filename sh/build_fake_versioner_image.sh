@@ -22,8 +22,8 @@ build_fake_versioner_image()
 
   local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
   local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG
-  # local -r spb_fake_sha="d478ccb36cdbff25bb368506f0b2485c9cc87cc5" # current 'latest' from Dec 1st 2020
-  local -r spb_fake_sha="23ac92746f9048b0561078cd77a4e953afc67be5"   # WIP
+  local -r spb_fake_sha="d478ccb36cdbff25bb368506f0b2485c9cc87cc5" # current 'latest' from Dec 1st 2020
+  # local -r spb_fake_sha="23ac92746f9048b0561078cd77a4e953afc67be5"   # WIP
   local -r spb_fake_tag="${spb_fake_sha:0:7}"
   env_vars=$(replace_with "${env_vars}" "${spb_sha_var_name}" "${spb_fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${spb_tag_var_name}" "${spb_fake_tag}")
