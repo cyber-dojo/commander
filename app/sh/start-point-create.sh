@@ -179,6 +179,7 @@ build_image_from_context_dir()
     if [ -n "${GIT_COMMIT_SHA:-}" ]; then
       echo "ENV SHA=${GIT_COMMIT_SHA}"
     fi
+    echo "ENV BASE_IMAGE=$(base_image_name)"
     echo "ENV PORT=$(image_port_number)"
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
     echo 'CMD [ "./up.sh" ]'
