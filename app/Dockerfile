@@ -1,4 +1,5 @@
-FROM cyberdojo/docker-base:0b9a792
+ARG BASE_IMAGE=cyberdojo/docker-base:0b9a792
+FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - - - - - - - -
@@ -34,3 +35,7 @@ WORKDIR ${HOME_DIR}
 
 ARG COMMIT_SHA
 ENV SHA=${COMMIT_SHA}
+
+# ARGs are reset after FROM See https://github.com/moby/moby/issues/34129
+ARG BASE_IMAGE
+ENV BASE_IMAGE=${BASE_IMAGE}
