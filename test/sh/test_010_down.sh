@@ -46,8 +46,9 @@ test_____no_args_stops_and_removes_server_containers()
   refuteStdoutIncludes 'variable is not set. Defaulting to a blank string.'
   for service in custom_start_points exercises_start_points languages_start_points "${service_names[@]}"
   do
-    assertStdoutIncludes "Container cyber_dojo_${service}  Stopping"
-    assertStdoutIncludes "Container cyber_dojo_${service}  Removing"
+    service_underscore="$(echo $service | tr '-' '_')"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Stopping"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Removing"
   done
   assertNoStderr
 
