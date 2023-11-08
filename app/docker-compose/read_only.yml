@@ -27,5 +27,5 @@ services:
   saver:
     read_only: true
 
-  shas:
+  version-reporter:
     read_only: true

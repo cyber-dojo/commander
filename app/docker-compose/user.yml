@@ -33,5 +33,5 @@ services:
   saver:
     user: saver
 
-  shas:
+  version-reporter:
     user: nobody

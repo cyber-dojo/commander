@@ -44,7 +44,8 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertStdoutIncludes "Container cyber_dojo_languages_start_points  Created"
   for service in "${service_names[@]}"
   do
-    assertStdoutIncludes "Container cyber_dojo_${service}  Created"
+    service_underscore="$(echo $service | tr '-' '_')"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Created"
   done
   assertNoStderr
 

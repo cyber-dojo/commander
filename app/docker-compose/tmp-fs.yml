@@ -67,7 +67,7 @@ services:
           mode: 01777
           size: 10485760  # 10MB
 
-  shas:
+  version-reporter:
     volumes:
       - type: tmpfs
         target: /tmp

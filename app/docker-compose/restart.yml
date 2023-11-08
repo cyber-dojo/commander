@@ -31,5 +31,5 @@ services:
   saver:
     restart: on-failure
 
-  shas:
+  version-reporter:
     restart: on-failure

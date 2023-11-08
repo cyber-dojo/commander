@@ -39,5 +39,5 @@ services:
     env_file: [ .env ]
   saver:
     env_file: [ .env ]
-  shas:
+  version-reporter:
     env_file: [ .env ]

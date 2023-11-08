@@ -19,7 +19,7 @@ declare -a service_names=(
   nginx
   runner
   saver
-  shas
+  version-reporter
   web
 )
 

@@ -82,7 +82,7 @@ test_____help_arg_prints_use()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-test_____updating_to_specific_version_causes_next_up_to_use_service_tags_embedded_in_that_version()
+test_____updating_to_specific_version_causes_next_up_to_use_image_tags_embedded_in_that_version()
 {
   # cyberdojo/versioner:6da7a36 pulls cyberdojo/commander:35f653d
   # but keep that pull out of stdout/stderr assertions
