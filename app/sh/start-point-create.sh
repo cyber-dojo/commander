@@ -34,15 +34,15 @@ show_use()
         Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
 
   Example 1: non local tagged <url>
-    cyber-dojo start-point create \\
-      eg/first \\
-        --languages \\
+    cyber-dojo start-point create \
+      eg/first \
+        --languages \
           384f486@https://github.com/cyber-dojo-start-points/java-junit
 
   Example 2: read tagged git-repo <url>s from a local file
-    cyber-dojo start-point create \\
-      eg/second \\
-        --languages \\
+    cyber-dojo start-point create \
+      eg/second \
+        --languages \
           \$(< my-language-selection.txt)
 
     cat my-language-selection.txt
@@ -54,9 +54,9 @@ show_use()
   Example 3: read tagged git-repo <url>s from a curl'd file
     ORG=https://raw.githubusercontent.com/cyber-dojo
     REPO=languages-start-points
-    cyber-dojo start-point create \\
-      eg/third \\
-        --languages \\
+    cyber-dojo start-point create \
+      eg/third \
+        --languages \
           \$(curl --silent ${ORG}/${REPO}/master/start-points/git_repo_urls.all.tagged)
 
 EOF
