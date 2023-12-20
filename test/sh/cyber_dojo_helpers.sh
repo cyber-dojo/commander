@@ -7,7 +7,7 @@ readonly exe="${MY_DIR}/../../cyber-dojo"
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # Use Alpine-based url to help make tests faster
 
-   custom_urls() { printf https://github.com/cyber-dojo-start-points/java-junit; }
+   custom_urls() { printf 01d6142@https://github.com/cyber-dojo-start-points/java-junit; }
 exercises_urls() { printf "${github_cyber_dojo}/exercises-start-points"; }
 languages_urls() { printf https://github.com/cyber-dojo-start-points/ruby-minitest; }
 
