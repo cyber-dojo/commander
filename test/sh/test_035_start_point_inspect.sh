@@ -34,7 +34,7 @@ test_____custom_start_point_prints_details()
   assertStartPointCreate ${name} --custom $(custom_urls)
   assertStartPointInspect ${name}
   assertStdoutIncludes '{'
-  assertStdoutIncludes '  "Java 18, JUnit": {'
+  assertStdoutIncludes '  "Java 21, JUnit 5": {'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
   assertStdoutIncludes '    "image_name": "cyberdojofoundation/java_junit'
