@@ -25,7 +25,6 @@ def docker_common_yml_files
     compose_file('env-files.yml'),
     compose_file('environment.yml'),
     compose_file('images.yml'),
-    compose_file('init.yml'),
     compose_file('networks.yml'),
     compose_file('ports.yml'),
     compose_file('read_only.yml'),
