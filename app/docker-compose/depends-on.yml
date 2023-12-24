@@ -6,14 +6,16 @@ services:
   nginx:
     depends_on:
       - web
-  web:
-    depends_on:
       - creator
       - custom-start-points
       - exercises-start-points
       - languages-start-points
       - dashboard
       - differ
+      - saver
+
+  web:
+    depends_on:
       - runner
       - saver
 
