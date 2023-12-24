@@ -104,13 +104,3 @@ services:
         limits:
           memory: 32M
           cpus: '0.5'
-
-  version-reporter:
-    deploy:
-      mode: global
-      restart_policy:
-        condition: on-failure
-      resources:
-        limits:
-          memory: 32M
-          cpus: '0.2'

@@ -30,6 +30,3 @@ services:
 
   saver:
     container_name: cyber_dojo_saver
-
-  version-reporter:
-    container_name: cyber_dojo_version_reporter

@@ -19,7 +19,6 @@ declare -a service_names=(
   nginx
   runner
   saver
-  version-reporter
   web
 )
 

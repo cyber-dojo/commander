@@ -8,7 +8,6 @@ def service_names
     nginx
     runner
     saver
-    version-reporter
     web
   )
 end

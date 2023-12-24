@@ -32,6 +32,3 @@ services:
 
   saver:
     user: saver
-
-  version-reporter:
-    user: nobody

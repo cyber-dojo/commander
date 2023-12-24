@@ -34,16 +34,14 @@ show_use()
         Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
 
   Example 1: non local tagged <url>
-    cyber-dojo start-point create \
-      eg/first \
-        --languages \
-          384f486@https://github.com/cyber-dojo-start-points/java-junit
+
+    cyber-dojo start-point create eg/first \
+        --languages 384f486@https://github.com/cyber-dojo-start-points/java-junit
 
   Example 2: read tagged git-repo <url>s from a local file
-    cyber-dojo start-point create \
-      eg/second \
-        --languages \
-          \$(< my-language-selection.txt)
+
+    cyber-dojo start-point create eg/second \
+        --languages \$(< my-language-selection.txt)
 
     cat my-language-selection.txt
     384f486@https://github.com/cyber-dojo-start-points/java-junit
@@ -52,12 +50,12 @@ show_use()
     8fe0d11@https://github.com/cyber-dojo-start-points/ruby-minitest
 
   Example 3: read tagged git-repo <url>s from a curl'd file
+
     ORG=https://raw.githubusercontent.com/cyber-dojo
     REPO=languages-start-points
-    cyber-dojo start-point create \
-      eg/third \
-        --languages \
-          \$(curl --silent ${ORG}/${REPO}/master/start-points/git_repo_urls.all.tagged)
+
+    cyber-dojo start-point create eg/third \
+        --languages \$(curl --silent ${ORG}/${REPO}/main/git_repo_urls.tagged)
 
 EOF
 }
@@ -110,10 +108,8 @@ exit_non_zero_if_bad_args()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 git_clone_tagged_urls_into_context_dir()
 {
-  # Two or more git-repo-urls could have the same repo name
-  # but be from different repositories.
-  # So git clone each repo into its own unique directory
-  # based on a simple incrementing index.
+  # Two or more git-repo-urls could have the same repo name but be from different repositories.
+  # So git clone each repo into its own unique directory based on a simple incrementing index.
   for i in "${!GIT_REPO_URLS[@]}"; do
     git_clone_one_tagged_url_into_context_dir "${GIT_REPO_URLS[$i]}" "${i}"
   done
@@ -124,7 +120,6 @@ git_clone_tagged_urls_into_context_dir()
 git_clone_one_tagged_url_into_context_dir()
 {
   # Run [git clone] directly, on the host, from this script, into the context dir
-  local output
   local -r url="${1}"          # bbd75a1@https://github.com/cyber-dojo-languages/gcc-assert
   local -r url_index="${2}"    # 0
 
@@ -137,6 +132,7 @@ git_clone_one_tagged_url_into_context_dir()
   fi
 
   cd "${CONTEXT_DIR}"
+  local output
   if ! output="$(git clone --single-branch --branch master "${detagged_url}" "${url_index}" 2>&1)"; then
     if ! output="$(git clone --single-branch --branch main "${detagged_url}" "${url_index}" 2>&1)"; then
       stderr "ERROR: bad git clone <url>"

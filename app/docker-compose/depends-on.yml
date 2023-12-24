@@ -16,7 +16,6 @@ services:
       - differ
       - runner
       - saver
-      - version-reporter
 
   dashboard:
     depends_on:

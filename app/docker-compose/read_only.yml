@@ -26,6 +26,3 @@ services:
 
   saver:
     read_only: true
-
-  version-reporter:
-    read_only: true
