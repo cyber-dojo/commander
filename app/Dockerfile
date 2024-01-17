@@ -9,7 +9,7 @@ LABEL maintainer=jon@jaggersoft.com
 RUN set -x && \
     apk add --no-cache -t .deps ca-certificates && \
     wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    VERSION=2.35-r0 && \
+    VERSION=2.35-r1 && \
     wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk && \
     apk add --force-overwrite glibc-${VERSION}.apk && \
     rm glibc-${VERSION}.apk && \
