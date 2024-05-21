@@ -18,7 +18,7 @@ RUN set -x && \
 # Required for docker-compose to find zlib.
 ENV LD_LIBRARY_PATH=/lib:/usr/lib
 
-RUN VERSION=v2.24.0 && \
+RUN VERSION=v2.27.0 && \
     DOCKER_COMPOSE_URL=https://github.com/docker/compose/releases/download/${VERSION}/docker-compose-linux-x86_64 && \
     wget -q -O /usr/local/bin/docker-compose ${DOCKER_COMPOSE_URL} && \
     chmod a+rx /usr/local/bin/docker-compose
