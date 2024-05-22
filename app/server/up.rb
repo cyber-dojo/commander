@@ -42,9 +42,9 @@ def cyber_dojo_server_up
     command = "docker stack up #{docker_swarm_yml_files} cyber-dojo"
     system(env_vars, command)
   else
-    command = "docker-compose #{docker_yml_files} up -d --remove-orphans"
+    command = "docker compose #{docker_yml_files} up -d --remove-orphans"
     system(env_vars, "#{command} 2>&1")
-    # A successful [docker-compose ... up] writes to stderr !?
+    # A successful [docker compose ... up] writes to stderr !?
     # See https://github.com/docker/compose/issues/3267
   end
 end
