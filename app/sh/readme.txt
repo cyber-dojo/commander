@@ -11,6 +11,4 @@ This is needed for start-point-create.sh, the script handling
         <url>...
 
 to ensure <url>s are always accessible to the git-clone
-commands the script performs. If you're running Docker-Toolbox only
-urls volume-mounted to the default VM under /Users/<user>
-are accessible in the default VM.
+commands the script performs.
