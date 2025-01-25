@@ -73,7 +73,7 @@ test_____languages_start_point_prints_details()
   assertStdoutIncludes '  "Ruby 3.4.1, MiniTest 5.25": {'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
-  assertStdoutIncludes '    "image_name": "cyberdojofoundation/ruby_mini_test'
+  assertStdoutIncludes '    "image_name": "cyber-dojo-languages/ruby_mini_test'
   assertStdoutIncludes '  }'
   assertStdoutIncludes '}'
   #assertNoStderr
