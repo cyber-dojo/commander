@@ -12,34 +12,40 @@ assertNoStderr() { assertStderrEquals ""; }
 assertStdoutIncludes()
 {
   local stdout="`de_warned_cat ${stdoutF}`"
-  if [[ "${stdout}" != *"${1}"* ]]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    fail "expected stdout to include ${1}"
-  fi
+  for arg in "$@"; do
+    if [[ "${stdout}" != *"${arg}"* ]]; then
+      echo "<stdout>"
+      cat ${stdoutF}
+      echo "</stdout>"
+      fail "expected stdout to include ${arg}"
+    fi
+  done
 }
 
 refuteStdoutIncludes()
 {
   local stdout=$(de_warned_cat "${stdoutF}")
-  if [[ "${stdout}" = *"${1}"* ]]; then
-    echo "<stdout>"
-    cat ${stdoutF}
-    echo "</stdout>"
-    fail "expected stdout to NOT include ${1}"
-  fi
+  for arg in "$@"; do
+    if [[ "${stdout}" = *"${arg}"* ]]; then
+      echo "<stdout>"
+      cat ${stdoutF}
+      echo "</stdout>"
+      fail "expected stdout to NOT include ${arg}"
+    fi
+  done
 }
 
 assertStderrIncludes()
 {
   local stderr=$(de_warned_cat "${stderrF}")
-  if [[ "${stderr}" != *"${1}"* ]]; then
-    echo "<stderr>"
-    echo "${stderr}"
-    echo "</stderr>"
-    fail "expected stderr to include ${1}"
-  fi
+  for arg in "$@"; do
+    if [[ "${stderr}" != *"${arg}"* ]]; then
+      echo "<stderr>"
+      echo "${stderr}"
+      echo "</stderr>"
+      fail "expected stderr to include ${arg}"
+    fi
+  done
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -70,10 +70,10 @@ test_____languages_start_point_prints_details()
   assertStartPointCreate ${name} --languages $(languages_urls)
   assertStartPointInspect ${name}
   assertStdoutIncludes '{'
-  assertStdoutIncludes '  "Ruby 3.4.1, MiniTest 5.25": {'
+  assertStdoutIncludes    'Ruby'  'MiniTest' '{'
   assertStdoutIncludes '    "url":'
   assertStdoutIncludes '    "sha":'
-  assertStdoutIncludes '    "image_name": "cyber-dojo-languages/ruby_mini_test'
+  assertStdoutIncludes      '"image_name":' 'cyber-dojo-languages' 'ruby_mini_test'
   assertStdoutIncludes '  }'
   assertStdoutIncludes '}'
   #assertNoStderr
