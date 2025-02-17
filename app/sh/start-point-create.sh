@@ -41,7 +41,7 @@ show_use()
   Example 2: read tagged git-repo <url>s from a local file
 
     cyber-dojo start-point create eg/second \
-        --languages \$(< my-language-selection.txt)
+        --languages $(< my-language-selection.txt)
 
     cat my-language-selection.txt
     384f486@https://github.com/cyber-dojo-start-points/java-junit
@@ -55,7 +55,7 @@ show_use()
     REPO=languages-start-points
 
     cyber-dojo start-point create eg/third \
-        --languages \$(curl --silent ${ORG}/${REPO}/main/git_repo_urls.tagged)
+        --languages $(curl --silent ${ORG}/${REPO}/main/git_repo_urls.tagged)
 
 EOF
 }
