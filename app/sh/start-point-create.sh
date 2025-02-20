@@ -20,9 +20,9 @@ show_use()
   cat <<-'EOF'
 
   Use:
-  cyber-dojo start-point create <name> --custom    <url>...
-  cyber-dojo start-point create <name> --exercises <url>...
-  cyber-dojo start-point create <name> --languages <url>...
+    cyber-dojo start-point create <name> --custom    <url>...
+    cyber-dojo start-point create <name> --exercises <url>...
+    cyber-dojo start-point create <name> --languages <url>...
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
@@ -243,7 +243,7 @@ base_image_name()
 {
   # The uppercase names in this are replaced by their
   # env-var values by the cat-start-point-create.sh script.
-  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
+  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG@sha256:CYBER_DOJO_START_POINTS_BASE_DIGEST
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
