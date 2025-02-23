@@ -243,7 +243,8 @@ base_image_name()
 {
   # The uppercase names in this are replaced by their
   # env-var values by the cat-start-point-create.sh script.
-  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG@sha256:CYBER_DOJO_START_POINTS_BASE_DIGEST
+  # Note: Can't add @sha256:CYBER_DOJO_START_POINTS_BASE_DIGEST here as it breaks start-points-base tests
+  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -13,7 +13,7 @@
 #     o) the CYBER_DOJO_COMMANDER_TAG env-var being added
 #        to the .env file; so commander_tag() is careful
 #        to use the original CYBER_DOJO_COMMANDER_SHA.
-#     o) the versioner image having its own ENTRYPOINT;
+#     o) the versioner image has its own ENTRYPOINT;
 #        so commander() tag is very careful in how it extracts
 #        the env-vars.
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,7 +21,7 @@
 commander_tag()
 {
   # Note: do not add the flag '--platform linux/amd64' in the 'docker run'
-  # call below; it breaks repo whose tests create their own 'fake' cyberdojo/versioner:latest
+  # call below; it breaks repos whose tests create their own 'fake' cyberdojo/versioner:latest
   local -r versioner=cyberdojo/versioner:latest
   local -r env_vars=$(docker run --entrypoint=cat --rm ${versioner} /app/.env)
   local -r name=CYBER_DOJO_COMMANDER_SHA
