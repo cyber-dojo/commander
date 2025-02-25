@@ -13,7 +13,7 @@ build_fake_versioner_image
 trap 'docker image rm --force cyberdojo/versioner:latest' EXIT
 build_image
 tag_the_image
-exit_zero_if_build_only
+exit_zero_if_build_only $@
 on_ci_prepare_saver_volume_mount_dir
 pull_start_points_base_image
 run_tests
