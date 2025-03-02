@@ -12,6 +12,7 @@ assertNoStderr() { assertStderrEquals ""; }
 assertStdoutIncludes()
 {
   local stdout="`de_warned_cat ${stdoutF}`"
+  local arg
   for arg in "$@"; do
     if [[ "${stdout}" != *"${arg}"* ]]; then
       echo "<stdout>"
@@ -24,7 +25,8 @@ assertStdoutIncludes()
 
 refuteStdoutIncludes()
 {
-  local stdout=$(de_warned_cat "${stdoutF}")
+  local stdout=$(de_warned_cat "${stdoutF}")]
+  local arg
   for arg in "$@"; do
     if [[ "${stdout}" = *"${arg}"* ]]; then
       echo "<stdout>"
@@ -38,6 +40,7 @@ refuteStdoutIncludes()
 assertStderrIncludes()
 {
   local stderr=$(de_warned_cat "${stderrF}")
+  local arg
   for arg in "$@"; do
     if [[ "${stderr}" != *"${arg}"* ]]; then
       echo "<stderr>"

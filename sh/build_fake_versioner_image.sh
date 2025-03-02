@@ -11,7 +11,7 @@ build_fake_versioner_image()
   # See for example:
   # https://github.com/cyber-dojo/commander/blob/b205967be70f11fb80f02a123a36287b66d98bd3/build_test_tag_publish.sh#L29
 
-  local env_vars="$(docker run --rm cyberdojo/versioner:latest)"
+  local env_vars="$(docker run --rm cyberdojo/versioner:latest 2> /dev/null)"
 
   local -r comm_sha_var_name=CYBER_DOJO_COMMANDER_SHA
   local -r comm_tag_var_name=CYBER_DOJO_COMMANDER_TAG
