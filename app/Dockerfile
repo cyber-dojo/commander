@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=cyberdojo/docker-base:21da71c@sha256:b3b15a9f03929fc9958e1b8a8427f798f6a634b5bfba6250edf03ccf4757d2ed
+ARG BASE_IMAGE=cyberdojo/docker-base:4276739@sha256:5cdac61a3333e302982b51e8b2c431650d1e6967a3aa3ea4d94c74cbc790c99a
 FROM ${BASE_IMAGE}
 LABEL maintainer=jon@jaggersoft.com
 
