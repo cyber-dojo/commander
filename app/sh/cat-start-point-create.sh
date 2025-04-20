@@ -17,11 +17,25 @@ replace_in_script()
   SCRIPT="${SCRIPT//${name}/${value}}"
 }
 
+replace_in_script_via_explicit_env_var()
+{
+  local -r name="${1}"
+  local -r value="${2}"
+  SCRIPT="${SCRIPT//${name}/${value}}"
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
 replace_in_script CYBER_DOJO_START_POINTS_BASE_IMAGE
-replace_in_script CYBER_DOJO_START_POINTS_BASE_TAG
+# Make the start-points-base workflow trigger three downstream workflows of X-start-points
+# so they each pass the new base-image as an env-var to commander
+if [ -z "${CYBER_DOJO_START_POINTS_BASE_TAG:-}" ]; then
+  replace_in_script CYBER_DOJO_START_POINTS_BASE_TAG
+else
+  replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_TAG "${CYBER_DOJO_START_POINTS_BASE_TAG}"
+fi
 # Note: Can't add CYBER_DOJO_START_POINTS_BASE_DIGEST as it breaks start-points-base tests
 #replace_in_script CYBER_DOJO_START_POINTS_BASE_DIGEST
+
 replace_in_script CYBER_DOJO_CUSTOM_START_POINTS_PORT
 replace_in_script CYBER_DOJO_EXERCISES_START_POINTS_PORT
 replace_in_script CYBER_DOJO_LANGUAGES_START_POINTS_PORT
