@@ -5,7 +5,7 @@ build_image()
 {
   docker build \
     --build-arg COMMIT_SHA="$(git_commit_sha)" \
-    --file="$(root_dir)/app/Dockerfile" \
+    --file="$(root_dir)/Dockerfile" \
     --tag="$(image_name)" \
-    "$(root_dir)/app"
+    "$(root_dir)"
 }

@@ -1,6 +1,9 @@
-ARG BASE_IMAGE=cyberdojo/docker-base:4276739@sha256:5cdac61a3333e302982b51e8b2c431650d1e6967a3aa3ea4d94c74cbc790c99a
-FROM ${BASE_IMAGE}
+FROM cyberdojo/docker-base:623a63d@sha256:94fa06fcd6d728b03943344b4cd0c237efa864c3d91cb29a4b5544e5181d0999
+# The FROM statement above is typically set via an automated pull-request from the docker-base repo
 LABEL maintainer=jon@jaggersoft.com
+
+ARG COMMIT_SHA
+ENV SHA=${COMMIT_SHA}
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # https://github.com/wernight/docker-compose/blob/master/Dockerfile
@@ -21,13 +24,5 @@ RUN set -x && \
 
 RUN adduser -D -H -u 19661 cyber-dojo
 
-ARG HOME_DIR=/app
-COPY . ${HOME_DIR}
-WORKDIR ${HOME_DIR}
-
-ARG COMMIT_SHA
-ENV SHA=${COMMIT_SHA}
-
-# ARGs are reset after FROM See https://github.com/moby/moby/issues/34129
-ARG BASE_IMAGE
-ENV BASE_IMAGE=${BASE_IMAGE}
+WORKDIR /app
+COPY /app .

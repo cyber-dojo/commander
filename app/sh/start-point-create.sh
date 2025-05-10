@@ -183,15 +183,25 @@ build_image_from_context_dir()
 
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
 
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+#  echo "Dockerfile for ${TMP_IMAGE_NAME}"
+#  cat "${CONTEXT_DIR}/Dockerfile"
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+
   # Note: the following will not return the exit code
   # local -r build_output=$(docker image build ...)
   local build_output
   build_output=$(docker image build \
-    --compress                \
     --rm                      \
     --tag "${TMP_IMAGE_NAME}" \
     "${CONTEXT_DIR}" 2>&1     \
   )
+
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+#  echo "docker image build ... ${TMP_IMAGE_NAME}"
+#  echo "${build_output}"
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+
   local -r build_status=$?
   if [ "${build_status}" != 0 ]; then
     # Should never happen...
@@ -216,9 +226,20 @@ tag_clean_image_else_exit_non_zero()
     /app/repos                        \
     "$(image_type)" 2>&1              \
   )
+
   # Now get the exit code of check_all.rb; _not_ the exit code of the 'docker container run'
   local -r check_status="$(docker inspect "${RAND}" --format='{{.State.ExitCode}}')"
   docker container rm --force "${RAND}" &> /dev/null
+
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+#  echo "check_output"
+#  echo "${check_output}"
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+
+#  echo "XXXXXXXXXXXXXXXXXXXX"
+#  echo "contents of check_all.rb"
+#  docker container run --rm --entrypoint="" --tty "${TMP_IMAGE_NAME}" bash -c "cat /app/src/from_script/check_all.rb"
+#  echo "XXXXXXXXXXXXXXXXXXXX"
 
   if [ "${check_status}" == 0 ]; then
     docker image tag "${TMP_IMAGE_NAME}" "${IMAGE_NAME}" &> /dev/null
