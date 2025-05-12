@@ -113,7 +113,7 @@ exit_non_zero_if_bad_args()
   local -r status=$?
   set -e
   if [ "${status}" != '0' ]; then
-    echo "ERROR: bad args"
+    stderr "ERROR: bad args"
     exit "${status}"
   fi
 }
@@ -259,6 +259,7 @@ tag_clean_image_else_exit_non_zero()
   fi
 
   if [ "${status}" != 0 ]; then
+    stderr "ERROR: Failed to build ${IMAGE_NAME}"
     stderr "${output}"
     exit "${status}"
   fi
