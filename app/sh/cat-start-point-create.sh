@@ -26,13 +26,16 @@ replace_in_script_via_explicit_env_var()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
 replace_in_script CYBER_DOJO_START_POINTS_BASE_IMAGE
-# Make the start-points-base workflow trigger three downstream workflows of X-start-points
+# The start-points-base workflow trigger the downstream workflows of the three X-start-points
 # so they each pass the new base-image as an env-var to commander
 if [ -z "${CYBER_DOJO_START_POINTS_BASE_TAG:-}" ]; then
   replace_in_script CYBER_DOJO_START_POINTS_BASE_TAG
 else
   replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_TAG "${CYBER_DOJO_START_POINTS_BASE_TAG}"
 fi
+
+replace_in_script_via_explicit_env_var CYBER_DOJO_DEBUG "${CYBER_DOJO_DEBUG:-false}"
+
 # Note: Can't add CYBER_DOJO_START_POINTS_BASE_DIGEST as it breaks start-points-base tests
 #replace_in_script CYBER_DOJO_START_POINTS_BASE_DIGEST
 

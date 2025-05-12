@@ -106,6 +106,7 @@ extract_and_run()
   docker run \
     --entrypoint "" \
     --env CYBER_DOJO_START_POINTS_BASE_TAG \
+    --env CYBER_DOJO_DEBUG \
     --interactive \
     --rm \
     --volume=/var/run/docker.sock:/var/run/docker.sock \
