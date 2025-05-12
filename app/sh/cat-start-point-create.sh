@@ -9,7 +9,7 @@ readonly ENV_VARS="$(docker run --entrypoint=cat --rm cyberdojo/versioner:latest
 
 SCRIPT=$(cat "${MY_DIR}/start-point-create.sh")
 
-replace_in_script()
+replace_in_script_via_versioner()
 {
   local -r name="${1}"
   local -r env_var=$(echo "${ENV_VARS}" | grep "${name}")
@@ -25,22 +25,38 @@ replace_in_script_via_explicit_env_var()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - -
-replace_in_script CYBER_DOJO_START_POINTS_BASE_IMAGE
-# The start-points-base workflow trigger the downstream workflows of the three X-start-points
-# so they each pass the new base-image as an env-var to commander
+replace_in_script_via_versioner CYBER_DOJO_START_POINTS_BASE_IMAGE
+# The start-points-base workflow triggers the downstream workflows of the three X-start-points
+# where they each pass their base-image env-vars to commander
+
+if [ -z "${CYBER_DOJO_START_POINTS_BASE_IMAGE:-}" ]; then
+  replace_in_script_via_versioner CYBER_DOJO_START_POINTS_BASE_IMAGE
+else
+  replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_IMAGE "${CYBER_DOJO_START_POINTS_BASE_IMAGE}"
+fi
+
+if [ -z "${CYBER_DOJO_START_POINTS_BASE_SHA:-}" ]; then
+  replace_in_script_via_versioner CYBER_DOJO_START_POINTS_BASE_SHA
+else
+  replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_SHA "${CYBER_DOJO_START_POINTS_BASE_SHA}"
+fi
+
 if [ -z "${CYBER_DOJO_START_POINTS_BASE_TAG:-}" ]; then
-  replace_in_script CYBER_DOJO_START_POINTS_BASE_TAG
+  replace_in_script_via_versioner CYBER_DOJO_START_POINTS_BASE_TAG
 else
   replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_TAG "${CYBER_DOJO_START_POINTS_BASE_TAG}"
 fi
 
+if [ -z "${CYBER_DOJO_START_POINTS_BASE_DIGEST:-}" ]; then
+  replace_in_script_via_versioner CYBER_DOJO_START_POINTS_BASE_DIGEST
+else
+  replace_in_script_via_explicit_env_var CYBER_DOJO_START_POINTS_BASE_DIGEST "${CYBER_DOJO_START_POINTS_BASE_DIGEST}"
+fi
+
 replace_in_script_via_explicit_env_var CYBER_DOJO_DEBUG "${CYBER_DOJO_DEBUG:-false}"
 
-# Note: Can't add CYBER_DOJO_START_POINTS_BASE_DIGEST as it breaks start-points-base tests
-#replace_in_script CYBER_DOJO_START_POINTS_BASE_DIGEST
-
-replace_in_script CYBER_DOJO_CUSTOM_START_POINTS_PORT
-replace_in_script CYBER_DOJO_EXERCISES_START_POINTS_PORT
-replace_in_script CYBER_DOJO_LANGUAGES_START_POINTS_PORT
+replace_in_script_via_versioner CYBER_DOJO_CUSTOM_START_POINTS_PORT
+replace_in_script_via_versioner CYBER_DOJO_EXERCISES_START_POINTS_PORT
+replace_in_script_via_versioner CYBER_DOJO_LANGUAGES_START_POINTS_PORT
 
 echo "${SCRIPT}"

@@ -105,7 +105,10 @@ extract_and_run()
   shift
   docker run \
     --entrypoint "" \
-    --env CYBER_DOJO_START_POINTS_BASE_TAG \
+    --env CYBER_DOJO_START_POINTS_BASE_IMAGE  \
+    --env CYBER_DOJO_START_POINTS_BASE_SHA    \
+    --env CYBER_DOJO_START_POINTS_BASE_TAG    \
+    --env CYBER_DOJO_START_POINTS_BASE_DIGEST \
     --env CYBER_DOJO_DEBUG \
     --interactive \
     --rm \

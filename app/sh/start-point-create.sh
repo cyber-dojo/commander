@@ -188,6 +188,12 @@ build_image_from_context_dir()
     if [ -n "${GIT_COMMIT_SHA:-}" ]; then
       echo "ENV SHA=${GIT_COMMIT_SHA}"
     fi
+    # The expressions after the = are replaced by their env-var values
+    echo "ENV START_POINTS_BASE_IMAGE=CYBER_DOJO_START_POINTS_BASE_IMAGE"
+    echo "ENV START_POINTS_BASE_SHA=CYBER_DOJO_START_POINTS_BASE_SHA"
+    echo "ENV START_POINTS_BASE_TAG=CYBER_DOJO_START_POINTS_BASE_TAG"
+    echo "ENV START_POINTS_BASE_DIGEST=CYBER_DOJO_START_POINTS_BASE_DIGEST"
+
     echo "ENV BASE_IMAGE=$(base_image_name)"
     echo "ENV PORT=$(image_port_number)"
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
