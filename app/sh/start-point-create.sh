@@ -6,14 +6,26 @@ shift                                # create
 readonly TMP_IMAGE_NAME=cyberdojo/temporary_start_points
 readonly IMAGE_NAME="${1:-}"         # cyberdojo/languages-start-points
 readonly IMAGE_TYPE="${2:-}"         # --languages
+declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 readonly RAND=$(uuidgen)
 
-declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
+debug_on()
+{
+  # The uppercase name in this is replaced by its
+  # env-var value by the cat-start-point-create.sh script.
+  if [ CYBER_DOJO_DEBUG == 'true' ]; then
+    return 0  # true
+  else
+    return 1 # false
+  fi
+}
 
 # Often /tmp cannot be docker volume-mounted, so use ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
 remove_tmp_dir() { rm -rf "${CONTEXT_DIR}" > /dev/null; }
-trap remove_tmp_dir EXIT
+if ! debug_on; then
+  trap remove_tmp_dir EXIT
+fi
 
 show_use()
 {
@@ -96,11 +108,12 @@ exit_non_zero_if_bad_args()
 {
   local -r args="${@:1}"
   set +e
-  docker container run --entrypoint="" --rm $(base_image_name) \
+  docker $(log_level) container run --entrypoint="" --rm $(base_image_name) \
     bash -c "ruby /app/src/from_script/bad_args.rb ${args}"
   local -r status=$?
   set -e
   if [ "${status}" != '0' ]; then
+    echo "ERROR: bad args"
     exit "${status}"
   fi
 }
@@ -183,30 +196,29 @@ build_image_from_context_dir()
 
   echo "Dockerfile" > "${CONTEXT_DIR}/.dockerignore"
 
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-#  echo "Dockerfile for ${TMP_IMAGE_NAME}"
-#  cat "${CONTEXT_DIR}/Dockerfile"
-#  echo "XXXXXXXXXXXXXXXXXXXX"
+  if debug_on; then
+    echo "DEBUG: Dockerfile for ${TMP_IMAGE_NAME}"
+    echo
+    cat "${CONTEXT_DIR}/Dockerfile"
+    echo
+  fi
 
-  # Note: the following will not return the exit code
-  # local -r build_output=$(docker image build ...)
-  local build_output
-  build_output=$(docker image build \
-    --rm                      \
-    --tag "${TMP_IMAGE_NAME}" \
-    "${CONTEXT_DIR}" 2>&1     \
-  )
+  if debug_on; then
+    echo "DEBUG: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
+    echo
+  fi
 
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-#  echo "docker image build ... ${TMP_IMAGE_NAME}"
-#  echo "${build_output}"
-#  echo "XXXXXXXXXXXXXXXXXXXX"
+  local output
+  if ! output=$(docker image build --tag "${TMP_IMAGE_NAME}" "${CONTEXT_DIR}" 2>&1); then
+    stderr "ERROR: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
+    stderr "${output}"
+    exit 42
+  fi
 
-  local -r build_status=$?
-  if [ "${build_status}" != 0 ]; then
-    # Should never happen...
-    stderr "${build_output}"
-    exit "${build_status}"
+  if debug_on; then
+    echo "DEBUG: docker $(log_level) image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
+    echo "${output}"
+    echo
   fi
 }
 
@@ -216,7 +228,7 @@ tag_clean_image_else_exit_non_zero()
   # /app/src/from_script/check_all.rb is in $(base_image_name)
   # Note there is no --rm flag in this 'docker container run'
   # because we need to do a subsequent 'docker inspect'
-  local -r check_output=$(docker container run \
+  local -r output=$(docker $(log_level) container run \
     --entrypoint=""                   \
     --name="${RAND}"                  \
     --tty                             \
@@ -227,28 +239,28 @@ tag_clean_image_else_exit_non_zero()
     "$(image_type)" 2>&1              \
   )
 
+  if debug_on; then
+    echo "DEBUG: docker $(log_level) container run --entrypoint='' --tty ${TMP_IMAGE_NAME} ruby /app/src/from_script/check_all.rb /app/repos $(image_type)"
+    echo "${output}"
+    echo
+  fi
+
   # Now get the exit code of check_all.rb; _not_ the exit code of the 'docker container run'
-  local -r check_status="$(docker inspect "${RAND}" --format='{{.State.ExitCode}}')"
-  docker container rm --force "${RAND}" &> /dev/null
+  local -r status="$(docker inspect "${RAND}" --format='{{.State.ExitCode}}')"
+  docker $(log_level) container rm --force "${RAND}" &> /dev/null
 
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-#  echo "check_output"
-#  echo "${check_output}"
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-#  echo "contents of check_all.rb"
-#  docker container run --rm --entrypoint="" --tty "${TMP_IMAGE_NAME}" bash -c "cat /app/src/from_script/check_all.rb"
-#  echo "XXXXXXXXXXXXXXXXXXXX"
-
-  if [ "${check_status}" == 0 ]; then
-    docker image tag "${TMP_IMAGE_NAME}" "${IMAGE_NAME}" &> /dev/null
-    docker image rm --force "${TMP_IMAGE_NAME}"          &> /dev/null
+  if [ "${status}" == 0 ]; then
+    docker $(log_level) image tag "${TMP_IMAGE_NAME}" "${IMAGE_NAME}" &> /dev/null
     echo "Successfully built ${IMAGE_NAME}"
-  else
-    docker image rm --force "${TMP_IMAGE_NAME}"          &> /dev/null
-    stderr "${check_output}"
-    exit "${check_status}"
+  fi
+
+  if ! debug_on; then
+    docker $(log_level) image rm --force "${TMP_IMAGE_NAME}" &> /dev/null
+  fi
+
+  if [ "${status}" != 0 ]; then
+    stderr "${output}"
+    exit "${status}"
   fi
 }
 
@@ -269,12 +281,6 @@ base_image_name()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-image_type()
-{
-  echo "${IMAGE_TYPE:2}" # '--languages' => 'languages'
-}
-
-# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 image_port_number()
 {
   # The uppercase names in this are replaced by their
@@ -284,6 +290,22 @@ image_port_number()
     exercises) echo CYBER_DOJO_EXERCISES_START_POINTS_PORT;;
     languages) echo CYBER_DOJO_LANGUAGES_START_POINTS_PORT;;
   esac
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+image_type()
+{
+  echo "${IMAGE_TYPE:2}" # '--languages' => 'languages'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+log_level()
+{
+  if debug_on; then
+    echo "--log-level=WARNING"
+  else
+    echo "--log-level=ERROR"
+  fi
 }
 
 #==========================================================

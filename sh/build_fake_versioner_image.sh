@@ -1,15 +1,22 @@
 #!/usr/bin/env bash
 set -Eeu
 
+debug_spb()
+{
+  # For debugging; there is a circular dependency on start-points-base.
+  # If you have a locally built start-points-base image that exists in dockerhub
+  # but is not yet served from cyberdojo/versioner:latest then
+  # make this function return true, and set spb_fake_sha to its commit-sha below.
+
+  # return 1 # false
+  return 0 # true
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - -
 build_fake_versioner_image()
 {
-  # Build a fake cyberdojo/versioner:latest image that serves
-  # COMMANDER SHA/TAG values for the local repo.
+  # Build a fake cyberdojo/versioner:latest image that serves SHA/TAG values for local repo(s).
   # This breaks the [commander <-> versioner] circular dependency.
-  # You can edit this function to insert fake SHA/TAG values for any service.
-  # See for example:
-  # https://github.com/cyber-dojo/commander/blob/b205967be70f11fb80f02a123a36287b66d98bd3/build_test_tag_publish.sh#L29
 
   local env_vars="$(docker run --rm cyberdojo/versioner:latest 2> /dev/null)"
 
@@ -20,13 +27,14 @@ build_fake_versioner_image()
   env_vars=$(replace_with "${env_vars}" "${comm_sha_var_name}" "${comm_fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${comm_tag_var_name}" "${comm_fake_tag}")
 
-  # During development you sometimes need to fake start-points-base
-  #  local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
-  #  local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG
-  #  local -r spb_fake_sha="754f3e5b9a71d3779e40a3c8eed20ee5ed03e31f"   # current latest Sep 20 2023
-  #  local -r spb_fake_tag="${spb_fake_sha:0:7}"
-  #  env_vars=$(replace_with "${env_vars}" "${spb_sha_var_name}" "${spb_fake_sha}")
-  #  env_vars=$(replace_with "${env_vars}" "${spb_tag_var_name}" "${spb_fake_tag}")
+  if debug_spb; then
+    local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
+    local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG
+    local -r spb_fake_sha="749c3a2c891c6c43f48d980526e716bbce50ed48"
+    local -r spb_fake_tag="${spb_fake_sha:0:7}"
+    env_vars=$(replace_with "${env_vars}" "${spb_sha_var_name}" "${spb_fake_sha}")
+    env_vars=$(replace_with "${env_vars}" "${spb_tag_var_name}" "${spb_fake_tag}")
+  fi
 
   local -r tmp_dir="$(mktemp -d /tmp/commander.XXXXXXX)"
 
@@ -61,13 +69,15 @@ build_fake_versioner_image()
   actual=$(docker run --rm "${fake_image}" | grep "${comm_tag_var_name}")
   assert_equal "${expected}" "${actual}"
 
-  #  expected="${spb_sha_var_name}=${spb_fake_sha}"
-  #  actual=$(docker run --rm "${fake_image}" | grep "${spb_sha_var_name}")
-  #  assert_equal "${expected}" "${actual}"
-  #
-  #  expected="${spb_tag_var_name}=${spb_fake_tag}"
-  #  actual=$(docker run --rm "${fake_image}" | grep "${spb_tag_var_name}")
-  #  assert_equal "${expected}" "${actual}"
+  if debug_spb; then
+    expected="${spb_sha_var_name}=${spb_fake_sha}"
+    actual=$(docker run --rm "${fake_image}" | grep "${spb_sha_var_name}")
+    assert_equal "${expected}" "${actual}"
+
+    expected="${spb_tag_var_name}=${spb_fake_tag}"
+    actual=$(docker run --rm "${fake_image}" | grep "${spb_tag_var_name}")
+    assert_equal "${expected}" "${actual}"
+  fi
 
   expected='RELEASE=999.999.999'
   actual=RELEASE=$(docker run --entrypoint "" --rm "${fake_image}" sh -c 'echo ${RELEASE}')
