@@ -8,8 +8,8 @@ debug_spb()
   # but is not yet served from cyberdojo/versioner:latest then
   # make this function return true, and set spb_fake_sha to its commit-sha below.
 
-  # return 1 # false
-  return 0 # true
+  return 1 # false
+  # return 0 # true
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - -
