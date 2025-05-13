@@ -176,25 +176,18 @@ git_clone_one_tagged_url_into_context_dir()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 build_image_from_context_dir()
 {
-  # There is a special case for the GIT_COMMIT_SHA env-var.
-  # This is needed for cyberdojo/versioner which relies on being
-  # able to get the SHA out of an 'official' start-point image
-  # with a :latest tag to create it's .env file.
   {
     echo "FROM $(base_image_name)"
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
     echo "ENV IMAGE_TYPE=$(image_type)"
-    if [ -n "${GIT_COMMIT_SHA:-}" ]; then
-      echo "ENV SHA=${GIT_COMMIT_SHA}"
-    fi
     # The expressions after the = are replaced by their env-var values
+    # These env-vars are required by versioner
     echo "ENV START_POINTS_BASE_IMAGE=CYBER_DOJO_START_POINTS_BASE_IMAGE"
     echo "ENV START_POINTS_BASE_SHA=CYBER_DOJO_START_POINTS_BASE_SHA"
     echo "ENV START_POINTS_BASE_TAG=CYBER_DOJO_START_POINTS_BASE_TAG"
     echo "ENV START_POINTS_BASE_DIGEST=CYBER_DOJO_START_POINTS_BASE_DIGEST"
-
-    echo "ENV BASE_IMAGE=$(base_image_name)"
+    #
     echo "ENV PORT=$(image_port_number)"
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
     echo 'CMD [ "./up.sh" ]'
