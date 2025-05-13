@@ -9,11 +9,14 @@ readonly IMAGE_TYPE="${2:-}"         # --languages
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
 readonly RAND=$(uuidgen)
 
+# ---------------------------------------------------------------------
+# The ABC_REPLACED expressions are replaced by their
+# ABC env-var values by the cat-start-point-create.sh script.
+# ---------------------------------------------------------------------
+
 debug_on()
 {
-  # The uppercase name in this is replaced by its
-  # env-var value by the cat-start-point-create.sh script.
-  if [ CYBER_DOJO_DEBUG == 'true' ]; then
+  if [ 'CYBER_DOJO_DEBUG_REPLACED' == 'true' ]; then
     return 0  # true
   else
     return 1 # false
@@ -38,7 +41,7 @@ show_use()
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
-  Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
+  Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED:CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED
   <url> can be a plain git-repo url
         Eg https://github.com/cyber-dojo-start-points/gcc-assert
   <url> can be prefixed with a 7-character tag.
@@ -181,12 +184,11 @@ build_image_from_context_dir()
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
     echo "ENV IMAGE_TYPE=$(image_type)"
-    # The expressions after the = are replaced by their env-var values
     # These env-vars are required by versioner
-    echo "ENV START_POINTS_BASE_IMAGE=CYBER_DOJO_START_POINTS_BASE_IMAGE"
-    echo "ENV START_POINTS_BASE_SHA=CYBER_DOJO_START_POINTS_BASE_SHA"
-    echo "ENV START_POINTS_BASE_TAG=CYBER_DOJO_START_POINTS_BASE_TAG"
-    echo "ENV START_POINTS_BASE_DIGEST=CYBER_DOJO_START_POINTS_BASE_DIGEST"
+    echo "ENV CYBER_DOJO_START_POINTS_BASE_IMAGE=CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED"
+    echo "ENV CYBER_DOJO_START_POINTS_BASE_SHA=CYBER_DOJO_START_POINTS_BASE_SHA_REPLACED"
+    echo "ENV CYBER_DOJO_START_POINTS_BASE_TAG=CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED"
+    echo "ENV CYBER_DOJO_START_POINTS_BASE_DIGEST=CYBER_DOJO_START_POINTS_BASE_DIGEST_REPLACED"
     #
     echo "ENV PORT=$(image_port_number)"
     echo 'ENTRYPOINT [ "/sbin/tini", "-g", "--" ]'
@@ -274,10 +276,7 @@ stderr()
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 base_image_name()
 {
-  # The uppercase names in this are replaced by their
-  # env-var values by the cat-start-point-create.sh script.
-  # Note: Can't add @sha256:CYBER_DOJO_START_POINTS_BASE_DIGEST here as it breaks start-points-base tests
-  echo CYBER_DOJO_START_POINTS_BASE_IMAGE:CYBER_DOJO_START_POINTS_BASE_TAG
+  echo CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED:CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -286,9 +285,9 @@ image_port_number()
   # The uppercase names in this are replaced by their
   # env-var values by the cat-start-point-create.sh script.
   case "$(image_type)" in
-       custom) echo CYBER_DOJO_CUSTOM_START_POINTS_PORT;;
-    exercises) echo CYBER_DOJO_EXERCISES_START_POINTS_PORT;;
-    languages) echo CYBER_DOJO_LANGUAGES_START_POINTS_PORT;;
+       custom) echo CYBER_DOJO_CUSTOM_START_POINTS_PORT_REPLACED;;
+    exercises) echo CYBER_DOJO_EXERCISES_START_POINTS_PORT_REPLACED;;
+    languages) echo CYBER_DOJO_LANGUAGES_START_POINTS_PORT_REPLACED;;
   esac
 }
 
