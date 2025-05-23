@@ -14,21 +14,10 @@ readonly RAND=$(uuidgen)
 # ABC env-var values by the cat-start-point-create.sh script.
 # ---------------------------------------------------------------------
 
-debug_on()
-{
-  if [ 'CYBER_DOJO_DEBUG_REPLACED' == 'true' ]; then
-    return 0  # true
-  else
-    return 1 # false
-  fi
-}
-
 # Often /tmp cannot be docker volume-mounted, so use ~/tmp
 readonly CONTEXT_DIR=$(mktemp -d ~/tmp.cyber-dojo.commander.start-point.build.context-dir.XXXXXX)
 remove_tmp_dir() { rm -rf "${CONTEXT_DIR}" > /dev/null; }
-if ! debug_on; then
-  trap remove_tmp_dir EXIT
-fi
+trap remove_tmp_dir EXIT
 
 show_use()
 {
@@ -299,6 +288,17 @@ log_level()
     echo "--log-level=WARNING"
   else
     echo "--log-level=ERROR"
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+debug_on()
+{
+  # shellcheck disable=SC2050
+  if [ 'CYBER_DOJO_DEBUG_REPLACED' == 'true' ]; then
+    return 0  # true
+  else
+    return 1 # false
   fi
 }
 
