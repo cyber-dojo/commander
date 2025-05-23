@@ -212,7 +212,7 @@ build_image_from_context_dir()
   fi
 
   if debug_on; then
-    echo "DEBUG: docker $(log_level) image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
+    echo "DEBUG: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
     echo "${output}"
     echo
   fi
