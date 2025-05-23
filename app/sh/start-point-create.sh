@@ -24,25 +24,41 @@ show_use()
   cat <<-'EOF'
 
   Use:
-    cyber-dojo start-point create <name> --custom    <url>...
-    cyber-dojo start-point create <name> --exercises <url>...
-    cyber-dojo start-point create <name> --languages <url>...
+    [ENV-VAR]... cyber-dojo start-point create <name> --custom    <url>...
+    [ENV-VAR]... cyber-dojo start-point create <name> --exercises <url>...
+    [ENV-VAR]... cyber-dojo start-point create <name> --languages <url>...
 
   Creates a cyber-dojo start-point image named <name>
   containing git clones of the specified git-repo <url>s.
-  Its base image will be CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED:CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED
-  <url> can be a plain git-repo url
-        Eg https://github.com/cyber-dojo-start-points/gcc-assert
-  <url> can be prefixed with a 7-character tag.
-        This will git checkout the tag after the git clone.
-        Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
+  Unless overridden with environment variables, its base image will be
+      CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED:CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED
 
-  Example 1: non local tagged <url>
+  <url> can be a plain git-repo url
+      Eg https://github.com/cyber-dojo-start-points/gcc-assert
+  <url> can be prefixed with a 7-character tag.
+      This will git checkout the tag after the git clone.
+      Eg 7686e9d@https://github.com/cyber-dojo-start-points/gcc-assert
+
+  [ENV-VAR] can be
+      CYBER_DOJO_START_POINTS_BASE_IMAGE
+          The base image name. Overrides CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED
+      CYBER_DOJO_START_POINTS_BASE_TAG
+          The base image tag. Overrides CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED
+      CYBER_DOJO_DEBUG
+          When set to 'true' prints extra debug information.
+
+  Example 1: non-local tagged git-repo <url>
 
     cyber-dojo start-point create eg/first \
         --languages 384f486@https://github.com/cyber-dojo-start-points/java-junit
 
-  Example 2: read tagged git-repo <url>s from a local file
+  Example 2: non-local tagged git-repo <url> with base-image tag set by env-var
+
+    export CYBER_DOJO_START_POINTS_BASE_TAG=e8f8d56
+    cyber-dojo start-point create eg/first \
+        --languages 384f486@https://github.com/cyber-dojo-start-points/java-junit
+
+  Example 3: read tagged git-repo <url>s from a local file
 
     cyber-dojo start-point create eg/second \
         --languages $(< my-language-selection.txt)
@@ -53,7 +69,7 @@ show_use()
     c14a87e@https://github.com/cyber-dojo-start-points/python-pytest
     8fe0d11@https://github.com/cyber-dojo-start-points/ruby-minitest
 
-  Example 3: read tagged git-repo <url>s from a curl'd file
+  Example 4: read tagged git-repo <url>s from a curl'd file
 
     ORG=https://raw.githubusercontent.com/cyber-dojo
     REPO=languages-start-points
