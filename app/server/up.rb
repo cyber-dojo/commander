@@ -150,7 +150,7 @@ def exit_success_if_up_help
     minitab + '    --languages \\',
     minitab + '      $(curl --silent https://raw.githubusercontent.com/cyber-dojo/languages-start-points/master/git_repo_urls.tagged})',
     '',
-    'Additionally, .env files for nginx, and web can be overriden using',
+    'Additionally, .env files for nginx, and web can be overridden using',
     "environment variables holding the .env file's absolute path.",
     '',
     minitab + 'CYBER_DOJO_NGINX_ENV=PATH',
