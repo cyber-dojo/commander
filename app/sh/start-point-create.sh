@@ -204,11 +204,6 @@ build_image_from_context_dir()
     echo
   fi
 
-  if debug_on; then
-    echo "DEBUG: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
-    echo
-  fi
-
   local output
   if ! output=$(docker image build --tag "${TMP_IMAGE_NAME}" "${CONTEXT_DIR}" 2>&1); then
     stderr "ERROR: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
