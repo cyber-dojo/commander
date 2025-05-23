@@ -184,7 +184,7 @@ build_image_from_context_dir()
     echo "LABEL org.cyber-dojo.start-point=$(image_type)"
     echo "COPY . /app/repos"
     echo "ENV IMAGE_TYPE=$(image_type)"
-    # These env-vars are required by versioner
+    #
     echo "ENV CYBER_DOJO_START_POINTS_BASE_IMAGE=CYBER_DOJO_START_POINTS_BASE_IMAGE_REPLACED"
     echo "ENV CYBER_DOJO_START_POINTS_BASE_SHA=CYBER_DOJO_START_POINTS_BASE_SHA_REPLACED"
     echo "ENV CYBER_DOJO_START_POINTS_BASE_TAG=CYBER_DOJO_START_POINTS_BASE_TAG_REPLACED"
