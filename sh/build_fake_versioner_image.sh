@@ -109,6 +109,6 @@ assert_equal()
     echo "ERROR: assert_equal failed"
     echo "expected: '${expected}'"
     echo "  actual: '${actual}'"
-    exit 42
+    exit_non_zero
   fi
 }

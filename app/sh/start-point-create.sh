@@ -95,9 +95,15 @@ exit_non_zero_unless_installed()
   for tool in "$@"; do
     if ! installed "${tool}" ; then
       stderr "ERROR: ${tool} is not installed!"
-      exit 42
+      exit_non_zero
     fi
   done
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+exit_non_zero()
+{
+  kill -INT $$
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -213,7 +219,7 @@ build_image_from_context_dir()
   if ! output=$(docker image build --tag "${TMP_IMAGE_NAME}" "${CONTEXT_DIR}" 2>&1); then
     stderr "ERROR: docker image build --tag ${TMP_IMAGE_NAME} ${CONTEXT_DIR}"
     stderr "${output}"
-    exit 42
+    exit_non_zero
   fi
 
   if debug_on; then

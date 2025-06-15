@@ -4,7 +4,7 @@ exit_non_zero_unless_installed()
   for tool in "$@"; do
     if ! installed "${tool}" ; then
       echo_stderr "ERROR: ${tool} is not installed!"
-      exit 42
+      exit_non_zero
     fi
   done
 }
