@@ -39,13 +39,13 @@ test_____up_prints_start_points_and_port_and_creates_containers()
     assertStdoutIncludes "Using ${service}=cyberdojo/${service}:"
   done
 
-  assertStdoutIncludes "Container cyber_dojo_custom_start_points  Created"
-  assertStdoutIncludes "Container cyber_dojo_exercises_start_points  Created"
-  assertStdoutIncludes "Container cyber_dojo_languages_start_points  Created"
+  assertStdoutIncludes "Container cyber_dojo_custom_start_points Created"
+  assertStdoutIncludes "Container cyber_dojo_exercises_start_points Created"
+  assertStdoutIncludes "Container cyber_dojo_languages_start_points Created"
   for service in "${service_names[@]}"
   do
     service_underscore="$(echo $service | tr '-' '_')"
-    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Created"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore} Created"
   done
   assertNoStderr
 
