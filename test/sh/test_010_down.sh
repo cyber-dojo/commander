@@ -47,8 +47,8 @@ test_____no_args_stops_and_removes_server_containers()
   for service in custom_start_points exercises_start_points languages_start_points "${service_names[@]}"
   do
     service_underscore="$(echo $service | tr '-' '_')"
-    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Stopping"
-    assertStdoutIncludes "Container cyber_dojo_${service_underscore}  Removing"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore} Stopping"
+    assertStdoutIncludes "Container cyber_dojo_${service_underscore} Removing"
   done
   assertNoStderr
 
