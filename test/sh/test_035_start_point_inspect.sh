@@ -82,6 +82,27 @@ test_____languages_start_point_prints_details()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____languages_start_point_prints_language_and_test_framework_versions()
+{
+  # Pin the git-repo tag so the cloned manifest.json (and hence the
+  # language/test_framework version numbers) are deterministic.
+  local -r name=ok6
+  local -r url=6d16472@https://github.com/cyber-dojo-start-points/ruby-minitest
+  assertStartPointCreate ${name} --languages ${url}
+  assertStartPointInspect ${name}
+  assertStdoutIncludes    'Ruby'  'MiniTest'
+  assertStdoutIncludes '    "language": ['
+  assertStdoutIncludes '      "Ruby",'
+  assertStdoutIncludes '      "4.0.1"'
+  assertStdoutIncludes '    "test_framework": ['
+  assertStdoutIncludes '      "MiniTest",'
+  assertStdoutIncludes '      "6.0.0"'
+  #assertNoStderr
+  assertStartPointRm ${name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 test___failure() { :; }
 
 test_____absent_start_point()
