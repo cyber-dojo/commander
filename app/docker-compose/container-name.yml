@@ -28,3 +28,6 @@ services:
 
   saver:
     container_name: cyber_dojo_saver
+
+  spooler:
+    container_name: cyber_dojo_spooler

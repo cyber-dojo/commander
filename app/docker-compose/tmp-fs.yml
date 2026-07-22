@@ -64,3 +64,19 @@ services:
         tmpfs:
           mode: 01777
           size: 104857600 # 100MB
+
+  # The spooler is read_only; besides /tmp it needs a writable /sqlite for its
+  # embedded buffer database (tmpfs, so the buffer is ephemeral - it drains to
+  # the saver and is not meant to survive a restart).
+  spooler:
+    volumes:
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          mode: 01777
+          size: 10485760  # 10MB
+      - type: tmpfs
+        target: /sqlite
+        tmpfs:
+          mode: 01777
+          size: 52428800 # 50MB

@@ -16,6 +16,11 @@ services:
     depends_on:
       - runner
       - saver
+      - spooler
+
+  spooler:
+    depends_on:
+      - saver
 
   dashboard:
     depends_on:

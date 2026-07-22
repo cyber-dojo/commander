@@ -13,6 +13,19 @@ services:
           memory: 64M
           cpus: '0.5'
 
+  # Unlike the saver, the spooler keeps no persistent volume (its buffer is a
+  # tmpfs SQLite that drains to the saver), so it is not pinned to the manager
+  # and runs global like the other stateless services.
+  spooler:
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.5'
+
   nginx:
     deploy:
       mode: global

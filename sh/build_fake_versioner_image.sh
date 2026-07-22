@@ -27,6 +27,14 @@ build_fake_versioner_image()
   env_vars=$(replace_with "${env_vars}" "${comm_sha_var_name}" "${comm_fake_sha}")
   env_vars=$(replace_with "${env_vars}" "${comm_tag_var_name}" "${comm_fake_tag}")
 
+  # Local spike-test pins: run the locally-built spike images for web and saver
+  # so the full async-write path (web -> spooler -> saver) is exercised. Image
+  # selection uses ${..._IMAGE}:${..._TAG}, and versioner already reports the
+  # cyberdojo/web and cyberdojo/saver image names, so only the tag is overridden.
+  # Remove these once the spikes are released and versioner serves them.
+  env_vars=$(replace_with "${env_vars}" CYBER_DOJO_WEB_TAG "29437ba")
+  env_vars=$(replace_with "${env_vars}" CYBER_DOJO_SAVER_TAG "fc3bab8")
+
   if debug_spb; then
     local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
     local -r spb_tag_var_name=CYBER_DOJO_START_POINTS_BASE_TAG

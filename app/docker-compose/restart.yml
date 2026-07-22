@@ -28,3 +28,6 @@ services:
 
   saver:
     restart: on-failure
+
+  spooler:
+    restart: on-failure
