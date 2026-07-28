@@ -32,8 +32,10 @@ build_fake_versioner_image()
   # selection uses ${..._IMAGE}:${..._TAG}, and versioner already reports the
   # cyberdojo/web and cyberdojo/saver image names, so only the tag is overridden.
   # Remove these once the spikes are released and versioner serves them.
-  env_vars=$(replace_with "${env_vars}" CYBER_DOJO_WEB_TAG "29437ba")
-  env_vars=$(replace_with "${env_vars}" CYBER_DOJO_SAVER_TAG "fc3bab8")
+
+  #env_vars=$(replace_with "${env_vars}" CYBER_DOJO_WEB_TAG "29437ba")
+  #env_vars=$(replace_with "${env_vars}" CYBER_DOJO_SAVER_TAG "fc3bab8")
+  #env_vars=$(replace_with "${env_vars}" CYBER_DOJO_SPOOLER_TAG "92c624e")
 
   if debug_spb; then
     local -r spb_sha_var_name=CYBER_DOJO_START_POINTS_BASE_SHA
