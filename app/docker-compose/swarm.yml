@@ -13,12 +13,13 @@ services:
           memory: 64M
           cpus: '0.5'
 
-  # Unlike the saver, the spooler keeps no persistent volume (its buffer is a
-  # tmpfs SQLite that drains to the saver), so it is not pinned to the manager
-  # and runs global like the other stateless services.
+  # Like the saver, the spooler bind-mounts a host dir (its /sqlite buffer),
+  # so it is pinned to the manager node holding that dir.
   spooler:
     deploy:
-      mode: global
+      placement:
+        constraints:
+          - node.role == manager
       restart_policy:
         condition: on-failure
       resources:

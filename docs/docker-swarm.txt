@@ -18,9 +18,11 @@ $ docker-machine ssh swarm-master
 > docker swarm init --advertise-addr=192.168.99.101
 Make note of token SWMTKN...
 
-6. setup dir required by saver service (on swarm-master)
+6. setup dirs required by saver and spooler services (on swarm-master)
 > sudo mkdir /cyber-dojo
 > sudo chown 19663:65533 /cyber-dojo
+> sudo mkdir /cyber-dojo-spooler
+> sudo chown 19664:65533 /cyber-dojo-spooler
 
 7. come out of new VM
 > exit
