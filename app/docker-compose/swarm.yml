@@ -13,6 +13,20 @@ services:
           memory: 64M
           cpus: '0.5'
 
+  # Like the saver, the spooler bind-mounts a host dir (its /sqlite buffer),
+  # so it is pinned to the manager node holding that dir.
+  spooler:
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          memory: 64M
+          cpus: '0.5'
+
   nginx:
     deploy:
       mode: global

@@ -24,3 +24,6 @@ services:
 
   saver:
     read_only: true
+
+  spooler:
+    read_only: true

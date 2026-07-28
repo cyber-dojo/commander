@@ -37,3 +37,5 @@ services:
     env_file: [ .env ]
   saver:
     env_file: [ .env ]
+  spooler:
+    env_file: [ .env ]

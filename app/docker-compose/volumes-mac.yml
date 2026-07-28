@@ -4,3 +4,6 @@ services:
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   saver:
     volumes: [ "/Users/Shared/cyber-dojo:/cyber-dojo:rw" ]
+  # See the spooler comment in volumes.yml
+  spooler:
+    volumes: [ "/Users/Shared/cyber-dojo-spooler:/sqlite:rw" ]

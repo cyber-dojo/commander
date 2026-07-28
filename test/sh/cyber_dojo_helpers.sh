@@ -15,10 +15,12 @@ languages_urls() { printf https://github.com/cyber-dojo-start-points/ruby-minite
 
 declare -a service_names=(
   creator
+  dashboard
   differ
   nginx
   runner
   saver
+  spooler
   web
 )
 

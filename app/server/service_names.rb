@@ -8,6 +8,7 @@ def service_names
     nginx
     runner
     saver
+    spooler
     web
   )
 end

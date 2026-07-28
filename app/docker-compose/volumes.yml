@@ -4,3 +4,9 @@ services:
     volumes: [ "/var/run/docker.sock:/var/run/docker.sock" ]
   saver:
     volumes: [ "/cyber-dojo:/cyber-dojo:rw" ]
+  # The spooler buffers writes in an embedded SQLite database under /sqlite.
+  # The buffer must survive a restart, so it is a bind mount, not a tmpfs.
+  # The host dir must exist and be owned by the spooler user (uid 19664),
+  # see config/up.sh in the spooler image.
+  spooler:
+    volumes: [ "/cyber-dojo-spooler:/sqlite:rw" ]

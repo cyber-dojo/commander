@@ -30,3 +30,6 @@ services:
 
   saver:
     user: saver
+
+  spooler:
+    user: spooler
