@@ -16,5 +16,13 @@ docker build \
   --tag="$(image_name)" \
   "$(root_dir)"
 
-docker tag "$(image_name):latest" "$(image_name):$(image_tag)"
-echo "$(image_name):latest tagged to $(image_name):$(image_tag)"
+# Captured once: image_tag runs a container to read SHA out of the image.
+readonly TAG="$(image_tag)"
+
+docker tag "$(image_name):latest" "$(image_name):${TAG}"
+echo "$(image_name):latest tagged to $(image_name):${TAG}"
+
+# After tagging, so removing an earlier build's tags takes its last tag with
+# them and the image itself goes, rather than being left dangling when :latest
+# moves to this build.
+remove_old_images "${TAG}"
