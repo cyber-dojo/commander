@@ -13,28 +13,30 @@ test___success() { :; }
 
 test_____update_to_ABC_public_semantic_version()
 {
-  assertUpdate 0.0.2
+  assertUpdate "$(oldest_runnable_release)"
   assertVersion
-  assertStdoutIncludes 'Version: 0.0.2'
+  assertStdoutIncludes "Version: $(oldest_runnable_release)"
   assertStdoutIncludes 'Type: public'
-  assertStdoutIncludes 'Created: 2019-06-12 18:00:19'
+  assertStdoutIncludes 'Created: 2023-03-25 21:08:18'
 
-  assertUpdate 0.0.4
+  assertUpdate 0.1.330
   assertVersion
-  assertStdoutIncludes 'Version: 0.0.4'
+  assertStdoutIncludes 'Version: 0.1.330'
   assertStdoutIncludes 'Type: public'
-  assertStdoutIncludes 'Created: 2019-06-16 07:35:46'
+  assertStdoutIncludes 'Created: 2023-09-05 11:47:12'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 test_____update_to_TAG_development_sha7_version()
 {
-  assertUpdate 677df27
+  # 660b4b6 is built from a commit carrying no RELEASE, so it reports as
+  # development. Its commander is the oldest runnable release's.
+  assertUpdate 660b4b6
   assertVersion
-  assertStdoutIncludes 'Version: 677df27'
+  assertStdoutIncludes 'Version: 660b4b6'
   assertStdoutIncludes 'Type: development'
-  assertStdoutIncludes 'Created: 2019-06-16 07:29:16'
+  assertStdoutIncludes 'Created: 2023-03-26 07:10:16'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

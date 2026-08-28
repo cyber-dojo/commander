@@ -18,7 +18,28 @@ test_____unknown_tag_prints_to_stderr()
   local -r arg=salmon
   refuteUpdate ${arg}
   assertNoStdout
-  assertStderrIncludes "Error response from daemon: manifest for cyberdojo/versioner:${arg} not found"
+  # Daemons word this differently: some say "manifest for X not found", others
+  # say 'failed to resolve reference "X": X: not found'. What both carry, and
+  # what this pins, is that the daemon refused the tag and named it.
+  assertStderrIncludes \
+    'Error response from daemon:' \
+    "cyberdojo/versioner:${arg}" \
+    'not found'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____too_old_version_is_refused_and_leaves_current_version_in_place()
+{
+  local -r arg=0.0.2
+  refuteUpdate ${arg}
+  assertNoStdout
+  assertStderrIncludes \
+    "${arg}" \
+    "$(oldest_runnable_release)"
+  # The refusal must not have switched anything.
+  assertVersion
+  refuteStdoutIncludes "Version: ${arg}"
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -84,12 +105,12 @@ test_____help_arg_prints_use()
 
 test_____updating_to_specific_version_causes_next_up_to_use_image_tags_embedded_in_that_version()
 {
-  # cyberdojo/versioner:6da7a36 pulls cyberdojo/commander:35f653d
+  # The oldest runnable release pulls cyberdojo/commander:7dd09ac
   # but keep that pull out of stdout/stderr assertions
-  docker pull cyberdojo/commander:35f653d &> /dev/null
+  docker pull cyberdojo/commander:7dd09ac &> /dev/null
 
   # This replaces the fake versioner so must be the last test using it.
-  assertUpdate 6da7a36
+  assertUpdate "$(oldest_runnable_release)"
 
   assertUp
 
@@ -97,20 +118,20 @@ test_____updating_to_specific_version_causes_next_up_to_use_image_tags_embedded_
   assertStdoutIncludes 'Using web.env=default'
   #
   assertStdoutIncludes 'Using port=80'
-  assertStdoutIncludes "Using custom-start-points=cyberdojo/custom-start-points:ef2352f"
-  assertStdoutIncludes 'Using exercises-start-points=cyberdojo/exercises-start-points:c6d6a35'
-  assertStdoutIncludes "Using languages-start-points=cyberdojo/languages-start-points:f0eeae4"
+  assertStdoutIncludes 'Using custom-start-points=cyberdojo/custom-start-points:22c7a00'
+  assertStdoutIncludes 'Using exercises-start-points=cyberdojo/exercises-start-points:901efbe'
+  assertStdoutIncludes 'Using languages-start-points=cyberdojo/languages-start-points:becc571'
   #
-  assertStdoutIncludes 'Using commander=cyberdojo/commander:35f653d'
-  assertStdoutIncludes 'Using creator=cyberdojo/creator:7a05eb4'
-  assertStdoutIncludes 'Using dashboard=cyberdojo/dashboard:0aed98e'
-  assertStdoutIncludes 'Using differ=cyberdojo/differ:f05a57c'
-  assertStdoutIncludes 'Using nginx=cyberdojo/nginx:7e2c8b4'
-  assertStdoutIncludes 'Using repler=cyberdojo/repler:a71729f'
-  assertStdoutIncludes 'Using runner=cyberdojo/runner:f1c426f'
+  assertStdoutIncludes 'Using commander=cyberdojo/commander:7dd09ac'
+  assertStdoutIncludes 'Using creator=cyberdojo/creator:b50aee6'
+  assertStdoutIncludes 'Using dashboard=cyberdojo/dashboard:b9b11ef'
+  assertStdoutIncludes 'Using differ=cyberdojo/differ:f672103'
+  assertStdoutIncludes 'Using nginx=cyberdojo/nginx:5fcea19'
+  assertStdoutIncludes 'Using repler=cyberdojo/repler:a7deefa'
+  assertStdoutIncludes 'Using runner=cyberdojo/runner:e79210a'
   assertStdoutIncludes 'Using saver=cyberdojo/saver:68c5eb7'
-  assertStdoutIncludes 'Using shas=cyberdojo/shas:916b024'
-  assertStdoutIncludes 'Using web=cyberdojo/web:bbf94ef'
+  assertStdoutIncludes 'Using shas=cyberdojo/shas:48fac38'
+  assertStdoutIncludes 'Using web=cyberdojo/web:d3dd6ab'
   # assertNoStderr
 
   assertDown
