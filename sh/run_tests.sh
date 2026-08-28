@@ -15,4 +15,4 @@ trap 'docker image rm --force cyberdojo/versioner:latest' EXIT
 on_ci_prepare_volume_mount_dirs
 pull_start_points_base_image
 
-"$(root_dir)/test/sh/run.sh"
+"$(root_dir)/test/sh/run.sh" "${@}"

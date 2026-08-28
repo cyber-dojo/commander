@@ -12,6 +12,13 @@ exercises_urls() { printf "${github_cyber_dojo}/exercises-start-points"; }
 languages_urls() { printf https://github.com/cyber-dojo-start-points/ruby-minitest; }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - -
+# The oldest release whose commander reads .Config.Labels. Older ones read only
+# .ContainerConfig.Labels, which docker no longer returns from [docker inspect].
+# Mirrors OLDEST_RUNNABLE_RELEASE in app/server/update.rb.
+
+oldest_runnable_release() { printf 0.1.329; }
+
+# - - - - - - - - - - - - - - - - - - - - - - - - -
 
 declare -a service_names=(
   creator

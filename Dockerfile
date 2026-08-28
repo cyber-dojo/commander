@@ -1,6 +1,20 @@
-FROM cyberdojo/docker-base:909ba1d@sha256:20ac5af0c95cd148ad9acba9ca8da9c9145d6df478f40cccac52042aa071427f AS base
-# The FROM statement above is typically set via an automated pull-request from the docker-base repo
+# The base is multi-arch but this image is not: the glibc apk fetched below is
+# x86_64 only, so the platform is pinned rather than left to the builder's host.
+FROM --platform=linux/amd64 docker:29.7.2-dind-alpine3.24@sha256:12e683a161823b2a839aeea999b9d960e6e1f9a97b1679ad6b441982e2d9cf07
 LABEL maintainer=jon@jaggersoft.com
+
+# - - - - - - - - - - - - - - - -
+# The base supplies docker, its compose and buildx plugins, git and tar.
+# It has no ruby and no bash, which is what these two add:
+# - bash runs the scripts under app/sh
+# - ruby runs app/cyber-dojo.rb and app/lib. Alpine's ruby package carries the
+#   json, tempfile and date it requires, so there is no Gemfile to bundle.
+# - - - - - - - - - - - - - - - -
+
+RUN apk --update --upgrade --no-cache add \
+    bash \
+    ruby \
+  && rm -vrf /var/cache/apk/*
 
 ARG COMMIT_SHA
 ENV SHA=${COMMIT_SHA}
