@@ -3,11 +3,14 @@ set -Eeu
 
 shift                                # start-point
 shift                                # create
-readonly TMP_IMAGE_NAME=cyberdojo/temporary_start_points
+readonly RAND=$(uuidgen)
+# The tag carries RAND so two creates at once each build their own image.
+# Sharing one tag means the second build takes it from the first, which then
+# tags and ships an image holding the other one's start-point.
+readonly TMP_IMAGE_NAME=cyberdojo/temporary_start_points:${RAND}
 readonly IMAGE_NAME="${1:-}"         # cyberdojo/languages-start-points
 readonly IMAGE_TYPE="${2:-}"         # --languages
 declare -ar GIT_REPO_URLS="(${@:3})" # <url>...
-readonly RAND=$(uuidgen)
 
 # ---------------------------------------------------------------------
 # The ABC_REPLACED expressions are replaced by their
