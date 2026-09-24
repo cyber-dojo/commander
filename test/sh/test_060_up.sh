@@ -131,7 +131,7 @@ test_____missing_saver_dir()
   refute ${status}
   assertNoStdout
   assertStderrEquals "$(printf '%s\n' \
-    "ERROR: ${dir} does not existXXXX" \
+    "ERROR: ${dir} does not exist" \
     'Please run:' \
     "  \$ sudo mkdir ${dir}" \
     "  \$ sudo chown 19663:65533 ${dir}")"
@@ -153,7 +153,7 @@ test_____root_owned_saver_dir()
   refute ${status}
   assertNoStdout
   assertStderrEquals "$(printf '%s\n' \
-    "ERROR: ${dir} must be owned by 19663:65533 (the saver user)XXXX" \
+    "ERROR: ${dir} must be owned by 19663:65533 (the saver user)" \
     'Please run:' \
     "  \$ sudo chown 19663:65533 ${dir}")"
 }
@@ -174,7 +174,7 @@ test_____missing_spooler_dir()
   refute ${status}
   assertNoStdout
   assertStderrEquals "$(printf '%s\n' \
-    "ERROR: ${dir} does not existXXXX" \
+    "ERROR: ${dir} does not exist" \
     'Please run:' \
     "  \$ sudo mkdir ${dir}" \
     "  \$ sudo chown 19664:65533 ${dir}")"
@@ -196,7 +196,7 @@ test_____root_owned_spooler_dir()
   refute ${status}
   assertNoStdout
   assertStderrEquals "$(printf '%s\n' \
-    "ERROR: ${dir} must be owned by 19664:65533 (the spooler user)XXXX" \
+    "ERROR: ${dir} must be owned by 19664:65533 (the spooler user)" \
     'Please run:' \
     "  \$ sudo chown 19664:65533 ${dir}")"
 }
