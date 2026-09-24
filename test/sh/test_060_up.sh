@@ -115,6 +115,92 @@ Example: specify .env file for nginx
 
 test___failure() { :; }
 
+test_____missing_saver_dir()
+{
+  # Docker Desktop creates a missing bind-mount dir that the saver
+  # can write to, so on a Mac a missing dir is not an error.
+  if [ "$(uname)" == 'Darwin' ]; then
+    return
+  fi
+  local -r dir=/cyber-dojo
+  # refute exits on failure, so the dir is restored before it runs.
+  sudo mv "${dir}" "${dir}.aside"
+  up
+  local -r status=$?
+  sudo mv "${dir}.aside" "${dir}"
+  refute ${status}
+  assertNoStdout
+  assertStderrEquals "$(printf '%s\n' \
+    "ERROR: ${dir} does not existXXXX" \
+    'Please run:' \
+    "  \$ sudo mkdir ${dir}" \
+    "  \$ sudo chown 19663:65533 ${dir}")"
+}
+
+test_____root_owned_saver_dir()
+{
+  # Docker Desktop fakes bind-mount ownership, so on a Mac the saver
+  # can write to its dir whoever owns it.
+  if [ "$(uname)" == 'Darwin' ]; then
+    return
+  fi
+  local -r dir=/cyber-dojo
+  # refute exits on failure, so the dir is restored before it runs.
+  sudo chown 0:0 "${dir}"
+  up
+  local -r status=$?
+  sudo chown 19663:65533 "${dir}"
+  refute ${status}
+  assertNoStdout
+  assertStderrEquals "$(printf '%s\n' \
+    "ERROR: ${dir} must be owned by 19663:65533 (the saver user)XXXX" \
+    'Please run:' \
+    "  \$ sudo chown 19663:65533 ${dir}")"
+}
+
+test_____missing_spooler_dir()
+{
+  # Docker Desktop creates a missing bind-mount dir that the spooler
+  # can write to, so on a Mac a missing dir is not an error.
+  if [ "$(uname)" == 'Darwin' ]; then
+    return
+  fi
+  local -r dir=/cyber-dojo-spooler
+  # refute exits on failure, so the dir is restored before it runs.
+  sudo mv "${dir}" "${dir}.aside"
+  up
+  local -r status=$?
+  sudo mv "${dir}.aside" "${dir}"
+  refute ${status}
+  assertNoStdout
+  assertStderrEquals "$(printf '%s\n' \
+    "ERROR: ${dir} does not existXXXX" \
+    'Please run:' \
+    "  \$ sudo mkdir ${dir}" \
+    "  \$ sudo chown 19664:65533 ${dir}")"
+}
+
+test_____root_owned_spooler_dir()
+{
+  # Docker Desktop fakes bind-mount ownership, so on a Mac the spooler
+  # can write to its dir whoever owns it.
+  if [ "$(uname)" == 'Darwin' ]; then
+    return
+  fi
+  local -r dir=/cyber-dojo-spooler
+  # refute exits on failure, so the dir is restored before it runs.
+  sudo chown 0:0 "${dir}"
+  up
+  local -r status=$?
+  sudo chown 19664:65533 "${dir}"
+  refute ${status}
+  assertNoStdout
+  assertStderrEquals "$(printf '%s\n' \
+    "ERROR: ${dir} must be owned by 19664:65533 (the spooler user)XXXX" \
+    'Please run:' \
+    "  \$ sudo chown 19664:65533 ${dir}")"
+}
+
 test_____missing_languages()
 {
   refuteUp --languages
