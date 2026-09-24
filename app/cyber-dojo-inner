@@ -121,6 +121,37 @@ extract_and_run()
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# The saver and the spooler each bind-mount a host dir (see volumes.yml)
+# and refuse to start unless their own user can write there. Docker creates
+# a missing bind-mount dir owned by root, so [up] stops first and says how
+# to fix it.
+exit_unless_volume_dir_ready()
+{
+  local -r dir="${1}"
+  local -r owner="${2}"
+  local -r service="${3}"
+  if [ ! -d "${dir}" ]; then
+    >&2 echo "ERROR: ${dir} does not exist"
+    >&2 echo 'Please run:'
+    >&2 echo "  \$ sudo mkdir ${dir}"
+    >&2 echo "  \$ sudo chown ${owner} ${dir}"
+    exit 6
+  fi
+  if [ "$(stat -c '%u:%g' "${dir}")" != "${owner}" ]; then
+    >&2 echo "ERROR: ${dir} must be owned by ${owner} (the ${service} user)"
+    >&2 echo 'Please run:'
+    >&2 echo "  \$ sudo chown ${owner} ${dir}"
+    exit 6
+  fi
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# Docker Desktop fakes bind-mount ownership, so a Mac needs no dir check.
+if [ "${1:-}" == 'up' ] && [ -z "${on_mac:-}" ]; then
+  exit_unless_volume_dir_ready /cyber-dojo         19663:65533 saver
+  exit_unless_volume_dir_ready /cyber-dojo-spooler 19664:65533 spooler
+fi
+
 if [ "${1:-} ${2:-}" == 'start-point create' ]; then
   extract_and_run start-point-create.sh "$@"
 elif [ "${1:-} ${2:-}" == 'start-point build' ]; then
