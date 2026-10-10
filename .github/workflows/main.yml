@@ -71,6 +71,13 @@ jobs:
         with:
           fetch-depth: 1
 
+      # The tests bring up a whole cyber-dojo server, from the service images
+      # versioner names. Those that are still amd64-only run under emulation;
+      # commander itself runs natively. Remove once every one is multi-arch.
+      - uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64
+
       - name: Build and Test
         run:
           make image test_image
