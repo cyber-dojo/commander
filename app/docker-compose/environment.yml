@@ -5,3 +5,7 @@ services:
     environment:
       - CYBER_DOJO_SHA
       - CYBER_DOJO_RELEASE
+
+  runner:
+    environment:
+      - CYBER_DOJO_RUNNER_SPARES_PER_NODE
