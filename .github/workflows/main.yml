@@ -78,6 +78,23 @@ jobs:
         with:
           platforms: amd64
 
+      # Emulation runs amd64 images but a pull still asks for arm64, which an
+      # amd64-only image does not have, so compose would start nothing. Pulling
+      # them as amd64 first means compose finds them locally. Commander is
+      # built here, and start-points-base is multi-arch, so both stay native.
+      - name: Pull the amd64-only service images
+        run: |
+          docker run --rm cyberdojo/versioner:latest > /tmp/versioner.env
+          grep -oE '^CYBER_DOJO_[A-Z_]+_IMAGE' /tmp/versioner.env | while read -r key; do
+            svc="${key%_IMAGE}"
+            case "${svc}" in
+              CYBER_DOJO_COMMANDER|CYBER_DOJO_START_POINTS_BASE) continue ;;
+            esac
+            name="$(grep "^${svc}_IMAGE=" /tmp/versioner.env | cut -d= -f2)"
+            tag="$(grep "^${svc}_TAG=" /tmp/versioner.env | cut -d= -f2)"
+            docker pull --platform linux/amd64 "${name}:${tag}"
+          done
+
       - name: Build and Test
         run:
           make image test_image
