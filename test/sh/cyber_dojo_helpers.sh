@@ -18,6 +18,18 @@ languages_urls() { printf https://github.com/cyber-dojo-start-points/ruby-minite
 
 oldest_runnable_release() { printf 0.1.329; }
 
+# Old releases' commander images are amd64-only, and crash under emulation on
+# an arm64 host, so a job there sets CYBER_DOJO_SKIP_OLD_RELEASES. Returns true,
+# with the test recorded as skipped, when the caller should return at once.
+# Returning is needed because a failed assertUpdate exits the whole file.
+
+old_releases_skipped()
+{
+  [ -z "${CYBER_DOJO_SKIP_OLD_RELEASES:-}" ] && return 1
+  startSkipping
+  fail 'old releases do not run on this host'
+}
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 
 declare -a service_names=(

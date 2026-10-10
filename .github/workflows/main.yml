@@ -3,9 +3,6 @@ name: Main
 on:
   push:
 
-env:
-  IMAGE_TAR_FILENAME: /tmp/${{ github.event.repository.name }}.${{ github.sha }}.tar
-
 jobs:
   setup:
     runs-on: ubuntu-latest
@@ -21,15 +18,20 @@ jobs:
         id: vars
         run: |
           TAG="${GITHUB_SHA:0:7}"
-          echo "image_tag=${TAG}"               >> ${GITHUB_OUTPUT}          
+          echo "image_tag=${TAG}"               >> ${GITHUB_OUTPUT}
           echo "image_name=cyberdojo/commander" >> ${GITHUB_OUTPUT}
 
 
-  build-test:
+  # Each platform is built and tested on a runner of that platform, so nothing
+  # is emulated. On main each pushes the image it tested as :<tag>-<arch>, and
+  # publish merges those into one index, so what ships is what was tested.
+  # The two jobs differ only in runs-on and the arch suffix.
+  build-test-amd64:
     runs-on: ubuntu-latest
     needs: [setup]
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
+      IMAGE_TAG:  ${{ needs.setup.outputs.image_tag }}
     permissions:
       id-token: write
       contents: write
@@ -42,45 +44,110 @@ jobs:
         run:
           make image test_image
 
-      - name: Tar Docker image
-        run:
-          docker image save "${IMAGE_NAME}"
-            --output "${IMAGE_TAR_FILENAME}"
-
-      - name: Cache Docker image
-        uses: actions/cache@v5
+      - uses: docker/login-action@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
-          path: ${{ env.IMAGE_TAR_FILENAME }}
-          key:  ${{ env.IMAGE_NAME }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+
+      - name: Push the tested amd64 image
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker tag "${IMAGE_NAME}:latest" "${IMAGE_NAME}:${IMAGE_TAG}-amd64"
+          docker push "${IMAGE_NAME}:${IMAGE_TAG}-amd64"
+
+
+  build-test-arm64:
+    runs-on: ubuntu-24.04-arm
+    needs: [setup]
+    env:
+      IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
+      IMAGE_TAG:  ${{ needs.setup.outputs.image_tag }}
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      # The tests bring up a whole cyber-dojo server, from the service images
+      # versioner names. Those that are still amd64-only run under emulation;
+      # commander itself runs natively. Remove once every one is multi-arch.
+      - uses: docker/setup-qemu-action@v4
+        with:
+          platforms: amd64
+
+      # Emulation runs amd64 images but a pull still asks for arm64, which an
+      # amd64-only image does not have, so compose would start nothing. Pulling
+      # them as amd64 first means compose finds them locally. Commander is
+      # built here, and start-points-base is multi-arch, so both stay native.
+      - name: Pull the amd64-only service images
+        run: |
+          docker run --rm cyberdojo/versioner:latest > /tmp/versioner.env
+          grep -oE '^CYBER_DOJO_[A-Z_]+_IMAGE' /tmp/versioner.env | while read -r key; do
+            svc="${key%_IMAGE}"
+            case "${svc}" in
+              CYBER_DOJO_COMMANDER|CYBER_DOJO_START_POINTS_BASE) continue ;;
+            esac
+            name="$(grep "^${svc}_IMAGE=" /tmp/versioner.env | cut -d= -f2)"
+            tag="$(grep "^${svc}_TAG=" /tmp/versioner.env | cut -d= -f2)"
+            docker pull --platform linux/amd64 "${name}:${tag}"
+          done
+
+      - name: Build and Test
+        env:
+          CYBER_DOJO_SKIP_OLD_RELEASES: true
+        run:
+          make image test_image
+
+      # Temporary: what a failed arm64 run leaves behind, to see why the down
+      # test finds no cyber-dojo containers after an up that passed.
+      - name: Show docker state after a failure
+        if: ${{ failure() }}
+        run: |
+          docker ps --all --no-trunc
+          docker compose ls --all
+          docker image ls | grep -E 'cyberdojo|test_down' || true
+          for c in $(docker ps --all --quiet --filter name=cyber_dojo); do
+            echo "== logs ${c}"
+            docker logs --tail 20 "${c}" 2>&1
+          done
+
+      - uses: docker/login-action@v4
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
+
+      - name: Push the tested arm64 image
+        if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker tag "${IMAGE_NAME}:latest" "${IMAGE_NAME}:${IMAGE_TAG}-arm64"
+          docker push "${IMAGE_NAME}:${IMAGE_TAG}-arm64"
 
 
   publish:
     if: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
-    needs: [setup, build-test]
+    needs: [setup, build-test-amd64, build-test-arm64]
     env:
       IMAGE_NAME: ${{ needs.setup.outputs.image_name }}
       IMAGE_TAG:  ${{ needs.setup.outputs.image_tag }}
     steps:
-      - name: Retrieve Docker image from cache
-        uses: actions/cache@v5
-        with:
-          path: ${{ env.IMAGE_TAR_FILENAME }}
-          key:  ${{ env.IMAGE_NAME }}
-
-      - name: Load Docker image
-        run:
-          docker image load 
-            --input ${IMAGE_TAR_FILENAME}
-
       - uses: docker/login-action@v4
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASS }}
 
-      - name: Publish to dockerhub
-        run: |
-          docker tag ${IMAGE_NAME} ${IMAGE_NAME}:${IMAGE_TAG}
-          docker push ${IMAGE_NAME}:${IMAGE_TAG}
-          docker push ${IMAGE_NAME}:latest
-          
+      - uses: docker/setup-buildx-action@v4
+
+      # A registry-side merge: the two tested manifests are named as they are,
+      # in one index, under the commit tag and latest.
+      - name: Publish the multi-platform image to dockerhub
+        run:
+          docker buildx imagetools create
+            --tag "${IMAGE_NAME}:${IMAGE_TAG}"
+            --tag "${IMAGE_NAME}:latest"
+            "${IMAGE_NAME}:${IMAGE_TAG}-amd64"
+            "${IMAGE_NAME}:${IMAGE_TAG}-arm64"
