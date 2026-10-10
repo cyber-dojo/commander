@@ -361,5 +361,20 @@ test_____unknown_args()
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+test_____nginx_image_that_cannot_be_pulled()
+{
+  # docker compose up cannot pull this image, so up fails.
+  # refute exits on failure, so the env-vars are unset before it runs.
+  export CYBER_DOJO_NGINX_IMAGE=cyberdojo/nginx
+  export CYBER_DOJO_NGINX_TAG=does-not-exist
+  up
+  local -r status=$?
+  unset CYBER_DOJO_NGINX_IMAGE CYBER_DOJO_NGINX_TAG
+  refute ${status}
+  assertStderrIncludes 'ERROR: docker compose up failed'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 . ${MY_DIR}/shunit2_helpers.sh
 . ${MY_DIR}/shunit2
