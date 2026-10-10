@@ -1,6 +1,6 @@
-# The base is multi-arch but this image is not: the glibc apk fetched below is
-# x86_64 only, so the platform is pinned rather than left to the builder's host.
-FROM --platform=linux/amd64 docker:29.7.2-dind-alpine3.24@sha256:12e683a161823b2a839aeea999b9d960e6e1f9a97b1679ad6b441982e2d9cf07
+# Pinned to the base's multi-platform index, so the same pin serves the
+# linux/amd64 and linux/arm64 builds.
+FROM docker:29.7.2-dind-alpine3.24@sha256:12e683a161823b2a839aeea999b9d960e6e1f9a97b1679ad6b441982e2d9cf07
 LABEL maintainer=jon@jaggersoft.com
 
 # - - - - - - - - - - - - - - - -
@@ -18,19 +18,6 @@ RUN apk --update --upgrade --no-cache add \
 
 ARG COMMIT_SHA
 ENV SHA=${COMMIT_SHA}
-
-# - - - - - - - - - - - - - - - - - - - - - -
-# https://github.com/wernight/docker-compose/blob/master/Dockerfile
-# - - - - - - - - - - - - - - - - - - - - - -
-
-RUN set -x && \
-    apk add --no-cache -t .deps ca-certificates && \
-    wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub && \
-    VERSION=2.35-r1 && \
-    wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${VERSION}/glibc-${VERSION}.apk && \
-    apk add --force-overwrite glibc-${VERSION}.apk && \
-    rm glibc-${VERSION}.apk && \
-    apk del --purge .deps
 
 # - - - - - - - - - - - - - - - - - - - - - -
 # install commander source
