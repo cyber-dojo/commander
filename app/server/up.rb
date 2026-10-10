@@ -8,6 +8,13 @@ def cyber_dojo_server_up
      custom = up_command_line['--custom']    || tagged_image_name('CUSTOM_START_POINTS')
   exercises = up_command_line['--exercises'] || tagged_image_name('EXERCISES_START_POINTS')
   languages = up_command_line['--languages'] || tagged_image_name('LANGUAGES_START_POINTS')
+     spares = up_command_line['--runner-spares'] || '0'
+
+  # The runner raises on anything else, and would restart forever.
+  unless spares.match?(/\A\d+\z/)
+    STDERR.puts "ERROR: --runner-spares must be a whole number of 0 or more [#{spares}]"
+    exit failed
+  end
 
   exit_failure_unless_start_point_exists(   'custom', custom   )
   exit_failure_unless_start_point_exists('exercises', exercises)
@@ -18,6 +25,7 @@ def cyber_dojo_server_up
   STDOUT.puts "Using custom-start-points=#{custom}"
   STDOUT.puts "Using exercises-start-points=#{exercises}"
   STDOUT.puts "Using languages-start-points=#{languages}"
+  STDOUT.puts "Using runner-spares=#{spares}"
   service_names.each do |name|
     STDOUT.puts "Using #{name}=#{tagged_image_name(name)}"
   end
@@ -30,6 +38,7 @@ def cyber_dojo_server_up
     'CYBER_DOJO_CUSTOM_START_POINTS'    => custom,
     'CYBER_DOJO_EXERCISES_START_POINTS' => exercises,
     'CYBER_DOJO_LANGUAGES_START_POINTS' => languages,
+    'CYBER_DOJO_RUNNER_SPARES_PER_NODE' => spares,
     'CYBER_DOJO_SHA' => sha,
     'CYBER_DOJO_RELEASE' => release
   })
@@ -69,7 +78,7 @@ end
 def up_command_line
   args = {}
   bad = []
-  knowns = %w( --port --custom --exercises --languages )
+  knowns = %w( --port --custom --exercises --languages --runner-spares )
   ARGV[1..-1].each do |arg|
     name,value = arg.split('=',2)
     if knowns.none?{ |known| name === known }
@@ -132,6 +141,11 @@ def exit_success_if_up_help
     '--custom=IMAGE_NAME        cyberdojo/custom-start-points',
     '--exercises=IMAGE_NAME     cyberdojo/exercises-start-points',
     '--languages=IMAGE_NAME     cyberdojo/languages-start-points',
+    '--runner-spares=NUMBER     0',
+    '',
+    '--runner-spares is how many pre-started containers the runner holds,',
+    'so a test run does not wait for its container to start.',
+    'Each spare costs the host up to about 12MB of memory.',
     '',
     'The default start-point images were created using:',
     '',

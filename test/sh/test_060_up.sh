@@ -34,6 +34,7 @@ test_____up_prints_start_points_and_port_and_creates_containers()
   assertStdoutIncludes "Using custom-start-points=${custom_name}"
   assertStdoutIncludes "Using exercises-start-points=${exercises_name}"
   assertStdoutIncludes "Using languages-start-points=${languages_name}"
+  assertStdoutIncludes 'Using runner-spares=0'
   for service in "${service_names[@]}"
   do
     assertStdoutIncludes "Using ${service}=cyberdojo/${service}:"
@@ -48,6 +49,36 @@ test_____up_prints_start_points_and_port_and_creates_containers()
     assertStdoutIncludes "Container cyber_dojo_${service_underscore} Created"
   done
   assertNoStderr
+  local -r spares="$(docker exec cyber_dojo_runner printenv CYBER_DOJO_RUNNER_SPARES_PER_NODE)"
+  assertEquals 0 "${spares}"
+
+  assertDown
+  assertStartPointRm ${custom_name}
+  assertStartPointRm ${exercises_name}
+  assertStartPointRm ${languages_name}
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____runner_spares_arg_sets_runner_spares_per_node()
+{
+  # The runner holds this many pre-started containers per node.
+  local -r custom_name=test_up_custom_3
+  assertStartPointCreate ${custom_name}    --custom    $(custom_urls)
+  local -r exercises_name=test_up_exercises_3
+  assertStartPointCreate ${exercises_name} --exercises $(exercises_urls)
+  local -r languages_name=test_up_languages_3
+  assertStartPointCreate ${languages_name} --languages $(languages_urls)
+
+  assertUp --custom=${custom_name} \
+           --exercises=${exercises_name} \
+           --languages=${languages_name} \
+           --runner-spares=8
+
+  assertStdoutIncludes 'Using runner-spares=8'
+  assertNoStderr
+  local -r spares="$(docker exec cyber_dojo_runner printenv CYBER_DOJO_RUNNER_SPARES_PER_NODE)"
+  assertEquals 8 "${spares}"
 
   assertDown
   assertStartPointRm ${custom_name}
@@ -70,6 +101,11 @@ Command-line-arg           Default
 --custom=IMAGE_NAME        cyberdojo/custom-start-points
 --exercises=IMAGE_NAME     cyberdojo/exercises-start-points
 --languages=IMAGE_NAME     cyberdojo/languages-start-points
+--runner-spares=NUMBER     0
+
+--runner-spares is how many pre-started containers the runner holds,
+so a test run does not wait for its container to start.
+Each spare costs the host up to about 12MB of memory.
 
 The default start-point images were created using:
 
@@ -245,6 +281,18 @@ test_____missing_port()
   refuteUp --port=
   assertNoStdout
   assertStderrEquals 'ERROR: missing argument value --port=[???]'
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+test_____runner_spares_not_a_whole_number()
+{
+  refuteUp --runner-spares=salmon
+  assertNoStdout
+  assertStderrEquals 'ERROR: --runner-spares must be a whole number of 0 or more [salmon]'
+  refuteUp --runner-spares=-1
+  assertNoStdout
+  assertStderrEquals 'ERROR: --runner-spares must be a whole number of 0 or more [-1]'
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
