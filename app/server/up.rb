@@ -52,9 +52,12 @@ def cyber_dojo_server_up
     system(env_vars, command)
   else
     command = "docker compose #{docker_yml_files} up -d --remove-orphans"
-    system(env_vars, "#{command} 2>&1")
     # A successful [docker compose ... up] writes to stderr !?
     # See https://github.com/docker/compose/issues/3267
+    unless system(env_vars, "#{command} 2>&1")
+      STDERR.puts 'ERROR: docker compose up failed'
+      exit failed
+    end
   end
 end
 
