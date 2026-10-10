@@ -105,6 +105,7 @@ test_____help_arg_prints_use()
 
 test_____updating_to_specific_version_causes_next_up_to_use_image_tags_embedded_in_that_version()
 {
+  old_releases_skipped && return
   # The oldest runnable release pulls cyberdojo/commander:7dd09ac
   # but keep that pull out of stdout/stderr assertions
   docker pull cyberdojo/commander:7dd09ac &> /dev/null
