@@ -13,6 +13,7 @@ test___success() { :; }
 
 test_____update_to_ABC_public_semantic_version()
 {
+  old_releases_skipped && return
   assertUpdate "$(oldest_runnable_release)"
   assertVersion
   assertStdoutIncludes "Version: $(oldest_runnable_release)"
@@ -32,6 +33,7 @@ test_____update_to_TAG_development_sha7_version()
 {
   # 660b4b6 is built from a commit carrying no RELEASE, so it reports as
   # development. Its commander is the oldest runnable release's.
+  old_releases_skipped && return
   assertUpdate 660b4b6
   assertVersion
   assertStdoutIncludes 'Version: 660b4b6'

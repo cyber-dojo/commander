@@ -96,6 +96,8 @@ jobs:
           done
 
       - name: Build and Test
+        env:
+          CYBER_DOJO_SKIP_OLD_RELEASES: true
         run:
           make image test_image
 
