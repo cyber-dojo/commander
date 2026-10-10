@@ -1,4 +1,7 @@
 
+# Each memory limit matches the mem_limit of that service's ECS task in
+# production (deployment/terraform-*/variables.tf in the service's repo).
+
 services:
 
   saver:
@@ -10,7 +13,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 64M
+          memory: 256M
           cpus: '0.5'
 
   # Like the saver, the spooler bind-mounts a host dir (its /sqlite buffer),
@@ -24,7 +27,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 64M
+          memory: 256M
           cpus: '0.5'
 
   nginx:
@@ -34,7 +37,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 64M
+          memory: 512M
           cpus: '0.5'
   web:
     deploy:
@@ -43,7 +46,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 128M
+          memory: 1024M
           cpus: '0.5'
 
   runner:
@@ -53,7 +56,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 256M
+          memory: 768M
           cpus: '0.75'
 
   creator:
@@ -63,7 +66,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 512M
           cpus: '0.2'
 
   custom-start-points:
@@ -73,7 +76,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 512M
           cpus: '0.2'
 
   exercises-start-points:
@@ -83,7 +86,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 128M
           cpus: '0.2'
 
   languages-start-points:
@@ -93,7 +96,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 128M
           cpus: '0.2'
 
   dashboard:
@@ -103,7 +106,7 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 256M
           cpus: '0.5'
 
   differ:
@@ -113,5 +116,5 @@ services:
         condition: on-failure
       resources:
         limits:
-          memory: 32M
+          memory: 256M
           cpus: '0.5'
