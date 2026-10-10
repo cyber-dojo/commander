@@ -101,19 +101,6 @@ jobs:
         run:
           make image test_image
 
-      # Temporary: what a failed arm64 run leaves behind, to see why the down
-      # test finds no cyber-dojo containers after an up that passed.
-      - name: Show docker state after a failure
-        if: ${{ failure() }}
-        run: |
-          docker ps --all --no-trunc
-          docker compose ls --all
-          docker image ls | grep -E 'cyberdojo|test_down' || true
-          for c in $(docker ps --all --quiet --filter name=cyber_dojo); do
-            echo "== logs ${c}"
-            docker logs --tail 20 "${c}" 2>&1
-          done
-
       - uses: docker/login-action@v4
         if: ${{ github.ref == 'refs/heads/main' }}
         with:
