@@ -26,4 +26,4 @@ Run 'cyber-dojo COMMAND --help' for more information on a command.
 
 - - - -
 
-![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/master/shared/home_page_snapshot.png)
+![cyber-dojo.org home page](https://github.com/cyber-dojo/cyber-dojo/blob/main/shared/home_page_snapshot.png)
